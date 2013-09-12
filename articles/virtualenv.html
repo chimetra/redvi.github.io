@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <title>Слово о virtualenv</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Что такое virtualenv и как с ним работать">  <meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+  <link href="../theme/css/screen.css" rel="stylesheet" type="text/css" />
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+  <link href="../" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
+  <link href="../feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href=".."><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+        <ul>
+      <li><a href="../archives.html">Архив</a></li>
+      <li><a href="../about.html">О блоге</a></li>
+      <li><a href="../authors.html">Экипаж</a></li>
+    </ul>
+</div>
+</div>    <div id="main">
+<h2><a href="../articles/virtualenv.html">Слово о virtualenv</a></h2>
+<h5><i class="icon-feather"></i> 29 Июнь 2013 </h5>
+<p>Так случилось, что на данный момент автор балуется скриптами на <code>python</code> и стоит на пороге изучения Django. Естественно, в такой интересной ситуации нельзя однажды не наткнуться на сложности в работе с несколькими проектами и призванным решить все проблемы <code>virtualenv</code>. Впрочем, о нём уже только ленивый не писал, и если читателю приходилось сталкиваться с указанным приложением, этот пост вряд ли расскажет ему о чём-то новом. Тем не менее, поговорим о виртуальных окружениях.</p>
+<h2>На кой оно нужно?</h2>
+<p>Итак, чем может быть полезен <code>virtualenv</code>? Предположим, вы взялись за разработку сайта с использованием python v3 и django v1.5. и всё бы хорошо, да вот незадача: вам срочно понадобилось посмортеть какой-то проект, где автором используются совершенно иные библиотеки и версия <code>python</code>, несовместимая с вашей. Итак, у вас есть два пути: поставить все эти библиотеки и раздельно пользоваться ими, что не есть удобно. Таким образом вы захламляете системные каталоги и спустя какое-то время сам чёрт не разберёт что где лежит и зачем это было нужно. Путь второй заключается в установке <code>virtualenv</code> и использования его возможностей для своих нехитрых нужд.
+Virtualenv пригодится для создания виртуальных окружений, внутри которых может использоваться другая версия python, другой набор модулей и приложений для текущей задачи. При этом все модули и приложения не устанавливаются в системные каталоги, а лежат исключительно в указанных директориях виртуального окружения. Их можно удалить по отдельности, а можно просто «снести» каталог виртуального окружения, чтобы избавиться от всего, что там лежит. Неплохо, верно?</p>
+<h2>Установка и использование</h2>
+<p>Теперь установим <code>pip</code> и <code>virtualenv</code> и посмотрим, как пользоваться всем этим хозяйством на практике. Прежде всего следует выбрать версию <code>python</code>, которая будет использоваться в создаваемом виртуальном окружении и указать, что мы не хотим использовать системные пакеты:</p>
+<div class="highlight"><pre><span class="gp">$</span> virtualenv -p /usr/bin/python2.7 --no-site-packages ~/.virtualenvs/env2.7
+
+<span class="go">Running virtualenv with interpreter /usr/bin/python2.7</span>
+<span class="go">The --no-site-packages flag is deprecated; it is now the default behavior.</span>
+<span class="go">New python executable in /home/redvi/.virtualenvs/env2.7/bin/python2.7</span>
+<span class="go">Also creating executable in /home/redvi/.virtualenvs/env2.7/bin/python</span>
+<span class="go">Installing setuptools..............................done.</span>
+<span class="go">Installing pip...............done.</span>
+</pre></div>
+
+
+<p>Так, мы создали директорию <code>.virtualenvs</code>, которая будет содержать различные виртуальные окружения и первое виртуальное окружение, которое просто использует <code>python v2.7</code>.
+Примечание: если установка прерывается с ошибкой <code>Permission Denied</code>, проверьте не смонтирован ли раздел, где создаётся виртуально окружение, с параметром <code>noexec</code>.
+Директория <code>env2.7</code> служит всего лишь примером, вы можете создавать виртуальное окружение под каждый проект, например, назвав его <code>.virtualenvs/myapp</code>.
+Теперь нужно активировать виртуальное окружение:</p>
+<div class="highlight"><pre><span class="gp">$</span> <span class="nb">source</span> .virtualenvs/env2.7/bin/activate
+</pre></div>
+
+
+<p>Далее, находясь в выбранном виртуальном окружении, установим что-нибудь. К примеру, у автора имеется django v1.5, но захотелось поставить v1.4:</p>
+<div class="highlight"><pre><span class="gp">$</span> pip install <span class="nv">django</span><span class="o">==</span>1.4
+<span class="gp">$</span> python
+
+<span class="gp">&gt;</span>&gt;&gt; Python 2.7.3
+<span class="gp">&gt;</span>&gt;&gt; import django
+<span class="gp">&gt;</span>&gt;&gt; django.VERSION
+<span class="gp">&gt;</span>&gt;&gt; <span class="o">(</span>1, 4, 0, <span class="s1">&#39;final&#39;</span>, 0<span class="o">)</span>
+
+<span class="gp">$</span> pip uninstall <span class="nv">django</span><span class="o">==</span>1.4
+
+<span class="go">Uninstalling Django:</span>
+<span class="go">/home/user/.virtualenvs/env2.7/bin/django-admin.py</span>
+<span class="go">/home/user/.virtualenvs/env2.7/lib/python2.7/site-packages/Django-1.4-py2.7.egg-info</span>
+<span class="go">/home/user/.virtualenvs/env2.7/lib/python2.7/site-packages/django</span>
+<span class="go">Proceed (y/n)? y</span>
+<span class="go">Successfully uninstalled Django</span>
+</pre></div>
+
+
+<p>Думаю, этот пример достаточно показателен. При установке Django 1.4 вы не обнаружите его в системных каталогах — только в <code>.virualenv/env2.7</code>
+Чтобы выйти из виртуального окружения введите команду <code>$ deactivate</code>.</p>
+<p>Примечание: <code>pip</code> — небольшая и очень удобная программа, которая позволяет устанавливать и удалять python-приложения в одну команду. <code>Pip</code> можно установить как из репозиториев вашего дистрибутива для всей системы, так и в рамках окружения <code>virtualenv</code>.</p>
+<h2>О virtualenvwrapper</h2>
+<p>В иных руководствах рекомендуется использовать вдовесок <code>virtualenvwrapper</code>, призванный упростить работу с самим <code>virtualenv</code>. Думается, он не особенно нужен, ибо единственной вещью, которую делать лениво представляется переключение между виртуальными окружениями: слишком длинную команду приходится вводить для такого простого действия. Но это можно легко поправить, добавив в ваш <code>.bashrc</code> или <code>.zshrc</code> несколько псевдонимов для окружений, например так:</p>
+<div class="highlight"><pre><span class="nb">alias </span><span class="nv">env3</span><span class="o">=</span><span class="s1">&#39;source ~/.virtualenvs/env3.2/bin/activate&#39;</span>
+<span class="nb">alias </span><span class="nv">env2</span><span class="o">=</span><span class="s1">&#39;source ~/.virtualenvs/env2.7/bin/activate&#39;</span>
+<span class="nb">alias </span><span class="nv">blog</span><span class="o">=</span><span class="s1">&#39;source ~/.virtualenvs/blog/bin/activate&#39;</span>
+</pre></div>
+
+
+<p>Теперь смена окружения будет выглядеть немного иначе:</p>
+<ul>
+<li><code>$ evn2</code> -- вошли в окружение, работаем работу</li>
+<li><code>$ deactivate</code> -- деактивируем окружение</li>
+<li><code>$ env3</code> -- входим в другое окружение</li>
+</ul>
+<p>При использовании <code>virtualenvwrapper</code>:</p>
+<ul>
+<li><code>$ mkvirtualenv myapp</code> -- создаст новое окружение myapp</li>
+<li><code>$ workon myapp</code> -- переключиться на myapp</li>
+<li><code>$ deactivate</code> -- деактивировать</li>
+<li><code>$ rmvirtualenv myapp</code> -- удалить</li>
+</ul>
+<p>Официальная документация проекта: <a href="http://virtualenv.org">http://virtualenv.org</a></p>
+<h5><i class="icon-user"></i> <a href="../author/redvi.html">redVi</a>,
+<i class="icon-bookmarks"></i> <a href="../tag/python.html">Python</a> /
+</h5>
+<p align="center"><a href="#">наверх</a></p>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+       <li class="footer"><a href="../tag/android.html">Android&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/arch.html">Arch&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/blog.html">Blog&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/debian.html">Debian&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/decorations.html">Decorations&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/django.html">Django&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/editors.html">Editors&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/gentoo.html">Gentoo&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/git.html">Git&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/javascript.html">JavaScript&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/kernel.html">Kernel&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/latex.html">LaTeX&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/python.html">Python&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/server.html">Server&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/web.html">Web&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/windows.html">Windows&nbsp;&bull;&nbsp;</a></li>
+  </ul>
+<br/><p>&copy;&nbsp;2011&mdash;2013&nbsp;&bull;&nbsp;<a href="..">unix-lab.org </a>&nbsp;&bull;&nbsp;powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;&bull;&nbsp;<a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru"><i class="icon-cc"></i></a></p>
+</div>
+<!-- end #footer --></div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-42400517-1', 'www.unix-lab.org');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

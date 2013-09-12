@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <title>Sublime-Text 3. Коротко о главном</title>
+  <meta charset="utf-8">
+  <meta name="description" content="О тонкой настройке замечательного текстового редактора Sublime-Text под свои нужды.">  <meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+  <link href="../theme/css/screen.css" rel="stylesheet" type="text/css" />
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+  <link href="../" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
+  <link href="../feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href=".."><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+        <ul>
+      <li><a href="../archives.html">Архив</a></li>
+      <li><a href="../about.html">О блоге</a></li>
+      <li><a href="../authors.html">Экипаж</a></li>
+    </ul>
+</div>
+</div>    <div id="main">
+<h2><a href="../articles/sublime-text.html">Sublime-Text 3. Коротко о главном</a></h2>
+<h5><i class="icon-feather"></i> 10 Август 2013 </h5>
+<p>Автору довелось пользоваться многими текстовыми редакторами и IDE, среди которых были nano, vim, gedit, geany, kate, eclipse... Любой из них имеет как свои преимущества, так и свои недостатки. Речь сегодня пойдёт не о них: о том редакторе, который с первого же дня может завоевать ваше сердце, о Sublime Text.</p>
+<p>Поскольку о нём уже немало написано, пост будет достаточно коротким: целью ставится познакомить читателя с этим замечательным текстовым редактором и показать пути для его настройки под свои нужды. Остальную, более подробную информацию, можно найти на официальном сайте.</p>
+<p>Сразу надо бы оговориться: sublime text 3 не бесплатный продукт. На момент написания поста его стоимость составляла $70. Как мне доводилось слышать, обязательна лишь оплата для пользователей Mac, на Linux и Windows вы можете не оплачивать лицензию и спокойно работать, время от времени наблюдая всплывающее окно с предложением о покупке. Собственно говоря, это практически не мешает.</p>
+<h2>Где найти и как установить</h2>
+<p>Как правило в случае с дистрибутивами Linux последняя версия текстового редактора имеется в репозитории. Хотя может возникнуть необходимость подключить помимо основного какой-либо дополнительный репозиторий. Для примера в Gentoo Linux следует подключить оверлей <code>sublime-text</code> и установить редактор:</p>
+<div class="highlight"><pre><span class="gp">#</span> layman --add sublime-text
+<span class="gp">#</span> eix-update
+<span class="gp">#</span> emerge -av sublime-text
+</pre></div>
+
+
+<p>Внешний вид sublime достаточно приятен, есть несколько цветовых схем в стандартной поставке, в колонке слева отображаются проекты, справа &mdash; что-то вроде эскиза кода (миникарта). Вверху &mdash; панель инструментов и вкладки, внизу &mdash; информативная полоса, сообщающая о количестве строк, определяющая язык программирования, количество пробелов в отступе, а также кодировку документа, если вы пожелаете это настроить.</p>
+<p><a href="http://farm4.staticflickr.com/3780/9456755441_b2950a96ff_o.png" data-lighter><img src="http://farm4.staticflickr.com/3780/9456755441_b2950a96ff_o.png"/></a></p>
+<h2>Пользовательские настройки</h2>
+<p>Начнём с того, что можно настроить сразу же, стандартными средствами. Обратимся к пользовательским настройкам редактора, откройте настройки:</p>
+<div class="highlight"><pre><span class="n">Preferences</span> <span class="o">--&gt;</span> <span class="n">Settings</span><span class="o">-</span><span class="n">User</span>
+</pre></div>
+
+
+<p>Допишите по вкусу:</p>
+<div class="highlight"><pre><span class="p">{</span>
+    <span class="nt">&quot;auto_indent&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>            <span class="err">#автоотступ</span>
+    <span class="nt">&quot;auto_match_enabled&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>     <span class="err">#автоматически</span> <span class="err">добавлять</span> <span class="err">закрывающую</span> <span class="err">скобку,</span> <span class="err">парную</span> <span class="err">кавычку</span>
+    <span class="nt">&quot;bold_folder_labels&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>     <span class="err">#каталоги</span> <span class="err">выделить</span> <span class="err">жирным</span>
+    <span class="err">#</span> <span class="err">цветовая</span> <span class="err">схема</span>
+    <span class="nt">&quot;color_scheme&quot;</span><span class="p">:</span> <span class="s2">&quot;Packages/Color Scheme - Default/Solarized (Light).tmTheme&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ensure_newline_at_eof_on_save&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nt">&quot;font_size&quot;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>                <span class="err">#размер</span> <span class="err">шрифта</span>
+    <span class="nt">&quot;highlight_line&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>         <span class="err">#выделять</span> <span class="err">строку,</span> <span class="err">на</span> <span class="err">которой</span> <span class="err">находится</span> <span class="err">курсор</span>
+    <span class="nt">&quot;ignored_packages&quot;</span><span class="p">:</span>
+    <span class="p">[</span>
+        <span class="s2">&quot;Vintage&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;tab_size&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>                  <span class="err">#настройка</span> <span class="err">отступа</span>
+    <span class="nt">&quot;translate_tabs_to_spaces&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="err">#перевод</span> <span class="err">табов</span> <span class="err">в</span> <span class="err">пробелы</span>
+    <span class="nt">&quot;trim_trailing_white_space_on_save&quot;</span><span class="p">:</span> <span class="kc">true</span>   <span class="err">#удалять</span> <span class="err">пробелы</span> <span class="err">и</span> <span class="err">табуляции</span> <span class="err">в</span> <span class="err">конце</span> <span class="err">строк</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Полный перечень команд можно отыскать на <a href="http://sublimetext.ru/documentation/preferences/list">sublimetext.ru</a>.</p>
+<p>Любопытно и то, что приверженцам vim, к коим себя относит и автор сего поста, можно включить привычные в работе сочетания клавиш, если стандартные по какой-то причине не совсем устраивают. Делается это достаточно просто. Следует исключить из игнорируемых режим <code>Vintage Mode</code>:</p>
+<div class="highlight"><pre><span class="s">&quot;ignored_packages&quot;</span><span class="o">:</span> <span class="p">[]</span>
+</pre></div>
+
+
+<h2>Плагины</h2>
+<p>Разумеется, sublime не был бы так привлекателен, если бы не его коллекция плагинов. Для установки и удаления плагинов используется <code>Package Control</code>. Увы, его нет в стандартной поставке. Применительно к версии 3 установка самого <code>Package Control</code> будет выглядеть следующим образом:</p>
+<p>Перейдём в директорию, где хранится конфигурация Sublime-Text, клонируем нужный репозиторий:</p>
+<div class="highlight"><pre><span class="gp">$</span> <span class="nb">cd</span> .config/sublime-text-3/Packages/
+<span class="gp">$</span> git clone https://github.com/wbond/sublime_package_control.git <span class="s2">&quot;Package Control&quot;</span>
+<span class="gp">$</span> <span class="nb">cd</span> <span class="s2">&quot;Package Control&quot;</span>
+<span class="gp">$</span> git checkout python3
+</pre></div>
+
+
+<p>Откройте редактор и нажмите сочетание клавиш <code>Ctrl+Alt+P</code>, в появившемся меню следует найти <code>"Package Control: Install Package"</code>. Это всё. Теперь вы вольны выбирать и устанавливать нужные вам плагины.</p>
+<p><b>SublimeCodeIntel</b></p>
+<p>Приближает возможности Sublime Text к возможностям IDE. Ставить в первую очередь.</p>
+<p><b>EncodingHelper</b></p>
+<p>Отображает кодировку открытого файла в строке статуса.</p>
+<p><b>Placeholders</b></p>
+<p>Для случаев вставки &laquo;рыбы&raquo; в код. Помните lorem ipsum?</p>
+<p><b>Zen coding</b></p>
+<p>Плагин для быстрого написания и редактирования html-кода.</p>
+<p><b>Git</b></p>
+<p>Интегрирует систему контроля версий Git и Sublime Text, он реализует в редакторе большинство повседневно используемых команд, таких как <code>diff</code>, <code>status</code>, <code>pull</code>.</p>
+<p>И, пожалуй, самое интересное: <b>проверка русской орфографии</b>.</p>
+<p>Скачайте <a href="https://www.dropbox.com/s/rwobdbdyt0amwmf/russian_english.zip">файл со словарями</a> или найдите подходящие словари на <a href="http://extensions.services.openoffice.org/en">extensions.openoffice.org</a> в секции <code>Dictionaries</code>. Наш словарь представляет из себя два файла с расширением <code>.aff</code> и <code>.dic</code>. Для успешной их обработки в Sublime Text необходимо, чтобы сам файл словаря имел кодировку UTF-8. Если вы взяли файлы по первой ссылке, вам не о чем беспокоиться, если это не так, убедитесь, что указанное требование выполняется или перекодируйте словарь.</p>
+<p>Далее следует распаковать архив, скопировать файлы с указанным расширением по пути <code>.config/sublime-text-3/Packages/</code>, перезапустить текстовый редактор и включить проверку орфографии нажатием клавиши <code>F6</code>. выбрать словарь для проверки можно, зайдя в настройки:</p>
+<div class="highlight"><pre><span class="n">View</span> <span class="o">--&gt;</span> <span class="n">Dictionary</span>
+</pre></div>
+
+
+<p>Пример:</p>
+<p><a href="http://farm8.staticflickr.com/7391/9399861226_f2f94bea53_o.png" data-lighter><img src="http://farm8.staticflickr.com/7391/9399861226_f2f94bea53_o.png"/></a></p>
+<p><b>Sublime-Minifier</b></p>
+<p>Служит для минимизации кода на javascript и css, существенно уменьшает вес подобных файлов.</p>
+<p><b>jQuery</b></p>
+<p>Представляет из себя набор сниппетов для jquery, упрощает написание jQ-функций.</p>
+<p><b>CSSComb</b></p>
+<p>Инструмент для работы с CSS-файлами, располагает свойства в заданном порядке и разбивает их на группы.</p>
+<p><b>SublimeFileDiffs</b></p>
+<p>Как становится ясно из названия, плагин добавляет возможность сравнения файлов как это делает <code>diff</code>.</p>
+<p><b>Tag</b></p>
+<p>Коллекция функций, помогающих управиться с HTML/XML тегами.</p>
+<p><b>HTML5</b></p>
+<p>Тоже ясно из названия: это набор сниппетов для HTML5.</p>
+<p><b>colour-schemes</b></p>
+<p>А это коллекция дополнительных тем к Sublime на случай, если вам не нравятся стандартные.</p>
+<p><b>Alignment</b></p>
+<p>Выравнивание кода. Для обработки выделить кусок кода и нажать <code>Ctrl+Alt+A</code>.</p>
+<p><b>Terminal</b></p>
+<p>Позволяет открывать терминал, скажем так, не отходя от кассы.</p>
+<p>Пожалуй, на этом следует остановиться. Список самых популярных плагинов можно найти на странице <a href="http://wbond.net/sublime_packages">http://wbond.net/sublime_packages</a>, дальше уже выбор за вами.</p>
+<p>Ну, и напоследок прилагаю изображение с горячими клавишами редактора.</p>
+<p><a href="http://farm4.staticflickr.com/3746/9398811819_14cfbf99c1_b.jpg" data-lighter><img src="http://farm4.staticflickr.com/3746/9398811819_14cfbf99c1_b.jpg"/></a></p>
+<h5><i class="icon-user"></i> <a href="../author/redvi.html">redVi</a>,
+<i class="icon-bookmarks"></i> <a href="../tag/editors.html">Editors</a> /
+</h5>
+<p align="center"><a href="#">наверх</a></p>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+       <li class="footer"><a href="../tag/android.html">Android&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/arch.html">Arch&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/blog.html">Blog&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/debian.html">Debian&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/decorations.html">Decorations&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/django.html">Django&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/editors.html">Editors&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/gentoo.html">Gentoo&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/git.html">Git&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/javascript.html">JavaScript&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/kernel.html">Kernel&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/latex.html">LaTeX&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/python.html">Python&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/server.html">Server&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/web.html">Web&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/windows.html">Windows&nbsp;&bull;&nbsp;</a></li>
+  </ul>
+<br/><p>&copy;&nbsp;2011&mdash;2013&nbsp;&bull;&nbsp;<a href="..">unix-lab.org </a>&nbsp;&bull;&nbsp;powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;&bull;&nbsp;<a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru"><i class="icon-cc"></i></a></p>
+</div>
+<!-- end #footer --></div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-42400517-1', 'www.unix-lab.org');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

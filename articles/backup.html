@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <title>Ещё один способ резервного копирования</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Для проведения резервного копирования файлов в linux есть множество способов и инструментов. Всё зависит от постановки задачи.">  <meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+  <link href="../theme/css/screen.css" rel="stylesheet" type="text/css" />
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+  <link href="../" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
+  <link href="../feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href=".."><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+        <ul>
+      <li><a href="../archives.html">Архив</a></li>
+      <li><a href="../about.html">О блоге</a></li>
+      <li><a href="../authors.html">Экипаж</a></li>
+    </ul>
+</div>
+</div>    <div id="main">
+<h2><a href="../articles/backup.html">Ещё один способ резервного копирования</a></h2>
+<h5><i class="icon-feather"></i> 12 Апрель 2013 </h5>
+<p>Для проведения резервного копирования файлов в linux есть множество способов и инструментов. Всё зависит от постановки задачи. В нашем распоряжении как консольные утилиты, так и графические. Как создание полного бэкапа, так и инкременального. Как сохранение резервной копии на внешний жёсткий диск, так и передача файлов на сервер. Многое из этого уже описывалось, что-то описываться не будет совсем за неименеем возможности проверить инструкцию на практике. Сегодня же захотелось ещё раз вспомнить о rsync, ранее уже вскользь упоминавшемся. Коротко, в виде шпаргалки для себя.</p>
+<p>Для начала следует установить rsync. Применительно к дистрибутиву Gentoo Linux выглядит это так:</p>
+<div class="highlight"><pre><span class="gp">#</span> emerge -av rsync
+<span class="go">net-misc/rsync-3.0.9-r2  USE=&quot;acl iconv -ipv6 -static -xattr&quot;</span>
+</pre></div>
+
+
+<p>Резервное копирование без отмонтирования разделов</p>
+<p>Создание полной резервной копии корневого раздела:</p>
+<div class="highlight"><pre><span class="gp">#</span> mkdir /home/backup-root
+<span class="gp">#</span> rsync -PavHx / /home/backup-root/
+</pre></div>
+
+
+<ul>
+<li>Разбор аргументов (см. man rsync):</li>
+<li>-Pav --- "стандартный джентльменский набор": докачка оборванных файлов, сохранение прав доступа/времени;</li>
+<li>-H --- поддержка жёстких ссылок;</li>
+<li>
+<p>-x --- не перескакивать через точки монтирования (если отдельно смонтированы /var, /usr, /boot, нужно будет их отдельно rsync'ать при создании бэкапа либо --exclude 'sys/<em>' --exclude 'proc/</em>' --exclude 'home/*')</p>
+</li>
+<li>
+<p>Некоторые опции rsync:</p>
+</li>
+<li>-v --verbose --- показать подробный вывод</li>
+<li>-q --quiet --- не показывать сообщения об ошибках</li>
+<li>-c --checksum --- выполнять проверку контрольных сумм</li>
+<li>-a --archive --- "архивный" режим. Уже содержит флаги -rlptgoD, не копирует жёсткие ссылки</li>
+<li>-r --recursive --- копируем рекурсивно</li>
+<li>-b --backup --- указание на создание бэкапа</li>
+<li>-l --links --- копирование симлинков</li>
+<li>-z --compress --- сжатие файлов во время передач</li>
+<li>--daemon --- запустить как rsync-демон</li>
+<li>--stats --- выдавать статистику по передаче файлов</li>
+<li>--progress --- показать % выполнения во время передачи</li>
+<li>-p, --perms --- сохранять разрешения</li>
+<li>-g, --group --- сохранять группу</li>
+<li>-t, --times --- сохранять время</li>
+<li>-o, --owner --- сохранять владельца (только root)</li>
+<li>-D, --devices --- сохранять файлы устройств (только root)</li>
+<li>-S, --sparse --- эффективно обработать фрагментированные файлы</li>
+<li>--existing --- только обновить те файлы, которые уже существуют</li>
+<li>--ignore-existing --- пропускать те файлы, которые уже существуют на приёмной стороне</li>
+<li>--delete --- удалять файлы, которых нет на передающей стороне</li>
+<li>--delete-excluded --- удалять файлы, которые исключены из списка копирования</li>
+<li>--delete-after --- удалять после копирования, а не до него</li>
+<li>-R, --relative --- использовать относительные пути</li>
+<li>--partial --- сохранять частично переданные файлы</li>
+<li>--progress --- показать процент  выполнения во время передачи</li>
+<li>-P --- то же, что --partial --progress</li>
+<li>-H, --hard-links --- сохранять жесткие ссылки</li>
+<li>-x, --one-file-system --- не выходить за пределы файловой системы</li>
+</ul>
+<p>При последующем обновлении бэкапа:</p>
+<div class="highlight"><pre><span class="gp">#</span> rsync -PavHx --delete-after / /home/backup-root/
+</pre></div>
+
+
+<p>Восстановление из резервной копии</p>
+<p>Всё как обычно: копируем файлы на жёсткий диск, при надобности правим <code>/etc/fstab</code>, ставим загрузчик, радуемся.</p>
+<h5><i class="icon-user"></i> <a href="../author/redvi.html">redVi</a>,
+<i class="icon-bookmarks"></i> <a href="../tag/gentoo.html">Gentoo</a> /
+</h5>
+<p align="center"><a href="#">наверх</a></p>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+       <li class="footer"><a href="../tag/android.html">Android&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/arch.html">Arch&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/blog.html">Blog&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/debian.html">Debian&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/decorations.html">Decorations&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/django.html">Django&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/editors.html">Editors&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/gentoo.html">Gentoo&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/git.html">Git&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/javascript.html">JavaScript&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/kernel.html">Kernel&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/latex.html">LaTeX&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/python.html">Python&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/server.html">Server&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/web.html">Web&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/windows.html">Windows&nbsp;&bull;&nbsp;</a></li>
+  </ul>
+<br/><p>&copy;&nbsp;2011&mdash;2013&nbsp;&bull;&nbsp;<a href="..">unix-lab.org </a>&nbsp;&bull;&nbsp;powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;&bull;&nbsp;<a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru"><i class="icon-cc"></i></a></p>
+</div>
+<!-- end #footer --></div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-42400517-1', 'www.unix-lab.org');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

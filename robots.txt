@@ -1,0 +1,34 @@
+User-agent: Yandex
+Allow: /articles/
+Allow: /index.html
+Disallow: /author/
+Disallow: /category/
+Disallow: /content/
+Disallow: /feeds/
+Disallow: /tag/
+Disallow: /theme/
+Disallow: /index/
+
+User-agent: Googlebot
+Allow: /articles/
+Allow: /index.html
+Disallow: /author/
+Disallow: /category/
+Disallow: /content/
+Disallow: /feeds/
+Disallow: /tag/
+Disallow: /theme/
+Disallow: /index/
+
+User-agent: *
+Allow: /articles/
+Allow: /index.html
+Disallow: /author/
+Disallow: /category/
+Disallow: /content/
+Disallow: /feeds/
+Disallow: /tag/
+Disallow: /theme/
+Disallow: /index/
+Sitemap: http://www.unix-lab.org/sitemap.xml
+Host: www.unix-lab.org

@@ -1,0 +1,535 @@
+Title: Поваренная книга openbox
+Date: 2012-08-02 1:15
+Tags: Decorations, Arch
+Slug: openbox
+Author: redVi
+Summary: Тем, кто неравнодушен к openbox посвящается.
+
+В мире open source имеется великое множество различных оконных менеджеров. Как растворяющийся в роскошном одеянии KDE, так и более скромные и лёгкие Gnome, XFCE. Но сегодня мы будем учиться готовить нечто ещё более легковесное. Тем, кто неравнодушен к openbox посвящается.
+
+<b>Задача:</b> привести openbox к подобному виду:
+
+<a href="http://farm4.staticflickr.com/3689/9263779986_67819076be_b.jpg" data-lighter><img src="http://farm4.staticflickr.com/3689/9263779986_67819076be_b.jpg"/></a>
+
+Полный боевой комплект:
+
+    :::console
+    $ sudo pacman -S openbox openbox-themes conky nitrogen tint2 setxkbmap wbar gmrun xxkb
+    $ yaourt -S xev xcompmgr-dana
+
+##Сразу займёмся делами насущными
+
+А именно настроим раскладку клавиатуры и заодно пропишем всё, что должно быть в автозапуске  и запуск самого openbox, дабы нас не встречал голый экран. Копируем примеры для редактирования:
+
+    :::console
+    $ mkdir -p ~/.config/openbox
+    $ cp /etc/xdg/openbox/{rc.xml,menu.xml,autostart,environment} ~/.config/openbox
+
+
+Openbox может быть выбран в качестве сессии, если у вас уже установлен slim, kdm, gdm или ещё что-то. Если же нет и это вам не нужно, идём потрошить `.xinitrc`:
+
+    :::sh
+    # .xinitrc
+    #
+    #! /bin/bash
+    exec openbox-session
+
+    # ~/.config/openbox/autostart
+    conky &
+    nitrogen --restore &
+    tint2 &
+    # раскладка клавиатуры
+    setxkbmap -layout us,ru -variant -option grp:alt_shift_toggle,terminate:ctrl_alt_bksp &
+    wbar -above-desk -pos top &
+    # композитный менеджер
+    xcompmgr -с -C -t5 -l8.28.2 -r8.2 -o.55 &
+    # networkmanager applet ( при надобности )
+    nm-applet --sm-disable &
+
+
+Таким образом раскладка настроена на переключение по `Shift+Alt`, вверху запускается `wbar`, о котором сказано будет чуть ниже, выбранная обоина на рабочем столе восстанавливается при старте системы, стартует conky. Причём фон у conky прозрачный. Если это не так, устанавливаем композитный менеджер. Коротко о его свойствах ниже, он отвечает за различные графические эффекты: тени, прозрачность и тому подобное.
+
+    :::console
+    $ sudo yaourt xcompmgr-dana
+
+<b>P.S.</b> Чтобы на панели `tint2` отображалась используемая раскладка, нам понадобится установить `xxkb` и создать его конфигурационный файл в домашней директории:
+
+    :::sh
+    # ~.xxkbrc:
+    #
+    XXkb.image.path: /usr/share/xxkb/
+    XXkb.mainwindow.type:  tray
+    XXkb.group.base: 1
+    XXkb.group.alt: 2
+    XXkb.mainwindow.enable:  yes
+    XXkb.mainwindow.image.1: en15.xpm
+    XXkb.mainwindow.image.2: ru15.xpm
+    XXkb.mainwindow.image.3:
+    XXkb.mainwindow.image.4:
+    XXkb.mainwindow.appicon:  yes
+    XXkb.mainwindow.geometry:  20x20+2+2
+    XXkb.mainwindow.in_tray:  GNOME2
+    XXkb.button.enable:  no
+    XXkb.app_list.wm_class_name.start_alt: skype
+    XXkb.controls.add_when_start: yes
+    XXkb.controls.add_when_create: yes
+    XXkb.controls.add_when_change: no
+    XXkb.controls.focusout: no
+    XXkb.mainwindow.xpm.1: en15.xpm
+    XXkb.mainwindow.xpm.2: ru15.xpm
+    XXkb.mainwindow.label.enable: no
+
+
+
+##Меню и внешний вид openbox
+
+Проверьте, что файл кофигурации располагается в домашней директории пользователя, дабы можно было редактировать его, не опасаясь последствий. Если его нет, копируем:
+
+    :::console
+    $ mkdir ~/.config/openbox && cp /etc/xdg/openbox/menu.xml ~/.config/openbox/menu.xml
+
+Можно редактировать данный файл вручную, поскольку синтаксис достаточно тривиален. Но хочу предложить вам второй вариант - `obmenu`.
+
+    :::console
+    $ sudo pacman -S obmenu
+    $ obmenu
+
+- Можно добавить своё меню - `New Menu`
+- Добавить в него подпункты - `New item`
+- После чего удалить всё ненужное.
+
+`Obmenu` требует, чтобы вы ввели название нового приложения в меню, действие - `Execute` и путь к нему.
+Так, для добавления редактора eclipse, введём его наименование и пропишем путь `/usr/bin/eclipse`.
+
+Для остальных приложений аналогично.
+
+![obmenu](http://3.bp.blogspot.com/-9QMD4AfZiz4/T983kqIyT9I/AAAAAAAAA50/18M-S5vU_Tw/s1600/obmenu.png)
+
+Впрочем, можете воспользоваться `menumaker`, который генерирует меню сам.
+
+    :::console
+    $ sudo pacman -S menumaker
+    $ mmaker -v openbox    #  Не перезаписывать существующий файл меню.
+    $ mmaker -vf openbox   #  Принудительно перезаписать файл меню.
+
+
+Теперь кликаем правой клавишей мыши по рабочему столу, выбираем из меню `"System" - "Openbox configuration Manager"`.
+
+Так-то лучше. И здесь нам не придётся вручную редактировать файл конфигурации.
+Настройки как правило уже русифицированы и в них нет ничего, с чем было бы сложно разобраться.
+
+![obconf](http://3.bp.blogspot.com/-9QMD4AfZiz4/T983kqIyT9I/AAAAAAAAA50/18M-S5vU_Tw/s1600/obmenu.png)
+
+##Смена обоев на рабочем столе
+
+    :::console
+    $ sudo pacman -S nitrogen
+    $ nitrogen
+
+Здесь всё просто. Укажите путь к вашим изображениям, и они появятся в `nitrogen` - выбирайте любое. Можно добавить nitrogen в меню с помощью obmenu. Подобную операцию мы уже проделывали.
+
+![notrigen](http://4.bp.blogspot.com/-1POgF6mIfpg/T9877g5KvrI/AAAAAAAAA6I/js_PTGXhziQ/s1600/nitrogen.png)
+
+##Иконки и шрифты
+
+Кто-то предпочитает настраивать ручками, но мы опять сэкономим своё время, установив `lxappearance`:
+
+    :::console
+    $ sudo pacman -S lxappearance
+
+Запускаем и выбираем, что больше нравится.
+
+![lxappearance](http://1.bp.blogspot.com/-u8QtWjlNH80/T-WyPrHJkWI/AAAAAAAAA70/Gyliajlkpqc/s1600/lxappearance.png)
+
+Если есть желание отображать иконки на рабочем столе, `idesk` к вашим услугам. Автор сего поста не пользуется этой программой, поэтому долго не обсуждает.
+
+Вообще, процедура сводится к созданию файла `название_программы.lnk` в директории `.idesktop/` , где прописыватся примерно такое:
+
+
+    table Icon
+    Caption: firefox
+    Command: firefox
+    Icon: /home/arch/.idesktop/firefox.png
+    Width: 48
+    Height: 48
+    X: 40
+    Y: 40
+    end
+
+
+Думаю, в объяснении не нуждается.
+
+Файл конфигурации лежит по пути `/usr/share/idesk/dot.ideskrc`
+
+Отображать иконку уровня звука призван obmixer, который также надо просто добавить в автозагрузку.
+
+##Горячие клавиши
+
+Сочетания горячих клавиш настраиваются в `~/.config/openbox/rc.xml`.
+Ищем эти настройки начиная с секции:
+
+Перемещение между рабочими столами:
+
+    <!-- Keybindings for desktop switching -->
+
+
+За управление окнами отвечает секция:
+
+    <!-- Keybindings for windows -->
+
+
+Переключение окон:
+
+    <!-- Keybindings for window switching -->
+
+
+Запуск приложений:
+
+    <!-- Keybindings for running applications -->
+
+И так далее.
+Например, если нужно подцепить горячую клавишу для firefox, создаём такой блок:
+
+
+    <keybind key="W-w">
+          <action name="Execute">
+            <command>firefox</command>
+            <startupnotify>
+              <enabled>yes</enabled>
+              <name>Minefield Web Browser</name>
+            </startupnotify>
+          </action>
+        </keybind>
+
+
+- `keybind key` - привязка определённой клавиши
+- `action name - execute` значит, что это приложение запуска
+`command` либо вводим путь вроде `/usr/bin/firefox`, либо просто указываем, какое приложение надо запустить
+- `enabled` - включено
+- `name` - имя для программы
+
+Для примера назначим горячую клавишу самому меню openbox:
+
+
+    <keybind key="W-space">
+      <action name="ShowMenu">
+        <menu>root-menu</menu>
+      </action>
+    </keybind>
+
+Теперь нажатием клавиш `super` (win) + `пробел` мы сможем вызвать главное меню со списком наших приложений.
+
+
+Сокращения клавиш:
+`A` - `Alt`, `W` - `win`, `C` - `ctrl`. И так далее по смыслу
+
+
+Настраиваем клавиши для перемещения окон с клавиатуры
+
+
+Возможные действия над окнами:
+
+`SendToDesktop` (отправить окно на указанный аргументом опции рабочий стол; опция <to>, её значение – номер стола);
+- `Focus` (передать окну фокус);
+- `Raise` (поднять окно на передний план);
+- `Lower` (переместить окно на задний план);
+- `Iconify` (свернуть окно на панель);
+- `Close` (закрыть окно);
+- `ToggleShade` (свернуть в заголовок/развернуть из заголовка);
+- `ToggleMaximize` (включить/отключить режим полного развёртывания);
+- `ToggleFullscreen` (включить/отключить полноэкранный режим);
+- `ToggleDecorations` (включить/отключить заголовок);
+- `Move` (переместить);
+- `Resize` (изменить размер).
+
+Пример:
+
+В секции `<!-- Keybindings for window switching with the arrow keys -->`
+
+
+
+    <keybind key="W-k">
+          <action name="ToggleShade">
+          </action>
+        </keybind>
+        <keybind key="W-f">
+          <action name="ToggleFullscreen">
+          </action>
+        </keybind>
+        <keybind key="W-Left">
+          <action name="Move">
+          </action>
+        </keybind>
+        <keybind key="W-Right">
+          <action name="Resize">
+          </action>
+        </keybind>
+
+
+
+Так, по `Win+k` окно сворачиается, остаётся лишь заголовок
+
+- `Win+f` - развернуть/свернуть
+- `Win+Left` - перемещение окна
+- `Win+Right` - изменение размера окна
+
+
+##Мультимедийные клавиши
+
+Универсальный способ. Код клавиш нужно перевести в 16-ричную систему счисления.
+Например, вы хотите прикрутить какую-то клавишу на увеличение громкости звука. Запустите в терминале утилиту xev, нажмите нужную клавишу и посмотрите ее keycode.
+
+Например:
+
+    KeyRelease event, serial 39, synthetic NO, window 0x1e00001,
+    root 0x15a, subw 0x0, time 1613305, (627,558), root:(655,831),
+    state 0x0, keycode 122 (keysym 0x1008ff11, XF86AudioLowerVolume)
+
+
+Теперь это число (122) нужно перевести в шестнадцатеричное. Вот так:
+
+    :::console
+    $ printf "%X\n" 122
+    7A
+
+К этому числу добавить `"0x"`, т.е.  `"0x7A"`. Пример конфига, где `Fn-10` (0x122) увеличивает уровень звука, а `Fn-9` (0x123) уменьшает:
+
+
+    <keybind key="0x7A">      <action name="Execute">
+            <command>amixer sset Front 1+</command>        <startupnotify>
+              <enabled>yes</enabled>
+              <name>Folume +</name>
+            </startupnotify>
+          </action>
+        </keybind>
+
+    <keybind key="0x7B">      <action name="Execute">
+            <command>amixer sset Front 1-</command>        <startupnotify>
+              <enabled>yes</enabled>
+              <name>Folume -</name>
+            </startupnotify>
+          </action>
+        </keybind>
+
+
+Хотя, наилучший способ настроить мультимедийную клавиатуру - `xmodmap`
+
+Пример: настраиваем регулировку яркости экрана
+
+    :::console
+    $ xmodmap -pke
+    keycode 231 = Cancel NoSymbol Cancel
+    keycode 232 = XF86MonBrightnessDown NoSymbol XF86MonBrightnessDown
+    keycode 233 = XF86MonBrightnessUp NoSymbol XF86MonBrightnessUp
+    keycode 234 = XF86AudioMedia NoSymbol XF86AudioMedia и прочее...
+
+    $ vim .xmodmaprc
+    keycode 232 = XF86MonBrightnessDown keycode 233 = XF86MonBrightnessUp
+
+После чего следует добавить в файл автозапуска (в нашем случае `.config/openbox/autostart`):
+
+    :::console
+    $ xmodmap ~/.xmodmaprc
+
+##Wbar
+
+    :::console
+    $ sudo pacman -S wbar
+
+Редактировать эту утилиту очень просто. И очень долго, поскольку ваши темы иконок кушать она не станет. К каждой иконке прописывается свой путь. Впрочем, возможно автор просто не знает удобных утилит для автоматизации этого процесса.
+
+Если хотите, чтобы кроме иконок приложений в баре отображались и открытые на данный момент окна, не забудьте выставить флаг `"Enable Taskbar"` в настройках.
+
+![wbar](http://1.bp.blogspot.com/-pKsGXbWUjSE/T980607U8-I/AAAAAAAAA5o/dXFml5vAROw/s1600/wbar.png)
+
+##Xcompmgr и различные эффекты
+
+Управление xcompmgr осуществляется при помощи его запуска с разными опциями.
+
+
+- `-c` - добавить мягкие тени к окнам
+- `-С` - убрать отрисовку теней у баров (wbar, например)
+- `f` - плавные эффекты затухания при сворачивании окон
+
+полный перечень в `man xcpomgr`
+
+Для просмотра полных возможностей можно обратиться к странице man'а.
+Чтобы окна были прозрачными понадобится пакет `transset`.
+Можно использовать альтернативу: `cairo-compmgr`
+
+##Tint2
+
+А вот это приберегите для бессонных ночей.
+
+    :::console
+    $ sudo pacman -S tint2
+
+После запуска в директории `~/.config/tint2/` появится конфигурационный файл `tint2rc`, со стандартными настройками.
+
+Фон и рамки. При минимальном знании английского или даже интуитивно настраивается легко. Все опции просты и понятны. Можно, например, настроить ширину и цвет рамки.
+
+
+    #———————————————
+    # BACKGROUND AND BORDER
+    #———————————————
+
+    rounded -  закругление углов (в пикселях)
+    border_width – ширина границы (в пикселях)
+    background_color – цвет фона
+    border_color – цвет границы
+
+
+Секция настройки панели
+
+    #———————————————
+    # PANEL
+    #———————————————
+
+
+    panel_monitor = определяет как отображать панель (all – на всех мониторах, 1..2 – на выбранных)
+    panel_position = расположение панели
+    panel_margin = отступ от краев экрана
+    panel_padding = отступ индикатора окна от левого края панели,  от верхнего края панели и отступ между индикаторами соответственно
+    font_shadow = Тень фона
+    panel_background_id = фон панели и толщина границы
+    wm_menu = 0 или 1 – не показывать или показывать меню WM при клике на панели
+    panel_dock =  0 или 1 – использовать интеграцию с WM
+    panel_layer = bottom,normal,top – определяет слой панели, используется для улучшения отображения прозрачности
+
+
+Секция Taskbar
+
+    #———————————————
+    # TASKBAR
+    #———————————————
+
+
+    taskbar_mode = single_desktop или multi_desktop – на каждом рабочем столе своя панель, либо одна для всех соответственно
+    taskbar_paddin = 3 переменные, 1  – расстояние между значками и краем панели, расстояние между значками и вертикальными границами панели, расстояние между значками.
+    taskbar_background_id = фон и границы области открытого окна
+    taskbar_active_background_id = фон и границы области активного открытого окна
+
+
+Секция TASKS
+
+    #———————————————
+    # TASKS
+    #———————————————
+
+
+    task_icon = 1 или 0 – показывать иконку приложения или нет
+    task_text  = 1 или 0 – показывать текст на кнопке или нет
+    task_maximum_size = максимальный размер кнопки по горизонтали (для вертикальной панели) и по вертикали (для вертикальной панели)
+    task_centered = 1 или 0  – центрировать кнопку
+    task_padding = расстояние текста (иконки) от краев кнопки (первая цифра – по горизонтали, вторая – по вертикали)
+    task_font = Шрифт
+    task_font_color  = Цвет шрифта
+    task_background_id = 3 = фон и границы области кнопки панели задач
+    task_icon_asb = (saturation-brightness) настройка отображения иконки приложения
+    task_active_background_id = 2 = настройка для активного окна
+    task_active_font_color = настройка шрифта для активного окна
+    task_active_icon_asb = настройка отображения иконки для активного окнам
+    urgent_nb_of_blink = количество “миганий”
+
+Секция Systraybar
+
+    #———————————————
+    # SYSTRAYBAR
+    #———————————————
+
+    systray = 1 или 0 – включить или отключить систем трей
+    systray_padding = 3 параметра – расстояние между краем панели и значком приложения, расстояние между значком и вертикальными краями панели, расстояние между значками
+    systray_background_id = фон и границы области панели задач
+    systray_sort = left2right = способ расположения приложений на панели задач
+    systray_icon_size = размер иконки
+    systray_icon_asb = настройка отображения иконки приложения
+
+Секция Clock
+
+    #———————————————
+    # CLOCK
+    #———————————————
+
+    time1_format = %H:%M  – Формат отображения времени в первой строке
+    time1_font = sans 8  – шрифт отображения времени в первой строке
+    time2_format = %A %d %B – формат отображения времени во второй строке (здесь  – дата)
+    time2_font = sans 6 – шрифт отображения во второй строке
+    clock_font_color = #ffffff 76 – цвет шрифта и прозрачность
+    clock_padding = 1 0 -  два параметра – расстояние между краем панели и временем, расстояние между временем и вертикальными краями панели
+    clock_background_id = фон и границы области панели задач
+    clock_lclick_command = text – запуск команды (text) при нажатии на часах левой кнопкой мыши
+    clock_rclick_command = text – запуск команды (text) при нажатии на часах правой кнопкой мыши
+    clock_tooltip = %A %d %B – формат и вывод подсказки при наведении мышки на область часов
+    time1_timezone = часовой пояс первой строки
+    time2_timezone = часовой пояс второй строки
+    clock_tooltip_timezone = часовой пояс подсказки при наведении мышки на область часов
+
+Секция Battery
+
+    #———————————————
+    # BATTERY
+    #———————————————
+
+    battery = 1 или 0 – показывать или нет заряд батареи на панели
+    battery_hide = (от 0 до 100) – показывать на панели, когда заряд батареи опуститься до заданного значения
+    battery_low_status = (от 0 до 100) – показывает низкий заряд батареи, когда он опускается до заданного значения
+    battery_low_cmd = notify-send “battery low” – что делать если заряд батареи достиг минимального значения
+    bat1_font  – шрифт отображения первой строки
+    bat2_font – шрифт отображения второй строки
+    battery_font_color = #ffffff 76 – цвет шрифта и прозрачность
+    battery_padding = 1 0 – два параметра – расстояние между краем панели и индикатором батареи, расстояние между индикатором и вертикальными краями панели
+    battery_background_id – фон и границы области панели задач
+
+Секция Tooltip
+
+    #———————————————
+    # TOOLTIP
+    #———————————————
+
+    tooltip  – 1 или 0 – показывать или нет подсказки
+    tooltip_padding – размер подсказок (по вертикали и горизонтали)
+    tooltip_show_timeout – через какое время показывать, после наведения мыши на элемент панели
+    tooltip_hide_timeout – как долго отображать подсказки
+    tooltip_background_id – фон и границы области подсказок
+    tooltip_font_color – цвет шрифта и прозрачность
+    tooltip_font – шрифт подсказок и размер
+
+Секция Mouse Action and task
+
+    #———————————————
+    # MOUSE ACTION ON TASK
+    #———————————————
+
+    mouse_middle – Средняя кнопка мыши
+    mouse_right – правая кнопка мыши
+    mouse_scroll_up – прокрутка колесика мыши вверх
+    mouse_scroll_down – прокрутка колесика мыши вниз
+
+Каждый из этих параметров может принимать следующие значения – none, close, toggle, iconify, shade, toggle_iconify, maximize_restore, desktop_left, desktop_right, next_task, prev_task.
+
+Если параметр задан как  `none` и `wm_menu = 1` установлен, то события возвращаются приложению отвечающему за окна (WM)
+
+Секция Autohide
+
+    #———————————————
+    # AUTOHIDE OPTIONS
+    #———————————————
+    autohide – 1 или 0 – включить или выключить автоскрытие панели
+    autohide_show_timeout – чарез какое время показывать панель, после подвода мыши к краю экрана
+    autohide_hide_timeout – через какое время скрыть панель
+    autohide_height – высота скрытой панели
+
+Что из этого может получиться
+
+Пример первый:
+
+<a href="http://fc04.deviantart.net/fs70/i/2013/053/9/4/openbox_blue_by_redvi9-d5vt3yx.jpg" data-lighter><img src="http://fc04.deviantart.net/fs70/i/2013/053/9/4/openbox_blue_by_redvi9-d5vt3yx.jpg"/></a>
+
+Пример второй:
+
+<a href="http://fc02.deviantart.net/fs71/i/2013/072/2/c/gentoo_openbox_by_redvi9-d5xz7ii.png" data-lighter><img src="http://fc02.deviantart.net/fs71/i/2013/072/2/c/gentoo_openbox_by_redvi9-d5xz7ii.png"/></a>
+
+
+Итак, openbox у нас настроен. Быстрый и симпатичный оконный менеджер. Если же по каким-то причинам он вам не подходит, а громоздкие DE вы ставить не желаете, обратите внимание на xmonad. Возможно, он сумеет вас порадовать.
+
+<b>P.S.</b> в качестве легковесного файлового менеджера рекомендую `pcmanfm`

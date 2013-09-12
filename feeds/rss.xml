@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>unix-lab.org</title><link>http://www.unix-lab.org/</link><description>блог об операционных системах, open source и программировании</description><atom:link href="http://www.unix-lab.org/feeds/rss.xml" rel="self"></atom:link><lastBuildDate>Sun, 08 Sep 2013 08:25:00 +0700</lastBuildDate><item><title>Верстаем макеты с SASS/SCSS</title><link>http://www.unix-lab.org/articles/sass.html</link><description>&lt;p&gt;Пожалуй, стоило бы затронуть тему &amp;laquo;быстрого написания css-кода, разложенного по полочкам&amp;raquo;. Именно таким автору данной заметки видится sass &amp;mdash; инструмент, позволяющий совершить волшебное преобразование: превратить рутинное написание css-кода в любопытное занятие. Цель данного поста заключается не в том, чтобы объять необъятное и попытаться рассказать обо всём подробно, но в том, чтобы заинтересовать потенциального читателя, дабы в последующем ему захотелось разобраться с представленными здесь понятиями самостоятельно. Но прежде, чем мы приступим к непосредственному разбору полётов...&lt;/p&gt;
+&lt;h2&gt;Об отвлечённом&lt;/h2&gt;
+&lt;p&gt;Сразу нужно отметить, что данное ранее обещание о сроках выхода новых постов будет сдержано. Это означает, что никаких сроков больше нет. Блог начинает жить по принципу Debian'a: это будет готово тогда, когда это будет готово. Вряд ли в ближайшем обозримом будущем получится публиковать по четыре-пять постов в месяц, что означало бы писать второпях. Какого качества записи могут выйти из подобной писанины, думаю, пояснять не надо.&lt;/p&gt;
+&lt;p&gt;Ближе к теме. Перепробовав немало готовых тем оформления, автор поймала себя на мысли, что лучше пусть не идеальное, но своё. Используемый ныне шаблон писался собственноручно и по этой тривиальной причине изменению не подлежит за исключением возможных мелких правок (есть-есть ещё недочёты), которые не будут слишком заметны для глаз.&lt;/p&gt;
+&lt;p&gt;Сегодня мы будем рассматривать упрощение работы с CSS, но давайте сначала обратимся к истокам, задав себе такой простой и всё-таки порой ускользающий из поля зрения вопрос: какая преследуется цель при создании оформления? Это немаловажный аспект, который изначально был благополучно выпущен из виду автором (каюсь, не без греха).&lt;/p&gt;
+&lt;p&gt;Так, если вы создаёте интернет-магазин, вашей целью будет продажа товара. Как можно большего количества товара. Поэтому логично было бы в сторонке от основной модели (например, ноутбук) поместить мелочи, которые могут пригодиться обладателю этой модели (салфетки, планка оперативной памяти, сумка, etc). То есть прежде, чем выдумывать дизайн, нужно понять предназначение сайта.&lt;/p&gt;
+&lt;p&gt;Предназначение этого блога видится лишь в одном: передача информации. Цель преследуется тоже одна: удобочитаемость на любом устройстве, будь то настольный компьютер, ноутбук или планшет. А вот задачи отсюда вырисовывается две: читабельный шрифт и адаптивный дизайн. Причём дизайн не должен отвлекать от чтения, соответственно, все сторонние блоки (реклама, сайдбар правый, сайдбар левый, тви-лента с последними записями) отсутствуют как класс. Разумеется, это не сто&amp;#x301;ит воспринимать как единственно правильное решение. В какой-то мере, оно даже усложняет поиск информации (вместо клика по ссылке из сайдбара приходится лезть на отдельную страницу). Но перед нами и не ставилась цель продать как можно больше информации.&lt;/p&gt;
+&lt;p&gt;Тему типографики можно вынести в отдельный пост, да не один. Мы будем придерживаться стандартных рекомендаций как то: размер шрифта достаточный для того, чтобы читателю не приходилось испытывать неудобства, находясь на расстоянии 40см от монитора; заголовки &amp;mdash; шрифт с засечками, основной текст &amp;mdash; шрифт без засечек (хотя и здесь есть нюансы, зависит от величины шрифта); выравнивание текста по ширине остаётся спорным вопросом, пока не используется. Если читатель имеет намерение серьёзно заняться указанной проблемой, рекомендуется обратиться к какой-нибудь хорошей &lt;a href="https://www.dropbox.com/s/v5o9fyy1v9abepc/Jivaya_Tipografika_2.pdf"&gt;книге по типографике&lt;/a&gt;, ибо автор не является экспертом в данной области, да и сама тема, мягко говоря, выходит за рамки поста.&lt;/p&gt;
+&lt;p&gt;А вот после того как сели, подумали и слепили свой художественный образ, можно обратиться к конкретной его реализации. Поехали!&lt;/p&gt;
+&lt;h2&gt;Введение&lt;/h2&gt;
+&lt;p&gt;Что за зверь?&lt;/p&gt;
+&lt;p&gt;Sass &amp;mdash; метаязык на основе CSS, предназначенный для увеличения уровня абстракции CSS кода и упрощения файлов каскадных таблиц стилей. Звучит страшно, но на деле ничего пугающего нет. Единственное, что надо бы озвучить: sass устанавливается при помощи &lt;code&gt;gem&lt;/code&gt;, а значит требует предварительной установки ruby.&lt;/p&gt;
+&lt;p&gt;SCSS &amp;mdash; так именуется Sass с 3-ей версии (Sassy CSS). Основным отличием от предыдущих версий является возможность писать на каноническом CSS. Также до третьей версии можно было писать код без скобок, но SCSS больше не приемлет этот синтаксис: это гарантирует, что стиль CSS3 валиден также и в SCSS:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;/* sass */&lt;/span&gt;
+&lt;span class="nc"&gt;.article&lt;/span&gt;
+   &lt;span class="nt"&gt;border&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nt"&gt;1px&lt;/span&gt; &lt;span class="nt"&gt;solid&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;light-blue&lt;/span&gt;
+   &lt;span class="nt"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;orange&lt;/span&gt;
+&lt;span class="c"&gt;/* scss */&lt;/span&gt;
+&lt;span class="nc"&gt;.article&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+   &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;1px&lt;/span&gt; &lt;span class="k"&gt;solid&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;light&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;blue&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nb"&gt;orange&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+   &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Если читатель решит остановиться на использовании лишь этих инструментов (а ими вполне можно обойтись), добро пожаловать на официальный сайт, где представлена соответствующая документация: &lt;a href="http://sass-lang.com/"&gt;http://sass-lang.com/&lt;/a&gt;. Там вас встретит миловидная секретарша и расскажет что почём.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="sass" src="../source/sass.gif" /&gt;&lt;/p&gt;
+&lt;p&gt;Интересно, что модуль Sass может быть использован как инструмент конвертирования в CSS в режиме командной строки. Для этого следует указать директорию, где лежат sass-файлы и директорию, куда складывать css:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sass ––watch sass_folder:stylesheets_folder
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Sass будет отслеживать изменившиеся файлы автоматически.&lt;/p&gt;
+&lt;p&gt;Для обратной конвертации нам понадобится &lt;code&gt;sass-convert&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sass-convert ––from css ––to sass –R
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Что же, перейдём к следующему пункту.&lt;/p&gt;
+&lt;p&gt;Compass &amp;mdash; CSS фреймворк, предоставляющий набор готовых подпрограмм для Sass. Он призван сделать вашу работу как можно более простой. В нашем случае используется в основном для удобной сборки нескольких scss файлов в один файл css, хотя возможности у него огромные.&lt;/p&gt;
+&lt;p&gt;Поскольку на данный момент автор использует &lt;a href="subtle-wm.html"&gt;subtle wm&lt;/a&gt;, а значит ruby уже установлен, сразу обратимся к установке необходимых нам приложений. В linux последовательность команд следующая:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sudo gem install sass sass-globbing compass
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Вместо каталога под css создадим каталог с scss-файлами, который назовём &lt;code&gt;sass&lt;/code&gt;. Рядом положим конфигурационный файл &lt;code&gt;config.rb&lt;/code&gt; для того, чтобы указать compass'у расположение наших данных. Примерное содержимое:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c1"&gt;#config.rb&lt;/span&gt;
+&lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;sass-globbing&amp;#39;&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Require any additional compass plugins here.&lt;/span&gt;
+&lt;span class="n"&gt;project_type&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;:stand_alone&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Publishing paths&lt;/span&gt;
+&lt;span class="n"&gt;http_path&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;/&amp;quot;&lt;/span&gt;
+&lt;span class="n"&gt;http_images_path&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;../img&amp;quot;&lt;/span&gt;
+&lt;span class="n"&gt;http_generated_images_path&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;../img&amp;quot;&lt;/span&gt;
+&lt;span class="n"&gt;http_fonts_path&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;/fonts&amp;quot;&lt;/span&gt;
+&lt;span class="n"&gt;css_dir&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;/css&amp;quot;&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Local development paths&lt;/span&gt;
+&lt;span class="n"&gt;sass_dir&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;sass&amp;quot;&lt;/span&gt;
+&lt;span class="n"&gt;images_dir&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;/img&amp;quot;&lt;/span&gt;
+&lt;span class="n"&gt;fonts_dir&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;/fonts&amp;quot;&lt;/span&gt;
+
+&lt;span class="n"&gt;line_comments&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;false&lt;/span&gt;
+&lt;span class="n"&gt;output_style&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;:compressed&lt;/span&gt; &lt;span class="c1"&gt;#сжимать код&lt;/span&gt;
+&lt;span class="c1"&gt;# output_style = :expanded&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;В целом здесь всё ясно и без лишних слов. Тем не менее давайте немного пройдёмся по возможным опциям.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Опция&lt;/th&gt;
+&lt;th align="center"&gt;Значение&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;http_path&lt;/td&gt;
+&lt;td align="center"&gt;:stand_alone или :rails&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;project_path&lt;/td&gt;
+&lt;td align="center"&gt;указание корневой директории проекта&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;http_path&lt;/td&gt;
+&lt;td align="center"&gt;путь к проекту на веб-сервере&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;css_dir&lt;/td&gt;
+&lt;td align="center"&gt;куда сохранять css-файлы&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;sass_dir&lt;/td&gt;
+&lt;td align="center"&gt;где искать scss&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;output_style&lt;/td&gt;
+&lt;td align="center"&gt;как именно хранить код (сжимать/не сжимать)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;disable_warnings&lt;/td&gt;
+&lt;td align="center"&gt;отключить предупреждения&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;При указанных выше настройках структура каталогов должна быть следующей:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; tree static
+&lt;span class="go"&gt;|-- config.rb&lt;/span&gt;
+&lt;span class="go"&gt;|-- css&lt;/span&gt;
+&lt;span class="go"&gt;|-- fonts&lt;/span&gt;
+&lt;span class="go"&gt;|-- img&lt;/span&gt;
+&lt;span class="go"&gt;|   |-- dotted-border.png&lt;/span&gt;
+&lt;span class="go"&gt;|   |-- noise.jpg&lt;/span&gt;
+&lt;span class="go"&gt;`-- sass&lt;/span&gt;
+&lt;span class="go"&gt;    |-- lib&lt;/span&gt;
+&lt;span class="go"&gt;    |   |-- _layout.scss&lt;/span&gt;
+&lt;span class="go"&gt;    |   |-- _main.scss&lt;/span&gt;
+&lt;span class="go"&gt;    |   |-- _theme.scss&lt;/span&gt;
+&lt;span class="go"&gt;    |   `-- _typography.scss&lt;/span&gt;
+&lt;span class="go"&gt;    `-- screen.scss&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Разумеется, различных вариантов множество. И все они доступны в &lt;a href="http://compass-style.org/help/tutorials/configuration-reference/"&gt;стандартной документации&lt;/a&gt;, как и другой инструментарий.&lt;/p&gt;
+&lt;p&gt;Если вы создаёте проект с нуля, последовательность команд может быть следующей:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; compass create path/to/project
+&lt;span class="gp"&gt;$&lt;/span&gt; &lt;span class="nb"&gt;cd &lt;/span&gt;path/to/project
+&lt;span class="gp"&gt;$&lt;/span&gt; compass watch
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;При работе с генератором статических сайтов &lt;a href="pelican.html"&gt;pelican&lt;/a&gt;, где используется определённая структура каталогов, можно создать тему следующим образом:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; &lt;span class="nb"&gt;cd &lt;/span&gt;mytheme/static/    &lt;span class="c"&gt;# переходим в каталог со статикой&lt;/span&gt;
+&lt;span class="gp"&gt;$&lt;/span&gt; compass compile       &lt;span class="c"&gt;# компилируем код&lt;/span&gt;
+&lt;span class="gp"&gt;$&lt;/span&gt; &lt;span class="nb"&gt;cd&lt;/span&gt; ../../             &lt;span class="c"&gt;# идём на верхний уровень&lt;/span&gt;
+&lt;span class="gp"&gt;$&lt;/span&gt; pelican -s local_settings.py -o ./ &lt;span class="c"&gt;# собираем «мир»&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Особенности&lt;/h2&gt;
+&lt;h3&gt;Разделение кода&lt;/h3&gt;
+&lt;p&gt;Вы всё ещё работаете с одним css-файлом дабы уменьшить количество запросов к серверу и не импортировать множество файлов в один? Sass найдёт для вас оптимальное решение. Мы можем описывать математику, типографику, резеты, media-queries в различных файлах и получать на выходе один css.&lt;/p&gt;
+&lt;p&gt;В &lt;code&gt;_layout.scss&lt;/code&gt; поместим костяк, основу нашего макета; в &lt;code&gt;_main.scss&lt;/code&gt; опишем отдельные элементы страницы; в &lt;code&gt;_theme.scss&lt;/code&gt; обозначим используемые цвета дабы не приходилось исследовать многостраничный код и изменять
+все места, где был использован один и тот же цвет; в &lt;code&gt;_typography.scss&lt;/code&gt; укажем используемые шрифты.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;/* lib/_layout.scss */&lt;/span&gt;
+
+&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+ &lt;span class="k"&gt;margin&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+ &lt;span class="k"&gt;padding&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="nt"&gt;body&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="k"&gt;text&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;background-color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;light&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;gray&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nf"&gt;#outer-wrapper&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="k"&gt;width&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+      &lt;span class="k"&gt;font&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;normal&lt;/span&gt; &lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;sans&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="c"&gt;/* lib/_main.scss */&lt;/span&gt;
+  &lt;span class="nt"&gt;blockquote&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;margin-bottom&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;1em&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;padding&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;.5em&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;1px&lt;/span&gt; &lt;span class="k"&gt;dashed&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;padding-left&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;.6em&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;font-style&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;italic&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="nt"&gt;a&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;light&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;blue&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;text-decoration&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;none&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="o"&gt;&amp;amp;:&lt;/span&gt;&lt;span class="n"&gt;hover&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;&lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nb"&gt;blue&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;text-decoration&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;underline&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;
+    &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="nd"&gt;:visited&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nb"&gt;violet&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;
+  &lt;span class="err"&gt;}&lt;/span&gt;
+
+&lt;span class="c"&gt;/* lib/_theme.scss */&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;violet&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;     &lt;span class="nf"&gt;#7e7e96&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;blue&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;       &lt;span class="nf"&gt;#688fad&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;gray&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;       &lt;span class="nf"&gt;#c9c9c9&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;dark-gray&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="nf"&gt;#4b4b4b&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;header-text-color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;dark-gray&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="c"&gt;/* lib/_typography.scss */&lt;/span&gt;
+&lt;span class="k"&gt;@import&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;_theme&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;sans&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nt"&gt;Arial&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;Helvetica&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;FreeSans&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Liberation Sans&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Nimbus Sans L&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;sans-serif&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;serif&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nt"&gt;Georgia&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Bitstream Charter&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Liberation Serif&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;Times&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="nt"&gt;serif&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;mono&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Courier New&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;Courier&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;FreeMono&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Nimbus Mono L&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Liberation Mono&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;monospace&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;heading-font-family&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Georgia&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Helvetica Neue&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;Arial&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="nt"&gt;sans-serif&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;И соберём всё это в едином файле: &lt;code&gt;screen.scss&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;@import&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;lib/_theme&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="cp"&gt;@import&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;lib/_typography&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="cp"&gt;@import&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;lib/_layout&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="cp"&gt;@import&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;lib/_main&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Порядок имеет значение:&lt;/strong&gt; файлы, подключенные первыми первыми же и будут идти в выходном css-коде после сборки. Это достаточно удобно, например, в случае с media-queries, которые всегда рекомендуется ставить в конце или же выносить в отдельный файл.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;Переменные&lt;/h3&gt;
+&lt;p&gt;Пожалуй, это одна из наиболее удобных вещей в Sass. Вам больше не нужно пробегаться по коду с автозаменой &amp;mdash; меняйте всего одну переменную! выше вы уже могли видеть как это выглядит на примере задания определённых цветов в &lt;code&gt;lib/_theme&lt;/code&gt;.&lt;/p&gt;
+&lt;h3&gt;Вложенность&lt;/h3&gt;
+&lt;p&gt;Тоже весьма удобная вещь, помимо всего прочего помогающая сделать код более наглядным. Пожалуй, наиболее показательным примером будет пример с оформлением ссылок:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;/* этот участок SCSS */&lt;/span&gt;
+&lt;span class="nt"&gt;a&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nb"&gt;blue&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="o"&gt;&amp;amp;:&lt;/span&gt;&lt;span class="n"&gt;hover&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;dark&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;blue&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;text-decoration&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;line-through&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="err"&gt;}&lt;/span&gt;
+&lt;span class="c"&gt;/* скомпилируется в привычный и менее наглядный на css*/&lt;/span&gt;
+&lt;span class="nt"&gt;a&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#688fad&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;
+&lt;span class="nt"&gt;a&lt;/span&gt;&lt;span class="nd"&gt;:hover&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#53728a&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;text-decoration&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;line-through&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Символ &lt;code&gt;&amp;amp;&lt;/code&gt; равнозначен родительскому селектору.&lt;/p&gt;
+&lt;h3&gt;Математика&lt;/h3&gt;
+&lt;p&gt;На любителя. Пожалуй, как и в случае с условиями и циклами может пригодиться при вёрстке сложных макетов.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;/* играем с шириной блока */&lt;/span&gt;
+&lt;span class="nc"&gt;.div&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;width&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="k"&gt;width&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;6&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="m"&gt;10px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="c"&gt;/* изменяем цвета */&lt;/span&gt;
+&lt;span class="nc"&gt;.div&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#010203&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="o"&gt;&amp;amp;:&lt;/span&gt;&lt;span class="n"&gt;hover&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="k"&gt;color&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="err"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Условия, циклы&lt;/h3&gt;
+&lt;p&gt;Примеры, украденные не помню откуда. Лично не проверялось, ибо подходящей ситуации не было.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;/* условие */&lt;/span&gt;
+&lt;span class="k"&gt;@if&lt;/span&gt; &lt;span class="nt"&gt;lightness&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;color-base&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="nt"&gt;51&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nt"&gt;background-color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nf"&gt;#333333&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;@else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nt"&gt;background-color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nf"&gt;#ffffff&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+ &lt;span class="c"&gt;/* цикл */&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;width&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nt"&gt;960px&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;gutter&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nt"&gt;20px&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;columns&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nt"&gt;12&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;column_width&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;width&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;columns&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+
+&lt;span class="nc"&gt;.grid&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;display&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;inline&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;float&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="k"&gt;left&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;margin-left&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;gutter&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;margin-right&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;gutter&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="k"&gt;@for&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;i&lt;/span&gt; &lt;span class="nt"&gt;from&lt;/span&gt; &lt;span class="nt"&gt;1&lt;/span&gt; &lt;span class="nt"&gt;through&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;columns&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nc"&gt;.grid_&lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;extend&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;grid&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="k"&gt;width&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;column_width&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;gutter&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Подпрограммы&lt;/h3&gt;
+&lt;p&gt;Так называемые mixins помогают сберечь время, если вам нужно указать для разных элементов один и тот же набор данных. Например:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;@mixin&lt;/span&gt; &lt;span class="nt"&gt;border-circle&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nt"&gt;border-radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nt"&gt;50&lt;/span&gt;&lt;span class="o"&gt;%;&lt;/span&gt;
+  &lt;span class="nt"&gt;border&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nt"&gt;1px&lt;/span&gt; &lt;span class="nt"&gt;solid&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;gray&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nt"&gt;pre&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;include&lt;/span&gt; &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;circle&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nt"&gt;img&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;include&lt;/span&gt; &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;circle&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Кстати, compass включает в себя достаточно большое количество готовых подпрограмм для sass и мы с лёгкостью можем этим воспользоваться:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;@import&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;compass/css3/border-radius&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="nt"&gt;img&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;display&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;1px&lt;/span&gt; &lt;span class="k"&gt;solid&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nb"&gt;gray&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;max-width&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;include&lt;/span&gt; &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;radius&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;5px&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Нужно принимать во внимание, что подпрограммы могут значительно увеличить объём css-файла, получаемого на выходе. Часто рекомендуется использовать mixins для вычислений, но заменять их на extends (расширения) там, где есть переменные. И здесь без объяснений не обойтись.&lt;/p&gt;
+&lt;p&gt;Достаточно посмотреть на код, который получится на выходе. Обратимся к примеру:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;/* @mixins */&lt;/span&gt;
+
+&lt;span class="k"&gt;@mixin&lt;/span&gt; &lt;span class="nt"&gt;input-form&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nt"&gt;border&lt;/span&gt;&lt;span class="nd"&gt;:1px&lt;/span&gt; &lt;span class="nt"&gt;solid&lt;/span&gt; &lt;span class="nf"&gt;#d0d0d0&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="nt"&gt;background-color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="nf"&gt;#fcfcfc&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="nt"&gt;border-radius&lt;/span&gt;&lt;span class="nd"&gt;:15px&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="nt"&gt;-moz-border-radius&lt;/span&gt;&lt;span class="nd"&gt;:15px&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="nt"&gt;-webkit-border-radius&lt;/span&gt;&lt;span class="nd"&gt;:15px&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+    &lt;span class="nt"&gt;height&lt;/span&gt;&lt;span class="nd"&gt;:25px&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nc"&gt;.site-form__input-text&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#fff&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;include&lt;/span&gt; &lt;span class="n"&gt;input&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;form&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nc"&gt;.site-form__input-text&lt;/span&gt;&lt;span class="nd"&gt;:focus&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#ddd&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;include&lt;/span&gt; &lt;span class="n"&gt;input&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;form&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="c"&gt;/* css */&lt;/span&gt;
+
+&lt;span class="nc"&gt;.site-form__input-text&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#fff&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;1px&lt;/span&gt; &lt;span class="k"&gt;solid&lt;/span&gt; &lt;span class="m"&gt;#d0d0d0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;background-color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#fcfcfc&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;15px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;moz&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;15px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;webkit&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;15px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;height&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;25px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="nc"&gt;.site-form__input-text&lt;/span&gt;&lt;span class="nd"&gt;:focus&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#ddd&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;1px&lt;/span&gt; &lt;span class="k"&gt;solid&lt;/span&gt; &lt;span class="m"&gt;#d0d0d0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;background-color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#fcfcfc&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;15px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;moz&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;15px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;webkit&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;15px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;height&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;25px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="c"&gt;/* @extends */&lt;/span&gt;
+
+&lt;span class="nc"&gt;.input-form&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;1px&lt;/span&gt; &lt;span class="k"&gt;solid&lt;/span&gt; &lt;span class="m"&gt;#d0d0d0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;background-color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;#fcfcfc&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;15px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;moz&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;15px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;webkit&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;15px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;height&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;25px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nc"&gt;.site-form__input-text&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#fff&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;extend&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;input&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;form&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="nc"&gt;.site-form__input-text&lt;/span&gt;&lt;span class="nd"&gt;:focus&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#ddd&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;extend&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;input&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;form&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="c"&gt;/* css */&lt;/span&gt;
+
+&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;input&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;form&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;form__input&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;text&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;form__input&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;text&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;focus&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;1px&lt;/span&gt; &lt;span class="k"&gt;solid&lt;/span&gt; &lt;span class="m"&gt;#d0d0d0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;background-color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#fcfcfc&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;15px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;moz&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;15px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;webkit&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;15px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;height&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;25px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="nc"&gt;.site-form__input-text&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#fff&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="nc"&gt;.site-form__input-text&lt;/span&gt;&lt;span class="nd"&gt;:focus&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#ddd&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;То есть в каком бы месте вы не подключили расширение, полученный в итоге код будет оптимальным. С mixin'ами же каждое новое включение влечёт за собой увеличение участков одного и того же кода. Понятно, что злоупотреблять ими не нужно.&lt;/p&gt;
+&lt;p&gt;Вот такой небольшой обзор. Прошлись, как это говорится, галопом по Европам, получили примерное представление о Sass, решили для себя использовать его или нет. За дальнейшими подробностями обращаться к документации проекта.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">redVi</dc:creator><pubDate>Sun, 08 Sep 2013 08:25:00 +0700</pubDate><guid>tag:www.unix-lab.org,2013-09-08:articles/sass.html</guid><category>Web</category></item><item><title>Как сделать pull request</title><link>http://www.unix-lab.org/articles/pull-request.html</link><description>&lt;p&gt;В продолжение серии коротких заметок, ибо длинные полотна писать, увы, недосуг. В узком кругу автора этих строк имеются товарищи весьма и весьма далёкие от мира железок, интернета и open source (в общем, они пропустили всё самое интересное). Не далее как на прошлой неделе угораздило таки употребить при них непотребное словосочетание &amp;laquo;pull request&amp;raquo;, после чего, ловя недоумённые взгляды, пришлось мяться и придумывать как сие получше перевести на великий и могучий. Увы, к взаимопониманию это не привело: попробую ответить здесь.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Pull Request&lt;/b&gt; &amp;mdash; запрос на включение. На включение написанного вами кода в чужой репозиторий.&lt;/p&gt;
+&lt;h2&gt;С чего начать?&lt;/h2&gt;
+&lt;p&gt;А для начала этот самый репозиторий нужно форкнуть (fork &amp;mdash; вилка, ответвление). Разберём это нехитрое действо на примере веб-сервиса для хостинга IT-проектов, название которому GitHub. Разумеется, кроме GitHub есть и другие: BitBucket, например. Выбирать по вкусу.&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Примечание:&lt;/u&gt; для успешного проведения нижеизложенных операций у вас (что естественно) должен быть установлен git. Если это условие ещё не выполнено, шагом марш на &lt;a href="github.html"&gt;вводное руководство&lt;/a&gt;!&lt;/p&gt;
+&lt;p&gt;Заходим на страницу интересующего проекта, жмём кнопку &lt;code&gt;Fork&lt;/code&gt;, ищем &lt;u&gt;на своей&lt;/u&gt; странице URL для клонирования.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="fork" src="../source/fork.jpg" title="fork on github" /&gt;&lt;/p&gt;
+&lt;p&gt;В консоли в зависимости от входных данных набираем нечто подобное:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; git clone git@github.com/username/django_documentation.git
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Отлично. Уже можно вносить свои изменения в код проекта.&lt;/p&gt;
+&lt;p&gt;Тот репозиторий, что теперь лежит на вашем жёстком диске, независим от основного. В нём отслеживаются только ваши наработки. Но как следить за изменениями, происходящими в первоисточнике, откуда вы &amp;laquo;стянули&amp;raquo; репозиторий? Добавить удаленный репозиторий в отслеживаемые. Например, так:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; git remote -v
+&lt;span class="go"&gt;origin  git@github.com:username/django_documentation.git (fetch)&lt;/span&gt;
+&lt;span class="go"&gt;origin  git@github.com:username/django_documentation.git (push)&lt;/span&gt;
+&lt;span class="gp"&gt;$&lt;/span&gt; git remote add upstream git@github.com:Alerion/django_documentation.git
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;После добавления &lt;code&gt;upstream&lt;/code&gt; в отслеживаемые, наберите команду &lt;code&gt;git remote -v&lt;/code&gt; ещё раз, вы должны увидеть произошедшие изменения.&lt;/p&gt;
+&lt;p&gt;Давайте посмотрим как сливать изменения из оригинального репозитория к себе в случае, если разработка в нём ушла вперёд пока вы сосредоточенно писали коммиты:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; git pull upstream master
+&lt;span class="go"&gt;From github.com:Alerion/django_documentation&lt;/span&gt;
+&lt;span class="go"&gt;* branch            master     -&amp;gt; FETCH_HEAD&lt;/span&gt;
+&lt;span class="go"&gt;Updating 66f032e..062b294&lt;/span&gt;
+&lt;span class="go"&gt;Fast-forward&lt;/span&gt;
+&lt;span class="go"&gt;djbook/commands/authors.py                    | 65 ++--&lt;/span&gt;
+&lt;span class="go"&gt;djbook/deps.txt                               |  6 ++--&lt;/span&gt;
+&lt;span class="go"&gt;djbook/templates/authors.html                 | 14 ++--&lt;/span&gt;
+&lt;span class="go"&gt;djbook/templates/base.html                    |  7 ++--&lt;/span&gt;
+&lt;span class="go"&gt;locale/ru/LC_MESSAGES/faq/install.po          | 94 +++-&lt;/span&gt;
+&lt;span class="go"&gt;locale/ru/LC_MESSAGES/faq/usage.po            | 49 +---&lt;/span&gt;
+&lt;span class="go"&gt;locale/ru/LC_MESSAGES/howto/outputting-csv.po | 61 ++--&lt;/span&gt;
+&lt;span class="go"&gt;locale/ru/LC_MESSAGES/topics/cache.po         | 77 ++--&lt;/span&gt;
+&lt;span class="go"&gt;locale/ru/LC_MESSAGES/topics/db/multi-db.po   | 80 +++-&lt;/span&gt;
+&lt;span class="go"&gt;9 files changed, 290 insertions(+), 163 deletions(-)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;У нас есть основной репозиторий &amp;mdash; master и недавно добавленный нами upstream. Команда, данная выше, забирает всё новое из репозитория upstream и сливает изменения в master. Так, мы всегда можем получить последние наработки.&lt;/p&gt;
+&lt;p&gt;Вы можете также воспользоваться другой командой &amp;mdash; &lt;code&gt;fetch&lt;/code&gt; вместо указанной &lt;code&gt;pull&lt;/code&gt;. В таком случае git заберет изменения с удаленного репозитория, но не будет пытаться слить их с вашей текущей веткой автоматически.&lt;/p&gt;
+&lt;h2&gt;Что такое ветки?&lt;/h2&gt;
+&lt;p&gt;Чаще всего ветки (branch &amp;mdash; ответвление, ветвь, филиал) бывают тематическими. Например, при общей разработке, когда у всех участников есть право записи в репозиторий. В этом случае ветки используются для отделения изменений, сделанных одним из разработчиков, от общего репозитория. Ветки могут пригодиться и в случае с созданием pull-request'а.&lt;/p&gt;
+&lt;p&gt;Создание ветки происходит довольно просто. Находясь в каталоге с проектом, наберите следующие команды:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; git branch -a   &lt;span class="c"&gt;# отобразить все ветки&lt;/span&gt;
+&lt;span class="go"&gt;* master&lt;/span&gt;
+&lt;span class="go"&gt;remotes/origin/1.4&lt;/span&gt;
+&lt;span class="go"&gt;remotes/origin/HEAD -&amp;gt; origin/master&lt;/span&gt;
+&lt;span class="go"&gt;remotes/origin/master&lt;/span&gt;
+&lt;span class="go"&gt;remotes/upstream/1.4&lt;/span&gt;
+&lt;span class="go"&gt;remotes/upstream/master&lt;/span&gt;
+&lt;span class="gp"&gt;$&lt;/span&gt; git checkout -b new_branch &lt;span class="c"&gt;# создать новую ветку, переключиться на неё&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Находясь в только что созданной ветке, вы можете приступить к работе. Вносите в код свои изменения, а когда закончите просто переключитесь обратно, к своей основной ветке. Вы можете отправить pull request, выбрав ветку &lt;code&gt;new_branch&lt;/code&gt; или же прежде слить изменения из неё в основную ветку разработки. Рассмотрим это подробнее:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; git checkout master  &lt;span class="c"&gt;# вернуться к основной ветке&lt;/span&gt;
+&lt;span class="gp"&gt;$&lt;/span&gt; git merge new_branch &lt;span class="c"&gt;# слить изменения из new_branch&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Если нужно отправить в свой удалённый репозиторий вновь созданную ветку (не сливать её с master), делаем следующее:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; git push master new_branch
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Не торопитесь сливать изменения. Если что-то не заладилось, созданную ветку можно удалить:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; git branch -d new_branch    &lt;span class="c"&gt;# удалить локально&lt;/span&gt;
+&lt;span class="gp"&gt;$&lt;/span&gt; git push master :new_branch &lt;span class="c"&gt;# и в удалённом репозитории&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Отправляем изменения&lt;/h2&gt;
+&lt;p&gt;Добрались таки до ответа на поставленный вопрос: что такое pull request, зачем оно нужно и как его достичь. Как предложить владельцу репозитория свои изменения?&lt;/p&gt;
+&lt;p&gt;Для этого зайдите в свой аккаунт, выбирайте репозиторий владельца и ищите небольшую зелёную кнопку (на момент написания поста она была таковой, если даже что-то изменится, думаю, найти её будет несложно).&lt;/p&gt;
+&lt;p&gt;Перед тем как сделать запрос вы имеете возможность добавить комментарий, просмотреть то, какие файлы будут изменены, какие коммиты добавлены. В верхнем углу окна добавления запроса обратите внимание откуда куда и что вы сливаете. Если необходимо слить основные ветки выбор падёт на репозиторий &lt;code&gt;username:master&lt;/code&gt;, если отдельную ветку (вспоминаем branch) &amp;mdash; так и указывайте её.&lt;/p&gt;
+&lt;p&gt;&lt;a href="../source/change-and-comment.jpg" data-lighter&gt;&lt;img src="../source/change-and-comment.jpg"/&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;А дальше... ждать. Пока придёт владелец оригинального репозитория и примет/отклонит ваши изменения.&lt;/p&gt;
+&lt;p&gt;Ну вот, мы его достигли. Просветления то есть :)&lt;/p&gt;
+&lt;h2&gt;А подробнее?&lt;/h2&gt;
+&lt;p&gt;Ну, что ещё? Применительно к github'у можно отметить факт наличия у них &lt;b&gt;Issues&lt;/b&gt;. Это такая &amp;laquo;примочка&amp;raquo;, благодаря которой можно ставить задачи для проекта, давать им описание и метку, определяющую к какому разряду данная задача относится (закрытие бага или написание фичи), а ещё назначать ответственного за выполнение определённого &lt;b&gt;issue&lt;/b&gt;: всё как у больших.&lt;/p&gt;
+&lt;p&gt;Итогов подводить не стану. Для заинтересованных лиц ссылочка на хорошую книгу: &lt;a href="http://cloud.github.com/downloads/GArik/progit/progit.ru.pdf"&gt;Pro Git pdf&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;u&gt;Примечание:&lt;/u&gt; указанному в примере &lt;a href="https://github.com/Alerion/django_documentation" rel="noindex, nofollow"&gt;репозиторию&lt;/a&gt; требуется влить кубометр свежей крови. Присоединяйтесь к переводу документации.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">redVi</dc:creator><pubDate>Thu, 22 Aug 2013 12:05:00 +0700</pubDate><guid>tag:www.unix-lab.org,2013-08-22:articles/pull-request.html</guid><category>Git</category></item><item><title>Со скоростью света или Игра в оптимизаторы</title><link>http://www.unix-lab.org/articles/site-optimization.html</link><description>&lt;p&gt;На этот раз предлагается поговорить об оптимизации. Это дело серьёзное и требует особого к себе внимания. Несмотря на распространение этих ваших интернетов в каждый дом и в каждую квартиру (автор помнит времена, когда для подключения к глобальной паутине приходилось брать карту СТК за 150 российских рублей: страницы загружались неимоверно медленно, а рубли расходовались неимоверно быстро) не у всех наших граждан имеется быстрый интернет-канал, а некоторые товарищи и вовсе пользуются исключительно &amp;laquo;мобильным интернетом&amp;raquo;.&lt;/p&gt;
+&lt;p&gt;Не будем забывать о движках различной степени тяжести (Drupal, Wordpress, Joomla!, etc). Впротивовес &lt;a href="pelican.html"&gt;статическим сайтам&lt;/a&gt;, которые подойдут далеко не всем блоггерам/сайтостроителям, они достаточно тяжелы изначально и посему требуют непременной доработки в плане оптимизации самих себя.&lt;/p&gt;
+&lt;p&gt;Что же, наверняка у нас имеется лучшее решение нежели просто ждать пока загрузится наша страница.&lt;/p&gt;
+&lt;p&gt;Приступим к разбору полётов. Поскольку использовать указанные ниже сервисы приходится нечасто и по прошествии времени мозг начинает задействовать свою неповторимую функцию &amp;mdash; способность забывать &amp;mdash; здесь будут оставлены проверенные временем онлайн-сервисы, способствующие &lt;s&gt;повышению ЧСВ оптимизатора&lt;/s&gt; ускорению загрузки страниц вашего сайта.&lt;/p&gt;
+&lt;h3&gt;Со скоростью света&lt;/h3&gt;
+&lt;p&gt;Сначала сто&amp;#x301;ит проанализировать какое количество времени занимает загрузка страниц и что мешает загружаться быстрее. Как правило, это неоптимизированные изображения, javascript, CSS. Что и почему расскажет &lt;a href="http://developers.google.com/speed/pagespeed/insights/"&gt;Page Speed Online от Google&lt;/a&gt;. Ели не нравится, вполне можно положиться на &lt;a href="http://tools.pingdom.com/fpt/"&gt;Pingdom&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a href="../source/page-speed.jpg" data-lighter&gt;&lt;img src="../source/page-speed.jpg"/&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;После проверки можно обратиться к &lt;u&gt;PageSpeed Optimization Products&lt;/u&gt; от того же Google:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;https://developers.google.com/speed/pagespeed/optimization&lt;/code&gt;.&lt;/p&gt;
+&lt;h3&gt;Сервисы для оптимизации CSS-кода&lt;/h3&gt;
+&lt;p&gt;Как правило, подобные сервисы делают свою работу очень неплохо и сокращают размер CSS-файла процентов на 30. Или больше, если в коде проставлено множество строк с копирайтами, пробелами, прочими радостями. Печаль одна: неудобоваримая каша, которая получается из кода. Весь код вставляется в одну лишь строку, поэтому яростно боритесь с желанием впоследствие изменить свойство какого-нибудь элемента: вы убьёте массу сил, пытаясь разргести этот сжатый бедлам.&lt;/p&gt;
+&lt;p&gt;Можно поступить иначе: иметь под рукой код неоптимизированный, дабы при случае подправить что-то в нём, а затем снова прогнать через сервис. Или прогонять лишь те участки кода, которые менять вы ну никогда уже не станете.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;Robson CSS Compressor&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;Вещь прекрасная, ставится на первое место в нашем маленьком рейтинге. Заоптимизирует CSS по самое не горюй, что и требуется. Адрес этой хорошей вещи:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;http://iceyboard.no-ip.org/projects/css_compressor&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Кандидат номер два &lt;b&gt;CleanCSS&lt;/b&gt;.&lt;/p&gt;
+&lt;p&gt;Склонен к балансу между оптимизацией и удобочитаемостью. Пригодится в случае, если сайт не ваш, а сделан для сдачи заказчику, например. Или ежели планируется, что после вас этот код будет сопровождать кто-то другой. Адрес:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;http://www.cleancss.com/&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Наиболее страшен &lt;b&gt;Tabifier&lt;/b&gt; в силу своей всеядности: эта штука понимает также и HTML. Для товарищей особенно замороченных на оптимизации рекомендуется:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;http://tools.arantius.com/tabifier&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;В целом, подобных сервисов имеется внушительное количество. Но нам хватит и этих трёх.&lt;/p&gt;
+&lt;h3&gt;Сжимаем JavaScript&lt;/h3&gt;
+&lt;p&gt;Можно было бы включить YUI Compressor, но, раз уж мы говорим лишь об онлайн-сервисах, возьму на себя ответственность порекомендовать только один из них, так сказать самый-самый. Это снова Google со своим &lt;b&gt;Closure Compiler&lt;/b&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;http://closure-compiler.appspot.com/home&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Конечно, наилучший метод оптимизации javascript &amp;mdash; неиспользование javascript ;)&lt;/p&gt;
+&lt;h3&gt;Долой изображения! Да здравствуют шрифты!&lt;/h3&gt;
+&lt;p&gt;Обычно изображения загружаются дольше, чем шрифты или стили. Много мелких изображений и вообще сейчас моветон. А не заменить ли их чем получше? Например, модными шрифтами. &lt;b&gt;Fontello&lt;/b&gt; спешит на помощь.&lt;/p&gt;
+&lt;p&gt;На странице проекта &lt;code&gt;http://fontello.com/&lt;/code&gt; вам будет предложено выбрать несколько шрифтов-кнопок по вкусу. Также сразу нужно обратить внимание на настройки, они поистине замечательны. У вас есть возможность выбрать размер шрифта, при надобности указать CSS-префикс и даже кодировку. После того, как разберётесь с этими настройками, кликом начинайте выбирать нужные шрифты. Их упакуют в архив вместе с примером, разнообразными CSS-стилями, HOWTO и demo-страницей, призванной показать как оно будет выглядеть. А выглядит оно очень недурно. На буржуинских сайтах используется довольно часто в то время как на большинстве отечественных по какой-то неведомой автору причине предпочитают таки иметь дело с изображениями.&lt;/p&gt;
+&lt;h3&gt;Или оптимизируем изображения&lt;/h3&gt;
+&lt;p&gt;&lt;b&gt;Yahoo Smush.it&lt;/b&gt; рулит и педалит. Позволяет сжимать изображения практически без потери качества. Картинки, которые планируется подвергнуть эксперименту, можно загружать как с жёсткого диска своей машины так и указывать к ним URL-путь. На выходе вам сообщат исходный размер и размер сжатого изображения, а также позволят загрузить архив, его содержащий. Действительно сто&amp;#x301;ящий сервис, использую не первый год, нареканий нет.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;http://www.smushit.com/ysmush.it/&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Как правило, первыми кандидатами на сжатие становятся такие константы (в том смысле, что они неизменяемы) как всевозможные элементы самого веб-сайта: шапка, кнопки... Хотя если не лениться, можно прогонять и отдельные изображения для статей.&lt;/p&gt;
+&lt;p&gt;Но в некоторых случаях требуется ещё более жёсткий подход. Если страница просто ломится от картинок (пример: объёмный пост со множеством изображений или галерея какая-нибудь), полная загрузка её может занимать достаточно продолжительное время. Дабы избежать этого неприятного момента, можно загружать картинки лишь тогда, когда взор читателя обратится к ним.&lt;/p&gt;
+&lt;p&gt;В этом посильную помощь нам окажет один из скриптов с сайта jquery.com: &lt;code&gt;http://plugins.jquery.com/lazyload/&lt;/code&gt;. Для его использования придётся подключить jquery:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nt"&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;script &lt;/span&gt;&lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;http://code.jquery.com/jquery-2.0.3.min.js&amp;#39;&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;script &lt;/span&gt;&lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;путь_к_скрипту.js&amp;#39;&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class="c"&gt;&amp;lt;!--вызов функции скрипта--&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;script &lt;/span&gt;&lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;img.lazy&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;lazyload&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
+    &lt;span class="nx"&gt;effect&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;fadeIn&amp;quot;&lt;/span&gt;
+    &lt;span class="p"&gt;});&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Чтобы это сработало, изображению нужно присвоить класс &lt;code&gt;.lazy&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="n"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;lazy&amp;quot;&lt;/span&gt; &lt;span class="n"&gt;src&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;img.gif&amp;quot;&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;original&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;example.jpg&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Вот и всё. До связи!&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">redVi</dc:creator><pubDate>Sat, 17 Aug 2013 00:05:00 +0700</pubDate><guid>tag:www.unix-lab.org,2013-08-17:articles/site-optimization.html</guid><category>Web</category><category>Blog</category></item></channel></rss>

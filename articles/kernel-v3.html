@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <title>Ядерная физика для домохозяек v.3</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Автору захотелось немного обновить информацию о сборке ядра, за которым уже давно закреплена циферка три.">  <meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+  <link href="../theme/css/screen.css" rel="stylesheet" type="text/css" />
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+  <link href="../" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
+  <link href="../feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href=".."><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+        <ul>
+      <li><a href="../archives.html">Архив</a></li>
+      <li><a href="../about.html">О блоге</a></li>
+      <li><a href="../authors.html">Экипаж</a></li>
+    </ul>
+</div>
+</div>    <div id="main">
+<h2><a href="../articles/kernel-v3.html">Ядерная физика для домохозяек v.3</a></h2>
+<h5><i class="icon-feather"></i> 19 Апрель 2013 </h5>
+<p>Достаточно давно была написана отличная статья, послужившая верой и правдой многим линуксоидам, кто самостоятельно собирал  своё ядро. Называлась она &laquo;Ядерная физика для домохозяек, версия 2&raquo;. Ранее, когда деревья были выше, небо голубее, а настольные компьютеры не столь производительны, сборка ядра под своё железо могла внести весомый вклад в увеличение производительности железного друга. Теперь это уже не столь важно и в большинстве случаев даже не нужно, ибо прирост будет незначительным. Да и среднестатистический линуксоид как-то обмельчал, &laquo;скуксился&raquo; что ли.</p>
+<p>Тем не менее, автору захотелось немного обновить информацию о сборке ядра, за которым уже давно закреплена циферка три.</p>
+<h2>Оглавление:</h2>
+<ul>
+<li><a href="#begin">Вступление или подготовка к сборке ядра</a></li>
+<li><a href="#general">General setup</a></li>
+<li><a href="#modules">Enable loadable module support</a></li>
+<li><a href="#block_layer">Enable the block layer</a></li>
+<li><a href="#processor">Processor type and features</a></li>
+<li><a href="#power">Power management and ACPI options</a></li>
+<li><a href="#bus">Bus options (PCI etc.)</a></li>
+<li><a href="#emulations">Executable file formats / Emulations</a></li>
+<li><a href="#networking">Networking support</a></li>
+<li><a href="#device">Device Drivers</a></li>
+<li><a href="#firmware">Firmware Drivers</a></li>
+<li><a href="#filesystem">File systems</a></li>
+<li><a href="#kernel_hack">Kernel hacking</a></li>
+<li><a href="#security">Security options</a></li>
+<li><a href="#crypto">Cryptographic API</a></li>
+<li><a href="#virtu">Virtualization</a></li>
+<li><a href="#library">Library routines</a></li>
+<li><a href="#end">Послесловие</a></li>
+</ul>
+<h2 id="begin">Вступление или подготовка к сборке ядра</h2>
+<p>Для сборки можно использовать ядро с <a href="http://kernel.org/">kernel.org</a>. Если вам удобнее собрать ядро, поставляемое с вашим дистрибутивом, вы можете смело пропустить этот шаг.</p>
+<p>Пройдите по указанной выше ссылке и скачайте ядро <code>Latest Stable Kernel</code>. Должен скачаться файл примерно с таким наименованием: <code>linux-3.6.11.tar.bz2</code>.</p>
+<p>Помимо этого, иногда вам может понадобиться поставить заплатки для ядра. Если вы не знаете, что это, значит оно вам и не нужно. Хотя мы рассмотрим процесс наложения заплаток для полноты картины. Получить их можно всё на том же сайте.</p>
+<p>Рекомендация по собственно сборке ядра одна на все дистрибутивы, что естественно. А вот инструмент для сборки вполне возможно, что придётся доустановить. Для gentoo это пакет <code>gentoo-sources</code> (если предполагается сборка дистрибутивного ядра). Для дебиана понадобится установить <a href="debian-kernel.html">целую пачку пакетов</a>, для арча  понадобится пакет <code>base-devel</code> и <a href="abs.html">эта инструкция</a>.</p>
+<p>Перед сборкой неплохо сесть и подумать какое же ядро собрать. Ядро может быть:</p>
+<p><b>- монолитным</b></p>
+<p>такое ядро полностью грузится при старте системы и остаётся в оперативной памяти до выключения машины. Его компоненты нельзя изменить, невозможно подгружать и выгружать модули благодаря чему ядро становится нечувствительным к различным троянским программам, направленным на подмену оригинальных модулей своими - это просто невозможно. Но с другой стороны монолитность ядра привносит и некоторые минусы, такие как невозможность установить стороннюю прошивку или проприетарный драйвер для видеокарты (ведь его модуль нельзя будет подгрузить!). То есть для домашних машин лучше не использовать монолитные ядра, а вот для серверов - самое оно.</p>
+<p><b>- модульным</b></p>
+<p>это ядро напротив позволит включать многие компоненты не жёстко, а модульно (соответственно своему названию), что уменьшит размер ядра и сделает возможным... да, загрузку и выгрузку нужных модулей. В готовых дистрибутивах для создания такого ядра используется initramfs (раньше - initrd). Но при сборке под себя можно обойтись и без него, достаточно лишь жёстко встроить поддержку файловой системы и контроллёра HD корневого раздела для того, чтобы система смогла определить их и загрузиться.
+<b>Считаю небезынтересным:</b> <a href="http://teleology.mobi/ru/news_ru/15032006-01_ru">в чём разница между initrd и initramfs</a>.</p>
+<p>Обычно предлагается включить в ядро жёстко те компоненты, которые нужны вам постоянно,  а те, что предполагается использовать время от времени, включить модулями.</p>
+<p>Итак, вы скачали ядро и заплатки. Переместите их в каталог <code>/usr/src/</code> и сами перейдите в него.
+Теперь следует распаковать исходники ядра и архивы с заплатками, наложить заплатки:</p>
+<div class="highlight"><pre><span class="gp">#</span> tar xvf linux-3.6.11.tar.bz2
+<span class="gp">#</span> cp patch-3.6.11.bz2 linux-3.6.11/
+<span class="gp">#</span> bzip2 -d patch-3.6.11.bz2
+<span class="gp">#</span> patch -p1 -i patch-3.6.11.bz2
+</pre></div>
+
+
+<p>При наложении заплаток есть лишь один нюанс: сначала накладывается заплатка для обновления версии ядра (<code>patch-$VERSION.bz2</code> как дано выше) и уже затем все остальные.</p>
+<p>Обратите внимание на вывод команды <code>patch</code>. Если заплатка идеально подходит к ядру, то в выводе должны быть только строчки <code>patching file ...</code> . Строка <code>Hunk #1 succeeded at...</code> означает что заплатка наложена успешно, но место наложения сдвинуто на несколько строк. Если же вы увидите слово <code>Failed</code> -  заплатка не подходит. Лучше удалить каталог <code>linux-3.6.11/</code> и начать все сначала уже без этой заплатки.</p>
+<p>Далее могут выполнены следующие команды:</p>
+<p><code>make mrproper</code> - очистит каталог от мусора предыдущей сборки</p>
+<p><code>make menuconfig</code> - запустит окно настроек ядра</p>
+<p><code>[ * ]</code> - опция включена жёстко</p>
+<p><code>[M]</code> - опция включена модульно</p>
+<p><code>[   ]</code> - опция отключена</p>
+<p>Вы можете воспользоваться поиском по параметрам ядра, для этого нажмите <code>"/"</code> (слеш) и введите искомое. Также не забывайте о справке: остановитесь на параметре, подробное описание которого вам хотелось бы видеть, и выбирайте <code>"Help"</code> внизу экрана.</p>
+<h2 id="general">General setup</h2>
+<p>Содержит общие настройки</p>
+<p><img alt="gen" src="http://2.bp.blogspot.com/-7mAvCkWeVM8/URjy9WQGCpI/AAAAAAAAD6o/3EliCC8WGl4/s1600/general.jpg" /></p>
+<div class="highlight"><pre><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Prompt</span> <span class="k">for</span> <span class="n">development</span> <span class="n">and</span><span class="o">/</span><span class="n">or</span> <span class="n">incomplete</span> <span class="n">code</span><span class="o">/</span><span class="n">drivers</span>
+</pre></div>
+
+
+<p>Некоторые вещи, которые поддерживает Linux (таких, как сетевые драйверы, файловые системы, сетевые протоколы и т.д.) могут находиться в состоянии  разработки, где функциональность, стабильность или уровень тестирование еще не достаточно высоки для общего использования. То есть данная опция включает дополнительные экспериментальные настройки. Рекомендуется включить, чтобы отображались все доступные опции.</p>
+<div class="highlight"><pre><span class="p">()</span>  <span class="n">Local</span> <span class="n">version</span> <span class="o">-</span> <span class="n">append</span> <span class="n">to</span> <span class="n">kernel</span> <span class="n">release</span>
+</pre></div>
+
+
+<p>Сюда можно внести наименование, которым дополнится название вашего ядра. Бывает полезно, когда вы собираете несколько ядер одной и той же версии. Обычно не нужно.</p>
+<div class="highlight"><pre><span class="n">Kernel</span> <span class="n">compression</span> <span class="n">mode</span> <span class="p">(</span><span class="n">Gzip</span><span class="p">)</span>  <span class="o">---&gt;</span>
+          <span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="n">Gzip</span>
+          <span class="p">(</span> <span class="p">)</span> <span class="n">Bzip2</span>
+          <span class="p">(</span> <span class="p">)</span> <span class="n">LZMA</span>
+          <span class="p">(</span> <span class="p">)</span> <span class="n">XZ</span>
+          <span class="p">(</span> <span class="p">)</span> <span class="n">LZO</span>
+</pre></div>
+
+
+<p>Доступные алгоритмы сжатия, отличающиеся по скорости, эффективности, компрессии и декомпрессии. Скорость сжатия имеет значение только при сборке ядра.</p>
+<div class="highlight"><pre><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Support</span> <span class="k">for</span> <span class="n">paging</span> <span class="n">of</span> <span class="n">anonymous</span> <span class="n">memory</span> <span class="p">(</span><span class="n">swap</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Поддержка ядром своп-файла. Включаем.</p>
+<div class="highlight"><pre><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">System</span> <span class="n">V</span> <span class="n">IPC</span>
+           <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">POSIX</span> <span class="n">Message</span> <span class="n">Queues</span>
+           <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">BSD</span> <span class="n">Process</span> <span class="n">Accounting</span>
+           <span class="p">[</span> <span class="p">]</span> <span class="n">BSD</span> <span class="n">Process</span> <span class="n">Accounting</span> <span class="n">version</span> <span class="mi">3</span> <span class="n">file</span> <span class="n">format</span>
+</pre></div>
+
+
+<p><code>System V IPC</code> - механизм связи между процессами. Набор библиотечных функций и вызовов ядра, позволяющий процессам обмениваться информацией. Некоторые программы требуют этого механизма.</p>
+<p><code>POSIX Message Queues</code> - очередь для сообщений формата POSIX с использованием приоритетов. Часть механизма связи между процессами. Нужно, если запускать программы написанные под этот формат, например с ОС Solaris.</p>
+<p><code>BSD Process Accounting</code> - поддержка дополнительных сведений о процессах (время запуска, владелец, командная строка запуска, использование памяти). Полезно для контроля процессов.</p>
+<div class="highlight"><pre><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Auditing</span> <span class="n">support</span>
+             <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Enable</span> <span class="n">system</span><span class="o">-</span><span class="n">call</span> <span class="n">auditing</span> <span class="n">support</span>
+             <span class="p">[</span> <span class="p">]</span> <span class="n">Make</span> <span class="n">audit</span> <span class="n">loginuid</span> <span class="n">immutable</span>
+</pre></div>
+
+
+<p><code>Auditing support</code> - включение механизма проверки ядра. Например используется системой SELinux (система расширенной безопасности для Linux).</p>
+<p><code>Enable system-call auditing support</code> - включение системных вызовов для механизма проверки ядра.</p>
+<div class="highlight"><pre><span class="o">&lt;*&gt;</span> <span class="n">Kernel</span> <span class="p">.</span><span class="n">config</span> <span class="n">support</span>
+</pre></div>
+
+
+<p>Сохранять настройки ядра в нем самом. Это полезно, если у Вы удалите папку с исходниками ядра, а потом захотите немного изменить ядро.</p>
+<div class="highlight"><pre><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Enable</span> <span class="n">access</span> <span class="n">to</span> <span class="p">.</span><span class="n">config</span> <span class="n">through</span> <span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">config</span><span class="p">.</span><span class="n">gz</span>
+</pre></div>
+
+
+<p>Если эта опция включена, вы сможете получать параметры текущего ядра из <code>/proc/config.gz</code></p>
+<p>Рекомендуется включить. Пригодится.</p>
+<div class="highlight"><pre><span class="cp">[</span><span class="o">*</span><span class="cp">]</span> Control Group support  ---&gt;
+
+           <span class="cp">[</span> <span class="cp">]</span> Example debug cgroup subsystem
+           <span class="cp">[</span><span class="o">*</span><span class="cp">]</span> Freezer cgroup subsystem
+           <span class="cp">[</span> <span class="cp">]</span> Device controller for cgroups
+           <span class="cp">[</span><span class="o">*</span><span class="cp">]</span> Cpuset support
+           <span class="cp">[</span><span class="o">*</span><span class="cp">]</span> Include legacy /proc/<span class="nt">&lt;pid&gt;</span>/cpuset file
+           <span class="cp">[</span><span class="o">*</span><span class="cp">]</span> Simple CPU accounting cgroup subsystem
+           <span class="cp">[</span><span class="o">*</span><span class="cp">]</span> Resource counters
+           <span class="cp">[</span> <span class="cp">]</span> Memory Resource Controller for Control Groups
+           <span class="cp">[</span> <span class="cp">]</span> HugeTLB Resource Controller for Control Groups
+           <span class="cp">[</span> <span class="cp">]</span> Enable perf_event per-cpu per-container group
+           <span class="cp">[</span><span class="o">*</span><span class="cp">]</span> Group CPU scheduler  ---&gt;
+                 <span class="cp">[</span><span class="o">*</span><span class="cp">]</span> Group scheduling for SCHED_OTHER
+                 <span class="cp">[</span> <span class="cp">]</span> Group scheduling for SCHED_RR/FIFO
+           <span class="cp">[</span> <span class="cp">]</span> Block IO controller
+</pre></div>
+
+
+<p>Поддержка группирования процессов. Используется такими подсистемами как CPUSETS, CFS, контроль памяти или устройства изоляции.</p>
+<div class="highlight"><pre><span class="o">-*-</span> <span class="n">Namespaces</span> <span class="n">support</span>  <span class="o">---&gt;</span>
+</pre></div>
+
+
+<p>Позволяет двум процессам в разных виртуальных средах иметь один и тот же <code>pid</code>. Эта возможность делает реальными такие сценарии, как апгрейд сервера без необходимости его перезагрузки.</p>
+<div class="highlight"><pre><span class="o">-*-</span> <span class="n">Kernel</span><span class="o">-&gt;</span><span class="n">user</span> <span class="n">space</span> <span class="n">relay</span> <span class="n">support</span> <span class="p">(</span><span class="n">formerly</span> <span class="n">relayfs</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Включает поддержку интерфейса некоторых файловых систем (таких как debugfs). Предназначена для эффективного механизма передачи больших объёмов данных из пространства ядра в пользовательское пространство.</p>
+<div class="highlight"><pre><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Initial</span> <span class="n">RAM</span> <span class="n">filesystem</span> <span class="n">and</span> <span class="n">RAM</span> <span class="n">disk</span> <span class="p">(</span><span class="n">initramfs</span><span class="o">/</span><span class="n">initrd</span><span class="p">)</span> <span class="n">support</span>
+</pre></div>
+
+
+<p>Поддержка initrd/initramfs.</p>
+<p>Если собирается ядро без оных, следует отключить опцию.</p>
+<div class="highlight"><pre><span class="p">[</span> <span class="p">]</span> <span class="n">Optimize</span> <span class="k">for</span> <span class="n">size</span>
+</pre></div>
+
+
+<p>Оптимизация кода ядра по размеру. Может быть полезно для создания загрузочных дискет. В обычных случаях не требуется.</p>
+<div class="highlight"><pre><span class="p">[</span> <span class="p">]</span> <span class="n">Profiling</span> <span class="n">support</span>
+</pre></div>
+
+
+<p>Включение расширенной поддержки профилирования (например, OProfile). Обычно не нужно.</p>
+<h2 id="modules">Enable loadable module support</h2>
+<p><img alt="loadable" src="http://3.bp.blogspot.com/-0nYTc8R2UEg/URjzyeN4GkI/AAAAAAAAD6w/MSQG9xGKxmA/s1600/module-support.jpg" /></p>
+<div class="highlight"><pre><span class="p">[</span> <span class="p">]</span> <span class="n">Forced</span> <span class="n">module</span> <span class="n">loading</span>
+<span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Module</span> <span class="n">unloading</span>
+<span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Forced</span> <span class="n">module</span> <span class="n">unloading</span>
+<span class="p">[</span> <span class="p">]</span> <span class="n">Module</span> <span class="n">versioning</span> <span class="n">support</span>
+<span class="p">[</span> <span class="p">]</span> <span class="n">Source</span> <span class="n">checksum</span> <span class="k">for</span> <span class="n">all</span> <span class="n">modules</span>
+</pre></div>
+
+
+<p>Создание модульного ядра. <code>Module unloading</code> - возможность выгрузки модулей.</p>
+<p><code>Forced module unloading</code> - возможность принудительной выгрузки модуля, даже если оно еще нужно ядру</p>
+<h2 id="block_layer">Enable the block layer</h2>
+<p><img alt="block" src="http://2.bp.blogspot.com/-JYbKPuIuiUY/URkV2DrabvI/AAAAAAAAD9s/CJTpjqyt8p0/s1600/block.png" /></p>
+<p>Поддержка блочных устройств. Если эта опция отключена, некоторые файловые системы станут недоступны (например, ext3), SCSI и USB устройства не смогут распознаться.</p>
+<div class="highlight"><pre><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Block</span> <span class="n">layer</span> <span class="n">SG</span> <span class="n">support</span> <span class="n">v4</span>
+<span class="n">Partition</span> <span class="n">Types</span>  <span class="o">---&gt;</span>
+          <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Advanced</span> <span class="n">partition</span> <span class="n">selection</span>
+          <span class="p">[</span> <span class="p">]</span> <span class="n">Macintosh</span> <span class="n">partition</span> <span class="n">map</span> <span class="n">support</span>
+          <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">PC</span> <span class="n">BIOS</span> <span class="p">(</span><span class="n">MSDOS</span> <span class="n">partition</span> <span class="n">tables</span><span class="p">)</span> <span class="n">support</span>
+          <span class="p">[</span> <span class="p">]</span> <span class="n">BSD</span> <span class="n">disklabel</span> <span class="p">(</span><span class="n">FreeBSD</span> <span class="n">partition</span> <span class="n">tables</span><span class="p">)</span> <span class="n">support</span>
+          <span class="p">[</span> <span class="p">]</span> <span class="n">SGI</span> <span class="n">partition</span> <span class="n">support</span>
+          <span class="p">[</span> <span class="p">]</span> <span class="n">EFI</span> <span class="n">GUID</span> <span class="n">Partition</span> <span class="n">support</span>
+</pre></div>
+
+
+<p>Следует выбрать из списка типы разделов, поддержка которых вам необходима. PC BIOS для машин с обычным BIOS (на разделах MBR), EFI GUID - EFI BIOS (на разделах GPT). В общем, ясно из названий.</p>
+<h2 id="processors">Processor type and features</h2>
+<p><img alt="processors" src="http://4.bp.blogspot.com/-acxZBgZhDrM/URjz-aUPpxI/AAAAAAAAD64/f2ycGH2KWxI/s1600/processor.jpg" /></p>
+<div class="highlight"><pre><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Symmetric</span> <span class="n">multi</span><span class="o">-</span><span class="n">processing</span> <span class="n">support</span>
+</pre></div>
+
+
+<p>Поддержка симметричной мультипроцессорности. Включается в случае, если у вас многопроцессорный компьютер или многоядерный процессор.</p>
+<div class="highlight"><pre><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Enable</span> <span class="n">MPS</span> <span class="n">table</span>
+</pre></div>
+
+
+<p>Для старых систем SMP, которые не имеют надлежащей поддержки ACPI.</p>
+<div class="highlight"><pre><span class="p">[</span> <span class="p">]</span> <span class="n">Support</span> <span class="k">for</span> <span class="n">extended</span> <span class="p">(</span><span class="n">non</span><span class="o">-</span><span class="n">PC</span><span class="p">)</span> <span class="n">x86</span> <span class="n">platforms</span>
+</pre></div>
+
+
+<p>Поддержка платформ, отличных от PC.</p>
+<div class="highlight"><pre><span class="p">[</span> <span class="p">]</span> <span class="n">Paravirtualized</span> <span class="n">guest</span> <span class="n">support</span>  <span class="o">---&gt;</span>
+</pre></div>
+
+
+<p>Поддержка паравиртуализации (например, для Xen).</p>
+<div class="highlight"><pre><span class="n">Processor</span> <span class="n">family</span> <span class="p">(</span><span class="n">Core</span> <span class="mi">2</span><span class="o">/</span><span class="n">newer</span> <span class="n">Xeon</span><span class="p">)</span>  <span class="o">---&gt;</span>
+
+               <span class="p">(</span> <span class="p">)</span> <span class="n">Opteron</span><span class="o">/</span><span class="n">Athlon64</span><span class="o">/</span><span class="n">Hammer</span><span class="o">/</span><span class="n">K8</span>
+               <span class="p">(</span> <span class="p">)</span> <span class="n">Intel</span> <span class="n">P4</span> <span class="o">/</span> <span class="n">older</span> <span class="n">Netburst</span> <span class="n">based</span> <span class="n">Xeon</span>
+               <span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="n">Core</span> <span class="mi">2</span><span class="o">/</span><span class="n">newer</span> <span class="n">Xeon</span>
+               <span class="p">(</span> <span class="p">)</span> <span class="n">Intel</span> <span class="n">Atom</span>
+               <span class="p">(</span> <span class="p">)</span> <span class="n">Generic</span><span class="o">-</span><span class="n">x86</span><span class="o">-</span><span class="mi">64</span>
+</pre></div>
+
+
+<p>Следует выбрать тип своего процессора. Если не знаете или рассчитываете использовать созданную конфигурацию ядра на разных машинах, отмечайте Generic.</p>
+<div class="highlight"><pre><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">SMT</span> <span class="p">(</span><span class="n">Hyperthreading</span><span class="p">)</span> <span class="n">scheduler</span> <span class="n">support</span>
+</pre></div>
+
+
+<p>Включение технологии Hyperthreading.</p>
+<div class="highlight"><pre><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Multi</span><span class="o">-</span><span class="n">core</span> <span class="n">scheduler</span> <span class="n">support</span>
+</pre></div>
+
+
+<p>Для процессоров Intel Core, AMD Athlon64/Phenom.</p>
+<div class="highlight"><pre><span class="p">[</span> <span class="p">]</span> <span class="n">EFI</span> <span class="n">runtime</span> <span class="n">service</span> <span class="n">support</span>
+<span class="p">[</span> <span class="p">]</span> <span class="n">EFI</span> <span class="n">stub</span> <span class="n">support</span>
+</pre></div>
+
+
+<p>Для поддержки UEFI. В данном примере она отключена.</p>
+<h2 id="power">Power management and ACPI options</h2>
+<p><img alt="power" src="http://2.bp.blogspot.com/-CP-A0xP_xYw/URj0FO2XwFI/AAAAAAAAD7A/IxYaxnx5UOE/s1600/power.jpg" /></p>
+<div class="highlight"><pre><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Suspend</span> <span class="n">to</span> <span class="n">RAM</span> <span class="n">and</span> <span class="n">standby</span>
+</pre></div>
+
+
+<p>Поддержка Suspend to RAM - сохранение состояния операционной системы в оперативной памяти.</p>
+<div class="highlight"><pre><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Hibernation</span> <span class="p">(</span><span class="n">aka</span> <span class="err">&#39;</span><span class="n">suspend</span> <span class="n">to</span> <span class="n">disk</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="p">()</span>  <span class="n">Default</span> <span class="n">resume</span> <span class="n">partition</span>
+</pre></div>
+
+
+<p>Поддержка Suspend to Disk - иначе говоря, режим гибернации. Потребуется включение swap-раздела. В <code>Default resume partition</code> можно прописать путь к swap. Или оставить пустым с последующим внесением параметра resume в строку загрузчика. Лучше прописать к загрузчику.</p>
+<div class="highlight"><pre><span class="cp">[</span><span class="o">*</span><span class="cp">]</span> ACPI(Advanced Configuration and Power Interface)Support ---&gt;
+          <span class="nt">&lt;M&gt;</span> EC read/write access through /sys/kernel/debug/ec
+          <span class="cp">[</span> <span class="cp">]</span> Deprecated /proc/acpi/event support
+          <span class="nt">&lt;M&gt;</span> AC Adapter
+          <span class="nt">&lt;M&gt;</span> Battery
+          {M} Button
+          {M} Video
+          <span class="nt">&lt;M&gt;</span> Fan
+          <span class="cp">[</span><span class="o">*</span><span class="cp">]</span> Dock
+          <span class="nt">&lt;M&gt;</span> Processor
+          <span class="nt">&lt;M&gt;</span> Thermal Zone
+</pre></div>
+
+
+<p>Поддержка интерфейса управления конфигурацией и питанием (ACPI).</p>
+<div class="highlight"><pre><span class="n">CPU</span> <span class="n">Frequency</span> <span class="n">scaling</span>  <span class="o">---&gt;</span>
+          <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">CPU</span> <span class="n">Frequency</span> <span class="n">scaling</span>
+          <span class="o">&lt;</span> <span class="o">&gt;</span> <span class="n">CPU</span> <span class="n">frequency</span> <span class="n">translation</span> <span class="n">statistics</span>
+          <span class="n">Default</span> <span class="n">CPUFreq</span> <span class="n">governor</span> <span class="p">(</span><span class="n">ondemand</span><span class="p">)</span>  <span class="o">---&gt;</span>
+          <span class="o">-*-</span> <span class="err">&#39;</span><span class="n">performance</span><span class="err">&#39;</span> <span class="n">governor</span>
+          <span class="o">&lt;</span> <span class="o">&gt;</span> <span class="err">&#39;</span><span class="n">powersave</span><span class="err">&#39;</span> <span class="n">governor</span>
+          <span class="o">&lt;</span> <span class="o">&gt;</span> <span class="err">&#39;</span><span class="n">userspace</span><span class="err">&#39;</span> <span class="n">governor</span>
+          <span class="o">-*-</span> <span class="err">&#39;</span><span class="n">ondemand</span><span class="err">&#39;</span> <span class="n">cpufreq</span> <span class="n">policy</span> <span class="n">governor</span>
+          <span class="o">&lt;</span> <span class="o">&gt;</span> <span class="err">&#39;</span><span class="n">conservative</span><span class="err">&#39;</span> <span class="n">cpufreq</span> <span class="n">governor</span>
+</pre></div>
+
+
+<p>Управление настройками частоты процессора: <code>'performance'</code> governor обеспечивает наибольшую производительность, <code>'powersave'</code> governor будет стараться снижать частоту процессора, чем увеличит работу от батареи, <code>'ondemand'</code> - нечто среднее. Рекомендуется выбрать <code>'ondemand'</code> в качестве "умолчательного" в  <code>Default CPUFreq governor</code>.</p>
+<h2 id="bus">Bus options (PCI etc.)</h2>
+<p><img alt="bus" src="http://2.bp.blogspot.com/-i2YQe9Ga0iA/URj0I7HFtzI/AAAAAAAAD7I/Y-ZCDexB374/s1600/bus.jpg" /></p>
+<div class="highlight"><pre><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">PCI</span> <span class="n">support</span>
+<span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Support</span> <span class="n">mmconfig</span> <span class="n">PCI</span> <span class="n">config</span> <span class="n">space</span> <span class="n">access</span>
+<span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">PCI</span> <span class="n">Express</span> <span class="n">support</span>
+<span class="o">&lt;</span> <span class="o">&gt;</span> <span class="n">PCI</span> <span class="n">Express</span> <span class="n">Hotplug</span> <span class="n">driver</span>
+<span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Root</span> <span class="n">Port</span> <span class="n">Advanced</span> <span class="n">Error</span> <span class="n">Reporting</span> <span class="n">support</span>
+</pre></div>
+
+
+<p>PCI support обеспечивает поддержку шины PCI.</p>
+<div class="highlight"><pre><span class="o">&lt;*&gt;</span> <span class="n">PCCard</span> <span class="p">(</span><span class="n">PCMCIA</span><span class="o">/</span><span class="n">CardBus</span><span class="p">)</span> <span class="n">support</span>  <span class="o">---&gt;</span>
+</pre></div>
+
+
+<p>Поддержка карт PCMCIA. Чаще всего встречаются на ноутбуках.</p>
+<div class="highlight"><pre><span class="o">&lt;*&gt;</span> <span class="n">Support</span> <span class="k">for</span> <span class="n">PCI</span> <span class="n">Hotplug</span>  <span class="o">---&gt;</span>
+</pre></div>
+
+
+<p>"Горячее" (на лету) подключение PCI-устройств. Позволяет добавлять и удалять PCI-устройства, даже когда машина включена и работает. В принципе, можно и отключить, поскольку чаще всего эта возможность не используется.</p>
+<h2 id="emulations">Executable file formats / Emulations</h2>
+<p><img alt="exec" src="http://2.bp.blogspot.com/-9uhqcPjNg9k/URj0NwRzOxI/AAAAAAAAD7Q/yqIMRFiTgrc/s1600/emulations.jpg" /></p>
+<div class="highlight"><pre><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Kernel</span> <span class="n">support</span> <span class="k">for</span> <span class="n">ELF</span> <span class="n">binaries</span>
+<span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Write</span> <span class="n">ELF</span> <span class="n">core</span> <span class="n">dumps</span> <span class="n">with</span> <span class="n">partial</span> <span class="n">segments</span>
+<span class="o">&lt;*&gt;</span> <span class="n">Kernel</span> <span class="n">support</span> <span class="k">for</span> <span class="n">MISC</span> <span class="n">binaries</span>
+<span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">IA32</span> <span class="n">Emulation</span>
+</pre></div>
+
+
+<p>Поддержка формата исполняемых файлов ELF. Обязательна к включению.</p>
+<h2 id="networking">Networking support</h2>
+<p><img alt="net" src="http://4.bp.blogspot.com/-TEHPgDhBZ4g/USiyiph-I1I/AAAAAAAAEB0/IcFmfNEkRDA/s1600/network.png" /></p>
+<div class="highlight"><pre><span class="n">Networking</span> <span class="n">options</span>  <span class="o">---&gt;</span>
+</pre></div>
+
+
+<p>В подпунктах включается поддержка протокола TCP/IP, в частности возможность включения/отключения IPv6. Поскольку автор не является специалистом в данной области, детально раздел не рассматривается. Сетевые администраторы, безусловно, найдут для себя множество полезных опций. Для домашнего же использования рекомендуется оставить опции по-умолчанию.</p>
+<div class="highlight"><pre><span class="o">&lt;</span> <span class="o">&gt;</span>   <span class="n">IrDA</span> <span class="p">(</span><span class="n">infrared</span><span class="p">)</span> <span class="n">subsystem</span> <span class="n">support</span>  <span class="o">---&gt;</span>
+</pre></div>
+
+
+<p>Скорее всего включать не понадобится. Обеспечивает поддержку инфракрасного модуля.</p>
+<div class="highlight"><pre><span class="o">&lt;</span> <span class="o">&gt;</span>   <span class="n">Bluetooth</span> <span class="n">subsystem</span> <span class="n">support</span>  <span class="o">---&gt;</span>
+                       <span class="n">Bluetooth</span> <span class="n">device</span> <span class="n">drivers</span>  <span class="o">---&gt;</span>
+</pre></div>
+
+
+<p>Для тех, у кого встроен модуль беспроводной передачи данных bluetooth. Как правило, сейчас это ноутбуки. Хотя ранее bluetooth был достаточно популярен и соответствующие устройства покупались и использовались на настольных ПК.</p>
+<p>Bluetooth device drivers позволит выбрать из списка поддержку определённого устройства.</p>
+<div class="highlight"><pre><span class="nt">&lt;M&gt;</span>   RF switch subsystem support  ---&gt;
+</pre></div>
+
+
+<p>Для ноутбуков, где, как правило, радиопередатчик wifi-чипа включается нажатием клавиши  "Kill Switch". Если эта клавиша не нажата и передатчик не включен, wi-fi не заведётся. Кстати, если параллельно у вас установлена Windows, обязательно оставьте под ней включенной кнопку wi-fi. В противном случае в linux при попытке включить интерфейс wlan вам будут объяснять, что Kill Switch отключен и включать его будет бесполезно.</p>
+<div class="highlight"><pre><span class="o">-*-</span>   <span class="nx">Wireless</span>  <span class="o">---&gt;</span>
+    <span class="o">&lt;</span><span class="nx">M</span><span class="o">&gt;</span> <span class="nx">cfg80211</span> <span class="o">-</span> <span class="nx">wireless</span> <span class="nx">configuration</span> <span class="nx">API</span>
+        <span class="err">[</span><span class="o">*</span><span class="cp">]</span> cfg80211 wireless extensions compatibility
+</pre></div>
+
+
+<p>Поддержка стандарта 802.11 для беспроводных сетей.</p>
+<h2 id="device">Device Drivers</h2>
+<p><img alt="device" src="http://3.bp.blogspot.com/-pVZoCFTdLCE/URj0VtIET6I/AAAAAAAAD7g/UOTlDdAxh0A/s1600/device.jpg" /></p>
+<div class="highlight"><pre><span class="n">Generic</span> <span class="n">Driver</span> <span class="n">Options</span>  <span class="o">---&gt;</span>
+            <span class="p">(</span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">hotplug</span><span class="p">)</span> <span class="n">path</span> <span class="n">to</span> <span class="n">uevent</span> <span class="n">helper</span>
+            <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Maintain</span> <span class="n">a</span> <span class="n">devtmpfs</span> <span class="n">filesystem</span> <span class="n">to</span> <span class="n">mount</span> <span class="n">at</span> <span class="o">/</span><span class="n">dev</span>
+            <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Automount</span> <span class="n">devtmpfs</span> <span class="n">at</span> <span class="o">/</span><span class="n">dev</span><span class="p">,</span> <span class="n">after</span> <span class="n">the</span> <span class="n">kernel</span> <span class="n">mounted</span> <span class="n">the</span> <span class="n">ro</span>
+            <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Select</span> <span class="n">only</span> <span class="n">drivers</span> <span class="n">that</span> <span class="n">don</span><span class="err">&#39;</span><span class="n">t</span> <span class="n">need</span> <span class="n">compile</span><span class="o">-</span><span class="n">time</span> <span class="n">external</span> <span class="n">fir</span>
+            <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Prevent</span> <span class="n">firmware</span> <span class="n">from</span> <span class="n">being</span> <span class="n">built</span>
+            <span class="o">-*-</span> <span class="n">Userspace</span> <span class="n">firmware</span> <span class="n">loading</span> <span class="n">support</span>
+            <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Include</span> <span class="n">in</span><span class="o">-</span><span class="n">kernel</span> <span class="n">firmware</span> <span class="n">blobs</span> <span class="n">in</span> <span class="n">kernel</span> <span class="n">binary</span>
+            <span class="p">()</span> <span class="n">External</span> <span class="n">firmware</span> <span class="n">blobs</span> <span class="n">to</span> <span class="n">build</span> <span class="n">into</span> <span class="n">the</span> <span class="n">kernel</span> <span class="n">binary</span>
+            <span class="p">[</span> <span class="p">]</span> <span class="n">Driver</span> <span class="n">Core</span> <span class="n">verbose</span> <span class="n">debug</span> <span class="n">messages</span>
+            <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Managed</span> <span class="n">device</span> <span class="n">resources</span> <span class="n">verbose</span> <span class="n">debug</span> <span class="n">messages</span>
+</pre></div>
+
+
+<p><code>Maintain a devtmpfs filesystem to mount at /dev</code> - Монтировать файловую систему tmpfs.</p>
+<p><code>Select only drivers that don't need compile-time external fir</code> - выбирать лишь те драйверы, которые не требуют прошивки. В зависимости от вашего оборудования эту опцию, возможно, придётся отключить.</p>
+<p><code>Include in-kernel firmware blobs in kernel binary</code> - включить прошивку в ядро.</p>
+<p><code>External firmware blobs to build into the kernel binary</code> - требуется для указания пути к блобам.</p>
+<p>Например:</p>
+<div class="highlight"><pre><span class="n">radeon</span><span class="o">/</span><span class="n">BTC_rls</span><span class="p">.</span><span class="n">bin</span> <span class="n">radeon</span><span class="o">/</span><span class="n">CAICOS_mc</span><span class="p">.</span><span class="n">bin</span> <span class="n">radeon</span><span class="o">/</span><span class="n">CAICOS_me</span><span class="p">.</span><span class="n">bin</span> <span class="n">radeon</span><span class="o">/</span><span class="n">CAICOS_pfp</span><span class="p">.</span><span class="n">bin</span>
+</pre></div>
+
+
+<p>Но в таком случае требуется включить в конфигурационный файл ядра строку с указанием директории, в которой находятся эти блобы:</p>
+<div class="highlight"><pre><span class="n">CONFIG_EXTRA_FIRMWARE_DIR</span><span class="o">=</span><span class="s">&quot;/lib/firmware&quot;</span>
+</pre></div>
+
+
+<p>Идём далее:</p>
+<div class="highlight"><pre><span class="o">&lt;</span> <span class="o">&gt;</span> <span class="n">Parallel</span> <span class="n">port</span> <span class="n">support</span>  <span class="o">---&gt;</span>
+ <span class="o">-*-</span> <span class="n">Plug</span> <span class="n">and</span> <span class="n">Play</span> <span class="n">support</span>  <span class="o">---&gt;</span>
+</pre></div>
+
+
+<p>Первое уже вряд ли нужно. Но если у вас есть устройства ( раньше это были все принтеры ), требующие подключения по параллельному порту - включите опцию.</p>
+<p>Plug and Play включаем.</p>
+<div class="highlight"><pre><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Block</span> <span class="n">devices</span>  <span class="o">---&gt;</span>
+                <span class="o">&lt;*&gt;</span> <span class="n">Loopback</span> <span class="n">device</span> <span class="n">support</span>
+                <span class="o">&lt;*&gt;</span> <span class="n">RAM</span> <span class="n">block</span> <span class="n">device</span> <span class="n">support</span>
+</pre></div>
+
+
+<p>Блочные устройства. <code>Loopback device support</code> включить обязательно.</p>
+<p><code>RAM block device support</code> нужен при сборке ядра с initrd, в противном случае - отключить: "выбирайте Y, если хотите использовать часть оперативной памяти как блочное устройство. В этом устройстве вы сможете создавать файловую систему, и использовать ее как обыкновенное блочное устройство (такое как жесткий диск). Обычно его используют для загрузки и сохранения минимальной копии корневой файловой системы при загрузке с флоппи диска, CD-ROM при установке дистрибутива, или на бездисковых рабочих станциях."</p>
+<div class="highlight"><pre><span class="n">Misc</span> <span class="n">devices</span>  <span class="o">---&gt;</span>
+</pre></div>
+
+
+<p>Просмотреть и принять решение включать или не включать то или иное устройство. У автора данный раздел вообще пуст.</p>
+<div class="highlight"><pre><span class="n">SCSI</span> <span class="n">device</span> <span class="n">support</span>  <span class="o">---&gt;</span>
+     <span class="o">-*-</span> <span class="n">SCSI</span> <span class="n">device</span> <span class="n">support</span>
+    <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">legacy</span> <span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">scsi</span><span class="o">/</span> <span class="n">support</span>
+    <span class="o">***</span> <span class="n">SCSI</span> <span class="n">support</span> <span class="n">type</span> <span class="p">(</span><span class="n">disk</span><span class="p">,</span> <span class="n">tape</span><span class="p">,</span> <span class="n">CD</span><span class="o">-</span><span class="n">ROM</span><span class="p">)</span> <span class="o">***</span>
+    <span class="o">&lt;*&gt;</span> <span class="n">SCSI</span> <span class="n">disk</span> <span class="n">support</span>
+    <span class="o">&lt;*&gt;</span> <span class="n">SCSI</span> <span class="n">CDROM</span> <span class="n">support</span>
+    <span class="p">[</span><span class="o">*</span><span class="p">]</span>   <span class="n">Enable</span> <span class="n">vendor</span><span class="o">-</span><span class="n">specific</span> <span class="n">extensions</span> <span class="p">(</span><span class="k">for</span> <span class="n">SCSI</span> <span class="n">CDROM</span><span class="p">)</span>
+    <span class="o">&lt;*&gt;</span> <span class="n">SCSI</span> <span class="n">generic</span> <span class="n">support</span>
+    <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Verbose</span> <span class="n">SCSI</span> <span class="n">error</span> <span class="n">reporting</span> <span class="p">(</span><span class="n">kernel</span> <span class="n">size</span> <span class="o">+=</span><span class="mi">12</span><span class="n">K</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Поддержка устройств SCSI. В современных машинах без включения этих опций могут быть не найдены такие устройства как жёсткий диск и CD-привод.</p>
+<div class="highlight"><pre><span class="o">&lt;*&gt;</span> <span class="n">Serial</span> <span class="n">ATA</span> <span class="n">and</span> <span class="n">Parallel</span> <span class="n">ATA</span> <span class="n">drivers</span>  <span class="o">---&gt;</span>
+             <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Verbose</span> <span class="n">ATA</span> <span class="n">error</span> <span class="n">reporting</span>
+             <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">ATA</span> <span class="n">ACPI</span> <span class="n">Support</span>
+             <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">SATA</span> <span class="n">Port</span> <span class="n">Multiplier</span> <span class="n">support</span>
+             <span class="o">***</span> <span class="n">Controllers</span> <span class="n">with</span> <span class="n">non</span><span class="o">-</span><span class="n">SFF</span> <span class="n">native</span> <span class="n">interface</span> <span class="o">***</span>
+             <span class="o">&lt;*&gt;</span> <span class="n">AHCI</span> <span class="n">SATA</span> <span class="n">support</span>
+</pre></div>
+
+
+<p>Поддержка устройств SATA. AHCI (Advanced Host Controller Interface) - механизм, позволяющий устройствам SATA пользоваться расширенными функциями.</p>
+<div class="highlight"><pre><span class="p">[</span> <span class="p">]</span> <span class="n">Multiple</span> <span class="n">devices</span> <span class="n">driver</span> <span class="n">support</span> <span class="p">(</span><span class="n">RAID</span> <span class="n">and</span> <span class="n">LVM</span><span class="p">)</span>  <span class="o">---&gt;</span>
+</pre></div>
+
+
+<p>Опции, обеспечивающие использование логических томов и программных RAID-массивов.</p>
+<div class="highlight"><pre><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Network</span> <span class="n">device</span> <span class="n">support</span>  <span class="o">---&gt;</span>
+            <span class="p">[</span><span class="o">*</span><span class="p">]</span>   <span class="n">Ethernet</span> <span class="n">driver</span> <span class="n">support</span>  <span class="o">---&gt;</span>
+            <span class="o">&lt;*&gt;</span>   <span class="n">PPP</span> <span class="p">(</span><span class="n">point</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">point</span> <span class="n">protocol</span><span class="p">)</span> <span class="n">support</span>
+            <span class="n">USB</span> <span class="n">Network</span> <span class="n">Adapters</span>  <span class="o">---&gt;</span>
+            <span class="p">[</span><span class="o">*</span><span class="p">]</span>   <span class="n">Wireless</span> <span class="n">LAN</span>  <span class="o">---&gt;</span>
+</pre></div>
+
+
+<p>В <code>Ethernet driver support</code> следует выбрать поддержку устройства вашей сетевой карты Ethernet. PPP может понадобиться тем, кто подключается к интернету с использованием соответствующего протокола. USB Adapters - при наличии у вас поднобного адаптера для выхода в сеть. Wireless LAN - для использования беспроводных сетей стандарта IEEE 802.11. Здесь нужно выбрать соответствующий вашему оборудованию драйвер.</p>
+<div class="highlight"><pre><span class="n">Input</span> <span class="n">device</span> <span class="n">support</span>  <span class="o">---&gt;</span>
+</pre></div>
+
+
+<p>Нужен для определения различных устройств ввода как то: мыши, тачпады, тачскрины, джойстики, клавиатура и иные устройства. Предлагается немного побродить по списку и выбрать нужные опции.</p>
+<div class="highlight"><pre><span class="p">{</span><span class="o">*</span><span class="p">}</span> <span class="n">I2C</span> <span class="n">support</span>  <span class="o">---&gt;</span>
+</pre></div>
+
+
+<p>Поддержка видео в Linux.</p>
+<div class="highlight"><pre><span class="o">&lt;*&gt;</span> <span class="n">Multimedia</span> <span class="n">support</span>  <span class="o">---&gt;</span>
+            <span class="p">[</span><span class="o">*</span><span class="p">]</span>   <span class="n">Cameras</span><span class="o">/</span><span class="n">video</span> <span class="n">grabbers</span> <span class="n">support</span>
+            <span class="p">[</span><span class="o">*</span><span class="p">]</span>   <span class="n">Media</span> <span class="n">USB</span> <span class="n">Adapters</span>  <span class="o">---&gt;</span>
+                   <span class="o">&lt;*&gt;</span> <span class="n">USB</span> <span class="n">Video</span> <span class="n">Class</span> <span class="p">(</span><span class="n">UVC</span><span class="p">)</span>
+                   <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">UVC</span> <span class="n">input</span> <span class="n">events</span> <span class="n">device</span> <span class="n">support</span>
+</pre></div>
+
+
+<p>Поддержка веб-камер и захвата видео.  Нужно включить, если имеется встроенная камера или предполагается подключать камеру внешнюю.</p>
+<div class="highlight"><pre><span class="n">Graphics</span> <span class="n">support</span>  <span class="o">---&gt;</span>
+    <span class="o">&lt;*&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">agpgart</span> <span class="p">(</span><span class="n">AGP</span> <span class="n">Support</span><span class="p">)</span>  <span class="o">---&gt;</span>
+            <span class="o">&lt;*&gt;</span>   <span class="n">AMD</span> <span class="n">Opteron</span><span class="o">/</span><span class="n">Athlon64</span> <span class="n">on</span><span class="o">-</span><span class="n">CPU</span> <span class="n">GART</span> <span class="n">support</span>
+            <span class="o">&lt;*&gt;</span>   <span class="n">Intel</span> <span class="mi">440L</span><span class="n">X</span><span class="o">/</span><span class="n">BX</span><span class="o">/</span><span class="n">GX</span><span class="p">,</span> <span class="n">I8xx</span> <span class="n">and</span> <span class="n">E7x05</span> <span class="n">chipset</span> <span class="n">support</span>
+</pre></div>
+
+
+<p>Включение поддержки AGP. В примере для видеокарт Intel и Radeon.</p>
+<div class="highlight"><pre><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Laptop</span> <span class="n">Hybrid</span> <span class="n">Graphics</span> <span class="o">-</span> <span class="n">GPU</span> <span class="n">switching</span> <span class="n">support</span>
+</pre></div>
+
+
+<p>Включается, если на машине более одной видеокарты.</p>
+<div class="highlight"><pre><span class="nt">&lt;M&gt;</span> Direct Rendering Manager
+</pre></div>
+
+
+<p>Включить DRM - Direct Rendering Manager. Современная вещь, рекомендуется.</p>
+<div class="highlight"><pre><span class="p">{</span><span class="o">*</span><span class="p">}</span> <span class="n">Support</span> <span class="k">for</span> <span class="n">frame</span> <span class="n">buffer</span> <span class="n">devices</span>  <span class="o">---&gt;</span>
+           <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Enable</span> <span class="n">Video</span> <span class="n">Mode</span> <span class="n">Handling</span> <span class="n">Helpers</span>
+           <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Enable</span> <span class="n">Tile</span> <span class="n">Blitting</span> <span class="n">Support</span>
+           <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">EFI</span><span class="o">-</span><span class="n">based</span> <span class="n">Framebuffer</span> <span class="n">Support</span>
+</pre></div>
+
+
+<p>Управление поддержкой фреймбуфера. EFI-based Framebuffer Support нужен для систем с UEFI.</p>
+<div class="highlight"><pre><span class="n">Console</span> <span class="n">display</span> <span class="n">driver</span> <span class="n">support</span>  <span class="o">---&gt;</span>
+           <span class="p">{</span><span class="o">*</span><span class="p">}</span> <span class="n">Framebuffer</span> <span class="n">Console</span> <span class="n">support</span>
+</pre></div>
+
+
+<p>Поддержка кадрового буфера в консоли. Включаем.</p>
+<p>[<em>] Bootup logo  ---&gt;
+               [</em>]   Standard 224-color Linux logo</p>
+<p>Включаем пингвинов при загрузке системы ;)</p>
+<p>&lt;<em>&gt; Sound card support  ---&gt;
+               &lt;</em>&gt;   Advanced Linux Sound Architecture  ---&gt;</p>
+<p>Включение поддержки звуковых устройств. Выбор своего железа из списка.</p>
+<p>[*] USB support  ---&gt;</p>
+<p>Аналогично, только для USB-устройств.</p>
+<p>[*] X86 Platform Specific Device Drivers  ---&gt;</p>
+<p>Имеет смысл посмотреть владельцам ноутбуков. Особенно тем, у кого не работает контроль яркости экрана или горячие клавиши. Для владельцев MXM видеокарт там же включить:</p>
+<div class="highlight"><pre><span class="o">&lt;*&gt;</span> <span class="n">WMI</span> <span class="n">Support</span> <span class="k">for</span> <span class="n">MXM</span> <span class="n">Laptop</span> <span class="n">Graphics</span>
+</pre></div>
+
+
+<h2 id="firmware">Firmware Drivers</h2>
+<p><img alt="firmware" src="http://1.bp.blogspot.com/-3Ils4rVfERs/URj0aMbsLUI/AAAAAAAAD7o/6uomYCkeb-4/s1600/firmware.jpg" /></p>
+<p>Для включения в ядро сторонних прошивок. Если вы не уверены, что вам нужны какие-либо опции, рекомендуется оставить вариант по-умолчанию.</p>
+<h2 id="filesystem">File systems</h2>
+<p><img alt="filesys" src="http://4.bp.blogspot.com/--w14rX6P998/URj0fdZaJOI/AAAAAAAAD7w/q3VRKtSfMHo/s1600/file_systems.jpg" /></p>
+<p>Осуществляет поддержку тех или иных файловых систем, поддержку квотирования, а также выбор нативных языков (вернее того, как будут отображаться символы). В целом, в комментариях не нуждается. Единственное замечание: если вы собираете ядро без initrd нужно включить используемые при загрузке файловые системы жёстко, а не модулями.</p>
+<h2 id="kernel_hack">Kernel hacking</h2>
+<p><img alt="kern_hack" src="http://4.bp.blogspot.com/-J7yzSpH6pwo/URj0kIAAWdI/AAAAAAAAD74/n7EhSw4roUA/s1600/kernel_hacking.jpg" /></p>
+<div class="highlight"><pre><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Magic</span> <span class="n">SysRq</span> <span class="n">key</span>
+</pre></div>
+
+
+<p>Если компьютер завис и не реагирует на команды переключения консоли. Вы можете нажать <code>Alt-PrintScreen-s</code> для записи кеша дисков или <code>Alt-PrintScreen-i</code> (Убить все процессы за исключением init). Механизм нажатия такой: - Нажать <code>Alt</code> - Нажать <code>PrintScreen</code> - Отпустить <code>Alt</code> - Нажать нужную кнопку - Отпустить все.</p>
+<div class="highlight"><pre><span class="o">-*-</span> <span class="n">Debug</span> <span class="n">Filesystem</span>
+</pre></div>
+
+
+<p>Когда эта опция включена, можно монтировать debugfs в <code>/etc/fstab</code>. Таким образом мы получим директорию <code>/sys/kernel/debug</code>, что очень небесполезно в частности для обладателей двух видеокарт.</p>
+<h2 id="security">Security options</h2>
+<p><img alt="secur" src="http://4.bp.blogspot.com/-uAfdUZl_GXY/URj0oFWuBLI/AAAAAAAAD8A/t-l_cw-uc3A/s1600/security.jpg" /></p>
+<p>Позволяет увеличить защищенность системы. Можно, например, запретить запуск программ с привилегиями root без специального ключа или с помощью системы SELinux ограничить возможности доступа к файлам самого root. Изменяйте эти опции только если вы знаете что делаете.</p>
+<h2 id="crypto">Cryptographic API</h2>
+<p><img alt="cryp" src="http://2.bp.blogspot.com/-6GG_ndYOcrs/URj0tE8KRuI/AAAAAAAAD8I/qwdxqJrLm94/s1600/crypto.jpg" /></p>
+<p>Опции шифрования. Пригодятся, если у вас имеются закодированные файловые системы. Так же как и с предыдущим пунктом: изменяйте эти опции только если вы знаете что делаете.</p>
+<h2 id="virtu">Virtualization</h2>
+<p><img alt="virt" src="http://3.bp.blogspot.com/-_heNGKvMZkM/URj0w0T1I1I/AAAAAAAAD8Q/Axf270kguus/s1600/virtualization.jpg" /></p>
+<div class="highlight"><pre><span class="nt">&lt;M&gt;</span>  Kernel-based Virtual Machine (KVM) support
+<span class="nt">&lt;M&gt;</span>  KVM for Intel processors support
+<span class="err">&lt;</span> &gt;  KVM for AMD processors support
+</pre></div>
+
+
+<p>Нужно включить, если планируется использовать виртуализацию (конкретно: VirtualBox или QEMU). В противном случае не отмечайте ничего.</p>
+<h2 id="library">Library routines</h2>
+<p><img alt="lib" src="http://3.bp.blogspot.com/-6RbJBv52P6Q/URj00UmIdMI/AAAAAAAAD8Y/UscvOhZbCac/s1600/library.jpg" /></p>
+<p>Используется для предоставления модулям функций CRC32 CRC32c. Можете включить</p>
+<h2 id="end">Послесловие</h2>
+<p>Итак, настройка ядра закончена. Теперь коснёмся вопроса о сборке. Процесс сборки и установки ядра можно выполнить одной командой:</p>
+<div class="highlight"><pre><span class="gp">#</span> make bzImage modules modules_install install
+</pre></div>
+
+
+<p>Когда ядро будет собрано, у Вас должны появиться следующие файлы:</p>
+<div class="highlight"><pre><span class="o">/</span><span class="n">boot</span><span class="o">/</span><span class="n">vmlinuz</span><span class="o">-</span><span class="mf">3.6.11</span>
+<span class="o">/</span><span class="n">boot</span><span class="o">/</span><span class="n">System</span><span class="p">.</span><span class="n">map</span><span class="o">-</span><span class="mf">3.6.11</span>
+<span class="o">/</span><span class="n">boot</span><span class="o">/</span><span class="n">initrd</span><span class="o">-</span><span class="mf">3.6.11</span><span class="p">.</span><span class="n">img</span>
+</pre></div>
+
+
+<p>и каталог модулей</p>
+<div class="highlight"><pre><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">modules</span><span class="o">/</span><span class="mf">3.6.11</span>
+</pre></div>
+
+
+<p>И последним шагом подправим строки загрузчика, чтобы можно было загрузиться с новым ядром (пример для grub-legacy):</p>
+<div class="highlight"><pre><span class="c"># /boot/grub/menu.lst</span>
+<span class="c">#</span>
+default 0
+timeout 30
+<span class="nv">splashimage</span><span class="o">=(</span>hd0,1<span class="o">)</span>/boot/grub/splash.xpm.gz
+title Linux 3.6.11
+root <span class="o">(</span>hd0,1<span class="o">)</span>
+kernel /boot/vmlinuz-3.6.11 <span class="nv">root</span><span class="o">=</span>/dev/ram0 <span class="nv">real_root</span><span class="o">=</span>/dev/sda3
+initrd /boot/initrd-3.6.11
+</pre></div>
+
+
+<p>Для тех, кому любопытно собрать ядро без initrd, милости прошу: <a href="http://alv.me/?p=58">лишнему в ядре не место</a>. Хотя и следуя представленным выше указаниям также можно собрать такое ядро. Но статья, приведённая по ссылке, позволит лучше понять зачем это нужно и нужно ли оно вообще.</p>
+<p>Единственное, что там не указано: как в этом случае будут выглядеть настройки загрузчика. В них больше не будет указания на initrd - последней строки - и ram0:</p>
+<div class="highlight"><pre><span class="c"># /boot/grub/menu.lst</span>
+<span class="c">#</span>
+title Linux 3.6.11
+root <span class="o">(</span>hd0,1<span class="o">)</span>
+kernel /boot/vmlinuz-3.6.11 <span class="nv">root</span><span class="o">=</span>/dev/sda3
+</pre></div>
+
+
+<p>Если сборка не первая, вы увидите в <code>/boot</code> старое ядро, оно будет выглядеть как <code>vmlinuz-$KERNEL-VERSION.old</code>. В случае неудачной сборки, вы всегда можете загрузиться со старым ядром.</p>
+<p><b>P.S:</b> при указанном способе сборки в gentoo автоматически не появится initrd. Если он вам нужен, наиболее простой способ: после сборки ядра использовать для его создания <code>genkernel</code>:</p>
+<div class="highlight"><pre><span class="gp">#</span> genkernel --install initramfs
+</pre></div>
+
+
+<p><b>P.S2:</b> не забудьте добавить своего пользователя в соответствующие группы. Если нет звука, прежде всего проверьте, добавлен ли пользователь в группу <code>audio</code>, если не заводится камера - в группу <code>video</code>.</p>
+<p>Да, надо бы ещё отметить, что при необходимости можно обратиться к документации ядра.
+Располагаются эти файлы в каталоге <code>/usr/src/linux/Documentation</code>. Вот, вроде бы, и всё.</p>
+<h5><i class="icon-user"></i> <a href="../author/redvi.html">redVi</a>,
+<i class="icon-bookmarks"></i> <a href="../tag/gentoo.html">Gentoo</a> /
+<a href="../tag/kernel.html">Kernel</a> /
+</h5>
+<p align="center"><a href="#">наверх</a></p>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+       <li class="footer"><a href="../tag/android.html">Android&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/arch.html">Arch&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/blog.html">Blog&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/debian.html">Debian&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/decorations.html">Decorations&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/django.html">Django&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/editors.html">Editors&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/gentoo.html">Gentoo&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/git.html">Git&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/javascript.html">JavaScript&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/kernel.html">Kernel&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/latex.html">LaTeX&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/python.html">Python&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/server.html">Server&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/web.html">Web&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/windows.html">Windows&nbsp;&bull;&nbsp;</a></li>
+  </ul>
+<br/><p>&copy;&nbsp;2011&mdash;2013&nbsp;&bull;&nbsp;<a href="..">unix-lab.org </a>&nbsp;&bull;&nbsp;powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;&bull;&nbsp;<a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru"><i class="icon-cc"></i></a></p>
+</div>
+<!-- end #footer --></div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-42400517-1', 'www.unix-lab.org');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

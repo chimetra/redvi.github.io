@@ -1,0 +1,7 @@
+*.log
+*.pyc
+*.sh
+.DS_Store
+.notes
+*settings.py
+storm

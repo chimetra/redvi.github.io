@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <title>Arch Linux. Тонкая настройка</title>
+  <meta charset="utf-8">
+  <meta name="description" content="В продолжение статьи об установке лёгкого, быстрого и простого дистрибутива.">  <meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+  <link href="../theme/css/screen.css" rel="stylesheet" type="text/css" />
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+  <link href="../" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
+  <link href="../feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href=".."><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+        <ul>
+      <li><a href="../archives.html">Архив</a></li>
+      <li><a href="../about.html">О блоге</a></li>
+      <li><a href="../authors.html">Экипаж</a></li>
+    </ul>
+</div>
+</div>    <div id="main">
+<h2><a href="../articles/arch-settings.html">Arch Linux. Тонкая настройка</a></h2>
+<h5><i class="icon-feather"></i> 19 Октябрь 2011 </h5>
+<p>В продолжение статьи <a href="arch-install.html">об установке лёгкого, быстрого и простого дистрибутива</a>. В конце поста небольшой видеоролик с установкой LXDE. Не красоты ради, а удобства для. Чтобы вам не приходилось настраивать свой арч, сидя в консоли.</p>
+<p>В общем и целом настройка arhclinux будет сведена к нескольким несложным действиям как то:</p>
+<ul>
+<li><a href="#inet">Настройка интернет-соединения</a></li>
+<li><a href="#xorg">Установка драйверов на видео + xorg</a></li>
+<li><a href="#environ">Установка окружения рабочего стола</a></li>
+<li><a href="#touchpad">Настройка тачпада</a></li>
+<li><a href="#switcheroo">Переключение графики при наличии двух видеокарт</a></li>
+<li><a href="#powersave">Энергосбережение</a></li>
+<li><a href="#fn">fn-клавиши</a></li>
+</ul>
+<h3 id="inet">1. Настройка интернет-соединения</h3>
+<p>Примеры конфигураций можно посмотреть по адресу <code>/etc/network.d/examples/</code></p>
+<p><img alt="net" src="http://2.bp.blogspot.com/-TaIchwvehBE/UEWDUk5IDCI/AAAAAAAABXU/DdPLyq9ELCU/s1600/eth1.png" /></p>
+<p>Достаточно выбрать своё подключение и скопировать соответствующий файл в <code>/etc/network.d/</code> наименование_вашего_профиля. Например:</p>
+<div class="highlight"><pre><span class="gp">#</span> cp /etc/network.d/examples/ethernet-static /etc/network.d/eth0
+</pre></div>
+
+
+<p>Открыть скопированный файл в любимом текстовом редакторе и исправить значения на свои:</p>
+<p><img alt="static" src="http://2.bp.blogspot.com/-TfEoJZbPRHs/UEWEM3A9k_I/AAAAAAAABXc/Mijq913elto/s1600/eth0.png" /></p>
+<p>После чего запустить профиль командой:</p>
+<div class="highlight"><pre><span class="gp">#</span> netcfg eth0 up
+</pre></div>
+
+
+<h3 id="xorg">2. Установка драйверов на видео + xorg</h3>
+<p>Посмотрим на свою видеокарту:</p>
+<div class="highlight"><pre><span class="gp">$</span> lspci | grep VGA
+</pre></div>
+
+
+<p>или</p>
+<div class="highlight"><pre><span class="gp">$</span> lspci | grep -i vga
+</pre></div>
+
+
+<p>Найдём нужный (в примере открытый для карты intel!) драйвер:</p>
+<div class="highlight"><pre><span class="gp">#</span> pacman -Ss xf86-video-intel | less
+</pre></div>
+
+
+<p>Установим необходимые пакеты:</p>
+<div class="highlight"><pre><span class="gp">#</span> pacman -S xf86-video-intel
+<span class="gp">#</span> pacman -S xorg-server xorg-xinit xorg-utils xorg-server-utils mesa mesa-demos
+</pre></div>
+
+
+<p>Дайте команду <code>startx</code>. Если всё в порядке, вы увидите псевдографические окна. Если нет:</p>
+<p>пробуем запустить графику с драйвером <code>vesa</code>:</p>
+<div class="highlight"><pre><span class="gp">#</span> pacman -S xf86-video-vesa
+</pre></div>
+
+
+<p>конфигурируем xorg:</p>
+<div class="highlight"><pre><span class="gp">#</span> Xorg -configure
+</pre></div>
+
+
+<p>Файл конфигурации появится в каталоге <code>/root</code> и будет носить название <code>xorg.conf.new</code>. отредактируйте его, если нужно, и скопируйте в каталог <code>/etc/X11</code>:</p>
+<div class="highlight"><pre><span class="gp">#</span> cp xorg.conf.new /etc/X11/xorg.conf
+</pre></div>
+
+
+<p>Стартуйте графику снова.</p>
+<h3 id="environ">3.Установка окружения рабочего стола:</h3>
+<div class="highlight"><pre><span class="gp">#</span> pacman -S lxde
+</pre></div>
+
+
+<p><b>Примечание:</b> lxde лишь один из возможных вариантов и приводится как пример</p>
+<p>Стартуем:</p>
+<div class="highlight"><pre><span class="gp">$</span> sudo /user/sbin/lxdm start
+</pre></div>
+
+
+<p>Теперь вы увидите обычный рабочий стол с окружением lxde. Чтобы запускать графику при старте системы следует дописать в <code>/etc/rc.conf</code> в секцию <code>DAEMONS</code> - lxde.</p>
+<h3 id="touchpad">3. Настройка тачпада (если есть):</h3>
+<div class="highlight"><pre><span class="gp">#</span> pacman -S xf86-input-synaptics
+</pre></div>
+
+
+<p>Создаём в <code>/etc/X11/xorg.conf.d/</code> новый файл с именем <code>50-synaptics.conf</code>:</p>
+<div class="highlight"><pre><span class="n">Section</span> <span class="s">&quot;InputClass&quot;</span>
+    <span class="n">Identifier</span> <span class="s">&quot;touchpad&quot;</span>
+    <span class="n">Driver</span> <span class="s">&quot;synaptics&quot;</span>
+    <span class="n">MatchIsTouchpad</span> <span class="s">&quot;on&quot;</span>
+    <span class="n">Option</span> <span class="s">&quot;SHMConfig&quot;</span> <span class="s">&quot;on&quot;</span>
+    <span class="n">Option</span> <span class="s">&quot;TapButton1&quot;</span> <span class="s">&quot;1&quot;</span>
+    <span class="n">Option</span> <span class="s">&quot;TapButton2&quot;</span> <span class="s">&quot;2&quot;</span>
+    <span class="n">Option</span> <span class="s">&quot;TapButton3&quot;</span> <span class="s">&quot;3&quot;</span>
+    <span class="n">Option</span> <span class="s">&quot;VertEdgeScroll&quot;</span> <span class="s">&quot;on&quot;</span>
+    <span class="n">Option</span> <span class="s">&quot;VertTwoFingerScroll&quot;</span> <span class="s">&quot;on&quot;</span>
+    <span class="n">Option</span> <span class="s">&quot;HorizEdgeScroll&quot;</span> <span class="s">&quot;on&quot;</span>
+    <span class="n">Option</span> <span class="s">&quot;HorizTwoFingerScroll&quot;</span> <span class="s">&quot;on&quot;</span>
+    <span class="n">Option</span> <span class="s">&quot;CircularScrolling&quot;</span> <span class="s">&quot;on&quot;</span>
+    <span class="n">Option</span> <span class="s">&quot;CircScrollTrigger&quot;</span> <span class="s">&quot;2&quot;</span>
+    <span class="n">Option</span> <span class="s">&quot;EmulateTwoFingerMinZ&quot;</span> <span class="s">&quot;0&quot;</span>
+<span class="n">EndSection</span>
+</pre></div>
+
+
+<h3 id="switcheroo">4. Переключение графики при наличии двух видеокарт:</h3>
+<p>Подмонтируем <code>gebug</code>:</p>
+<div class="highlight"><pre><span class="gp">#</span> mount -t debugfs /sys/kernel/debug
+<span class="gp">#</span> vim /etc/fstab:
+<span class="go">debugfs /sys/kernel/debug   debugfs defaults    0   0</span>
+<span class="gp">#</span> modprobe radeon
+</pre></div>
+
+
+<p>Перезагрузка</p>
+<p>Проверьте поддержку <code>vgaswitcheroo</code> в ядре:</p>
+<div class="highlight"><pre><span class="gp">$</span> cat /sys/kernel/debug/vgaswitcheroo/switch
+</pre></div>
+
+
+<p>или, если каталога и файла <code>vgaswitheroo/switch</code> ещё нет:</p>
+<div class="highlight"><pre><span class="gp">$</span> gzip -cd /proc/config.gz | grep SWITCHEROO
+<span class="go">WGASWITCHEROO=y</span>
+</pre></div>
+
+
+<p>Такое выдало? Отлично, всё включено. Нет? Идите и <a href="kernel-v3.html">компилируйте ядро с поддержкой vgaswitcheroo</a>.</p>
+<p>Активировать ATI:</p>
+<div class="highlight"><pre><span class="gp">#</span> <span class="nb">echo </span>DDIS &gt; /sys/kernel/debug/vgaswitcheroo/switch
+</pre></div>
+
+
+<p>Активировать Intel:</p>
+<div class="highlight"><pre><span class="gp">#</span> <span class="nb">echo </span>DIGD &gt; /sys/kernel/debug/vgaswitcheroo/switch
+</pre></div>
+
+
+<p>Отключить неиспользуемую видеокарту:</p>
+<div class="highlight"><pre><span class="gp">#</span> <span class="nb">echo </span>OFF &gt; /sys/kernel/debug/vgaswitcheroo/switch
+</pre></div>
+
+
+<p>Включить неиспользуемую видеокарту:</p>
+<div class="highlight"><pre><span class="gp">#</span> <span class="nb">echo </span>ON &gt; /sys/kernel/debug/vgaswitcheroo/switch
+</pre></div>
+
+
+<p>Если чувствуете, что карта не отключилась:</p>
+<div class="highlight"><pre><span class="gp">#</span> <span class="nb">echo</span> <span class="s2">&quot;blacklist radeon&quot;</span> &gt;&gt; /etc/modprobe.d/modprobe.conf
+</pre></div>
+
+
+<p>Если нужно, чтобы карта не включалась при загрузке системы, допишите в <code>/etc/rc.locale</code>:</p>
+<div class="highlight"><pre><span class="n">chown</span> <span class="s">&quot;username&quot;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">debug</span><span class="o">/</span><span class="n">vgaswitcheroo</span><span class="o">/</span><span class="k">switch</span>
+<span class="cp"># где &quot;username&quot; имя вашего пользователя</span>
+<span class="n">echo</span> <span class="n">OFF</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">debug</span><span class="o">/</span><span class="n">vgaswitcheroo</span><span class="o">/</span><span class="k">switch</span>
+</pre></div>
+
+
+<p><img alt="off" src="http://1.bp.blogspot.com/-z3wugAFhedo/UEWFsj5DhRI/AAAAAAAABXk/SOy5k-PNDts/s1600/echo_off.png" /></p>
+<h3 id="powersave">4. Энергосбережение</h3>
+<p>Не буду повторять многократно пересказанное. Вики вам в помощь, дамы и господа:</p>
+<ul>
+<li><a href="acpi.html">acpi</a></li>
+<li><a href="https://wiki.archlinux.org/index.php/Laptop_(%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9)">laptop</a></li>
+<li><a href="https://wiki.archlinux.org/index.php/Lm_sensors_(%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9)">lm sensors</a></li>
+</ul>
+<p>Для автоматического старта <code>laptop-mode</code>:</p>
+<div class="highlight"><pre><span class="gp">#</span> systemctl <span class="nb">enable </span>laptop-mode.service
+</pre></div>
+
+
+<h3 id="fn">5. Горячие клавиши, fn-клавиши ноутбука</h3>
+<p>В KDE изначально не было возможности регулировать яркость экрана, что, впрочем, быстро пофиксилось добавлением лишь одной строки к загрузчику. Зато Gnome 3 приятно удивил, подхватив и кнопки управления яркостью дисплея, и кнопки увеличения громкости звука, и даже включение bluetooth, так что... хотите работу "из коробки" &mdash; добро пожаловать в Gnome.</p>
+<p><u>KDE</u>
+<a href="http://farm3.staticflickr.com/2812/9471540916_d9ffb37430_b.jpg" data-lighter><img src="http://farm3.staticflickr.com/2812/9471540916_d9ffb37430_b.jpg"/></a></p>
+<p><u>Gnome</u>
+<a href="http://farm6.staticflickr.com/5322/9468762349_c9cfdfa125_b.jpg" data-lighter><img src="http://farm6.staticflickr.com/5322/9468762349_c9cfdfa125_b.jpg"/></a></p>
+<p>Для любителей минимализма осмелюсь порекомендовать <a href="openbox.html">openbox</a> или же <a href="xmonad.html">xmonad</a>.</p>
+<p><b>ВНИМАНИЕ!</b> Поскольку с недавнего времени archlinux претерпел некоторые изменения, а именно осуществился переход к <code>systemd</code>, файл <code>/etc/rc.conf</code>, скорее всего, скоро перестанет поддерживаться, хотя на данный момент такая возможность есть. Вместо этого пишутся юниты для автозапуска тех или иных сервисов. Так, юнит запуска KDM выглядит следующим образом:</p>
+<p><img alt="systemd" src="http://2.bp.blogspot.com/---9N3-j3xxw/UEWGh2MgKKI/AAAAAAAABXs/cUMEfN5QPN0/s1600/systemd_unit.png" /></p>
+<p>Для того, чтобы KDM стартовал при загрузке системы, выполните команду:</p>
+<div class="highlight"><pre><span class="gp">#</span> systemctl <span class="nb">enable </span>kdm.service
+</pre></div>
+
+
+<p>Запуск <code>rc.local</code> больше не требуется. Вместо этого создадим юнит с нужной командой (в примере: отключение внешней видео карты)</p>
+<div class="highlight"><pre><span class="cp"># /etc/systemd/system/rc-local.service</span>
+<span class="cp">#</span>
+<span class="p">[</span><span class="n">Unit</span><span class="p">]</span>
+<span class="n">Description</span><span class="o">=/</span><span class="n">etc</span><span class="o">/</span><span class="n">rc</span><span class="p">.</span><span class="n">local</span>
+<span class="n">Compatibility</span> <span class="p">[</span><span class="n">Service</span><span class="p">]</span>
+<span class="n">Type</span><span class="o">=</span><span class="n">oneshot</span>
+<span class="n">ExecStart</span><span class="o">=/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span> <span class="o">-</span><span class="n">c</span> <span class="err">&#39;</span><span class="n">echo</span> <span class="n">OFF</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">debug</span><span class="o">/</span><span class="n">vgaswitcheroo</span><span class="o">/</span><span class="k">switch</span><span class="err">&#39;</span>
+<span class="n">RemainAfterExit</span><span class="o">=</span><span class="n">yes</span>
+<span class="p">[</span><span class="n">Install</span><span class="p">]</span>
+<span class="n">WantedBy</span><span class="o">=</span><span class="n">multi</span><span class="o">-</span><span class="n">user</span><span class="p">.</span><span class="n">target</span>
+</pre></div>
+
+
+<p>Для запуска iptables при старте системы</p>
+<div class="highlight"><pre><span class="cp"># /etc/systemd/system/iptables.service</span>
+<span class="cp">#</span>
+<span class="p">[</span><span class="n">Unit</span><span class="p">]</span>
+<span class="n">Description</span><span class="o">=</span><span class="n">Start</span> <span class="n">iptables</span>
+<span class="p">[</span><span class="n">Service</span><span class="p">]</span> <span class="n">ExecStart</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">iptables</span>
+<span class="p">[</span><span class="n">Install</span><span class="p">]</span> <span class="n">Before</span><span class="o">=</span><span class="n">network</span><span class="p">.</span><span class="n">target</span>
+</pre></div>
+
+
+<p>Добавление в автозапуск осуществляется командами <code>systemctl enable rc-local.service</code>
+и <code>systemctl enable iptables.service</code> соответственно.</p>
+<p>Тема юнитов <code>systemd</code> достаточно объёмна и заслуживает отдельного рассмотрения. Подробнее <a href="https://wiki.archlinux.org/index.php/Systemd">здесь</a>.</p>
+<p>Модули ядра теперь живут по адресу: <code>/etc/modules-load.d/</code></p>
+<p>Так, чтобы при старте системы загружались необходимые модули, мы можем создать файл с расширением <code>.conf</code> и вписать их туда. Например:</p>
+<div class="highlight"><pre><span class="cp"># /etc/modules-load.d/load_modules.conf</span>
+<span class="cp">#</span>
+<span class="n">acpi</span><span class="o">-</span><span class="n">cpufreq</span> <span class="n">cpufreq_conservative</span>
+</pre></div>
+
+
+<p>Удачи!</p>
+<div class="video"><iframe width="400" height="300" src="http://www.youtube.com/embed/2EIo6-bH9DU?rel=0" frameborder="0" allowfullscreen></iframe></div>
+<h5><i class="icon-user"></i> <a href="../author/redvi.html">redVi</a>,
+<i class="icon-bookmarks"></i> <a href="../tag/arch.html">Arch</a> /
+</h5>
+<p align="center"><a href="#">наверх</a></p>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+       <li class="footer"><a href="../tag/android.html">Android&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/arch.html">Arch&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/blog.html">Blog&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/debian.html">Debian&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/decorations.html">Decorations&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/django.html">Django&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/editors.html">Editors&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/gentoo.html">Gentoo&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/git.html">Git&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/javascript.html">JavaScript&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/kernel.html">Kernel&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/latex.html">LaTeX&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/python.html">Python&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/server.html">Server&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/web.html">Web&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/windows.html">Windows&nbsp;&bull;&nbsp;</a></li>
+  </ul>
+<br/><p>&copy;&nbsp;2011&mdash;2013&nbsp;&bull;&nbsp;<a href="..">unix-lab.org </a>&nbsp;&bull;&nbsp;powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;&bull;&nbsp;<a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru"><i class="icon-cc"></i></a></p>
+</div>
+<!-- end #footer --></div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-42400517-1', 'www.unix-lab.org');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>
