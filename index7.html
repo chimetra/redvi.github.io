@@ -4,81 +4,81 @@
   <title>блог об операционных системах, open source и программировании</title>
   <meta charset="utf-8">
   <meta name="description" content="Блог об операционных системах, open source и программировании">  <meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
-  <link href="./theme/css/screen.css" rel="stylesheet" type="text/css" />
+  <link href="http://www.unix-lab.org/theme/css/screen.css" rel="stylesheet" type="text/css" />
   <meta name='yandex-verification' content='494a81ecb0e796d6' />
-  <link rel="icon" href="./favicon.ico" type="image/x-icon">
-  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
-  <link href="./" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
-  <link href="./feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
+  <link href="http://www.unix-lab.org/feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
 </head>
 <body>
 <div id="outer-wrapper">
 <div id="header-wrapper">
-    <a href="."><div class="logo"></div></a>
+    <a href="http://www.unix-lab.org"><div class="logo"></div></a>
     <div class="small">блог об операционных системах, open source и программировании</div>
 <div class="nav">
         <ul>
-      <li><a href="./archives.html">Архив</a></li>
-      <li><a href="./about.html">О блоге</a></li>
-      <li><a href="./authors.html">Экипаж</a></li>
+      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
     </ul>
 </div>
 </div>    <div id="main">
-<h2><a href="./articles/chroot.html">Chroot на практике</a></h2>
+<h2><a href="http://www.unix-lab.org/articles/chroot.html">Chroot на практике</a></h2>
 <h5><i class="icon-feather"></i> 25 Декабрь 2011 </h5>
 Изменение корня это процесс изменения видимой на диске корневой директории (и текущего запуска процессов) на другую корневую директорию. Когда вы изменили корневую директорию на другую, вы больше не имеете доступа к файлам и командам за пределами этой директории. Эта директория становится подобна заключению пользователя в клетку. Изменение корневой директории обычно нужно для таких задач как переустановка GRUB или сброс забытого пароля и чаще осуществляется при помощи LiveCD или LiveUSB в монтируемый раздел, содержащий установленную систему. Вы должны загрузиться с любой работающей среды Linux ...
-<h2><a href="./articles/arch-users.html">Пользователи и группы в Archlinux</a></h2>
+<h2><a href="http://www.unix-lab.org/articles/arch-users.html">Пользователи и группы в Archlinux</a></h2>
 <h5><i class="icon-feather"></i> 27 Ноябрь 2011 </h5>
 Наиболее удобным инструментом для создания нового пользователя служит команда adduser. Вам будут заданы вопросы касательно имени, домашней директории, пароля, принадлежности к тем или иным пользовательским группам. После ввода основной информации вы сможете добавить дополнительную как то: полное имя, рабочий и домашний телефоны и прочее. Список доступных в archlinux групп можно посмотреть в файле /etc/group. Если вы уже создали пользователя и назначили ему список групп, его имя также будет записано в этот файл напротив тех групп, которым он ...
-<h2><a href="./articles/quotes.html">Квоты или Как наказать нерадивого пользователя</a></h2>
+<h2><a href="http://www.unix-lab.org/articles/quotes.html">Квоты или Как наказать нерадивого пользователя</a></h2>
 <h5><i class="icon-feather"></i> 13 Ноябрь 2011 </h5>
 Сегодня редко приходится задумываться об экономии места на HDD. Но что делать, если дисковое пространство одно, а пользователей много и каждый из них занимает столько места, сколько ему нравится? Ограничим их вольготный образ жизни квотами. Для использования данной возможности в ядре должна быть включена поддержка квот. Проверить это можно так: $ gzip -cd /proc/config.gz | grep QUOTA В ответ вы должны получить небольшой список параметров конфигурации ядра и среди них: CONFIG_QUOTA=y теперь посмотрим, ...
-<h2><a href="./articles/debian-dsl.html">Настройка DSL в Debian/Ubuntu Linux</a></h2>
+<h2><a href="http://www.unix-lab.org/articles/debian-dsl.html">Настройка DSL в Debian/Ubuntu Linux</a></h2>
 <h5><i class="icon-feather"></i> 30 Октябрь 2011 </h5>
 После установки linux первое, что обычно делает счастливый пользователь - настройка интернет-соединения. Но не у всех получается произвести её корректно. Поэтому сегодня рассмотрим простейший способ настройки ADSL под Debian Squeeze. Итак, поехали. I. Используем конфигуратор 1. Введите в терминале: # ifconfig -a Это позволит просмотреть список найденных сетевых интерфейсов Примечание: lo – интерфейс вашего локального хоста, на нём внимание не заостряем. Нас интересует eth0 или же ...
-<h2><a href="./articles/arch-settings.html">Arch Linux. Тонкая настройка</a></h2>
+<h2><a href="http://www.unix-lab.org/articles/arch-settings.html">Arch Linux. Тонкая настройка</a></h2>
 <h5><i class="icon-feather"></i> 19 Октябрь 2011 </h5>
 В продолжение статьи об установке лёгкого, быстрого и простого дистрибутива. В конце поста небольшой видеоролик с установкой LXDE. Не красоты ради, а удобства для. Чтобы вам не приходилось настраивать свой арч, сидя в консоли. В общем и целом настройка arhclinux будет сведена к нескольким несложным действиям как то: Настройка интернет-соединения Установка драйверов на видео + xorg Установка окружения рабочего стола Настройка тачпада <a ...
-<h2><a href="./articles/arch-install.html">Arch Linux. Быстрая установка</a></h2>
+<h2><a href="http://www.unix-lab.org/articles/arch-install.html">Arch Linux. Быстрая установка</a></h2>
 <h5><i class="icon-feather"></i> 17 Октябрь 2011  &nbsp; <i class="icon-spin4"></i> 7 Июль 2012 </h5>
 Статья написана по большей части как быстрый старт для тех, кто уже ознакомился с официальной страничкой вики, и устанавливает систему не в первый раз. В случае, если вы никогда ранее не сталкивались с ArchLinux, рекомендуется обратиться к официальной документации по этому вопросу. Арч — стремительно меняющийся дистрибутив, буквально за два-три месяца (лето-осень 2012) процесс установки претерпел кардинальные изменения, от замены любимого bsd-подобного AIF до gentoo-подобной системы установки, от rc.conf и ...
-<h2><a href="./articles/install-gentoo.html">Установка Gentoo. По-русски</a></h2>
+<h2><a href="http://www.unix-lab.org/articles/install-gentoo.html">Установка Gentoo. По-русски</a></h2>
 <h5><i class="icon-feather"></i> 30 Сентябрь 2011  &nbsp; <i class="icon-spin4"></i> 2 Январь 2013 </h5>
 Сегодня будем развенчивать миф о сложности установки Gentoo. Почему установка "по-русски"? Потому что настраивать станем русскую локаль, раскладку и временную зону. Статья получилась довольно объёмной, для тех, кто не знает, как скоротать долгий вечер). Загрузитесь с СD-диска. Грузимся с параметрами по умолчанию. Настройка интернет-соединения: автор использует модемное соединение, данные передаются автоматически при помощи DHCP. <div ...
-<h2><a href="./articles/dns-server.html">DNS-сервер не отвечает</a></h2>
+<h2><a href="http://www.unix-lab.org/articles/dns-server.html">DNS-сервер не отвечает</a></h2>
 <h5><i class="icon-feather"></i> 09 Август 2011 </h5>
 "DNS-сервер не отвечает. Компьютер пытается использовать DNS-сервер, который работает неправильно или не существует." При это соединение с сетью установлено. Возможные варианты решения проблемы: 1. Перезагрузить модем 2. Проверить наличие и правильность DNS-адреса провайдера в настройках сетевой карты . Если их нет, посмотреть документацию, что выдал вам провайдер и вручную указать IP и DNS. Маска подсети обычно 255.255.255.255 Кликаем по иконке интернет-соединения -- Центр управления сетями и общим ...
-<h2><a href="./articles/debian-repo.html">Репозитории Debian Squeeze</a></h2>
+<h2><a href="http://www.unix-lab.org/articles/debian-repo.html">Репозитории Debian Squeeze</a></h2>
 <h5><i class="icon-feather"></i> 05 Август 2011 </h5>
 Как известно, изначально в Debian Squeeze задействованы только репозитории security и main. Для домашнего использования маловато. Хочется и к мультимедия иметь доступ, и любимые программы устанавливать, а они зачастую non-free. Добавим несколько интересных вещей для Squeeze, тем более, что для следюущего стабильного релиза - Wheezy - они, скорее всего тоже подойдут. Надо будет лишь вместо squeeze wheezy поставить. Конечно, пока это недоказанная гипотеза, но так было с lenny,поживём - увидим. Добавляем репозитории: # ...
-<h2><a href="./articles/debian-kernel.html">Сборка ядра Debian</a></h2>
+<h2><a href="http://www.unix-lab.org/articles/debian-kernel.html">Сборка ядра Debian</a></h2>
 <h5><i class="icon-feather"></i> 02 Август 2011 </h5>
 Цель данной статьи — показать пользователям, что такое страшное словосочетание как «компиляция ядра» вовсе не так уж и страшно, и даже довольно просто, если всё делать вдумчиво. Когда и зачем это нужно? если ваше оборудование специфично для поддержки нестандартных возможностей, не включенных в стандартное ядро для оптимизации если в силу каких-то причин вам необходима более новая версия ядра В примере будет разобрана не просто перекомпиляция уже имеющегося ядра, а как раз установка и последующая сборка более нового. Для ...
 <div class="pagination">
-                    <a href="./index6.html">&larr;Предыдущая</a>
+                    <a href="http://www.unix-lab.org/index6.html">&larr;Предыдущая</a>
         страница 7 из 8.
-            <a href="./index8.html">Следующая&rarr;</a>
+            <a href="http://www.unix-lab.org/index8.html">Следующая&rarr;</a>
     </div></div>
 <div id="footer-wrapper">
 <ul class="footer">
-       <li class="footer"><a href="./tag/android.html">Android&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="./tag/arch.html">Arch&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="./tag/blog.html">Blog&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="./tag/debian.html">Debian&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="./tag/decorations.html">Decorations&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="./tag/django.html">Django&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="./tag/editors.html">Editors&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="./tag/gentoo.html">Gentoo&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="./tag/git.html">Git&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="./tag/javascript.html">JavaScript&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="./tag/kernel.html">Kernel&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="./tag/latex.html">LaTeX&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="./tag/python.html">Python&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="./tag/server.html">Server&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="./tag/web.html">Web&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="./tag/windows.html">Windows&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/android.html">Android&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/arch.html">Arch&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/blog.html">Blog&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/debian.html">Debian&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations.html">Decorations&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/django.html">Django&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/editors.html">Editors&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo.html">Gentoo&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/git.html">Git&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript.html">JavaScript&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel.html">Kernel&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/latex.html">LaTeX&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/python.html">Python&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/server.html">Server&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/web.html">Web&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/windows.html">Windows&nbsp;&bull;&nbsp;</a></li>
   </ul>
-<br/><p>&copy;&nbsp;2011&mdash;2013&nbsp;&bull;&nbsp;<a href=".">unix-lab.org </a>&nbsp;&bull;&nbsp;powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;&bull;&nbsp;<a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru"><i class="icon-cc"></i></a></p>
+<br/><p>&copy;&nbsp;2011&mdash;2013&nbsp;&bull;&nbsp;<a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;&bull;&nbsp;powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;&bull;&nbsp;<a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru"><i class="icon-cc"></i></a></p>
 </div>
 <!-- end #footer --></div>
 <script>
