@@ -4,39 +4,39 @@
   <title>unix-lab.org - Debian</title>
   <meta charset="utf-8">
   <meta name="description" content="Блог об операционных системах, open source и программировании">  <meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-  <link href="http://www.unix-lab.org/theme/css/screen.css" rel="stylesheet" type="text/css" />
+  <link href="../theme/css/screen.css" rel="stylesheet" type="text/css" />
   <meta name='yandex-verification' content='494a81ecb0e796d6' />
-  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
-  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
-  <link href="http://www.unix-lab.org/" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
-  <link href="http://www.unix-lab.org/feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+  <link href="../" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
+  <link href="../feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
 </head>
 <body>
 <div id="outer-wrapper">
 <div id="header-wrapper">
-    <a href="http://www.unix-lab.org"><div class="logo"></div></a>
+    <a href=".."><div class="logo"></div></a>
     <div class="small">блог об операционных системах, open source и программировании</div>
 <div class="nav">
         <ul>
-      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
-      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
-      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+      <li><a href="../archives.html">Архив</a></li>
+      <li><a href="../about.html">О блоге</a></li>
+      <li><a href="../authors.html">Экипаж</a></li>
     </ul>
 </div>
 </div>    <div id="main">
-<h2><a href="http://www.unix-lab.org/articles/debian-wheezy.html">Debian 7 или Какого лешего</a></h2>
+<h2><a href="../articles/debian-wheezy.html">Debian 7 или Какого лешего</a></h2>
 <h5><i class="icon-feather"></i> 22 Июнь 2013 </h5>
 Debian — первый серьёзный дистрибутив автора, тёплая и нежная дружба с которым длилась достаточно долго, до перехода на archlinux. Помнится, просидев на Ubuntu пару месяцев и смекнув, что с этим дистрибутивом ничему толком не научишься (ибо не способствует он получению новых знаний в освоении linux — слишком дружелюбен и услужлив, с ним даже не приходится знать, что такое консоль), зимой 2009 года на домашний компьютер было решено поставить Debian. Много воды утекло с тех пор, много дистрибутивов было испробовано и теперь, после выхода Debian Wheezy, захотелось снова взглянуть на старого друга... да не тут-то ...
-<h2><a href="http://www.unix-lab.org/articles/debian-dsl.html">Настройка DSL в Debian/Ubuntu Linux</a></h2>
+<h2><a href="../articles/debian-dsl.html">Настройка DSL в Debian/Ubuntu Linux</a></h2>
 <h5><i class="icon-feather"></i> 30 Октябрь 2011 </h5>
 После установки linux первое, что обычно делает счастливый пользователь - настройка интернет-соединения. Но не у всех получается произвести её корректно. Поэтому сегодня рассмотрим простейший способ настройки ADSL под Debian Squeeze. Итак, поехали. I. Используем конфигуратор 1. Введите в терминале: # ifconfig -a Это позволит просмотреть список найденных сетевых интерфейсов Примечание: lo – интерфейс вашего локального хоста, на нём внимание не заостряем. Нас интересует eth0 или же ...
-<h2><a href="http://www.unix-lab.org/articles/debian-repo.html">Репозитории Debian Squeeze</a></h2>
+<h2><a href="../articles/debian-repo.html">Репозитории Debian Squeeze</a></h2>
 <h5><i class="icon-feather"></i> 05 Август 2011 </h5>
 Как известно, изначально в Debian Squeeze задействованы только репозитории security и main. Для домашнего использования маловато. Хочется и к мультимедия иметь доступ, и любимые программы устанавливать, а они зачастую non-free. Добавим несколько интересных вещей для Squeeze, тем более, что для следюущего стабильного релиза - Wheezy - они, скорее всего тоже подойдут. Надо будет лишь вместо squeeze wheezy поставить. Конечно, пока это недоказанная гипотеза, но так было с lenny,поживём - увидим. Добавляем репозитории: # ...
-<h2><a href="http://www.unix-lab.org/articles/debian-kernel.html">Сборка ядра Debian</a></h2>
+<h2><a href="../articles/debian-kernel.html">Сборка ядра Debian</a></h2>
 <h5><i class="icon-feather"></i> 02 Август 2011 </h5>
 Цель данной статьи — показать пользователям, что такое страшное словосочетание как «компиляция ядра» вовсе не так уж и страшно, и даже довольно просто, если всё делать вдумчиво. Когда и зачем это нужно? если ваше оборудование специфично для поддержки нестандартных возможностей, не включенных в стандартное ядро для оптимизации если в силу каких-то причин вам необходима более новая версия ядра В примере будет разобрана не просто перекомпиляция уже имеющегося ядра, а как раз установка и последующая сборка более нового. Для ...
-<h2><a href="http://www.unix-lab.org/articles/debian-kde.html">Установка KDE в Debian</a></h2>
+<h2><a href="../articles/debian-kde.html">Установка KDE в Debian</a></h2>
 <h5><i class="icon-feather"></i> 18 Июль 2011 </h5>
 Надоел gnome.... хочется чего-то свежего и красивого для настольной системы? Чтобы радовало глаз и была широта настроек? Давайте установим графическую среду KDE, зовущуюся в народе "кедами". Для установки полного пакета со всеми "примочками" просто введите в консоли от рута: # aptitude install kde-full Впрочем, можете установить только базовую систему или же лишь необходимое вам из написанного ниже: # aptitude install kdm kdebase-runtime kdebase-workspace kdebase kde-minimal ...
 <div class="pagination">
@@ -44,24 +44,24 @@ Debian — первый серьёзный дистрибутив автора, 
     </div></div>
 <div id="footer-wrapper">
 <ul class="footer">
-       <li class="footer"><a href="http://www.unix-lab.org/tag/android.html">Android&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/arch.html">Arch&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/blog.html">Blog&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/debian.html">Debian&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations.html">Decorations&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/django.html">Django&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/editors.html">Editors&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo.html">Gentoo&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/git.html">Git&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript.html">JavaScript&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel.html">Kernel&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/latex.html">LaTeX&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/python.html">Python&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/server.html">Server&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/web.html">Web&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/windows.html">Windows&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/android.html">Android&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/arch.html">Arch&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/blog.html">Blog&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/debian.html">Debian&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/decorations.html">Decorations&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/django.html">Django&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/editors.html">Editors&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/gentoo.html">Gentoo&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/git.html">Git&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/javascript.html">JavaScript&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/kernel.html">Kernel&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/latex.html">LaTeX&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/python.html">Python&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/server.html">Server&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/web.html">Web&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/windows.html">Windows&nbsp;&bull;&nbsp;</a></li>
   </ul>
-<br/><p>&copy;&nbsp;2011&mdash;2013&nbsp;&bull;&nbsp;<a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;&bull;&nbsp;powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;&bull;&nbsp;<a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></p>
+<br/><p>&copy;&nbsp;2011&mdash;2013&nbsp;&bull;&nbsp;<a href="..">unix-lab.org </a>&nbsp;&bull;&nbsp;powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;&bull;&nbsp;<a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></p>
 </div>
 <!-- end #footer --></div>
 <script>

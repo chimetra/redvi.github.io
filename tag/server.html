@@ -4,51 +4,51 @@
   <title>unix-lab.org - Server</title>
   <meta charset="utf-8">
   <meta name="description" content="Блог об операционных системах, open source и программировании">  <meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-  <link href="http://www.unix-lab.org/theme/css/screen.css" rel="stylesheet" type="text/css" />
+  <link href="../theme/css/screen.css" rel="stylesheet" type="text/css" />
   <meta name='yandex-verification' content='494a81ecb0e796d6' />
-  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
-  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
-  <link href="http://www.unix-lab.org/" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
-  <link href="http://www.unix-lab.org/feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+  <link href="../" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
+  <link href="../feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
 </head>
 <body>
 <div id="outer-wrapper">
 <div id="header-wrapper">
-    <a href="http://www.unix-lab.org"><div class="logo"></div></a>
+    <a href=".."><div class="logo"></div></a>
     <div class="small">блог об операционных системах, open source и программировании</div>
 <div class="nav">
         <ul>
-      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
-      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
-      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+      <li><a href="../archives.html">Архив</a></li>
+      <li><a href="../about.html">О блоге</a></li>
+      <li><a href="../authors.html">Экипаж</a></li>
     </ul>
 </div>
 </div>    <div id="main">
-<h2><a href="http://www.unix-lab.org/articles/postgresql.html">Настройка PostgreSQL для Django</a></h2>
+<h2><a href="../articles/postgresql.html">Настройка PostgreSQL для Django</a></h2>
 <h5><i class="icon-feather"></i> 19 Январь 2013 </h5>
 Об установке python и django мы уже говорили. Но зачастую для полноценной работы в django нужно взаимодействие с той или иной СУБД. В частности когда вы создаёте приложение командой startapp, в новом каталоге появляется файл для представления ваших будущих моделей - models.py - который призван взаимодействовать с базой данных. На основе моделей, представленных в этом файле, и формируется наша база данных. Главный вопрос: какую СУБД выбрать? Это сугубо личное дело каждого разработчика, но в приведённом примере используется PostgreSQL. Обратимся к настройкам. I. Установка и ...
-<h2><a href="http://www.unix-lab.org/articles/qemu.html">QEMU. Mini how-to</a></h2>
+<h2><a href="../articles/qemu.html">QEMU. Mini how-to</a></h2>
 <h5><i class="icon-feather"></i> 25 Декабрь 2012 </h5>
 Согласно премудрой википедии, QEMU — свободная программа с открытым исходным кодом для эмуляции аппаратного обеспечения различных платформ. Что это значит? Прежде всего это говорит нам о том, что с помощью QEMU мы запросто сможем проводить эксперименты с различными операционными системами, не выходя из своей основной системы. Допустим, вы решили перейти на другой дистрибутив linux, но по каким-то причинам боитесь ставить его на реальное железо. Что ж, в таком случае QEMU будет вам отличным подспорьем! I. Установка qemu $ sudo pacman -S qemu-kvm ...
-<h2><a href="http://www.unix-lab.org/articles/nginx.html">Nginx как самостоятельный веб-сервер</a></h2>
+<h2><a href="../articles/nginx.html">Nginx как самостоятельный веб-сервер</a></h2>
 <h5><i class="icon-feather"></i> 06 Ноябрь 2012 </h5>
 Пост в продолжение цикла о веб-серверах. В этот раз будет затронут вопрос установки и настройки сервера nginx не как дополнение к apache, а абсолютно отдельно от последнего. Если вас также интересует настройка apache под различными операционными системами, возможно, вам пригодятся данные ниже ссылки: Apache + Archlinux Apache + Windows Немного предыстории: Nginx (энджин-экс) был разработан нашим соотечественником Игорем Сысоевым, первый релиз увидел свет осенью 2004 года. Nginx - это HTTP-сервер и ...
-<h2><a href="http://www.unix-lab.org/articles/phpmyadmin.html">Установка PHPMyAdmin</a></h2>
+<h2><a href="../articles/phpmyadmin.html">Установка PHPMyAdmin</a></h2>
 <h5><i class="icon-feather"></i> 16 Июнь 2012 </h5>
 Что ж, в предыдущем посте мы благополучно установили веб-сервер Apache, php, MySQL... Но с базами данных намного удобнее работать при помощи PHPMyAdmin. Давайте его установим. Идём по адресу http://www.phpmyadmin.net/home_page/downloads.php, скачиваем архив. Желательно выбирать мультиязычный, где уже имеется русский. На родном языке всегда лучше. Предварительно создаём папку pma и распаковываем архив по адресу, где живёт наш веб-сервер. В моём случае это C:\Program Files ...
-<h2><a href="http://www.unix-lab.org/articles/mysql-install.html">Установка СУБД MySQL. Вручную</a></h2>
+<h2><a href="../articles/mysql-install.html">Установка СУБД MySQL. Вручную</a></h2>
 <h5><i class="icon-feather"></i> 03 Июнь 2012 </h5>
 Как было обещано ранее в статье о настройке веб-сервера, выкладываю пост о настройке MySQL вручную для тех, у кого по каким-то причинам корректно не сработал инсталлятор. Как всегда начнём с того, что достанм необходимую программу. На этот раз будем качать архив вместо установщика: http://www.mysql.com/downloads/mysql/ Займёмся созданием необходимых папок. Как правило по пути C:\Program Files\MySQL\MySQL Server 5.5. То есть папку MySQL и вложенную MySQL Server 5.5. Распаковываем в нее содержимое ...
-<h2><a href="http://www.unix-lab.org/articles/apache-php-mysql.html">Apache+PHP+MySQL под Windows</a></h2>
+<h2><a href="../articles/apache-php-mysql.html">Apache+PHP+MySQL под Windows</a></h2>
 <h5><i class="icon-feather"></i> 26 Май 2012 </h5>
 Тему о веб-серверах после опубликованных постов, где производилась установка LAMP на ArchLinux, приводились настройки Nginx и прочее, хотелось закрыть. Но, как оказалось, не все хотят пользоваться готовыми пакетами, где кто-то уже сделал настройки по-своему, решил за вас. Что ж, поскольку есть спрос на данную тему, а инструкций по установке всего этого комплекта 3 в одном мало или же нет вовсе, посвятим сему сегодняшний пост. Apache Скачивается с сайта: <img alt="apache" ...
-<h2><a href="http://www.unix-lab.org/articles/phpbb.html">Создание форума с phpBB</a></h2>
+<h2><a href="../articles/phpbb.html">Создание форума с phpBB</a></h2>
 <h5><i class="icon-feather"></i> 04 Март 2012 </h5>
 Да, автор данной статьи, как и многие другие, считает phpBB лучшим PHP-движком для форумов. Вот сейчас мы и посмотрим, как проходит его установка. Отмечу, что phpBB требует СУБД MySQL (те, кто не знает, что это - не пугайтесь, всё нормально), в начале речь пойдёт о настройке новой базы данных, а затем мы скачаем и установим наш замечательный движок. Обзора первоначальной настройки форума не будет, ибо просто там всё. I. Установка и настройка MySQL Итак, приступим. Те, у кого MySQL ещё не установлен, используем команду: # pacman -S ...
-<h2><a href="http://www.unix-lab.org/articles/lamp.html">Установка LAMP в archlinux</a></h2>
+<h2><a href="../articles/lamp.html">Установка LAMP в archlinux</a></h2>
 <h5><i class="icon-feather"></i> 21 Январь 2012 </h5>
 Apache — это самый популярный веб-сервер. Его задача как и любого другого веб-сервера — отдавать контент на запросы клиентов. Apache обладает большим функционалом за счет подключаемых модулей. Установка $ sudo pacman -S apache php php-apache mysql Это наиболее популярный вариант установки. Таким образом мы получим небезызвестный LAMP — Linux + Apache + MySQL + PHP Если вы не нуждаетесь в каком-либо из компонентов, не ставьте его. Не забудьте установить пароль для пользователя MySQL. Для этого ...
-<h2><a href="http://www.unix-lab.org/articles/unpack-archive.html">Распаковка архива на сервере</a></h2>
+<h2><a href="../articles/unpack-archive.html">Распаковка архива на сервере</a></h2>
 <h5><i class="icon-feather"></i> 05 Январь 2012 </h5>
 Зачастую перед web-мастером или администратором сайта встаёт задача работы с архивами. В случае, если вам необходимо залить на хостинг большой объём файлов или же целый сайт, временные затраты могут быть достаточно велики. Архивы весят куда меньше, да и распаковка проходит быстро, но не каждый хостер предоставляет инструменты для работы с архивами. Поэтому мы воспользуемся двумя php-файлами, которые и будут этими инструментами. Что понадобится? ftp-доступ, блокнот и zip-архиватор. I. Открываем блокнот (а лучше notepad ++) и создаём два файла, которые сохраним в формате ...
 <div class="pagination">
@@ -56,24 +56,24 @@ Apache — это самый популярный веб-сервер. Его з
     </div></div>
 <div id="footer-wrapper">
 <ul class="footer">
-       <li class="footer"><a href="http://www.unix-lab.org/tag/android.html">Android&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/arch.html">Arch&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/blog.html">Blog&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/debian.html">Debian&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations.html">Decorations&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/django.html">Django&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/editors.html">Editors&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo.html">Gentoo&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/git.html">Git&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript.html">JavaScript&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel.html">Kernel&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/latex.html">LaTeX&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/python.html">Python&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/server.html">Server&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/web.html">Web&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/windows.html">Windows&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/android.html">Android&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/arch.html">Arch&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/blog.html">Blog&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/debian.html">Debian&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/decorations.html">Decorations&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/django.html">Django&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/editors.html">Editors&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/gentoo.html">Gentoo&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/git.html">Git&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/javascript.html">JavaScript&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/kernel.html">Kernel&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/latex.html">LaTeX&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/python.html">Python&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/server.html">Server&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/web.html">Web&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="../tag/windows.html">Windows&nbsp;&bull;&nbsp;</a></li>
   </ul>
-<br/><p>&copy;&nbsp;2011&mdash;2013&nbsp;&bull;&nbsp;<a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;&bull;&nbsp;powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;&bull;&nbsp;<a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></p>
+<br/><p>&copy;&nbsp;2011&mdash;2013&nbsp;&bull;&nbsp;<a href="..">unix-lab.org </a>&nbsp;&bull;&nbsp;powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;&bull;&nbsp;<a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></p>
 </div>
 <!-- end #footer --></div>
 <script>
