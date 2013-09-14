@@ -38,18 +38,17 @@ body {
     font-size: 80%;
   }
 .nav {
-  position: relative;
   margin: 0 auto;
   max-width: 100%;
   font-family: $heading-font-family;
   ul {
     font-size: 120%;
-    padding: 3% 0 0;
+    text-align: center;
     list-style-type: none;
   }
   li {
     padding: 1em 1em 1em 0;
-    display: inline;
+    display: inline-block;
   }
   a {
     color: $white;
