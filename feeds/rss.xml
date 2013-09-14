@@ -1,5 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>unix-lab.org</title><link>http://www.unix-lab.org/</link><description>блог об операционных системах, open source и программировании</description><atom:link href="http://www.unix-lab.org/feeds/rss.xml" rel="self"></atom:link><lastBuildDate>Sun, 08 Sep 2013 08:25:00 +0700</lastBuildDate><item><title>Верстаем макеты с SASS/SCSS</title><link>http://www.unix-lab.org/articles/sass.html</link><description>&lt;p&gt;Пожалуй, стоило бы затронуть тему &amp;laquo;быстрого написания css-кода, разложенного по полочкам&amp;raquo;. Именно таким автору данной заметки видится sass &amp;mdash; инструмент, позволяющий совершить волшебное преобразование: превратить рутинное написание css-кода в любопытное занятие. Цель данного поста заключается не в том, чтобы объять необъятное и попытаться рассказать обо всём подробно, но в том, чтобы заинтересовать потенциального читателя, дабы в последующем ему захотелось разобраться с представленными здесь понятиями самостоятельно. Но прежде, чем мы приступим к непосредственному разбору полётов...&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>unix-lab.org</title><link>http://www.unix-lab.org/</link><description>блог об операционных системах, open source и программировании</description><atom:link href="http://www.unix-lab.org/feeds/rss.xml" rel="self"></atom:link><lastBuildDate>Sat, 14 Sep 2013 21:05:00 +0700</lastBuildDate><item><title>Навигация по документу в LaTeX</title><link>http://www.unix-lab.org/articles/hyperref.html</link><description>&lt;p&gt;Довольно часто бывает необходимо указать в тексте ссылку на источник или какой-либо полезный ресурс. А то и просто сделать оглавление &amp;laquo;кликабельным&amp;raquo;, дабы при его просмотре сразу можно было выбрать нужную главу и перейти к ней.&lt;/p&gt;
+&lt;p&gt;Для этих нужд вполне можно задействовать пакет &lt;code&gt;hyperref&lt;/code&gt;, который входит в поставку с LaTeX в большинстве дистрибутивов. &lt;code&gt;Hyperref&lt;/code&gt; имеет достаточно большое количество опций, которые перечисляются через запятую при подключении пакета. Но следует иметь ввиду, что он переопределяет некоторые команды LaTeX'а, и подключать его последним. При подключении &lt;code&gt;hyperref&lt;/code&gt; все перекрёстные ссылки будут преобразованы в ссылки гипертекстовые: оглавление, сноски, цитаты...&lt;/p&gt;
+&lt;p&gt;Во многих источниках обращают внимание на опцию выбора драйвера. Честно сказать, при создании PDF-документа с &lt;code&gt;pdflatex&lt;/code&gt; &lt;em&gt;без указания&lt;/em&gt; драйвера всё собралось и сработало точно так же как и с включением нужной опции.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Возможные опции для hyperref&lt;ul&gt;
+&lt;li&gt;pdftex&lt;/li&gt;
+&lt;li&gt;dvips&lt;/li&gt;
+&lt;li&gt;latex2html&lt;/li&gt;
+&lt;li&gt;vtex&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Ссылки внутри документа&lt;/h2&gt;
+&lt;p&gt;К примеру, появилась необходимость сослаться на какой-либо пункт в документе. В этом случае воспользуемся мишенью и сошлёмся на неё. Если вы привыкли работать с HTML, можете сравнить это с созданием якоря на странице. Команда для мишени задаётся так:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;\hypertarget&lt;/span&gt;&lt;span class="nb"&gt;{&lt;/span&gt;name&lt;span class="nb"&gt;}{&lt;/span&gt;text&lt;span class="nb"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;где &lt;code&gt;name&lt;/code&gt; &amp;mdash; мишень, &lt;code&gt;text&lt;/code&gt; &amp;mdash; используемый текст (этот аргумент может быть пустым).&lt;/p&gt;
+&lt;p&gt;Теперь нужно просто сослаться на созданную мишень в тексте при помощи &lt;code&gt;hyperlink&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;\documentclass&lt;/span&gt;&lt;span class="na"&gt;[a4paper,14pt,titlepage,final,oneside]&lt;/span&gt;&lt;span class="nb"&gt;{&lt;/span&gt;report&lt;span class="nb"&gt;}&lt;/span&gt;
+&lt;span class="k"&gt;\usepackage&lt;/span&gt;&lt;span class="na"&gt;[english, russian]&lt;/span&gt;&lt;span class="nb"&gt;{&lt;/span&gt;babel&lt;span class="nb"&gt;}&lt;/span&gt;
+&lt;span class="k"&gt;\usepackage&lt;/span&gt;&lt;span class="na"&gt;[utf8]&lt;/span&gt;&lt;span class="nb"&gt;{&lt;/span&gt;inputenc&lt;span class="nb"&gt;}&lt;/span&gt;
+&lt;span class="k"&gt;\usepackage&lt;/span&gt;&lt;span class="na"&gt;[unicode, pdftex]&lt;/span&gt;&lt;span class="nb"&gt;{&lt;/span&gt;hyperref&lt;span class="nb"&gt;}&lt;/span&gt; &lt;span class="c"&gt;% подключаем hyperref&lt;/span&gt;
+
+&lt;span class="k"&gt;\begin&lt;/span&gt;&lt;span class="nb"&gt;{&lt;/span&gt;document&lt;span class="nb"&gt;}&lt;/span&gt; &lt;span class="c"&gt;% начало документа&lt;/span&gt;
+
+&lt;span class="k"&gt;\hypertarget&lt;/span&gt;&lt;span class="nb"&gt;{&lt;/span&gt;p1&lt;span class="nb"&gt;}{&lt;/span&gt;Пункт 1&lt;span class="nb"&gt;}&lt;/span&gt; &lt;span class="c"&gt;% создаём мишень p1&lt;/span&gt;
+&lt;span class="c"&gt;% ссылаемся на мишень p1&lt;/span&gt;
+Для просмотра подробных сведений обратитесь к пункту &lt;span class="k"&gt;\hyperlink&lt;/span&gt;&lt;span class="nb"&gt;{&lt;/span&gt;p1&lt;span class="nb"&gt;}{&lt;/span&gt;1&lt;span class="nb"&gt;}&lt;/span&gt;.
+
+&lt;span class="k"&gt;\end&lt;/span&gt;&lt;span class="nb"&gt;{&lt;/span&gt;document&lt;span class="nb"&gt;}&lt;/span&gt;   &lt;span class="c"&gt;% конец документа&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Если же нужно дать ссылку на внешний файл, в параметрах должнен наличествовать путь к нужному файлу. В примере документ, который будет открыт, лежит в том же каталоге, что и документ, ссылающийся на него:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;% \href{URL}{text}&lt;/span&gt;
+&lt;span class="c"&gt;% ссылаемся на document.pdf&lt;/span&gt;
+Инструкция по эксплуатации &lt;span class="k"&gt;\href&lt;/span&gt;&lt;span class="nb"&gt;{&lt;/span&gt;document.pdf&lt;span class="nb"&gt;}{&lt;/span&gt;прилагается&lt;span class="nb"&gt;}&lt;/span&gt;.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Ссылки на сторонние ресурсы&lt;/h2&gt;
+&lt;p&gt;Для того, чтобы при двойном клике на ссылку открывалась нужная страница в браузере, следует оформить её (предполагаемую ссылку) при помощи того же &lt;code&gt;href&lt;/code&gt;. Эта конструкция в принципе ничем не отличается от предыдущей, где мы ссылались на внешний файл, только вместо указания пути к файлу используется адрес интернет-страницы:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;\chapter&lt;/span&gt;&lt;span class="nb"&gt;{&lt;/span&gt;Введение&lt;span class="nb"&gt;}&lt;/span&gt;
+
+Есть много ресурсов, предназначенных для изучения Python и Django,
+так что эта книга не стремится обучить основам.
+Для новичков в Python я настоятельно рекомендую
+&lt;span class="k"&gt;\href&lt;/span&gt;&lt;span class="nb"&gt;{&lt;/span&gt;http://www.diveinto.org/python3/&lt;span class="nb"&gt;}{&lt;/span&gt;Dive Into Python&lt;span class="nb"&gt;}&lt;/span&gt; Марка Пилгрима.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Как выбрать цвет&lt;/h2&gt;
+&lt;p&gt;Таблица цветов, представленная вот таким незамысловатым рисунком (зафикисровано дабы постоянно не обращаться к вики, откуда и было унесено):&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://farm3.staticflickr.com/2854/9718512214_047abf1432_o.jpg"&gt;&lt;img alt="latex colors" src="http://farm3.staticflickr.com/2854/9718512214_5737105b40_n.jpg" /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Более тонкую настройку цвета поможет осуществить ресурс &lt;a href="http://www.palettebuilder.com/rgb.aspx"&gt;Palette Builder&lt;/a&gt;. На вкладке &lt;code&gt;RGB&lt;/code&gt; указываем или выбираем нужный цветовой вариант и вписываем нечто подобное:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;\usepackage&lt;/span&gt;&lt;span class="nb"&gt;{&lt;/span&gt;color&lt;span class="nb"&gt;}&lt;/span&gt; &lt;span class="c"&gt;% подключить пакет color&lt;/span&gt;
+&lt;span class="c"&gt;% выбрать цвета&lt;/span&gt;
+&lt;span class="k"&gt;\definecolor&lt;/span&gt;&lt;span class="nb"&gt;{&lt;/span&gt;BlueGreen&lt;span class="nb"&gt;}{&lt;/span&gt;RGB&lt;span class="nb"&gt;}{&lt;/span&gt;49,152,255&lt;span class="nb"&gt;}&lt;/span&gt;
+&lt;span class="k"&gt;\definecolor&lt;/span&gt;&lt;span class="nb"&gt;{&lt;/span&gt;Violet&lt;span class="nb"&gt;}{&lt;/span&gt;RGB&lt;span class="nb"&gt;}{&lt;/span&gt;120,80,120&lt;span class="nb"&gt;}&lt;/span&gt;
+&lt;span class="c"&gt;% назначить цвета при подключении hyperref&lt;/span&gt;
+&lt;span class="k"&gt;\usepackage&lt;/span&gt;&lt;span class="na"&gt;[unicode, colorlinks, urlcolor=BlueGreen, linkcolor=Violet, pagecolor=Violet]&lt;/span&gt;&lt;span class="nb"&gt;{&lt;/span&gt;hyperref&lt;span class="nb"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Теперь цвет на другие страницы внутри документа и цвет гиперссылок опять же внутри документа будет филетовым, а вот ссылки на сторонние ресуры &amp;mdash; голубыми.&lt;/p&gt;
+&lt;dl&gt;
+&lt;dt&gt;linkcolor&lt;/dt&gt;
+&lt;dd&gt;цвет гиперссылок внутри документа, по-умолчанию red&lt;/dd&gt;
+&lt;dt&gt;pagecolor&lt;/dt&gt;
+&lt;dd&gt;цвет гиперссылок на другие страницы внутри документа, по-умолчанию red&lt;/dd&gt;
+&lt;dt&gt;filecolor&lt;/dt&gt;
+&lt;dd&gt;цвет гиперссылок, открывающих локальные файлы, по-умолчанию cyan&lt;/dd&gt;
+&lt;dt&gt;anchorcolor&lt;/dt&gt;
+&lt;dd&gt;цвет текста мишени, по-умолчанию black&lt;/dd&gt;
+&lt;dt&gt;citecolor&lt;/dt&gt;
+&lt;dd&gt;цвет библиографических ссылок, по-умолчанию green&lt;/dd&gt;
+&lt;dt&gt;urlcolor&lt;/dt&gt;
+&lt;dd&gt;цвет гиперссылок на сетевые ресурсы, по-умолчанию magenta&lt;/dd&gt;
+&lt;/dl&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">redVi</dc:creator><pubDate>Sat, 14 Sep 2013 21:05:00 +0700</pubDate><guid>tag:www.unix-lab.org,2013-09-14:articles/hyperref.html</guid><category>LaTeX</category></item><item><title>Верстаем макеты с SASS/SCSS</title><link>http://www.unix-lab.org/articles/sass.html</link><description>&lt;p&gt;Пожалуй, стоило бы затронуть тему &amp;laquo;быстрого написания css-кода, разложенного по полочкам&amp;raquo;. Именно таким автору данной заметки видится sass &amp;mdash; инструмент, позволяющий совершить волшебное преобразование: превратить рутинное написание css-кода в любопытное занятие. Цель данного поста заключается не в том, чтобы объять необъятное и попытаться рассказать обо всём подробно, но в том, чтобы заинтересовать потенциального читателя, дабы в последующем ему захотелось разобраться с представленными здесь понятиями самостоятельно. Но прежде, чем мы приступим к непосредственному разбору полётов...&lt;/p&gt;
 &lt;h2&gt;Об отвлечённом&lt;/h2&gt;
 &lt;p&gt;Сразу нужно отметить, что данное ранее обещание о сроках выхода новых постов будет сдержано. Это означает, что никаких сроков больше нет. Блог начинает жить по принципу Debian'a: это будет готово тогда, когда это будет готово. Вряд ли в ближайшем обозримом будущем получится публиковать по четыре-пять постов в месяц, что означало бы писать второпях. Какого качества записи могут выйти из подобной писанины, думаю, пояснять не надо.&lt;/p&gt;
 &lt;p&gt;Ближе к теме. Перепробовав немало готовых тем оформления, автор поймала себя на мысли, что лучше пусть не идеальное, но своё. Используемый ныне шаблон писался собственноручно и по этой тривиальной причине изменению не подлежит за исключением возможных мелких правок (есть-есть ещё недочёты), которые не будут слишком заметны для глаз.&lt;/p&gt;
@@ -463,56 +543,4 @@
 &lt;h2&gt;А подробнее?&lt;/h2&gt;
 &lt;p&gt;Ну, что ещё? Применительно к github'у можно отметить факт наличия у них &lt;b&gt;Issues&lt;/b&gt;. Это такая &amp;laquo;примочка&amp;raquo;, благодаря которой можно ставить задачи для проекта, давать им описание и метку, определяющую к какому разряду данная задача относится (закрытие бага или написание фичи), а ещё назначать ответственного за выполнение определённого &lt;b&gt;issue&lt;/b&gt;: всё как у больших.&lt;/p&gt;
 &lt;p&gt;Итогов подводить не стану. Для заинтересованных лиц ссылочка на хорошую книгу: &lt;a href="http://cloud.github.com/downloads/GArik/progit/progit.ru.pdf"&gt;Pro Git pdf&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;u&gt;Примечание:&lt;/u&gt; указанному в примере &lt;a href="https://github.com/Alerion/django_documentation" rel="noindex, nofollow"&gt;репозиторию&lt;/a&gt; требуется влить кубометр свежей крови. Присоединяйтесь к переводу документации.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">redVi</dc:creator><pubDate>Thu, 22 Aug 2013 12:05:00 +0700</pubDate><guid>tag:www.unix-lab.org,2013-08-22:articles/pull-request.html</guid><category>Git</category></item><item><title>Со скоростью света или Игра в оптимизаторы</title><link>http://www.unix-lab.org/articles/site-optimization.html</link><description>&lt;p&gt;На этот раз предлагается поговорить об оптимизации. Это дело серьёзное и требует особого к себе внимания. Несмотря на распространение этих ваших интернетов в каждый дом и в каждую квартиру (автор помнит времена, когда для подключения к глобальной паутине приходилось брать карту СТК за 150 российских рублей: страницы загружались неимоверно медленно, а рубли расходовались неимоверно быстро) не у всех наших граждан имеется быстрый интернет-канал, а некоторые товарищи и вовсе пользуются исключительно &amp;laquo;мобильным интернетом&amp;raquo;.&lt;/p&gt;
-&lt;p&gt;Не будем забывать о движках различной степени тяжести (Drupal, Wordpress, Joomla!, etc). Впротивовес &lt;a href="pelican.html"&gt;статическим сайтам&lt;/a&gt;, которые подойдут далеко не всем блоггерам/сайтостроителям, они достаточно тяжелы изначально и посему требуют непременной доработки в плане оптимизации самих себя.&lt;/p&gt;
-&lt;p&gt;Что же, наверняка у нас имеется лучшее решение нежели просто ждать пока загрузится наша страница.&lt;/p&gt;
-&lt;p&gt;Приступим к разбору полётов. Поскольку использовать указанные ниже сервисы приходится нечасто и по прошествии времени мозг начинает задействовать свою неповторимую функцию &amp;mdash; способность забывать &amp;mdash; здесь будут оставлены проверенные временем онлайн-сервисы, способствующие &lt;s&gt;повышению ЧСВ оптимизатора&lt;/s&gt; ускорению загрузки страниц вашего сайта.&lt;/p&gt;
-&lt;h3&gt;Со скоростью света&lt;/h3&gt;
-&lt;p&gt;Сначала сто&amp;#x301;ит проанализировать какое количество времени занимает загрузка страниц и что мешает загружаться быстрее. Как правило, это неоптимизированные изображения, javascript, CSS. Что и почему расскажет &lt;a href="http://developers.google.com/speed/pagespeed/insights/"&gt;Page Speed Online от Google&lt;/a&gt;. Ели не нравится, вполне можно положиться на &lt;a href="http://tools.pingdom.com/fpt/"&gt;Pingdom&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;a href="../source/page-speed.jpg" data-lighter&gt;&lt;img src="../source/page-speed.jpg"/&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;После проверки можно обратиться к &lt;u&gt;PageSpeed Optimization Products&lt;/u&gt; от того же Google:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;https://developers.google.com/speed/pagespeed/optimization&lt;/code&gt;.&lt;/p&gt;
-&lt;h3&gt;Сервисы для оптимизации CSS-кода&lt;/h3&gt;
-&lt;p&gt;Как правило, подобные сервисы делают свою работу очень неплохо и сокращают размер CSS-файла процентов на 30. Или больше, если в коде проставлено множество строк с копирайтами, пробелами, прочими радостями. Печаль одна: неудобоваримая каша, которая получается из кода. Весь код вставляется в одну лишь строку, поэтому яростно боритесь с желанием впоследствие изменить свойство какого-нибудь элемента: вы убьёте массу сил, пытаясь разргести этот сжатый бедлам.&lt;/p&gt;
-&lt;p&gt;Можно поступить иначе: иметь под рукой код неоптимизированный, дабы при случае подправить что-то в нём, а затем снова прогнать через сервис. Или прогонять лишь те участки кода, которые менять вы ну никогда уже не станете.&lt;/p&gt;
-&lt;p&gt;&lt;b&gt;Robson CSS Compressor&lt;/b&gt;&lt;/p&gt;
-&lt;p&gt;Вещь прекрасная, ставится на первое место в нашем маленьком рейтинге. Заоптимизирует CSS по самое не горюй, что и требуется. Адрес этой хорошей вещи:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;http://iceyboard.no-ip.org/projects/css_compressor&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Кандидат номер два &lt;b&gt;CleanCSS&lt;/b&gt;.&lt;/p&gt;
-&lt;p&gt;Склонен к балансу между оптимизацией и удобочитаемостью. Пригодится в случае, если сайт не ваш, а сделан для сдачи заказчику, например. Или ежели планируется, что после вас этот код будет сопровождать кто-то другой. Адрес:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;http://www.cleancss.com/&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Наиболее страшен &lt;b&gt;Tabifier&lt;/b&gt; в силу своей всеядности: эта штука понимает также и HTML. Для товарищей особенно замороченных на оптимизации рекомендуется:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;http://tools.arantius.com/tabifier&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;В целом, подобных сервисов имеется внушительное количество. Но нам хватит и этих трёх.&lt;/p&gt;
-&lt;h3&gt;Сжимаем JavaScript&lt;/h3&gt;
-&lt;p&gt;Можно было бы включить YUI Compressor, но, раз уж мы говорим лишь об онлайн-сервисах, возьму на себя ответственность порекомендовать только один из них, так сказать самый-самый. Это снова Google со своим &lt;b&gt;Closure Compiler&lt;/b&gt;:&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;http://closure-compiler.appspot.com/home&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Конечно, наилучший метод оптимизации javascript &amp;mdash; неиспользование javascript ;)&lt;/p&gt;
-&lt;h3&gt;Долой изображения! Да здравствуют шрифты!&lt;/h3&gt;
-&lt;p&gt;Обычно изображения загружаются дольше, чем шрифты или стили. Много мелких изображений и вообще сейчас моветон. А не заменить ли их чем получше? Например, модными шрифтами. &lt;b&gt;Fontello&lt;/b&gt; спешит на помощь.&lt;/p&gt;
-&lt;p&gt;На странице проекта &lt;code&gt;http://fontello.com/&lt;/code&gt; вам будет предложено выбрать несколько шрифтов-кнопок по вкусу. Также сразу нужно обратить внимание на настройки, они поистине замечательны. У вас есть возможность выбрать размер шрифта, при надобности указать CSS-префикс и даже кодировку. После того, как разберётесь с этими настройками, кликом начинайте выбирать нужные шрифты. Их упакуют в архив вместе с примером, разнообразными CSS-стилями, HOWTO и demo-страницей, призванной показать как оно будет выглядеть. А выглядит оно очень недурно. На буржуинских сайтах используется довольно часто в то время как на большинстве отечественных по какой-то неведомой автору причине предпочитают таки иметь дело с изображениями.&lt;/p&gt;
-&lt;h3&gt;Или оптимизируем изображения&lt;/h3&gt;
-&lt;p&gt;&lt;b&gt;Yahoo Smush.it&lt;/b&gt; рулит и педалит. Позволяет сжимать изображения практически без потери качества. Картинки, которые планируется подвергнуть эксперименту, можно загружать как с жёсткого диска своей машины так и указывать к ним URL-путь. На выходе вам сообщат исходный размер и размер сжатого изображения, а также позволят загрузить архив, его содержащий. Действительно сто&amp;#x301;ящий сервис, использую не первый год, нареканий нет.&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;http://www.smushit.com/ysmush.it/&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;Как правило, первыми кандидатами на сжатие становятся такие константы (в том смысле, что они неизменяемы) как всевозможные элементы самого веб-сайта: шапка, кнопки... Хотя если не лениться, можно прогонять и отдельные изображения для статей.&lt;/p&gt;
-&lt;p&gt;Но в некоторых случаях требуется ещё более жёсткий подход. Если страница просто ломится от картинок (пример: объёмный пост со множеством изображений или галерея какая-нибудь), полная загрузка её может занимать достаточно продолжительное время. Дабы избежать этого неприятного момента, можно загружать картинки лишь тогда, когда взор читателя обратится к ним.&lt;/p&gt;
-&lt;p&gt;В этом посильную помощь нам окажет один из скриптов с сайта jquery.com: &lt;code&gt;http://plugins.jquery.com/lazyload/&lt;/code&gt;. Для его использования придётся подключить jquery:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nt"&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;script &lt;/span&gt;&lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;http://code.jquery.com/jquery-2.0.3.min.js&amp;#39;&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;script &lt;/span&gt;&lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;путь_к_скрипту.js&amp;#39;&lt;/span&gt; &lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
-&lt;span class="c"&gt;&amp;lt;!--вызов функции скрипта--&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;script &lt;/span&gt;&lt;span class="na"&gt;type=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;text/javascript&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;img.lazy&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;lazyload&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-    &lt;span class="nx"&gt;effect&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;fadeIn&amp;quot;&lt;/span&gt;
-    &lt;span class="p"&gt;});&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Чтобы это сработало, изображению нужно присвоить класс &lt;code&gt;.lazy&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="n"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;lazy&amp;quot;&lt;/span&gt; &lt;span class="n"&gt;src&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;img.gif&amp;quot;&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;original&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;example.jpg&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Вот и всё. До связи!&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">redVi</dc:creator><pubDate>Sat, 17 Aug 2013 00:05:00 +0700</pubDate><guid>tag:www.unix-lab.org,2013-08-17:articles/site-optimization.html</guid><category>Web</category><category>Blog</category></item></channel></rss>
+&lt;p&gt;&lt;u&gt;Примечание:&lt;/u&gt; указанному в примере &lt;a href="https://github.com/Alerion/django_documentation" rel="noindex, nofollow"&gt;репозиторию&lt;/a&gt; требуется влить кубометр свежей крови. Присоединяйтесь к переводу документации.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">redVi</dc:creator><pubDate>Thu, 22 Aug 2013 12:05:00 +0700</pubDate><guid>tag:www.unix-lab.org,2013-08-22:articles/pull-request.html</guid><category>Git</category></item></channel></rss>

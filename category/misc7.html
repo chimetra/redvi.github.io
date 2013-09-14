@@ -3,7 +3,7 @@
 <head>
   <title>unix-lab.org - misc</title>
   <meta charset="utf-8">
-  <meta name="description" content="Блог об операционных системах, open source и программировании">  <meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+  <meta name="description" content="Блог об операционных системах, open source и программировании">  <meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
   <link href="http://www.unix-lab.org/theme/css/screen.css" rel="stylesheet" type="text/css" />
   <meta name='yandex-verification' content='494a81ecb0e796d6' />
   <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
@@ -24,6 +24,9 @@
     </ul>
 </div>
 </div>    <div id="main">
+<h2><a href="http://www.unix-lab.org/articles/linux-on-hdd.html">Переносим linux на внешний HDD</a></h2>
+<h5><i class="icon-feather"></i> 30 Декабрь 2011 </h5>
+Наверное, лучшее, что есть в linux - это его гибкость. Linux можно установить как на новое (с небольшими оговорками) железо, так и на старый Pentium III, который валяется у вас на балконе. Хуже того, возможна установка и даже просто копия работающей системы на внешний жёсткий диск. Чем, собственно, мы сегодня и займёмся. Здесь представлен алгоритм действий, которые помогут сделать копию системы. Все тайные действа проводились на имеющемся в наличии ноутбуке с установленным ArchLinux, хотя надо отметить, что дистрибутив не имеет значения. Конечно, можно осуществить и обратное - клонировать настроенную, ...
 <h2><a href="http://www.unix-lab.org/articles/chroot.html">Chroot на практике</a></h2>
 <h5><i class="icon-feather"></i> 25 Декабрь 2011 </h5>
 Изменение корня это процесс изменения видимой на диске корневой директории (и текущего запуска процессов) на другую корневую директорию. Когда вы изменили корневую директорию на другую, вы больше не имеете доступа к файлам и командам за пределами этой директории. Эта директория становится подобна заключению пользователя в клетку. Изменение корневой директории обычно нужно для таких задач как переустановка GRUB или сброс забытого пароля и чаще осуществляется при помощи LiveCD или LiveUSB в монтируемый раздел, содержащий установленную систему. Вы должны загрузиться с любой работающей среды Linux ...
@@ -51,9 +54,6 @@
 <h2><a href="http://www.unix-lab.org/articles/debian-repo.html">Репозитории Debian Squeeze</a></h2>
 <h5><i class="icon-feather"></i> 05 Август 2011 </h5>
 Как известно, изначально в Debian Squeeze задействованы только репозитории security и main. Для домашнего использования маловато. Хочется и к мультимедия иметь доступ, и любимые программы устанавливать, а они зачастую non-free. Добавим несколько интересных вещей для Squeeze, тем более, что для следюущего стабильного релиза - Wheezy - они, скорее всего тоже подойдут. Надо будет лишь вместо squeeze wheezy поставить. Конечно, пока это недоказанная гипотеза, но так было с lenny,поживём - увидим. Добавляем репозитории: # ...
-<h2><a href="http://www.unix-lab.org/articles/debian-kernel.html">Сборка ядра Debian</a></h2>
-<h5><i class="icon-feather"></i> 02 Август 2011 </h5>
-Цель данной статьи — показать пользователям, что такое страшное словосочетание как «компиляция ядра» вовсе не так уж и страшно, и даже довольно просто, если всё делать вдумчиво. Когда и зачем это нужно? если ваше оборудование специфично для поддержки нестандартных возможностей, не включенных в стандартное ядро для оптимизации если в силу каких-то причин вам необходима более новая версия ядра В примере будет разобрана не просто перекомпиляция уже имеющегося ядра, а как раз установка и последующая сборка более нового. Для ...
 <div class="pagination">
                     <a href="http://www.unix-lab.org/category/misc6.html">&larr;Предыдущая</a>
         страница 7 из 8.
@@ -78,7 +78,7 @@
        <li class="footer"><a href="http://www.unix-lab.org/tag/web.html">Web&nbsp;&bull;&nbsp;</a></li>
        <li class="footer"><a href="http://www.unix-lab.org/tag/windows.html">Windows&nbsp;&bull;&nbsp;</a></li>
   </ul>
-<br/><p>&copy;&nbsp;2011&mdash;2013&nbsp;&bull;&nbsp;<a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;&bull;&nbsp;powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;&bull;&nbsp;<a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru"><i class="icon-cc"></i></a></p>
+<br/><p>&copy;&nbsp;2011&mdash;2013&nbsp;&bull;&nbsp;<a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;&bull;&nbsp;powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;&bull;&nbsp;<a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></p>
 </div>
 <!-- end #footer --></div>
 <script>

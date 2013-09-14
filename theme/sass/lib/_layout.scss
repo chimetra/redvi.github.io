@@ -8,19 +8,15 @@ $logo: url("../img/logo.png");
  padding: 0;
 }
 
-html, #outer-wrapper {
-  width: 100%;
-  font: normal 100% $sans;
-}
-
 body {
   color: $text-color;
   background-color: $light-gray;
 }
 
 #outer-wrapper {
-  line-height: 130%;
-  position: relative;
+  width: 100%;
+  font: normal 17px/1.524 $sans;
+  line-height: 140%;
   height: 100%;
   background-image: $noise-img;
 }
@@ -34,8 +30,7 @@ body {
   background: $header-bg;
   .logo {
     background: $logo no-repeat;
-    margin-right: auto;
-    margin-left: auto;
+    margin: 0 auto;
     width: 305px;
     height: 52px;
   }
@@ -44,13 +39,12 @@ body {
   }
 .nav {
   position: relative;
-  margin-right: auto;
-  margin-left: auto;
-  max-width: 60%;
+  margin: 0 auto;
+  max-width: 100%;
   font-family: $heading-font-family;
   ul {
     font-size: 120%;
-    margin: 3% 0px 0px;
+    padding: 3% 0 0;
     list-style-type: none;
   }
   li {
@@ -68,7 +62,7 @@ body {
 
 #main {
   width: 60%;
-  max-width: 1000px;
+  max-width: 960px;
   min-height: 18.750em;
   margin: 5% auto;
   padding-bottom: 2.500em;
@@ -76,7 +70,7 @@ body {
 
 #footer-wrapper {
     position: relative;
-    bottom: 0px;
+    bottom: 0;
     background-color: $light-gray;
     text-align: center;
     padding: 0.313em;
@@ -103,6 +97,7 @@ body {
 
 .footer {
   width: 60%;
-  margin: 0 20%;
+  max-width: 960px;
+  margin: auto;
 
 }

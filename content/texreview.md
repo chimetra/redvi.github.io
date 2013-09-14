@@ -128,6 +128,11 @@ Summary: Что такое TeX? TeX — это система компьютер
 
 [![symbols](http://4.bp.blogspot.com/-8KIrUZtGQ1I/UVAlDYx2NZI/AAAAAAAAEN0/4IRCgHmjoLQ/s1600/international.png)](http://4.bp.blogspot.com/-8KIrUZtGQ1I/UVAlDYx2NZI/AAAAAAAAEN0/4IRCgHmjoLQ/s1600/international.png)
 
+*Кстати:* чтобы поставить ударение в файле с кодировкой UTF-8, следует заключить нужную букву в фигурные скобки:
+
+    :::tex
+    Б\'{о}льшая часть кода написана на C
+
 Изменение размера шрифта может задаваться для всего документа, а может быть изменено для отдельных слов или строк по ходу набора. Поскольку TeX имеет свои обозначения модификаторов размера шрифта, полагаю логичным указать их здесь.
 
 <table b5b5b="" border="1" bordercolor:="" cellpadding="1" cellspacing="1" style="width: 100%px;">

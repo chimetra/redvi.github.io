@@ -3,7 +3,7 @@
 <head>
   <title>блог об операционных системах, open source и программировании</title>
   <meta charset="utf-8">
-  <meta name="description" content="Блог об операционных системах, open source и программировании">  <meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+  <meta name="description" content="Блог об операционных системах, open source и программировании">  <meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
   <link href="http://www.unix-lab.org/theme/css/screen.css" rel="stylesheet" type="text/css" />
   <meta name='yandex-verification' content='494a81ecb0e796d6' />
   <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
@@ -24,6 +24,9 @@
     </ul>
 </div>
 </div>    <div id="main">
+<h2><a href="http://www.unix-lab.org/articles/systemd.html">Systemd: загрузись по-новому</a></h2>
+<h5><i class="icon-feather"></i> 22 Сентябрь 2012 </h5>
+Предыстория Поскольку всех арчеводов облетела благая весть о переходе на более современную систему инициализации, на которую, собственно, переходить немногие торопились, случилось и автору сего поста опробовать её в действии. Надо заметить, в archlinux имеется интеграция этой весёлой вещи со стандартными конфигурационными файлами системы. Но мы, конечно, не стали пользоваться такими благами цивилизации и решили опробовать "чистый" systemd в действии. После этого благого намерения был установлен systemd, перезагружена система и... началось! Интернет, конечно, работать отказался. Любимый ...
 <h2><a href="http://www.unix-lab.org/articles/android-and-bb.html">Сквозное подключение. Android и ББ</a></h2>
 <h5><i class="icon-feather"></i> 15 Сентябрь 2012 </h5>
 ББ - большой брат, то есть компьютер или ноутбук с каким-либо подключением к интернету. Зачем это нужно? Например, ситуация: у вас есть доступ к сети по DSL, wi-fi нет, GPRS слишком дорог. Что делать? Правильно, заняться подключением брата меньшего к брату старшему, дабы спокойно обновлять приложения и ходить в твиттер через android-устройство. Внимание! Для сквозного подлючения необходимо получить права рута для вашего устройства. Один из способов рассмотрим прямо сейчас. Шаг 1. Root-права Для прошивок 4.0.4 и 4.0.3 Закинуть Root SuperSU в корень ...
@@ -51,9 +54,6 @@
 <h2><a href="http://www.unix-lab.org/articles/kde.html">Оптимизация KDE</a></h2>
 <h5><i class="icon-feather"></i> 21 Июль 2012 </h5>
 Кто не сталкивался с проблемой излишнего потребления ресурсов любимой многими графической оболочкой KDE? Думаю, все. Даже при минимальной установке "кеды" несут с собой много никому не нужных обязательных пакетов. Для сравнения на системе автора gnome нагружает процессор на 1-3%, свежеустановленный KDE - 18-20% . Про потребление оперативной памяти и вспоминать не будем. Просто исправим ситуацию. Откройте любимым текстовым редактором файл: ~/.kde4/share/config/nepomukserverrc Пропишите или исправьте строки: [Basic ...
-<h2><a href="http://www.unix-lab.org/articles/top-programms.html">Топ программ под Linux</a></h2>
-<h5><i class="icon-feather"></i> 21 Июнь 2012 </h5>
-Заметка написана в основном для юных пользователей операционной системы GNU Linux, которые при первом знакомстве с каким-либо дистрибутивом либо используют его «умолчательные», не всегда наилучшим способом подобранные программы, либо теряются в множестве названий и не знают, какое ПО выбрать для тех или иных своих нужд. Этот обзор не преследует цели быть истиной в последней инстанции, но отражает повседневные предпочтения автора. Чем пользуюсь, то и вам рекомендую. Графика и чтение книг Gimp Единственный в своём роде. Классический представитель ...
 <div class="pagination">
                     <a href="http://www.unix-lab.org/index4.html">&larr;Предыдущая</a>
         страница 5 из 8.
@@ -78,7 +78,7 @@
        <li class="footer"><a href="http://www.unix-lab.org/tag/web.html">Web&nbsp;&bull;&nbsp;</a></li>
        <li class="footer"><a href="http://www.unix-lab.org/tag/windows.html">Windows&nbsp;&bull;&nbsp;</a></li>
   </ul>
-<br/><p>&copy;&nbsp;2011&mdash;2013&nbsp;&bull;&nbsp;<a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;&bull;&nbsp;powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;&bull;&nbsp;<a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru"><i class="icon-cc"></i></a></p>
+<br/><p>&copy;&nbsp;2011&mdash;2013&nbsp;&bull;&nbsp;<a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;&bull;&nbsp;powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;&bull;&nbsp;<a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></p>
 </div>
 <!-- end #footer --></div>
 <script>
