@@ -24,24 +24,11 @@
   p {
     margin-bottom: 1em;
   }
-  ul, ol {
-    list-style-position: outside;
-    margin-left: 2em;
-    margin-bottom: 1em;
-    line-height: 2;
-    ul, ol {
-      margin-top: 0 !important;
-      margin-bottom: 0 !important;
-    }
-  }
-  ul.posts {
-    margin-left: 0;
-    list-style-type: none;
-  }
+
   img {
     display: block;
     margin: 1em auto;
-    padding: .3rem;
+    padding: .3em;
     border: 1px solid $border00;
     max-width: 100%;
     @extend .border-radius;
@@ -51,6 +38,9 @@
     cursor: zoom-in;
     cursor: -moz-zoom-in;
     cursor: -webkit-zoom-in;
+  }
+  ul, ol, li {
+  margin-left: 1em;
   }
   .many {
     display: inline;

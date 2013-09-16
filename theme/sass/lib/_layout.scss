@@ -1,3 +1,5 @@
+@import "compass/css3/border-radius";
+
 $img-border: url('../img/dotted-border.png');
 $header-bg: url("../img/header-bg.jpg");
 $noise-img: url("../img/noise.jpg");
@@ -30,7 +32,8 @@ body {
   background: $header-bg;
   .logo {
     background: $logo no-repeat;
-    margin: 0 auto;
+    margin-right: auto;
+    margin-left: auto;
     width: 305px;
     height: 52px;
   }
@@ -62,7 +65,7 @@ body {
 #main {
   width: 60%;
   max-width: 960px;
-  min-height: 48%;
+  min-height: 18.750em;
   margin: 5% auto;
   padding-bottom: 2.500em;
 }
