@@ -1,5 +1,3 @@
-@import "compass/css3/border-radius";
-
 $img-border: url('../img/dotted-border.png');
 $header-bg: url("../img/header-bg.jpg");
 $noise-img: url("../img/noise.jpg");
@@ -10,17 +8,19 @@ $logo: url("../img/logo.png");
  padding: 0;
 }
 
-body {
-  color: $text-color;
-  background-color: $light-gray;
-}
+html, body {height: 100%; color: $text-color; background-color: $light-gray;}
 
 #outer-wrapper {
+  position: relative;
   width: 100%;
   font: normal 17px/1.524 $sans;
   line-height: 140%;
-  height: 100%;
+  min-height: 100%;
   background-image: $noise-img;
+}
+
+* html #outer-wrapper {
+  height: 100%;
 }
 
 #header-wrapper {
@@ -32,9 +32,9 @@ body {
   background: $header-bg;
   .logo {
     background: $logo no-repeat;
-    margin-right: auto;
-    margin-left: auto;
+    margin: 0 auto;
     width: 305px;
+    max-width: 100%;
     height: 52px;
   }
   .small {
@@ -65,19 +65,18 @@ body {
 #main {
   width: 60%;
   max-width: 960px;
-  min-height: 18.750em;
-  margin: 5% auto;
-  padding-bottom: 2.500em;
+  margin: 0 auto; /* centering text */
+  padding-bottom: 6.250em;
 }
 
 #footer-wrapper {
     position: relative;
-    bottom: 0;
-    background-color: $light-gray;
+    height: 5.000em;
+    margin-top: -5.000em;
     text-align: center;
-    padding: 0.313em;
     border-top: 1px solid $border;
-    height: 5.938em;
+    text-transform: uppercase;
+    background-color: $light-gray;
     font: {
       family: $sans;
     }
@@ -91,15 +90,15 @@ body {
     ul, ol, li, p{
     color: $gray-mono;
   }
-  p, ul {font-size: 80%;}
-  li{display: inline; padding: 0; margin-left: auto; margin-right: auto;}
-  ul {overflow: auto;}
+  p, ul {font-size: 80%; overflow: auto; padding-top: 1em;}
+  li{display: inline; padding: 0; margin: 0 auto;}
 
 }
 
 .footer {
   width: 60%;
   max-width: 960px;
-  margin: auto;
+  padding: 0.313em 0;
+  margin: auto; /* centering text */
 
 }
