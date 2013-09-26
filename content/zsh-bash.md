@@ -1,6 +1,6 @@
 Title: zsh и bash: что выбрать
 Date: 2013-01-05 08:25
-Tags: Arch
+Tags: Linux
 Slug: zsh-bash
 Author: redVi
 Summary: Для тех, кто ещё не знаком с Z Shell, а так же тем, кто находится на распутье в выборе шелла для повседневных задач, посвящается.

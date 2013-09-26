@@ -1,6 +1,6 @@
 Title: Установка KDE в Debian
 Date: 2011-07-18 08:15
-Tags: Debian, Decorations
+Tags: Debian, Decorations, Linux
 Slug: debian-kde
 Author: redVi
 Summary: Давайте установим графическую среду KDE, зовущуюся в народе кедами.

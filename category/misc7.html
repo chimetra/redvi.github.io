@@ -26,7 +26,7 @@
 </div>    <div id="main">
 <h2><a href="http://www.unix-lab.org/articles/linux-on-hdd.html">Переносим linux на внешний HDD</a></h2>
 <h5><i class="icon-feather"></i> 30 Декабрь 2011 </h5>
-Наверное, лучшее, что есть в linux - это его гибкость. Linux можно установить как на новое (с небольшими оговорками) железо, так и на старый Pentium III, который валяется у вас на балконе. Хуже того, возможна установка и даже просто копия работающей системы на внешний жёсткий диск. Чем, собственно, мы сегодня и займёмся. Здесь представлен алгоритм действий, которые помогут сделать копию системы. Все тайные действа проводились на имеющемся в наличии ноутбуке с установленным ArchLinux, хотя надо отметить, что дистрибутив не имеет значения. Конечно, можно осуществить и обратное - клонировать настроенную, ...
+Наверное, лучшее, что есть в linux — это его гибкость. Linux можно установить как на новое (с небольшими оговорками) железо, так и на старый Pentium III, который валяется у вас на балконе. Хуже того, возможна установка и даже просто копия работающей системы на внешний жёсткий диск. Чем, собственно, мы сегодня и займёмся. Здесь представлен алгоритм действий, которые помогут сделать копию системы. Все тайные действа проводились на имеющемся в наличии ноутбуке с установленным ArchLinux, хотя надо отметить, что дистрибутив не имеет значения. Конечно, можно осуществить и обратное — клонировать ...
 <h2><a href="http://www.unix-lab.org/articles/chroot.html">Chroot на практике</a></h2>
 <h5><i class="icon-feather"></i> 25 Декабрь 2011 </h5>
 Изменение корня это процесс изменения видимой на диске корневой директории (и текущего запуска процессов) на другую корневую директорию. Когда вы изменили корневую директорию на другую, вы больше не имеете доступа к файлам и командам за пределами этой директории. Эта директория становится подобна заключению пользователя в клетку. Изменение корневой директории обычно нужно для таких задач как переустановка GRUB или сброс забытого пароля и чаще осуществляется при помощи LiveCD или LiveUSB в монтируемый раздел, содержащий установленную систему. Вы должны загрузиться с любой работающей среды Linux ...
@@ -48,12 +48,12 @@
 <h2><a href="http://www.unix-lab.org/articles/install-gentoo.html">Установка Gentoo. По-русски</a></h2>
 <h5><i class="icon-feather"></i> 30 Сентябрь 2011  &nbsp; <i class="icon-spin4"></i> 2 Январь 2013 </h5>
 Сегодня будем развенчивать миф о сложности установки Gentoo. Почему установка "по-русски"? Потому что настраивать станем русскую локаль, раскладку и временную зону. Статья получилась довольно объёмной, для тех, кто не знает, как скоротать долгий вечер). Загрузитесь с СD-диска. Грузимся с параметрами по умолчанию. Настройка интернет-соединения: автор использует модемное соединение, данные передаются автоматически при помощи DHCP. <div ...
+<h2><a href="http://www.unix-lab.org/articles/iptables.html">Firewall в Linux. Настройка iptables</a></h2>
+<h5><i class="icon-feather"></i> 02 Сентябрь 2011 </h5>
+Iptables отвечает преимущественно за фильтрацию пакетов. Настройка Iptables вручную является довольно непростой задачей. Не надейтесь, что разберётесь в этом «снаскока». К счастью, есть много инструментов, которые могут оказать вам помощь в случае, если с iptables вы ещё не разобрались, а обезопасить систему нужно срочно: fwbuilder , firestarter , guarddog, arno firewall - по сути это GUI к iptables. Однозначного ответа что лучше нет. Выбирать вам. Однако, сегодняшняя статья посвящена именно iptables и делится на две части: теория и практика. Самые нетерпеливые могут сразу выполнить практическую часть, хотя ...
 <h2><a href="http://www.unix-lab.org/articles/dns-server.html">DNS-сервер не отвечает</a></h2>
 <h5><i class="icon-feather"></i> 09 Август 2011 </h5>
 "DNS-сервер не отвечает. Компьютер пытается использовать DNS-сервер, который работает неправильно или не существует." При это соединение с сетью установлено. Возможные варианты решения проблемы: 1. Перезагрузить модем 2. Проверить наличие и правильность DNS-адреса провайдера в настройках сетевой карты . Если их нет, посмотреть документацию, что выдал вам провайдер и вручную указать IP и DNS. Маска подсети обычно 255.255.255.255 Кликаем по иконке интернет-соединения -- Центр управления сетями и общим ...
-<h2><a href="http://www.unix-lab.org/articles/debian-repo.html">Репозитории Debian Squeeze</a></h2>
-<h5><i class="icon-feather"></i> 05 Август 2011 </h5>
-Как известно, изначально в Debian Squeeze задействованы только репозитории security и main. Для домашнего использования маловато. Хочется и к мультимедия иметь доступ, и любимые программы устанавливать, а они зачастую non-free. Добавим несколько интересных вещей для Squeeze, тем более, что для следюущего стабильного релиза - Wheezy - они, скорее всего тоже подойдут. Надо будет лишь вместо squeeze wheezy поставить. Конечно, пока это недоказанная гипотеза, но так было с lenny,поживём - увидим. Добавляем репозитории: # ...
 <div class="pagination">
                     <a href="http://www.unix-lab.org/category/misc6.html">&larr;Предыдущая</a>
         страница 7 из 8.
@@ -62,22 +62,23 @@
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-       <li class="footer"><a href="http://www.unix-lab.org/tag/android.html">Android&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/arch.html">Arch&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/blog.html">Blog&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/debian.html">Debian&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations.html">Decorations&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/django.html">Django&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/editors.html">Editors&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo.html">Gentoo&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/git.html">Git&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript.html">JavaScript&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel.html">Kernel&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/latex.html">LaTeX&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/python.html">Python&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/server.html">Server&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/web.html">Web&nbsp;&bull;&nbsp;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/windows.html">Windows&nbsp;&bull;&nbsp;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/android.html">Android&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/arch.html">Arch&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/blog.html">Blog&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/debian.html">Debian&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations.html">Decorations&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/django.html">Django&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/editors.html">Editors&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo.html">Gentoo&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/git.html">Git&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript.html">JavaScript&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel.html">Kernel&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/latex.html">LaTeX&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/linux.html">Linux&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/python.html">Python&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/server.html">Server&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/web.html">Web&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/windows.html">Windows&nbsp;&bull;</a></li>
   </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>

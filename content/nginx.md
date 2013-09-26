@@ -1,6 +1,6 @@
 Title: Nginx как самостоятельный веб-сервер
 Date: 2012-11-06 08:15
-Tags: Arch, Server
+Tags: Arch, Server, Linux
 Slug: nginx
 Author: redVi
 Summary: В этот раз будет затронут вопрос установки и настройки сервера nginx не как дополнение к apache, а абсолютно отдельно от последнего.

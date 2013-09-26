@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <title>Firewall в Linux. Настройка iptables</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Iptables отвечает преимущественно за фильтрацию пакетов. Настройка Iptables вручную является довольно непростой задачей.">  <meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link href="http://www.unix-lab.org/theme/css/screen.css" rel="stylesheet" type="text/css" />
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
+  <link href="http://www.unix-lab.org/feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="http://www.unix-lab.org"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+        <ul>
+      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+    </ul>
+</div>
+</div>    <div id="main">
+<h2><a href="http://www.unix-lab.org/articles/iptables.html">Firewall в Linux. Настройка iptables</a></h2>
+<h5><i class="icon-feather"></i> 02 Сентябрь 2011 </h5>
+<p>Iptables отвечает преимущественно за фильтрацию пакетов. Настройка Iptables вручную является довольно непростой задачей. Не надейтесь, что разберётесь в этом «снаскока». К счастью, есть много инструментов, которые могут оказать вам помощь в случае, если с iptables вы ещё не разобрались, а обезопасить систему нужно срочно: fwbuilder , firestarter , guarddog, arno firewall - по сути это GUI к iptables. Однозначного ответа что лучше нет. Выбирать вам. Однако, сегодняшняя статья посвящена именно iptables и делится на две части: теория и практика. Самые нетерпеливые могут сразу выполнить практическую часть, хотя подобный подход не рекомендуется.</p>
+<p><strong>Внимание!</strong> Все действия с iptables производятся от имени привелигированного пользователя!</p>
+<h2>Теория</h2>
+<dl>
+<dt>Формат записи iptables</dt>
+<dd>iptables [-t таблица] [команда] [действие]</dd>
+<dt>Пример:</dt>
+<dd>iptables -t filter -A INPUT ACCEPT</dd>
+</dl>
+<p><strong>Действия</strong></p>
+<ul>
+<li>ACCEPT --- Принять пакет</li>
+<li>DROP --- Отбросить пакет</li>
+<li>DNAT --- Преобразовать адрес назначения</li>
+<li>SNAT --- Изменить исходящий IP-адрес в заголовке пакета</li>
+<li>LOG --- Журналирование пакетов и событий</li>
+<li>MARK --- Установить метку на пакет</li>
+<li>MASQUERADE  ---  Изменить исходящий IP-адрес в заголовке пакета (отличие от SNAT - работа с динамическими IP)</li>
+<li>QUEUE --- Поставить пакет в очередь на обработку</li>
+<li>REDIRECT --- Перенаправить пакет/поток на другой порт</li>
+<li>REJECT --- Отбросить пакет+уведомить удалённую систему о том. что её пакет отвергнут</li>
+<li>RETURN --- Прекратить движение пакета по текущей цепочке и возвратить в вызывающую цепочку</li>
+</ul>
+<p><strong>Команды</strong></p>
+<ul>
+<li>-A --- Добавить правило в цепочку</li>
+<li>-D --- Удалить правило из цепочки</li>
+<li>-R --- Заменить одно правило другим</li>
+<li>-I --- Вставить новое правило</li>
+<li>-L --- Вывести список существующих правил</li>
+<li>-F --- Сброс правил</li>
+<li>-Z --- Обнуление счётчиков в заданной цепочке</li>
+<li>-N --- Создание новой цепочки с заданным именем</li>
+<li>-X --- Удаление цепочки</li>
+<li>-P --- Задать политику по умолчанию для выбранной цепочки</li>
+<li>-E --- Переименовать пользовательскую цепочку</li>
+</ul>
+<p><strong>Критерии (общие)</strong></p>
+<ul>
+<li>-p --- Указать тип протокола</li>
+<li>-s --- IP-адрес источника пакета</li>
+<li>-d --- IP-адрес получателя пакета</li>
+<li>-j --- Указать действие для правила</li>
+<li>-i --- Интерфейс, с которого был принят пакет</li>
+<li>-o --- Указать имя выходного интерфейса</li>
+<li>-f --- Распространить правило на все фрагменты пакета</li>
+</ul>
+<p><strong>TCP критерии:</strong></p>
+<ul>
+<li>--sport --- Порт,с которого отправлен пакет</li>
+<li>--dport --- Порт,на который адресован пакет</li>
+<li>--tcp-flags --- Определить маску и флаги пакета</li>
+</ul>
+<p><strong>UDP критерии:</strong></p>
+<ul>
+<li>--sport --- Порт,с которого отправлен пакет</li>
+<li>--dport --- Порт,на который адресован пакет</li>
+</ul>
+<p>Подробнее в man iptables</p>
+<h2>Практика</h2>
+<p><strong>Просмотр текущей конфигурации</strong></p>
+<div class="highlight"><pre><span class="gp">#</span> iptables -L
+
+<span class="go">Chain INPUT (policy ACCEPT)</span>
+<span class="go">target prot opt source destination</span>
+
+<span class="go">Chain FORWARD (policy ACCEPT)</span>
+<span class="go">target prot opt source destination</span>
+
+<span class="go">Chain OUTPUT (policy ACCEPT)</span>
+<span class="go">target prot opt source destination</span>
+</pre></div>
+
+
+<p>Если вы узрели подобное, значит ваш файрволл ещё не настроен и разрешает всё. Исправим положение.</p>
+<p><strong>Настройка политики по умолчанию</strong></p>
+<ul>
+<li>iptables -P INPUT DROP --- блокирование входящих пакетов</li>
+<li>iptables -P OUTPUT ACCEPT --- разрешить исходящие пакеты</li>
+<li>iptables -P FORWARD DROP --- обработка пакетов, которые попали на сервер с другой машины и ожидают дальнейшего переброса. В примере блокируется. В таком случае вам придётся дописать правила для доверенных машин.</li>
+</ul>
+<p>Поскольку входящие пакеты INPUT блокированы, пропишем правило:</p>
+<div class="highlight"><pre><span class="gp">#</span> iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+</pre></div>
+
+
+<p>Это разрешит принимать пакеты от ранее установленного соединения и принимать новые пакеты,порождённые этим соединением.</p>
+<p>Либо с указанием типа протокола:</p>
+<div class="highlight"><pre><span class="gp">#</span> iptables -A INPUT -p TCP -m state --state ESTABLISHED,RELATED -j ACCEPT
+<span class="gp">#</span> iptables -A INPUT -p UDP -m state --state ESTABLISHED,RELATED -j ACCEPT
+</pre></div>
+
+
+<p>Теперь локальный интерфейс:</p>
+<div class="highlight"><pre><span class="gp">#</span> iptables -A INPUT -i lo -j ACCEPT
+</pre></div>
+
+
+<ul>
+<li>NEW --- данные, начинающие новое соединение.</li>
+<li>ESTABLISHED --- пакет, приходящий от уже установленного соединения.</li>
+<li>RELATED --- новый пакет данных, но порожденный старым установленным соединением</li>
+<li>INVALID --- итак понятно</li>
+</ul>
+<p>Сохранить настройки (можете прописывать настройки iptables непосредственно в созданный файл):</p>
+<div class="highlight"><pre><span class="gp">#</span> iptables-save &gt; /etc/iptables.up.rules
+</pre></div>
+
+
+<p>Включить эти правила:</p>
+<div class="highlight"><pre><span class="gp">#</span> iptables-restore &lt; /etc/iptables.up.rules
+</pre></div>
+
+
+<p>И увидеть разницу:</p>
+<div class="highlight"><pre><span class="gp">#</span> iptables-L
+</pre></div>
+
+
+<p>Запуск iptables при старте системы:</p>
+<p>В каталоге <code>/etc/init.d</code> создаем файл с именем iptables</p>
+<div class="highlight"><pre><span class="gp">#</span> touch /etc/init.d/iptables
+</pre></div>
+
+
+<p>Прописываем в нём следующее:</p>
+<div class="highlight"><pre><span class="c">#!/bin/sh</span>
+/sbin/iptables-restore &lt; /etc/iptables.up.rules
+</pre></div>
+
+
+<p>Делаем файл iptables исполняемым:</p>
+<div class="highlight"><pre><span class="gp">#</span> chmod +x /etc/init.d/iptables
+</pre></div>
+
+
+<p>Добавляем его в автозапуск</p>
+<div class="highlight"><pre><span class="gp">#</span> update-rc.d -n iptables defaults
+</pre></div>
+
+
+<p>Запуск iptables при подключении к сети:</p>
+<div class="highlight"><pre><span class="gp">#</span> <span class="nb">echo</span> <span class="s2">&quot;#! /sbin/iptables-restore&quot;</span> &gt; /etc/network/if-up.d/iptables.up.rules
+<span class="go">iptables-save &gt;&gt; /etc/network/if-up.d/iptables.up.rules</span>
+<span class="gp">#</span> chmod +x /etc/network/if-up.d/iptables.up.rules
+</pre></div>
+
+
+<p><em>Примечание:</em> в любой момент вы можете проверить загружены ли ваши правила, просто введя от рута
+<code>iptables-save</code></p>
+<p>Для archlinux сохранение правил iptables осуществляется командой:</p>
+<div class="highlight"><pre><span class="gp">#</span> rc.d save iptables
+</pre></div>
+<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi.html">redVi</a>,
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/linux.html">Linux</a> /
+</h5>
+<p align="center"><a href="#">наверх</a></p>
+      <h3>Комментарии</h3>
+<!-- <div id="disqus_thread">
+    <script type="text/javascript">
+       var disqus_identifier = "articles/iptables.html";
+       (function() {
+       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+       dsq.src = 'http://redvinotes.disqus.com/embed.js';
+       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+</div> -->
+<!-- START: Livefyre Embed -->
+<div id="livefyre-comments">
+<script type="text/javascript" src="http://zor.livefyre.com/wjs/v3.0/javascripts/livefyre.js"></script>
+<script type="text/javascript">
+(function () {
+    var articleId = fyre.conv.load.makeArticleId(null);
+    fyre.conv.load({}, [{
+        el: 'livefyre-comments',
+        network: "livefyre.com",
+        siteId: "343818",
+        articleId: articleId,
+        signed: false,
+        collectionMeta: {
+            articleId: articleId,
+            url: fyre.conv.load.makeCollectionUrl(),
+        }
+    }], function() {});
+}());
+</script>
+</div>
+<!-- END: Livefyre Embed --></div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+       <li class="footer"><a href="http://www.unix-lab.org/tag/android.html">Android&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/arch.html">Arch&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/blog.html">Blog&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/debian.html">Debian&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations.html">Decorations&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/django.html">Django&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/editors.html">Editors&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo.html">Gentoo&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/git.html">Git&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript.html">JavaScript&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel.html">Kernel&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/latex.html">LaTeX&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/linux.html">Linux&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/python.html">Python&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/server.html">Server&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/web.html">Web&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/windows.html">Windows&nbsp;&bull;</a></li>
+  </ul><ul class="footer">
+    <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
+    <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
+    <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>
+    <li class="footer"><a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-42400517-1', 'www.unix-lab.org');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

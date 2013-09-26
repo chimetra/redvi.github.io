@@ -1,6 +1,6 @@
 Title: Поваренная книга openbox
 Date: 2012-08-02 1:15
-Tags: Decorations, Arch
+Tags: Decorations, Arch, Linux
 Slug: openbox
 Author: redVi
 Summary: Тем, кто неравнодушен к openbox посвящается.

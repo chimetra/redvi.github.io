@@ -1,6 +1,6 @@
 Title: Ядерная физика для домохозяек v.3
 Date: 2013-04-19 1:15
-Tags: Gentoo, Kernel
+Tags: Gentoo, Kernel, Linux
 Slug: kernel-v3
 Author: redVi
 Summary: Автору захотелось немного обновить информацию о сборке ядра, за которым уже давно закреплена циферка три.

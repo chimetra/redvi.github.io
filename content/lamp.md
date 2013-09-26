@@ -1,6 +1,6 @@
 Title: Установка LAMP в archlinux
 Date: 2012-01-21 08:25
-Tags: Arch, Server
+Tags: Arch, Server, Linux
 Slug: lamp
 Author: redVi
 Summary: Apache – это самый популярный веб-сервер. Его задача как и любого другого веб-сервера – отдавать контент на запросы клиентов.

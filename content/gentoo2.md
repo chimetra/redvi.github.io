@@ -1,6 +1,6 @@
 Title: Gentoo. Попытка № 2
 Date: 2013-02-16 1:15
-Tags: Gentoo
+Tags: Gentoo, Linux
 Slug: gentoo2
 Author: redVi
 Summary: О возвращении на дистрибутив Gentoo Linux

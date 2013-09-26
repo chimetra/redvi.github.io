@@ -1,6 +1,6 @@
 Title: Systemd: загрузись по-новому
 Date: 2012-09-22 08:15
-Tags: Arch
+Tags: Arch, Linux
 Slug: systemd
 Author: redVi
 Summary: Systemd и как с ним управляться

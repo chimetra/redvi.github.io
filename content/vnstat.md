@@ -1,6 +1,6 @@
 Title: Считаем трафик с vnstat
 Date: 2012-11-20 08:15
-Tags: Arch
+Tags: Arch, Linux
 Slug: vnstat
 Author: redVi
 Summary: В сегодняшнем посте затронем тему учёта трафика сетевых интерфейсов.

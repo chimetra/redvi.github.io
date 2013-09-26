@@ -1,6 +1,6 @@
 Title: Пользователи и группы в Archlinux
 Date: 2011-11-27 08:15
-Tags: Arch
+Tags: Arch, Linux
 Slug: arch-users
 Author: redVi
 Summary: Наиболее удобным инструментом для создания нового пользователя служит команда adduser.

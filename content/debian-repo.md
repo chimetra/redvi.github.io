@@ -1,6 +1,6 @@
 Title: Репозитории Debian Squeeze
 Date: 2011-08-05 08:25
-Tags: Debian
+Tags: Debian, Linux
 Slug: debian-repo
 Author: redVi
 Summary: Как известно, изначально в Debian Squeeze задействованы только репозитории security и main. Для домашнего использования маловато.

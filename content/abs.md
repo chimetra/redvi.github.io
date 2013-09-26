@@ -1,6 +1,6 @@
 Title: Знакомимся с ABS
 Date: 2012-01-11 08:25
-Tags: Arch, Kernel
+Tags: Arch, Kernel, Linux
 Slug: abs
 Author: redVi
 Summary: Сегодня будем доказывать, что arch linux ничем не хуже gentoo.

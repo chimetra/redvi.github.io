@@ -1,6 +1,6 @@
 Title: GRUB2: основные настройки
 Date: 2012-11-13 08:15
-Tags: Arch
+Tags: Arch, Linux
 Slug: grub2
 Author: redVi
 Summary: Не так давно в archlinux всё же прекратили поддержку grub-legacy. Теперь выбор варьируется между двумя загрузчиками.

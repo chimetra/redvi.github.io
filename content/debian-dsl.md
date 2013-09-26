@@ -1,6 +1,6 @@
 Title: Настройка DSL в Debian/Ubuntu Linux
 Date: 2011-10-30 08:25
-Tags: Debian
+Tags: Debian, Linux
 Slug: debian-dsl
 Author: redVi
 Summary: После установки linux первое, что обычно делает счастливый пользователь - настройка интернет-соединения.

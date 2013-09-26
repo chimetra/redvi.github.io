@@ -1,6 +1,6 @@
 Title: Топ программ под Linux
 Date: 2012-06-21 08:10
-Tags: Arch
+Tags: Arch, Linux
 Slug: top-programms
 Author: redVi
 Summary: Список хороших свободных приложений для повседневного использования.

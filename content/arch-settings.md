@@ -1,6 +1,6 @@
 Title: Arch Linux. Тонкая настройка
 Date: 2011-10-19 08:25
-Tags: Arch
+Tags: Arch, Linux
 Slug: arch-settings
 Author: redVi
 Summary: В продолжение статьи об установке лёгкого, быстрого и простого дистрибутива.

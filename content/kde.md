@@ -1,6 +1,6 @@
 Title: Оптимизация KDE
 Date: 2012-07-21 08:15
-Tags: Arch, Decorations
+Tags: Arch, Decorations, Linux
 Slug: kde
 Author: redVi
 Summary: Кто не сталкивался с проблемой излишнего потребления ресурсов любимой многими графической оболочкой KDE? Думаю, все.

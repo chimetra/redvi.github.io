@@ -1,6 +1,6 @@
 Title: Debian 7 или Какого лешего
 Date: 2013-06-22 09:15
-Tags: Debian
+Tags: Debian, Linux
 Slug: debian-wheezy
 Author: redVi
 Summary: Debian — первый серьёзный дистрибутив автора, тёплая и нежная дружба с которым длилась достаточно долго, до перехода на archlinux.

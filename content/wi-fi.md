@@ -1,6 +1,6 @@
 Title: Неприступный wi-fi
 Date: 2012-08-08 08:15
-Tags: Arch
+Tags: Web, Linux
 Slug: wi-fi
 Author: redVi
 Summary: Рассмотрим две хитрых программы, способные раскрасить наши беспросветные будни яркими красками.

@@ -1,7 +1,7 @@
 Title: Установка Gentoo. По-русски
 Date: 2011-09-30 08:20
 Update: 2 Январь 2013
-Tags: Gentoo
+Tags: Gentoo, Linux
 Slug: install-gentoo
 Author: redVi
 Summary: Сегодня будем развенчивать миф о сложности установки Gentoo.

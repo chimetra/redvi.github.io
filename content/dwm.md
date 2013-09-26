@@ -1,6 +1,6 @@
 Title: DWM: тайлинг — наше всё
 Date: 2012-12-04 11:15
-Tags: Decorations, Arch
+Tags: Decorations, Arch, Linux
 Slug: dwm
 Author: redVi
 Summary: Настройка тайлового менеджера окон DWM

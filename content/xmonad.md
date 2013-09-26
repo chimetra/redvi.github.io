@@ -1,6 +1,6 @@
 Title: Знакомьтесь, xmonad
 Date: 2012-10-23 11:15
-Tags: Decorations
+Tags: Decorations, Linux
 Slug: xmonad
 Author: redVi
 Summary: Установка, настройка и сипользование оконного менеджера Xmonad

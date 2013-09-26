@@ -1,6 +1,6 @@
 Title: Простое создание резервных копий с clonezilla
 Date: 2012-10-16 08:15
-Tags: Arch
+Tags: Arch, Linux
 Slug: clonezilla
 Author: redVi
 Summary: Наиболее простой способ сохранить копию своей системы.

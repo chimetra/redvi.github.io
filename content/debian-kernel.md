@@ -1,6 +1,6 @@
 Title: Сборка ядра Debian
 Date: 2011-08-02 23:10
-Tags: Debian, Kernel
+Tags: Debian, Kernel, Linux
 Slug: debian-kernel
 Author: redVi
 Summary: Что нужно знать для сборки своего ядра в Debian-based системах

@@ -1,6 +1,6 @@
 Title: Стартовые красоты с fbsplash
 Date: 2013-03-19 1:15
-Tags: Gentoo
+Tags: Gentoo, Linux
 Slug: fbsplash
 Author: redVi
 Summary: Иногда хочется красоты. В том числе и при стартовой загрузке системы.

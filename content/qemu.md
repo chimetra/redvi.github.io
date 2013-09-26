@@ -1,6 +1,6 @@
 Title: QEMU. Mini how-to
 Date: 2012-12-25 08:25
-Tags: Server
+Tags: Server, Linux
 Slug: qemu
 Author: redVi
 Summary: С помощью QEMU мы запросто сможем проводить эксперименты с различными операционными системами, не выходя из своей основной системы.

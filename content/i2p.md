@@ -1,6 +1,6 @@
 Title: i2p: взгляд пользователя
 Date: 2013-07-31 21:10
-Tags: Gentoo, Web
+Tags: Linux, Web
 Slug: i2p
 Author: Anarchist
 Summary: О том, как выжить в современном интернете. Открываем доступ к заблокированным сайтам с помощью i2p.
