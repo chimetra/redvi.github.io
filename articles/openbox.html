@@ -62,12 +62,12 @@ nm-applet --sm-disable &amp;
 </pre></div>
 
 
-<p>Таким образом раскладка настроена на переключение по <code>Shift+Alt</code>, вверху запускается <code>wbar</code>, о котором сказано будет чуть ниже, выбранная обоина на рабочем столе восстанавливается при старте системы, стартует conky. Причём фон у conky прозрачный. Если это не так, устанавливаем композитный менеджер. Коротко о его свойствах ниже, он отвечает за различные графические эффекты: тени, прозрачность и тому подобное.</p>
+<p>Таким образом раскладка настроена на переключение по <code>Shift+Alt</code>, вверху запускается wbar, о котором сказано будет чуть ниже, выбранная обоина на рабочем столе восстанавливается при старте системы, стартует conky. Причём фон у conky прозрачный. Если это не так, устанавливаем композитный менеджер. Коротко о его свойствах ниже, он отвечает за различные графические эффекты: тени, прозрачность и тому подобное.</p>
 <div class="highlight"><pre><span class="gp">$</span> sudo yaourt xcompmgr-dana
 </pre></div>
 
 
-<p><b>P.S.</b> Чтобы на панели <code>tint2</code> отображалась используемая раскладка, нам понадобится установить <code>xxkb</code> и создать его конфигурационный файл в домашней директории:</p>
+<p><b>P.S.</b> Чтобы на панели tint2 отображалась используемая раскладка, нам понадобится установить xxkb и создать его конфигурационный файл в домашней директории:</p>
 <div class="highlight"><pre><span class="c"># ~.xxkbrc:</span>
 <span class="c">#</span>
 XXkb.image.path: /usr/share/xxkb/
@@ -100,39 +100,38 @@ XXkb.mainwindow.label.enable: no
 </pre></div>
 
 
-<p>Можно редактировать данный файл вручную, поскольку синтаксис достаточно тривиален. Но хочу предложить вам второй вариант - <code>obmenu</code>.</p>
+<p>Можно редактировать данный файл вручную, поскольку синтаксис достаточно тривиален. Но хочу предложить вам второй вариант &mdash; obmenu.</p>
 <div class="highlight"><pre><span class="gp">$</span> sudo pacman -S obmenu
 <span class="gp">$</span> obmenu
 </pre></div>
 
 
 <ul>
-<li>Можно добавить своё меню - <code>New Menu</code></li>
-<li>Добавить в него подпункты - <code>New item</code></li>
+<li>Можно добавить своё меню - New Menu</li>
+<li>Добавить в него подпункты - New item</li>
 <li>После чего удалить всё ненужное.</li>
 </ul>
-<p><code>Obmenu</code> требует, чтобы вы ввели название нового приложения в меню, действие - <code>Execute</code> и путь к нему.
+<p><code>Obmenu</code> требует, чтобы вы ввели название нового приложения в меню, действие &mdash; Execute и путь к нему.
 Так, для добавления редактора eclipse, введём его наименование и пропишем путь <code>/usr/bin/eclipse</code>.</p>
 <p>Для остальных приложений аналогично.</p>
 <p><img alt="obmenu" src="http://3.bp.blogspot.com/-9QMD4AfZiz4/T983kqIyT9I/AAAAAAAAA50/18M-S5vU_Tw/s1600/obmenu.png" /></p>
-<p>Впрочем, можете воспользоваться <code>menumaker</code>, который генерирует меню сам.</p>
+<p>Впрочем, можете воспользоваться программой menumaker, которая генерирует меню самостоятельно.</p>
 <div class="highlight"><pre><span class="gp">$</span> sudo pacman -S menumaker
 <span class="gp">$</span> mmaker -v openbox    <span class="c">#  Не перезаписывать существующий файл меню.</span>
 <span class="gp">$</span> mmaker -vf openbox   <span class="c">#  Принудительно перезаписать файл меню.</span>
 </pre></div>
 
 
-<p>Теперь кликаем правой клавишей мыши по рабочему столу, выбираем из меню <code>"System" - "Openbox configuration Manager"</code>.</p>
+<p>Теперь кликаем правой клавишей мыши по рабочему столу, выбираем из меню "System" - "Openbox configuration Manager".</p>
 <p>Так-то лучше. И здесь нам не придётся вручную редактировать файл конфигурации.
 Настройки как правило уже русифицированы и в них нет ничего, с чем было бы сложно разобраться.</p>
-<p><img alt="obconf" src="http://3.bp.blogspot.com/-9QMD4AfZiz4/T983kqIyT9I/AAAAAAAAA50/18M-S5vU_Tw/s1600/obmenu.png" /></p>
 <h2>Смена обоев на рабочем столе</h2>
 <div class="highlight"><pre><span class="gp">$</span> sudo pacman -S nitrogen
 <span class="gp">$</span> nitrogen
 </pre></div>
 
 
-<p>Здесь всё просто. Укажите путь к вашим изображениям, и они появятся в <code>nitrogen</code> - выбирайте любое. Можно добавить nitrogen в меню с помощью obmenu. Подобную операцию мы уже проделывали.</p>
+<p>Здесь всё просто. Укажите путь к вашим изображениям, и они появятся в <code>nitrogen</code> &mdash; выбирайте любое. Можно добавить nitrogen в меню с помощью obmenu. Подобную операцию мы уже проделывали.</p>
 <p><img alt="notrigen" src="http://4.bp.blogspot.com/-1POgF6mIfpg/T9877g5KvrI/AAAAAAAAA6I/js_PTGXhziQ/s1600/nitrogen.png" /></p>
 <h2>Иконки и шрифты</h2>
 <p>Кто-то предпочитает настраивать ручками, но мы опять сэкономим своё время, установив <code>lxappearance</code>:</p>
@@ -142,7 +141,7 @@ XXkb.mainwindow.label.enable: no
 
 <p>Запускаем и выбираем, что больше нравится.</p>
 <p><img alt="lxappearance" src="http://1.bp.blogspot.com/-u8QtWjlNH80/T-WyPrHJkWI/AAAAAAAAA70/Gyliajlkpqc/s1600/lxappearance.png" /></p>
-<p>Если есть желание отображать иконки на рабочем столе, <code>idesk</code> к вашим услугам. Автор сего поста не пользуется этой программой, поэтому долго не обсуждает.</p>
+<p>Если есть желание отображать иконки на рабочем столе, idesk к вашим услугам. Автор сего поста не пользуется этой программой, поэтому долго не обсуждает.</p>
 <p>Вообще, процедура сводится к созданию файла <code>название_программы.lnk</code> в директории <code>.idesktop/</code> , где прописыватся примерно такое:</p>
 <div class="highlight"><pre><span class="n">table</span> <span class="n">Icon</span>
 <span class="nl">Caption:</span> <span class="n">firefox</span>
@@ -161,7 +160,7 @@ XXkb.mainwindow.label.enable: no
 <p>Отображать иконку уровня звука призван obmixer, который также надо просто добавить в автозагрузку.</p>
 <h2>Горячие клавиши</h2>
 <p>Сочетания горячих клавиш настраиваются в <code>~/.config/openbox/rc.xml</code>.
-Ищем эти настройки начиная с секции:</p>
+Ищем эти настройки в соответствующих секциях.</p>
 <p>Перемещение между рабочими столами:</p>
 <div class="highlight"><pre><span class="o">&lt;!--</span> <span class="n">Keybindings</span> <span class="k">for</span> <span class="n">desktop</span> <span class="n">switching</span> <span class="o">--&gt;</span>
 </pre></div>
@@ -197,11 +196,11 @@ XXkb.mainwindow.label.enable: no
 
 
 <ul>
-<li><code>keybind key</code> - привязка определённой клавиши</li>
-<li><code>action name - execute</code> значит, что это приложение запуска
-<code>command</code> либо вводим путь вроде <code>/usr/bin/firefox</code>, либо просто указываем, какое приложение надо запустить</li>
-<li><code>enabled</code> - включено</li>
-<li><code>name</code> - имя для программы</li>
+<li>keybind key - привязка определённой клавиши</li>
+<li>action name - execute значит, что это приложение запуска</li>
+<li>command - либо вводим путь вроде <code>/usr/bin/firefox</code>, либо просто указываем, какое приложение надо запустить</li>
+<li>enabled - включено</li>
+<li>name - имя для программы</li>
 </ul>
 <p>Для примера назначим горячую клавишу самому меню openbox:</p>
 <div class="highlight"><pre><span class="nt">&lt;keybind</span> <span class="na">key=</span><span class="s">&quot;W-space&quot;</span><span class="nt">&gt;</span>
@@ -213,22 +212,29 @@ XXkb.mainwindow.label.enable: no
 
 
 <p>Теперь нажатием клавиш <code>super</code> (win) + <code>пробел</code> мы сможем вызвать главное меню со списком наших приложений.</p>
-<p>Сокращения клавиш:
-<code>A</code> - <code>Alt</code>, <code>W</code> - <code>win</code>, <code>C</code> - <code>ctrl</code>. И так далее по смыслу</p>
-<p>Настраиваем клавиши для перемещения окон с клавиатуры</p>
+<p>Сокращения клавиш:</p>
+<ul>
+<li><code>A</code> - Alt</li>
+<li><code>W</code> - win</li>
+<li><code>C</code> - ctrl</li>
+</ul>
+<p>И так далее по смыслу</p>
+<h3>Настраиваем клавиши для перемещения окон с клавиатуры</h3>
 <p>Возможные действия над окнами:</p>
-<p><code>SendToDesktop</code> (отправить окно на указанный аргументом опции рабочий стол; опция <to>, её значение – номер стола);
-- <code>Focus</code> (передать окну фокус);
-- <code>Raise</code> (поднять окно на передний план);
-- <code>Lower</code> (переместить окно на задний план);
-- <code>Iconify</code> (свернуть окно на панель);
-- <code>Close</code> (закрыть окно);
-- <code>ToggleShade</code> (свернуть в заголовок/развернуть из заголовка);
-- <code>ToggleMaximize</code> (включить/отключить режим полного развёртывания);
-- <code>ToggleFullscreen</code> (включить/отключить полноэкранный режим);
-- <code>ToggleDecorations</code> (включить/отключить заголовок);
-- <code>Move</code> (переместить);
-- <code>Resize</code> (изменить размер).</p>
+<ul>
+<li><code>SendToDesktop</code> (отправить окно на указанный аргументом опции рабочий стол; опция <to>, её значение – номер стола);</li>
+<li><code>Focus</code> (передать окну фокус);</li>
+<li><code>Raise</code> (поднять окно на передний план);</li>
+<li><code>Lower</code> (переместить окно на задний план);</li>
+<li><code>Iconify</code> (свернуть окно на панель);</li>
+<li><code>Close</code> (закрыть окно);</li>
+<li><code>ToggleShade</code> (свернуть в заголовок/развернуть из заголовка);</li>
+<li><code>ToggleMaximize</code> (включить/отключить режим полного развёртывания);</li>
+<li><code>ToggleFullscreen</code> (включить/отключить полноэкранный режим);</li>
+<li><code>ToggleDecorations</code> (включить/отключить заголовок);</li>
+<li><code>Move</code> (переместить);</li>
+<li><code>Resize</code> (изменить размер).</li>
+</ul>
 <p>Пример:</p>
 <p>В секции <code>&lt;!-- Keybindings for window switching with the arrow keys --&gt;</code></p>
 <div class="highlight"><pre><span class="nt">&lt;keybind</span> <span class="na">key=</span><span class="s">&quot;W-k&quot;</span><span class="nt">&gt;</span>
