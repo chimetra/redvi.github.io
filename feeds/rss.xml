@@ -1,5 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>unix-lab.org</title><link>http://www.unix-lab.org/</link><description>блог об операционных системах, open source и программировании</description><atom:link href="http://www.unix-lab.org/feeds/rss.xml" rel="self"></atom:link><lastBuildDate>Sat, 14 Sep 2013 21:05:00 +0700</lastBuildDate><item><title>Навигация по документу в LaTeX</title><link>http://www.unix-lab.org/articles/hyperref.html</link><description>&lt;p&gt;Довольно часто бывает необходимо указать в тексте ссылку на источник или какой-либо полезный ресурс. А то и просто сделать оглавление &amp;laquo;кликабельным&amp;raquo;, дабы при его просмотре сразу можно было выбрать нужную главу и перейти к ней.&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>unix-lab.org</title><link>http://www.unix-lab.org/</link><description>блог об операционных системах, open source и программировании</description><atom:link href="http://www.unix-lab.org/feeds/rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 03 Oct 2013 01:15:00 +0700</lastBuildDate><item><title>Абсолютные пути URL в Django</title><link>http://www.unix-lab.org/articles/get-absolute-url.html</link><description>&lt;p&gt;В одной из &lt;a href="http://www.unix-lab.org/articles/django-first-steps.html"&gt;предыдущих заметок&lt;/a&gt;, нами был написан шаблон для вывода списка публикаций на главной странице. Ссылка на полный текст публикации имеет вид &lt;code&gt;{% url 'articles:detail' post.id %}&lt;/code&gt;, что позволяет получить определённую страницу по её номеру (&lt;code&gt;id&lt;/code&gt;). За отображение страницы ответственность несёт представление &lt;code&gt;articles&lt;/code&gt; из простанства имён (&lt;code&gt;namespace&lt;/code&gt;) &lt;code&gt;detail&lt;/code&gt;. В данном ниже примере для разнообразия используем другую модель, а также для упрощения понимания материала откажемся от использования пространств имён: одно приложение &amp;mdash; одна модель &amp;mdash; один urls.py.&lt;/p&gt;
+&lt;p&gt;И всё бы хорошо, но ссылки подобного вида иногда могут не подойти вам. Вот пара простых примеров, иллюстрирующих этот тезис:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Вам нужно получить статью по slug&lt;/li&gt;
+&lt;li&gt;Вам нужно отобразить ссылки на предыдущую и следующую статью&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Что же, разберём указанные примеры по-порядку.&lt;/p&gt;
+&lt;h3&gt;Вид urls.py&lt;/h3&gt;
+&lt;p&gt;Создание файла &lt;code&gt;ursl.py&lt;/code&gt;, отвечающего нашим запросам. Отображено использование представлений-классов, подробности о которых вы без труда найдёте в документации.&lt;/p&gt;
+&lt;p&gt;У нас имеется представление &lt;code&gt;IndexView&lt;/code&gt;, на которое возложен вывод индексной страницы со списком последних публикаций, а также &lt;code&gt;DetailView&lt;/code&gt;, которое выводит отдельную запись. В шаблоне к ним можно обращаться как к &lt;code&gt;latest_articles_list&lt;/code&gt; и &lt;code&gt;detail&lt;/code&gt; соответственно.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# urls.py&lt;/span&gt;
+
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.conf.urls&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;patterns&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;include&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;url&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;.views&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;IndexView&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;DetailView&lt;/span&gt;
+
+
+&lt;span class="n"&gt;urlpatterns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;patterns&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;r&amp;#39;^$&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;IndexView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;as_view&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;latest_articles_list&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;r&amp;#39;^articles/(?P&amp;lt;slug&amp;gt;[-\w]+)/$&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;DetailView&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;as_view&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;template_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;article.html&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;detail&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Обращение по первичному ключу&lt;/h3&gt;
+&lt;p&gt;В случае, когда нужно получить объект по &lt;code&gt;slug&lt;/code&gt;, нам важно знать, что любая модель имеет свой первичный ключ (&lt;code&gt;primary key&lt;/code&gt;) и его можно переопределить. По-умолчанию первичным ключом является поле &lt;code&gt;id&lt;/code&gt;, генерируемое автоматически. Таким образом, мы получаем URL вида:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nl"&gt;http:&lt;/span&gt;&lt;span class="c1"&gt;//site.org/articles/1/&lt;/span&gt;
+&lt;span class="nl"&gt;http:&lt;/span&gt;&lt;span class="c1"&gt;//site.org/articles/2/&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;А хотим видеть такие адреса:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nl"&gt;http:&lt;/span&gt;&lt;span class="c1"&gt;//site.org/articles/krasivyi-url/&lt;/span&gt;
+&lt;span class="nl"&gt;http:&lt;/span&gt;&lt;span class="c1"&gt;//site.org/articles/po-poly-slug/&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Самым простым решением является переопределение первичного ключа, но в этом случае вы больше не сможете обращаться к полю модели по &lt;code&gt;id&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# models.py&lt;/span&gt;
+
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.db&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;
+
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Article&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Model&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;#39;&amp;#39;&amp;#39; Create Post &amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+    &lt;span class="n"&gt;title&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CharField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;max_length&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;150&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;verbose_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Title&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;content&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;TextField&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;pub_date&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DateField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;auto_now&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;verbose_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Create Date&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;update&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DateField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;auto_now&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;blank&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;null&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;verbose_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Last Update&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;author&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ForeignKey&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;User&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;verbose_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Author&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;slug&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SlugField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;primary_key&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;max_length&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;250&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;unique&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;summary&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;TextField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;blank&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;max_length&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;250&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;help_text&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Meta Description&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Как мог заметить наблюдательный читатель, мы задали поле &lt;code&gt;slug&lt;/code&gt; со значением &lt;code&gt;primary_key=True&lt;/code&gt;. Предполагается, что в этом поле будет установлен устраивающий автора красивый URL. Теперь следует ссылаться на детальное представление публикации именно по этому полю. Конкретный пример будет приведён чуть ниже.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Примечание&lt;/strong&gt;: если при создании представления вы используете представления-классы, вернуть публикацию по полю &lt;code&gt;slug&lt;/code&gt;, не нагромождая ваше представление и не затрагивая &lt;code&gt;primary key&lt;/code&gt;, также может быть очень легко. В этом вам посодействуют &lt;code&gt;DetailView&lt;/code&gt; и &lt;code&gt;get_object_or_404&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;# views.py&lt;/span&gt;
+
+&lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;django&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shortcuts&lt;/span&gt; &lt;span class="n"&gt;import&lt;/span&gt; &lt;span class="n"&gt;get_object_or_404&lt;/span&gt;
+&lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;django&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;views&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;generic&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;detail&lt;/span&gt; &lt;span class="n"&gt;import&lt;/span&gt; &lt;span class="n"&gt;DetailView&lt;/span&gt;
+
+&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;DetailView&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;DetailView&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="s"&gt;&amp;quot;&amp;quot;&amp;quot; Return detail data &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;model&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Article&lt;/span&gt;
+    &lt;span class="n"&gt;context_object_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;article&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;
+
+    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;get_object&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;get_object_or_404&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Article&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;slug__iexact&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;slug&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Прежде, чем приступить к написанию шаблонов, решим второй вопрос: о получении абсолютных путей к объекту.&lt;/p&gt;
+&lt;h3&gt;Абсолютные пути&lt;/h3&gt;
+&lt;p&gt;Итак, для примера мы решили, что будем выводить предыдущую и следующую статью при обращении к статье текущей. Если просто обращаться к статье по указанному ключу, можно поиметь некоторые проблемы. Наш URL имеет относительный путь, поэтому при наведении на любую ссылку внутри поста, которая сформирована также (то есть с указанием &lt;code&gt;{% url 'view' object.slug %}&lt;/code&gt;), первичный ключ выбранной статьи просто будет добавлен к уже имеющемуся адресу. Вот так:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;имеем&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="nl"&gt;http:&lt;/span&gt;&lt;span class="c1"&gt;//site.org/articles/my-article&lt;/span&gt;
+&lt;span class="err"&gt;при&lt;/span&gt; &lt;span class="err"&gt;наведении&lt;/span&gt; &lt;span class="err"&gt;на&lt;/span&gt; &lt;span class="err"&gt;другую&lt;/span&gt; &lt;span class="err"&gt;ссылку&lt;/span&gt; &lt;span class="err"&gt;получим&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="nl"&gt;http:&lt;/span&gt;&lt;span class="c1"&gt;//site.org/articles/my-article/my-next-article&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Поэтому мы добавим к нужной модели спасательный круг в виде метода &lt;code&gt;get_absolute_url&lt;/code&gt; и сразу же выведем в шаблоне именно то, что нужно.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# models.py&lt;/span&gt;
+
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.db&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.core.urlresolvers&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;reverse&lt;/span&gt;
+
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;Article&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Model&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;title&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CharField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;max_length&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;150&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;verbose_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Title&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;content&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;TextField&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="o"&gt;...&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_absolute_url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;reverse&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;detail&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;slug&lt;/span&gt;&lt;span class="p"&gt;)])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Подготовка шаблонов&lt;/h3&gt;
+&lt;p&gt;Теперь в шаблонах мы можем ссылаться на статью по её абсолютному адресу, используя &lt;code&gt;get_absolute_url&lt;/code&gt;. Примеры:&lt;/p&gt;
+&lt;p&gt;подобным образом может выглядеть индексная страницы со списком последних публикаций&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;&amp;lt;!--index.html--&amp;gt;&lt;/span&gt;
+{% extends &amp;quot;base.html&amp;quot; %}
+{% block content %}
+&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;main&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    {% for article in latest_articles_list %}
+      &lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{ article.get_absolute_url }}&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;{{ article.title }}&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+    {% endfor %}
+&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+{% endblock content %}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;а на страница детального представления можно добавить ссылки на предыдущий и следующий пост&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;&amp;lt;!--article.html--&amp;gt;&lt;/span&gt;
+{% extends &amp;quot;base.html&amp;quot; %}
+{% block content %}
+&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;main&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;h2&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{ article.get_absolute_url }}&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;{{ article.title }}&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&amp;lt;/h2&amp;gt;&lt;/span&gt;
+{{ article.content }}
+&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;links&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{ article.get_next_by_pub_date.get_absolute_url }}&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;{{ article.get_next_by_pub_date }}&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;#&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;наверх&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{ article.get_previous_by_pub_date.get_absolute_url }}&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;{{ article.get_previous_by_pub_date }}&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+{% endblock %}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;Model.get_next_by_pub_date&lt;/code&gt; вернёт следующую публикацию, основываясь на дате её содания&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Model.get_previous_by_pub_date&lt;/code&gt; отобразит предыдущую публикацию.&lt;/p&gt;
+&lt;p&gt;Применив к этим ссылкам метод &lt;code&gt;get_absolute_url&lt;/code&gt;, мы получим искомое решение.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">redVi</dc:creator><pubDate>Thu, 03 Oct 2013 01:15:00 +0700</pubDate><guid>tag:www.unix-lab.org,2013-10-03:articles/get-absolute-url.html</guid><category>Django</category></item><item><title>Навигация по документу в LaTeX</title><link>http://www.unix-lab.org/articles/hyperref.html</link><description>&lt;p&gt;Довольно часто бывает необходимо указать в тексте ссылку на источник или какой-либо полезный ресурс. А то и просто сделать оглавление &amp;laquo;кликабельным&amp;raquo;, дабы при его просмотре сразу можно было выбрать нужную главу и перейти к ней.&lt;/p&gt;
 &lt;p&gt;Для этих нужд вполне можно задействовать пакет &lt;code&gt;hyperref&lt;/code&gt;, который входит в поставку с LaTeX в большинстве дистрибутивов. &lt;code&gt;Hyperref&lt;/code&gt; имеет достаточно большое количество опций, которые перечисляются через запятую при подключении пакета. Но следует иметь ввиду, что он переопределяет некоторые команды LaTeX'а, и подключать его последним. При подключении &lt;code&gt;hyperref&lt;/code&gt; все перекрёстные ссылки будут преобразованы в ссылки гипертекстовые: оглавление, сноски, цитаты...&lt;/p&gt;
 &lt;p&gt;Во многих источниках обращают внимание на опцию выбора драйвера. Честно сказать, при создании PDF-документа с &lt;code&gt;pdflatex&lt;/code&gt; &lt;em&gt;без указания&lt;/em&gt; драйвера всё собралось и сработало точно так же как и с включением нужной опции.&lt;/p&gt;
 &lt;ul&gt;
@@ -459,88 +591,4 @@
 
 
 &lt;p&gt;То есть в каком бы месте вы не подключили расширение, полученный в итоге код будет оптимальным. С mixin'ами же каждое новое включение влечёт за собой увеличение участков одного и того же кода. Понятно, что злоупотреблять ими не нужно.&lt;/p&gt;
-&lt;p&gt;Вот такой небольшой обзор. Прошлись, как это говорится, галопом по Европам, получили примерное представление о Sass, решили для себя использовать его или нет. За дальнейшими подробностями обращаться к документации проекта.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">redVi</dc:creator><pubDate>Sun, 08 Sep 2013 08:25:00 +0700</pubDate><guid>tag:www.unix-lab.org,2013-09-08:articles/sass.html</guid><category>Web</category></item><item><title>Как сделать pull request</title><link>http://www.unix-lab.org/articles/pull-request.html</link><description>&lt;p&gt;В продолжение серии коротких заметок, ибо длинные полотна писать, увы, недосуг. В узком кругу автора этих строк имеются товарищи весьма и весьма далёкие от мира железок, интернета и open source (в общем, они пропустили всё самое интересное). Не далее как на прошлой неделе угораздило таки употребить при них непотребное словосочетание &amp;laquo;pull request&amp;raquo;, после чего, ловя недоумённые взгляды, пришлось мяться и придумывать как сие получше перевести на великий и могучий. Увы, к взаимопониманию это не привело: попробую ответить здесь.&lt;/p&gt;
-&lt;p&gt;&lt;b&gt;Pull Request&lt;/b&gt; &amp;mdash; запрос на включение. На включение написанного вами кода в чужой репозиторий.&lt;/p&gt;
-&lt;h2&gt;С чего начать?&lt;/h2&gt;
-&lt;p&gt;А для начала этот самый репозиторий нужно форкнуть (fork &amp;mdash; вилка, ответвление). Разберём это нехитрое действо на примере веб-сервиса для хостинга IT-проектов, название которому GitHub. Разумеется, кроме GitHub есть и другие: BitBucket, например. Выбирать по вкусу.&lt;/p&gt;
-&lt;p&gt;&lt;u&gt;Примечание:&lt;/u&gt; для успешного проведения нижеизложенных операций у вас (что естественно) должен быть установлен git. Если это условие ещё не выполнено, шагом марш на &lt;a href="github.html"&gt;вводное руководство&lt;/a&gt;!&lt;/p&gt;
-&lt;p&gt;Заходим на страницу интересующего проекта, жмём кнопку &lt;code&gt;Fork&lt;/code&gt;, ищем &lt;u&gt;на своей&lt;/u&gt; странице URL для клонирования.&lt;/p&gt;
-&lt;p&gt;&lt;img alt="fork" src="../source/fork.jpg" title="fork on github" /&gt;&lt;/p&gt;
-&lt;p&gt;В консоли в зависимости от входных данных набираем нечто подобное:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; git clone git@github.com/username/django_documentation.git
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Отлично. Уже можно вносить свои изменения в код проекта.&lt;/p&gt;
-&lt;p&gt;Тот репозиторий, что теперь лежит на вашем жёстком диске, независим от основного. В нём отслеживаются только ваши наработки. Но как следить за изменениями, происходящими в первоисточнике, откуда вы &amp;laquo;стянули&amp;raquo; репозиторий? Добавить удаленный репозиторий в отслеживаемые. Например, так:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; git remote -v
-&lt;span class="go"&gt;origin  git@github.com:username/django_documentation.git (fetch)&lt;/span&gt;
-&lt;span class="go"&gt;origin  git@github.com:username/django_documentation.git (push)&lt;/span&gt;
-&lt;span class="gp"&gt;$&lt;/span&gt; git remote add upstream git@github.com:Alerion/django_documentation.git
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;После добавления &lt;code&gt;upstream&lt;/code&gt; в отслеживаемые, наберите команду &lt;code&gt;git remote -v&lt;/code&gt; ещё раз, вы должны увидеть произошедшие изменения.&lt;/p&gt;
-&lt;p&gt;Давайте посмотрим как сливать изменения из оригинального репозитория к себе в случае, если разработка в нём ушла вперёд пока вы сосредоточенно писали коммиты:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; git pull upstream master
-&lt;span class="go"&gt;From github.com:Alerion/django_documentation&lt;/span&gt;
-&lt;span class="go"&gt;* branch            master     -&amp;gt; FETCH_HEAD&lt;/span&gt;
-&lt;span class="go"&gt;Updating 66f032e..062b294&lt;/span&gt;
-&lt;span class="go"&gt;Fast-forward&lt;/span&gt;
-&lt;span class="go"&gt;djbook/commands/authors.py                    | 65 ++--&lt;/span&gt;
-&lt;span class="go"&gt;djbook/deps.txt                               |  6 ++--&lt;/span&gt;
-&lt;span class="go"&gt;djbook/templates/authors.html                 | 14 ++--&lt;/span&gt;
-&lt;span class="go"&gt;djbook/templates/base.html                    |  7 ++--&lt;/span&gt;
-&lt;span class="go"&gt;locale/ru/LC_MESSAGES/faq/install.po          | 94 +++-&lt;/span&gt;
-&lt;span class="go"&gt;locale/ru/LC_MESSAGES/faq/usage.po            | 49 +---&lt;/span&gt;
-&lt;span class="go"&gt;locale/ru/LC_MESSAGES/howto/outputting-csv.po | 61 ++--&lt;/span&gt;
-&lt;span class="go"&gt;locale/ru/LC_MESSAGES/topics/cache.po         | 77 ++--&lt;/span&gt;
-&lt;span class="go"&gt;locale/ru/LC_MESSAGES/topics/db/multi-db.po   | 80 +++-&lt;/span&gt;
-&lt;span class="go"&gt;9 files changed, 290 insertions(+), 163 deletions(-)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;У нас есть основной репозиторий &amp;mdash; master и недавно добавленный нами upstream. Команда, данная выше, забирает всё новое из репозитория upstream и сливает изменения в master. Так, мы всегда можем получить последние наработки.&lt;/p&gt;
-&lt;p&gt;Вы можете также воспользоваться другой командой &amp;mdash; &lt;code&gt;fetch&lt;/code&gt; вместо указанной &lt;code&gt;pull&lt;/code&gt;. В таком случае git заберет изменения с удаленного репозитория, но не будет пытаться слить их с вашей текущей веткой автоматически.&lt;/p&gt;
-&lt;h2&gt;Что такое ветки?&lt;/h2&gt;
-&lt;p&gt;Чаще всего ветки (branch &amp;mdash; ответвление, ветвь, филиал) бывают тематическими. Например, при общей разработке, когда у всех участников есть право записи в репозиторий. В этом случае ветки используются для отделения изменений, сделанных одним из разработчиков, от общего репозитория. Ветки могут пригодиться и в случае с созданием pull-request'а.&lt;/p&gt;
-&lt;p&gt;Создание ветки происходит довольно просто. Находясь в каталоге с проектом, наберите следующие команды:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; git branch -a   &lt;span class="c"&gt;# отобразить все ветки&lt;/span&gt;
-&lt;span class="go"&gt;* master&lt;/span&gt;
-&lt;span class="go"&gt;remotes/origin/1.4&lt;/span&gt;
-&lt;span class="go"&gt;remotes/origin/HEAD -&amp;gt; origin/master&lt;/span&gt;
-&lt;span class="go"&gt;remotes/origin/master&lt;/span&gt;
-&lt;span class="go"&gt;remotes/upstream/1.4&lt;/span&gt;
-&lt;span class="go"&gt;remotes/upstream/master&lt;/span&gt;
-&lt;span class="gp"&gt;$&lt;/span&gt; git checkout -b new_branch &lt;span class="c"&gt;# создать новую ветку, переключиться на неё&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Находясь в только что созданной ветке, вы можете приступить к работе. Вносите в код свои изменения, а когда закончите просто переключитесь обратно, к своей основной ветке. Вы можете отправить pull request, выбрав ветку &lt;code&gt;new_branch&lt;/code&gt; или же прежде слить изменения из неё в основную ветку разработки. Рассмотрим это подробнее:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; git checkout master  &lt;span class="c"&gt;# вернуться к основной ветке&lt;/span&gt;
-&lt;span class="gp"&gt;$&lt;/span&gt; git merge new_branch &lt;span class="c"&gt;# слить изменения из new_branch&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Если нужно отправить в свой удалённый репозиторий вновь созданную ветку (не сливать её с master), делаем следующее:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; git push master new_branch
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Не торопитесь сливать изменения. Если что-то не заладилось, созданную ветку можно удалить:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; git branch -d new_branch    &lt;span class="c"&gt;# удалить локально&lt;/span&gt;
-&lt;span class="gp"&gt;$&lt;/span&gt; git push master :new_branch &lt;span class="c"&gt;# и в удалённом репозитории&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h2&gt;Отправляем изменения&lt;/h2&gt;
-&lt;p&gt;Добрались таки до ответа на поставленный вопрос: что такое pull request, зачем оно нужно и как его достичь. Как предложить владельцу репозитория свои изменения?&lt;/p&gt;
-&lt;p&gt;Для этого зайдите в свой аккаунт, выбирайте репозиторий владельца и ищите небольшую зелёную кнопку (на момент написания поста она была таковой, если даже что-то изменится, думаю, найти её будет несложно).&lt;/p&gt;
-&lt;p&gt;Перед тем как сделать запрос вы имеете возможность добавить комментарий, просмотреть то, какие файлы будут изменены, какие коммиты добавлены. В верхнем углу окна добавления запроса обратите внимание откуда куда и что вы сливаете. Если необходимо слить основные ветки выбор падёт на репозиторий &lt;code&gt;username:master&lt;/code&gt;, если отдельную ветку (вспоминаем branch) &amp;mdash; так и указывайте её.&lt;/p&gt;
-&lt;p&gt;&lt;a href="../source/change-and-comment.jpg" data-lighter&gt;&lt;img src="../source/change-and-comment.jpg"/&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;А дальше... ждать. Пока придёт владелец оригинального репозитория и примет/отклонит ваши изменения.&lt;/p&gt;
-&lt;p&gt;Ну вот, мы его достигли. Просветления то есть :)&lt;/p&gt;
-&lt;h2&gt;А подробнее?&lt;/h2&gt;
-&lt;p&gt;Ну, что ещё? Применительно к github'у можно отметить факт наличия у них &lt;b&gt;Issues&lt;/b&gt;. Это такая &amp;laquo;примочка&amp;raquo;, благодаря которой можно ставить задачи для проекта, давать им описание и метку, определяющую к какому разряду данная задача относится (закрытие бага или написание фичи), а ещё назначать ответственного за выполнение определённого &lt;b&gt;issue&lt;/b&gt;: всё как у больших.&lt;/p&gt;
-&lt;p&gt;Итогов подводить не стану. Для заинтересованных лиц ссылочка на хорошую книгу: &lt;a href="http://cloud.github.com/downloads/GArik/progit/progit.ru.pdf"&gt;Pro Git pdf&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;u&gt;Примечание:&lt;/u&gt; указанному в примере &lt;a href="https://github.com/Alerion/django_documentation" rel="noindex, nofollow"&gt;репозиторию&lt;/a&gt; требуется влить кубометр свежей крови. Присоединяйтесь к переводу документации.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">redVi</dc:creator><pubDate>Thu, 22 Aug 2013 12:05:00 +0700</pubDate><guid>tag:www.unix-lab.org,2013-08-22:articles/pull-request.html</guid><category>Git</category></item></channel></rss>
+&lt;p&gt;Вот такой небольшой обзор. Прошлись, как это говорится, галопом по Европам, получили примерное представление о Sass, решили для себя использовать его или нет. За дальнейшими подробностями обращаться к документации проекта.&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">redVi</dc:creator><pubDate>Sun, 08 Sep 2013 08:25:00 +0700</pubDate><guid>tag:www.unix-lab.org,2013-09-08:articles/sass.html</guid><category>Web</category></item></channel></rss>
