@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>unix-lab.org</title><link>http://www.unix-lab.org/</link><description>блог об операционных системах, open source и программировании</description><atom:link href="http://www.unix-lab.org/feeds/rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 03 Oct 2013 01:15:00 +0700</lastBuildDate><item><title>Абсолютные пути URL в Django</title><link>http://www.unix-lab.org/articles/get-absolute-url.html</link><description>&lt;p&gt;В одной из &lt;a href="http://www.unix-lab.org/articles/django-first-steps.html"&gt;предыдущих заметок&lt;/a&gt;, нами был написан шаблон для вывода списка публикаций на главной странице. Ссылка на полный текст публикации имеет вид &lt;code&gt;{% url 'articles:detail' post.id %}&lt;/code&gt;, что позволяет получить определённую страницу по её номеру (&lt;code&gt;id&lt;/code&gt;). За отображение страницы ответственность несёт представление &lt;code&gt;articles&lt;/code&gt; из пространства имён (&lt;code&gt;namespace&lt;/code&gt;) &lt;code&gt;detail&lt;/code&gt;. В данном ниже примере для разнообразия используем другую модель, а также для упрощения понимания материала откажемся от использования пространств имён: одно приложение &amp;mdash; одна модель &amp;mdash; один urls.py.&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>unix-lab.org</title><link>http://www.unix-lab.org/</link><description>блог об операционных системах, open source и программировании</description><atom:link href="http://www.unix-lab.org/feeds/rss.xml" rel="self"></atom:link><lastBuildDate>Thu, 03 Oct 2013 01:15:00 +0700</lastBuildDate><item><title>Абсолютные пути URL в Django</title><link>http://www.unix-lab.org/articles/get-absolute-url.html</link><description>&lt;p&gt;В одной из &lt;a href="http://www.unix-lab.org/articles/django-first-steps.html"&gt;предыдущих заметок&lt;/a&gt;, нами был написан шаблон для вывода списка публикаций на главной странице. Ссылка на полный текст публикации имеет вид &lt;code&gt;{% url 'articles:detail' post.id %}&lt;/code&gt;, что позволяет получить определённую страницу по её идентификатору (&lt;code&gt;id&lt;/code&gt;). За отображение страницы ответственность несёт представление &lt;code&gt;articles&lt;/code&gt; из пространства имён (&lt;code&gt;namespace&lt;/code&gt;) &lt;code&gt;detail&lt;/code&gt;. В данном ниже примере для разнообразия используем другую модель, а также для упрощения понимания материала откажемся от использования пространств имён: одно приложение &amp;mdash; одна модель &amp;mdash; один urls.py.&lt;/p&gt;
 &lt;p&gt;И всё бы хорошо, но ссылки подобного вида иногда могут не подойти вам. Вот пара простых примеров, иллюстрирующих этот тезис:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Вам нужно получить статью по slug&lt;/li&gt;
@@ -7,7 +7,7 @@
 &lt;/ul&gt;
 &lt;p&gt;Что же, разберём указанные примеры по-порядку.&lt;/p&gt;
 &lt;h3&gt;Вид urls.py&lt;/h3&gt;
-&lt;p&gt;Создание файла &lt;code&gt;ursl.py&lt;/code&gt;, отвечающего нашим запросам. Отображено использование представлений-классов, подробности о которых вы без труда найдёте в документации.&lt;/p&gt;
+&lt;p&gt;Создание файла &lt;code&gt;ursl.py&lt;/code&gt;, отвечающего нашим запросам. Отображено использование обобщённых представлений, подробности о которых вы без труда найдёте в документации.&lt;/p&gt;
 &lt;p&gt;У нас имеется представление &lt;code&gt;IndexView&lt;/code&gt;, на которое возложен вывод индексной страницы со списком последних публикаций, а также &lt;code&gt;DetailView&lt;/code&gt;, которое выводит отдельную запись. В шаблоне к ним можно обращаться как к &lt;code&gt;latest_articles_list&lt;/code&gt; и &lt;code&gt;detail&lt;/code&gt; соответственно.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# urls.py&lt;/span&gt;
 
@@ -54,7 +54,7 @@
 
 
 &lt;p&gt;Как мог заметить наблюдательный читатель, мы задали поле &lt;code&gt;slug&lt;/code&gt; со значением &lt;code&gt;primary_key=True&lt;/code&gt;. Предполагается, что в этом поле будет установлен устраивающий автора красивый URL. Теперь следует ссылаться на детальное представление публикации именно по этому полю. Конкретный пример будет приведён чуть ниже.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Примечание&lt;/strong&gt;: если при создании представления вы используете представления-классы, вернуть публикацию по полю &lt;code&gt;slug&lt;/code&gt;, не нагромождая ваше представление и не затрагивая &lt;code&gt;primary key&lt;/code&gt;, также может быть очень легко. В этом вам посодействуют &lt;code&gt;DetailView&lt;/code&gt; и &lt;code&gt;get_object_or_404&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Примечание&lt;/strong&gt;: если при создании представления вы используете обобщённые представления, вернуть публикацию по полю &lt;code&gt;slug&lt;/code&gt;, не нагромождая ваше представление и не затрагивая &lt;code&gt;primary key&lt;/code&gt;, также может быть очень легко. В этом вам посодействуют &lt;code&gt;DetailView&lt;/code&gt; и &lt;code&gt;get_object_or_404&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;# views.py&lt;/span&gt;
 
 &lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;django&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shortcuts&lt;/span&gt; &lt;span class="n"&gt;import&lt;/span&gt; &lt;span class="n"&gt;get_object_or_404&lt;/span&gt;
@@ -99,7 +99,7 @@
 
 &lt;h3&gt;Подготовка шаблонов&lt;/h3&gt;
 &lt;p&gt;Теперь в шаблонах мы можем ссылаться на статью по её абсолютному адресу, используя &lt;code&gt;get_absolute_url&lt;/code&gt;. Примеры:&lt;/p&gt;
-&lt;p&gt;подобным образом может выглядеть индексная страницы со списком последних публикаций&lt;/p&gt;
+&lt;p&gt;подобным образом может выглядеть индексная страница со списком последних публикаций&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;&amp;lt;!--index.html--&amp;gt;&lt;/span&gt;
 {% extends &amp;quot;base.html&amp;quot; %}
 {% block content %}
@@ -112,7 +112,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;а на страница детального представления можно добавить ссылки на предыдущий и следующий пост&lt;/p&gt;
+&lt;p&gt;а на странице детального представления можно добавить ссылки на предыдущий и следующий пост&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;&amp;lt;!--article.html--&amp;gt;&lt;/span&gt;
 {% extends &amp;quot;base.html&amp;quot; %}
 {% block content %}
