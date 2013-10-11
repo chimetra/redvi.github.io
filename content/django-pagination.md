@@ -13,16 +13,17 @@ Summary: О том, как сделать постраничный вывод н
 
 ###Модель публикации
 
-    :::python
-    # models.py
+```python
+# models.py
 
-    class Post(models.Model):
-        title = models.CharField(max_length=150)
-        body = models.TextField()
-        timestamp = models.DateTimeField()
-        author = models.ForeignKey(User)
-        meta_keywords = models.CharField(blank=True, max_length=200)
-        meta_description = models.TextField(blank=True, max_length=250)
+class Post(models.Model):
+    title = models.CharField(max_length=150)
+    body = models.TextField()
+    timestamp = models.DateTimeField()
+    author = models.ForeignKey(User)
+    meta_keywords = models.CharField(blank=True, max_length=200)
+    meta_description = models.TextField(blank=True, max_length=250)
+```
 
 ###«Вьюха»
 
@@ -34,29 +35,30 @@ Summary: О том, как сделать постраничный вывод н
 
 `paginator.page(paginator.num_pages)` &mdash; отобразить общее количество страниц
 
-    :::python
-    # views.py
+```python
+# views.py
 
-    from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-    from django.shortcuts import render_to_response
-    from django.template import RequestContext
-    from .models import Post
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+from .models import Post
 
-    def news(request):
-        '''Show all news'''
-        posts_list = Post.objects.all().order_by('-timestamp')
-        paginator = Paginator(posts_list, 8)
-        page = request.GET.get('page')
-        try:
-            posts = paginator.page(page)
-        except PageNotAnInteger:
-            posts = paginator.page(1)
-        except EmptyPage:
-            posts = paginator.page(paginator.num_pages)
-        vars = dict(
-            posts=posts,
-            )
-        return render_to_response('news.html', vars, context_instance=RequestContext(request))
+def news(request):
+    '''Show all news'''
+    posts_list = Post.objects.all().order_by('-timestamp')
+    paginator = Paginator(posts_list, 8)
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    vars = dict(
+        posts=posts,
+        )
+    return render_to_response('news.html', vars, context_instance=RequestContext(request))
+```
 
 ###Шаблон
 
@@ -72,35 +74,36 @@ Summary: О том, как сделать постраничный вывод н
 
 `post.next_page_number` &mdash; вернуть следующую страницу
 
-    :::html
-    # news.html
+```html
+# news.html
 
-    {% extends 'base.html' %}
-    {%block title%}News{%endblock%}
-        {% block content %}
-            <div id="post">
-                {% for post in posts %}
-                <ul>
-                <li><a href="{% url 'news:one_new' post.id %}">{{ post.title}}</a></li>
-                </ul>
-               {{ post.timestamp }}
-               {{ post.author }}<br />
-               {{ post.body|truncatewords:80|safe }}<br />
+{% extends 'base.html' %}
+{% block title %}News{% endblock %}
+{% block content %}
+    <div id="post">
+        {% for post in posts %}
+        <ul>
+        <li><a href="{% url 'news:one_new' post.id %}">{{ post.title}}</a></li>
+        </ul>
+        {{ post.timestamp }}
+        {{ post.author }}<br />
+        {{ post.body|truncatewords:80|safe }}<br />
          <a href="{% url 'news:one_new' post.id %}">Читать полностью</a>
-               {% endfor %}
-               <div id="pages" align="center">
-                    {% if posts.has_previous %}
-                        <a href="?page={{ posts.previous_page_number }}">Previous</a>
-                    {% endif %}
-               <span class="current">
-                    Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
-                </span>
-                {% if posts.has_next %}
-                    <a href="?page={{ posts.next_page_number }}">Next</a>
-                {% endif %}
-                </div>
-            </div>
-        {% endblock %}
+        {% endfor %}
+    <div id="pages" align="center">
+        {% if posts.has_previous %}
+            <a href="?page={{ posts.previous_page_number }}">Previous</a>
+        {% endif %}
+    <span class="current">
+        Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+    </span>
+        {% if posts.has_next %}
+            <a href="?page={{ posts.next_page_number }}">Next</a>
+        {% endif %}
+    </div>
+    </div>
+{% endblock %}
+```
 
 Страница документации: [Pagination](https://docs.djangoproject.com/en/dev/topics/pagination/)
 

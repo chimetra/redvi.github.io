@@ -30,7 +30,7 @@
 Внимание! Для обучения нам понадобятся пакеты <code>laptop-mode-tools</code>, <code>acpi</code>, <code>acpid</code>. Acpid должен быть запущен.</p>
 <h2>I. Уровень яркости экрана</h2>
 <p>Дописать в <code>/etc/default/grub</code> строки:</p>
-<div class="highlight"><pre><span class="n">GRUB_CMDLINE_LINUX_DEFAULT</span><span class="o">=</span><span class="s">&quot;acpi_backlight=vendor resume=/dev/sda5&quot;</span>
+<div class="highlight"><pre><span class="nv">GRUB_CMDLINE_LINUX_DEFAULT</span><span class="o">=</span><span class="s2">&quot;acpi_backlight=vendor resume=/dev/sda5&quot;</span>
 </pre></div>
 
 
@@ -143,7 +143,7 @@
 
 <p>где <code>/dev/sda5</code> - ваш swap-раздел
 Кроме того, в случае с archlinux следует добавить хук suspend в  <code>/etc/mkinitcpio.conf</code>:</p>
-<div class="highlight"><pre><span class="n">HOOKS</span><span class="o">=</span><span class="s">&quot;base udev autodetect modconf block filesystems usbinput fsck resume&quot;</span>
+<div class="highlight"><pre><span class="nv">HOOKS</span><span class="o">=</span><span class="s2">&quot;base udev autodetect modconf block filesystems usbinput fsck resume&quot;</span>
 </pre></div>
 
 
@@ -220,8 +220,7 @@
                 ;;
             open<span class="o">)</span>
                 logger <span class="s1">&#39;LID opened&#39;</span>
-                aplay
-/home/redvi/.scripts/message.wav
+                aplay /home/redvi/.scripts/message.wav
                 ;;
             *<span class="o">)</span>
                 logger <span class="s2">&quot;ACPI action undefined: $3&quot;</span>
@@ -254,32 +253,32 @@
 
 
 <p>Пожалуй, на этом стоит остановиться и дать читателю возможность самостоятельно поэкспериментировать с настройками энергосбережения и событий acpi.</p>
-<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi.html">redVi</a>,
-<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/linux.html">Linux</a> /
-<a href="http://www.unix-lab.org/tag/gentoo.html">Gentoo</a> /
+<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi/">redVi</a>,
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
+<a href="http://www.unix-lab.org/tag/gentoo/">Gentoo</a> /
 </h5>
 <p align="center"><a href="#">наверх</a></p>
 </div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-       <li class="footer"><a href="http://www.unix-lab.org/tag/android.html">Android&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/arch.html">Arch&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/blog.html">Blog&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/debian.html">Debian&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations.html">Decorations&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/django.html">Django&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/editors.html">Editors&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo.html">Gentoo&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/git.html">Git&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript.html">JavaScript&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel.html">Kernel&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/latex.html">LaTeX&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/linux.html">Linux&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/python.html">Python&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/server.html">Server&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/web.html">Web&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/windows.html">Windows&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
   </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>

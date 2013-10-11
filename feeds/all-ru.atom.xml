@@ -7,7 +7,7 @@
 &lt;/ul&gt;
 &lt;p&gt;Что же, разберём указанные примеры по-порядку.&lt;/p&gt;
 &lt;h3&gt;Вид urls.py&lt;/h3&gt;
-&lt;p&gt;Создание файла &lt;code&gt;ursl.py&lt;/code&gt;, отвечающего нашим запросам. Отображено использование обобщённых представлений, подробности о которых вы без труда найдёте в документации.&lt;/p&gt;
+&lt;p&gt;Создание файла &lt;code&gt;urls.py&lt;/code&gt;, отвечающего нашим запросам. Отображено использование обобщённых представлений, подробности о которых вы без труда найдёте в документации.&lt;/p&gt;
 &lt;p&gt;У нас имеется представление &lt;code&gt;IndexView&lt;/code&gt;, на которое возложен вывод индексной страницы со списком последних публикаций, а также &lt;code&gt;DetailView&lt;/code&gt;, которое выводит отдельную запись. В шаблоне к ним можно обращаться как к &lt;code&gt;latest_articles_list&lt;/code&gt; и &lt;code&gt;detail&lt;/code&gt; соответственно.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# urls.py&lt;/span&gt;
 
@@ -120,9 +120,9 @@
 &lt;span class="nt"&gt;&amp;lt;h2&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{ article.get_absolute_url }}&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;{{ article.title }}&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&amp;lt;/h2&amp;gt;&lt;/span&gt;
 {{ article.content }}
 &lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;links&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{ article.get_next_by_pub_date.get_absolute_url }}&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;{{ article.get_next_by_pub_date }}&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;#&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;наверх&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{ article.get_previous_by_pub_date.get_absolute_url }}&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;{{ article.get_previous_by_pub_date }}&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{ article.get_next_by_pub_date.get_absolute_url }}&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;Next&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;#&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;on top&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{ article.get_previous_by_pub_date.get_absolute_url }}&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;Prev&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
 {% endblock %}
@@ -131,7 +131,7 @@
 
 &lt;p&gt;&lt;code&gt;Model.get_next_by_pub_date&lt;/code&gt; вернёт следующую публикацию, основываясь на дате её создания&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;Model.get_previous_by_pub_date&lt;/code&gt; отобразит предыдущую публикацию.&lt;/p&gt;
-&lt;p&gt;Применив к этим ссылкам метод &lt;code&gt;get_absolute_url&lt;/code&gt;, мы получим искомое решение.&lt;/p&gt;</summary><category term="Django"></category></entry><entry><title>Навигация по документу в LaTeX</title><link href="http://www.unix-lab.org/articles/hyperref.html" rel="alternate"></link><updated>2013-09-14T21:05:00+07:00</updated><author><name>redVi</name></author><id>tag:www.unix-lab.org,2013-09-14:articles/hyperref.html</id><summary type="html">&lt;p&gt;Довольно часто бывает необходимо указать в тексте ссылку на источник или какой-либо полезный ресурс. А то и просто сделать оглавление &amp;laquo;кликабельным&amp;raquo;, дабы при его просмотре сразу можно было выбрать нужную главу и перейти к ней.&lt;/p&gt;
+&lt;p&gt;Применив к ним метод &lt;code&gt;get_absolute_url&lt;/code&gt;, мы получим искомое решение.&lt;/p&gt;</summary><category term="Django"></category></entry><entry><title>Навигация по документу в LaTeX</title><link href="http://www.unix-lab.org/articles/hyperref.html" rel="alternate"></link><updated>2013-09-14T21:05:00+07:00</updated><author><name>redVi</name></author><id>tag:www.unix-lab.org,2013-09-14:articles/hyperref.html</id><summary type="html">&lt;p&gt;Довольно часто бывает необходимо указать в тексте ссылку на источник или какой-либо полезный ресурс. А то и просто сделать оглавление &amp;laquo;кликабельным&amp;raquo;, дабы при его просмотре сразу можно было выбрать нужную главу и перейти к ней.&lt;/p&gt;
 &lt;p&gt;Для этих нужд вполне можно задействовать пакет &lt;code&gt;hyperref&lt;/code&gt;, который входит в поставку с LaTeX в большинстве дистрибутивов. &lt;code&gt;Hyperref&lt;/code&gt; имеет достаточно большое количество опций, которые перечисляются через запятую при подключении пакета. Но следует иметь ввиду, что он переопределяет некоторые команды LaTeX'а, и подключать его последним. При подключении &lt;code&gt;hyperref&lt;/code&gt; все перекрёстные ссылки будут преобразованы в ссылки гипертекстовые: оглавление, сноски, цитаты...&lt;/p&gt;
 &lt;p&gt;Во многих источниках обращают внимание на опцию выбора драйвера. Честно сказать, при создании PDF-документа с &lt;code&gt;pdflatex&lt;/code&gt; &lt;em&gt;без указания&lt;/em&gt; драйвера всё собралось и сработало точно так же как и с включением нужной опции.&lt;/p&gt;
 &lt;ul&gt;

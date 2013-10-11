@@ -37,7 +37,7 @@
 <li><a href="#powersave">Энергосбережение</a></li>
 <li><a href="#fn">fn-клавиши</a></li>
 </ul>
-<h3 id="inet">1. Настройка интернет-соединения</h3>
+<h3 id="inet">Настройка интернет-соединения</h3>
 <p>Примеры конфигураций можно посмотреть по адресу <code>/etc/network.d/examples/</code></p>
 <p><img alt="net" src="http://2.bp.blogspot.com/-TaIchwvehBE/UEWDUk5IDCI/AAAAAAAABXU/DdPLyq9ELCU/s1600/eth1.png" /></p>
 <p>Достаточно выбрать своё подключение и скопировать соответствующий файл в <code>/etc/network.d/</code> наименование_вашего_профиля. Например:</p>
@@ -52,7 +52,7 @@
 </pre></div>
 
 
-<h3 id="xorg">2. Установка драйверов на видео + xorg</h3>
+<h3 id="xorg">Установка драйверов на видео + xorg</h3>
 <p>Посмотрим на свою видеокарту:</p>
 <div class="highlight"><pre><span class="gp">$</span> lspci | grep VGA
 </pre></div>
@@ -91,7 +91,7 @@
 
 
 <p>Стартуйте графику снова.</p>
-<h3 id="environ">3.Установка окружения рабочего стола:</h3>
+<h3 id="environ">Установка окружения рабочего стола:</h3>
 <div class="highlight"><pre><span class="gp">#</span> pacman -S lxde
 </pre></div>
 
@@ -103,32 +103,32 @@
 
 
 <p>Теперь вы увидите обычный рабочий стол с окружением lxde. Чтобы запускать графику при старте системы следует дописать в <code>/etc/rc.conf</code> в секцию <code>DAEMONS</code> - lxde.</p>
-<h3 id="touchpad">3. Настройка тачпада (если есть):</h3>
+<h3 id="touchpad">Настройка тачпада (если есть):</h3>
 <div class="highlight"><pre><span class="gp">#</span> pacman -S xf86-input-synaptics
 </pre></div>
 
 
 <p>Создаём в <code>/etc/X11/xorg.conf.d/</code> новый файл с именем <code>50-synaptics.conf</code>:</p>
-<div class="highlight"><pre><span class="n">Section</span> <span class="s">&quot;InputClass&quot;</span>
-    <span class="n">Identifier</span> <span class="s">&quot;touchpad&quot;</span>
-    <span class="n">Driver</span> <span class="s">&quot;synaptics&quot;</span>
-    <span class="n">MatchIsTouchpad</span> <span class="s">&quot;on&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;SHMConfig&quot;</span> <span class="s">&quot;on&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;TapButton1&quot;</span> <span class="s">&quot;1&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;TapButton2&quot;</span> <span class="s">&quot;2&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;TapButton3&quot;</span> <span class="s">&quot;3&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;VertEdgeScroll&quot;</span> <span class="s">&quot;on&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;VertTwoFingerScroll&quot;</span> <span class="s">&quot;on&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;HorizEdgeScroll&quot;</span> <span class="s">&quot;on&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;HorizTwoFingerScroll&quot;</span> <span class="s">&quot;on&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;CircularScrolling&quot;</span> <span class="s">&quot;on&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;CircScrollTrigger&quot;</span> <span class="s">&quot;2&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;EmulateTwoFingerMinZ&quot;</span> <span class="s">&quot;0&quot;</span>
-<span class="n">EndSection</span>
+<div class="highlight"><pre>Section <span class="s2">&quot;InputClass&quot;</span>
+    Identifier <span class="s2">&quot;touchpad&quot;</span>
+    Driver <span class="s2">&quot;synaptics&quot;</span>
+    MatchIsTouchpad <span class="s2">&quot;on&quot;</span>
+    Option <span class="s2">&quot;SHMConfig&quot;</span> <span class="s2">&quot;on&quot;</span>
+    Option <span class="s2">&quot;TapButton1&quot;</span> <span class="s2">&quot;1&quot;</span>
+    Option <span class="s2">&quot;TapButton2&quot;</span> <span class="s2">&quot;2&quot;</span>
+    Option <span class="s2">&quot;TapButton3&quot;</span> <span class="s2">&quot;3&quot;</span>
+    Option <span class="s2">&quot;VertEdgeScroll&quot;</span> <span class="s2">&quot;on&quot;</span>
+    Option <span class="s2">&quot;VertTwoFingerScroll&quot;</span> <span class="s2">&quot;on&quot;</span>
+    Option <span class="s2">&quot;HorizEdgeScroll&quot;</span> <span class="s2">&quot;on&quot;</span>
+    Option <span class="s2">&quot;HorizTwoFingerScroll&quot;</span> <span class="s2">&quot;on&quot;</span>
+    Option <span class="s2">&quot;CircularScrolling&quot;</span> <span class="s2">&quot;on&quot;</span>
+    Option <span class="s2">&quot;CircScrollTrigger&quot;</span> <span class="s2">&quot;2&quot;</span>
+    Option <span class="s2">&quot;EmulateTwoFingerMinZ&quot;</span> <span class="s2">&quot;0&quot;</span>
+EndSection
 </pre></div>
 
 
-<h3 id="switcheroo">4. Переключение графики при наличии двух видеокарт:</h3>
+<h3 id="switcheroo">Переключение графики при наличии двух видеокарт:</h3>
 <p>Подмонтируем <code>gebug</code>:</p>
 <div class="highlight"><pre><span class="gp">#</span> mount -t debugfs /sys/kernel/debug
 <span class="gp">#</span> vim /etc/fstab:
@@ -176,14 +176,14 @@
 
 
 <p>Если нужно, чтобы карта не включалась при загрузке системы, допишите в <code>/etc/rc.locale</code>:</p>
-<div class="highlight"><pre><span class="n">chown</span> <span class="s">&quot;username&quot;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">debug</span><span class="o">/</span><span class="n">vgaswitcheroo</span><span class="o">/</span><span class="k">switch</span>
-<span class="cp"># где &quot;username&quot; имя вашего пользователя</span>
-<span class="n">echo</span> <span class="n">OFF</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">debug</span><span class="o">/</span><span class="n">vgaswitcheroo</span><span class="o">/</span><span class="k">switch</span>
+<div class="highlight"><pre><span class="c"># chown &quot;username&quot; /sys/kernel/debug/vgaswitcheroo/switch</span>
+<span class="c"># где &quot;username&quot; имя вашего пользователя</span>
+<span class="c"># echo OFF &gt; /sys/kernel/debug/vgaswitcheroo/switch</span>
 </pre></div>
 
 
 <p><img alt="off" src="http://1.bp.blogspot.com/-z3wugAFhedo/UEWFsj5DhRI/AAAAAAAABXk/SOy5k-PNDts/s1600/echo_off.png" /></p>
-<h3 id="powersave">4. Энергосбережение</h3>
+<h3 id="powersave">Энергосбережение</h3>
 <p>Не буду повторять многократно пересказанное. Вики вам в помощь, дамы и господа:</p>
 <ul>
 <li><a href="acpi.html">acpi</a></li>
@@ -195,7 +195,7 @@
 </pre></div>
 
 
-<h3 id="fn">5. Горячие клавиши, fn-клавиши ноутбука</h3>
+<h3 id="fn">Горячие клавиши, fn-клавиши ноутбука</h3>
 <p>В KDE изначально не было возможности регулировать яркость экрана, что, впрочем, быстро пофиксилось добавлением лишь одной строки к загрузчику. Зато Gnome 3 приятно удивил, подхватив и кнопки управления яркостью дисплея, и кнопки увеличения громкости звука, и даже включение bluetooth, так что... хотите работу "из коробки" &mdash; добро пожаловать в Gnome.</p>
 <p><u>KDE</u>
 <a href="http://farm3.staticflickr.com/2812/9471540916_d9ffb37430_b.jpg" data-lighter><img src="http://farm3.staticflickr.com/2812/9471540916_d9ffb37430_b.jpg"/></a></p>
@@ -210,26 +210,26 @@
 
 
 <p>Запуск <code>rc.local</code> больше не требуется. Вместо этого создадим юнит с нужной командой (в примере: отключение внешней видео карты)</p>
-<div class="highlight"><pre><span class="cp"># /etc/systemd/system/rc-local.service</span>
-<span class="cp">#</span>
-<span class="p">[</span><span class="n">Unit</span><span class="p">]</span>
-<span class="n">Description</span><span class="o">=/</span><span class="n">etc</span><span class="o">/</span><span class="n">rc</span><span class="p">.</span><span class="n">local</span>
-<span class="n">Compatibility</span> <span class="p">[</span><span class="n">Service</span><span class="p">]</span>
-<span class="n">Type</span><span class="o">=</span><span class="n">oneshot</span>
-<span class="n">ExecStart</span><span class="o">=/</span><span class="n">bin</span><span class="o">/</span><span class="n">sh</span> <span class="o">-</span><span class="n">c</span> <span class="err">&#39;</span><span class="n">echo</span> <span class="n">OFF</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">debug</span><span class="o">/</span><span class="n">vgaswitcheroo</span><span class="o">/</span><span class="k">switch</span><span class="err">&#39;</span>
-<span class="n">RemainAfterExit</span><span class="o">=</span><span class="n">yes</span>
-<span class="p">[</span><span class="n">Install</span><span class="p">]</span>
-<span class="n">WantedBy</span><span class="o">=</span><span class="n">multi</span><span class="o">-</span><span class="n">user</span><span class="p">.</span><span class="n">target</span>
+<div class="highlight"><pre><span class="c"># /etc/systemd/system/rc-local.service</span>
+<span class="c">#</span>
+<span class="o">[</span>Unit<span class="o">]</span>
+<span class="nv">Description</span><span class="o">=</span>/etc/rc.local
+Compatibility <span class="o">[</span>Service<span class="o">]</span>
+<span class="nv">Type</span><span class="o">=</span>oneshot
+<span class="nv">ExecStart</span><span class="o">=</span>/bin/sh -c <span class="s1">&#39;echo OFF &gt; /sys/kernel/debug/vgaswitcheroo/switch&#39;</span>
+<span class="nv">RemainAfterExit</span><span class="o">=</span>yes
+<span class="o">[</span>Install<span class="o">]</span>
+<span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
 </pre></div>
 
 
 <p>Для запуска iptables при старте системы</p>
-<div class="highlight"><pre><span class="cp"># /etc/systemd/system/iptables.service</span>
-<span class="cp">#</span>
-<span class="p">[</span><span class="n">Unit</span><span class="p">]</span>
-<span class="n">Description</span><span class="o">=</span><span class="n">Start</span> <span class="n">iptables</span>
-<span class="p">[</span><span class="n">Service</span><span class="p">]</span> <span class="n">ExecStart</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">iptables</span>
-<span class="p">[</span><span class="n">Install</span><span class="p">]</span> <span class="n">Before</span><span class="o">=</span><span class="n">network</span><span class="p">.</span><span class="n">target</span>
+<div class="highlight"><pre><span class="c"># /etc/systemd/system/iptables.service</span>
+<span class="c">#</span>
+<span class="o">[</span>Unit<span class="o">]</span>
+<span class="nv">Description</span><span class="o">=</span>Start iptables
+<span class="o">[</span>Service<span class="o">]</span> <span class="nv">ExecStart</span><span class="o">=</span>/usr/sbin/iptables
+<span class="o">[</span>Install<span class="o">]</span> <span class="nv">Before</span><span class="o">=</span>network.target
 </pre></div>
 
 
@@ -238,40 +238,40 @@
 <p>Тема юнитов <code>systemd</code> достаточно объёмна и заслуживает отдельного рассмотрения. Подробнее <a href="https://wiki.archlinux.org/index.php/Systemd">здесь</a>.</p>
 <p>Модули ядра теперь живут по адресу: <code>/etc/modules-load.d/</code></p>
 <p>Так, чтобы при старте системы загружались необходимые модули, мы можем создать файл с расширением <code>.conf</code> и вписать их туда. Например:</p>
-<div class="highlight"><pre><span class="cp"># /etc/modules-load.d/load_modules.conf</span>
-<span class="cp">#</span>
-<span class="n">acpi</span><span class="o">-</span><span class="n">cpufreq</span> <span class="n">cpufreq_conservative</span>
+<div class="highlight"><pre><span class="c"># /etc/modules-load.d/load_modules.conf</span>
+<span class="c">#</span>
+acpi-cpufreq cpufreq_conservative
 </pre></div>
 
 
 <p>Удачи!</p>
 <div class="video"><iframe width="400" height="300" src="http://www.youtube.com/embed/2EIo6-bH9DU?rel=0" frameborder="0" allowfullscreen></iframe></div>
-<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi.html">redVi</a>,
-<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/arch.html">Arch</a> /
-<a href="http://www.unix-lab.org/tag/linux.html">Linux</a> /
+<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi/">redVi</a>,
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/arch/">Arch</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
 </h5>
 <p align="center"><a href="#">наверх</a></p>
 </div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-       <li class="footer"><a href="http://www.unix-lab.org/tag/android.html">Android&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/arch.html">Arch&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/blog.html">Blog&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/debian.html">Debian&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations.html">Decorations&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/django.html">Django&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/editors.html">Editors&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo.html">Gentoo&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/git.html">Git&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript.html">JavaScript&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel.html">Kernel&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/latex.html">LaTeX&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/linux.html">Linux&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/python.html">Python&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/server.html">Server&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/web.html">Web&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/windows.html">Windows&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
   </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>

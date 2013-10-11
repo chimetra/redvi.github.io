@@ -62,38 +62,38 @@
 
 <p>Здесь лежат каталоги, соответствующие группам пакетов Arch Linux. Зайдя в нужный подкаталог, мы можем скомпилировать из исходников какой-либо пакет, но об этом позже.</p>
 <p>Что содержит конфигурационный файл abs:</p>
-<div class="highlight"><pre><span class="cp"># /etc/abs.conf</span>
-<span class="cp">#</span>
+<div class="highlight"><pre><span class="c"># /etc/abs.conf</span>
+<span class="c">#</span>
 
-<span class="cp"># the top-level directory of all your PKGBUILDs - корневая директория для abs</span>
-<span class="p">[</span> <span class="s">&quot;$ABSROOT&quot;</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> <span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">ABSROOT</span><span class="o">=</span><span class="s">&quot;/var/abs/&quot;</span>
+<span class="c"># the top-level directory of all your PKGBUILDs - корневая директория для abs</span>
+<span class="o">[</span> <span class="s2">&quot;$ABSROOT&quot;</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">ABSROOT</span><span class="o">=</span><span class="s2">&quot;/var/abs/&quot;</span>
 
-<span class="cp">#</span>
-<span class="cp"># Server to sync from - сервер синхронизации</span>
-<span class="cp">#</span>
-<span class="n">SYNCSERVER</span><span class="o">=</span><span class="s">&quot;rsync.archlinux.org&quot;</span>
+<span class="c">#</span>
+<span class="c"># Server to sync from - сервер синхронизации</span>
+<span class="c">#</span>
+<span class="nv">SYNCSERVER</span><span class="o">=</span><span class="s2">&quot;rsync.archlinux.org&quot;</span>
 
-<span class="cp">#</span>
-<span class="cp"># The architecture to fetch abs for - архитектура при сборке пакета</span>
-<span class="cp"># Either i686 or x86_64</span>
-<span class="cp">#</span>
-<span class="n">ARCH</span><span class="o">=</span><span class="s">&quot;x86_64&quot;</span>
+<span class="c">#</span>
+<span class="c"># The architecture to fetch abs for - архитектура при сборке пакета</span>
+<span class="c"># Either i686 or x86_64</span>
+<span class="c">#</span>
+<span class="nv">ARCH</span><span class="o">=</span><span class="s2">&quot;x86_64&quot;</span>
 
-<span class="cp">#</span>
-<span class="cp"># Pacman mirror list used for syncing via tarball - список зеркал для</span>
-<span class="cp"># синхронизации</span>
-<span class="cp">#</span>
-<span class="n">MIRRORLIST</span><span class="o">=</span><span class="s">&quot;/etc/pacman.d/mirrorlist&quot;</span>
-<span class="cp">#</span>
-<span class="cp"># REPOS to be parsed by abs (in this order) - удалите ! чтобы включить</span>
-<span class="cp">#   (prefix a repo with a ! to disable it)</span>
-<span class="cp">#</span>
-<span class="cp"># Note: If a repo is removed, it is still fetched!</span>
-<span class="cp"># Repos must be preceded with a ! to prevent fetching</span>
-<span class="cp">#</span>
-<span class="n">REPOS</span><span class="o">=</span><span class="p">(</span><span class="n">core</span> <span class="n">extra</span> <span class="n">community</span> <span class="n">multilib</span> <span class="o">!</span><span class="n">testing</span> <span class="o">!</span><span class="n">community</span><span class="o">-</span><span class="n">testing</span>
-<span class="o">!</span><span class="n">multilib</span><span class="o">-</span><span class="n">testing</span>
-       <span class="o">!</span><span class="n">staging</span> <span class="o">!</span><span class="n">community</span><span class="o">-</span><span class="n">staging</span> <span class="o">!</span><span class="n">gnome</span><span class="o">-</span><span class="n">unstable</span> <span class="o">!</span><span class="n">kde</span><span class="o">-</span><span class="n">unstable</span><span class="p">)</span>
+<span class="c">#</span>
+<span class="c"># Pacman mirror list used for syncing via tarball - список зеркал для</span>
+<span class="c"># синхронизации</span>
+<span class="c">#</span>
+<span class="nv">MIRRORLIST</span><span class="o">=</span><span class="s2">&quot;/etc/pacman.d/mirrorlist&quot;</span>
+<span class="c">#</span>
+<span class="c"># REPOS to be parsed by abs (in this order) - удалите ! чтобы включить</span>
+<span class="c">#   (prefix a repo with a ! to disable it)</span>
+<span class="c">#</span>
+<span class="c"># Note: If a repo is removed, it is still fetched!</span>
+<span class="c"># Repos must be preceded with a ! to prevent fetching</span>
+<span class="c">#</span>
+<span class="nv">REPOS</span><span class="o">=(</span>core extra community multilib !testing !community-testing
+!multilib-testing
+    !staging !community-staging !gnome-unstable !kde-unstable<span class="o">)</span>
 </pre></div>
 
 
@@ -112,8 +112,8 @@
 
 
 <p>Openbox найден. Далее выполнен вход в соответствующую директорию и дана команда сборки пакета. Поскольку, работая от обычного пользователя, собирать пакеты в системных директориях мы не вправе, а сборку от рута нам провести не дадут, выдав устрашающее предупреждение о том, как это небезопасно... В общем, пишем то, что написали: <code>--asroot</code></p>
-<p>Что будет?
-Умная система проверит наличие исходников и при необходимости скачает их, проверит зависимости, соберёт пакет, да ещё и почистит за собой.</p>
+<p>Что будет?</p>
+<p>Умная система проверит наличие исходников и при необходимости скачает их, проверит зависимости, соберёт пакет, да ещё и почистит за собой.</p>
 <p>После вышеописанных действий мы получим в той же директории установочный пакет, который, собственно, и установим командой:</p>
 <div class="highlight"><pre><span class="gp">$</span> sudo pacman -U имя_пакета.pkg.tar.xz
 </pre></div>
@@ -156,33 +156,33 @@
 
 
 <p>Файл <code>PKGBUILD</code> в этом посте разбираться не будет, о нём вы можете найти подробную инструкцию в официальной документации. Хотя не исключаю, что данный материал когда-то будет дополнен. Когда времени будет больше. А пока у меня всё.</p>
-<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi.html">redVi</a>,
-<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/arch.html">Arch</a> /
-<a href="http://www.unix-lab.org/tag/kernel.html">Kernel</a> /
-<a href="http://www.unix-lab.org/tag/linux.html">Linux</a> /
+<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi/">redVi</a>,
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/arch/">Arch</a> /
+<a href="http://www.unix-lab.org/tag/kernel/">Kernel</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
 </h5>
 <p align="center"><a href="#">наверх</a></p>
 </div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-       <li class="footer"><a href="http://www.unix-lab.org/tag/android.html">Android&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/arch.html">Arch&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/blog.html">Blog&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/debian.html">Debian&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations.html">Decorations&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/django.html">Django&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/editors.html">Editors&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo.html">Gentoo&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/git.html">Git&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript.html">JavaScript&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel.html">Kernel&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/latex.html">LaTeX&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/linux.html">Linux&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/python.html">Python&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/server.html">Server&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/web.html">Web&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/windows.html">Windows&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
   </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>

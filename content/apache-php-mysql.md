@@ -7,7 +7,7 @@ Summary: Настройка Apache, PHP и MySQL под Windows.
 
 Тему о веб-серверах после опубликованных постов, где производилась установка [LAMP на ArchLinux](lamp.html), приводились [настройки Nginx](nginx.html) и прочее, хотелось закрыть. Но, как оказалось, не все хотят пользоваться готовыми пакетами, где кто-то уже сделал настройки по-своему, решил за вас. Что ж, поскольку есть спрос на данную тему, а инструкций по установке всего этого комплекта 3 в одном мало или же нет вовсе, посвятим сему сегодняшний пост.
 
-##Apache
+## Apache
 
 Скачивается с сайта: <apache.org>
 
@@ -24,7 +24,9 @@ Summary: Настройка Apache, PHP и MySQL под Windows.
 После успешной установки в трее появится служба, с помощью которой можно запустить/перезапустить/остановить веб-сервер. Для этого кликаем левой кнопкой мыши и, собственно, выбираем необходимое действо. Нажатие правой кнопкой позволит перейти к сервису Apache или же отключить службу.
 Доступ к службам можно получить иначе:
 
-    Панель управления -> Система и безопасность -> Администрирование -> Службы
+```
+Панель управления -> Система и безопасность -> Администрирование -> Службы
+```
 
 ![service](http://4.bp.blogspot.com/-tSVUz_03dQw/T8DYYiPKvjI/AAAAAAAAAoA/5tSpYx9PDUw/s1600/apache-services.png "service")
 
@@ -38,10 +40,12 @@ Summary: Настройка Apache, PHP и MySQL под Windows.
 
 Под ними примерно такой код:
 
-    <Directory />
-        Options FollowSymLinks
-        AllowOverride None
-    </Directory>
+```apache
+<Directory />
+    Options FollowSymLinks
+    AllowOverride None
+</Directory>
+```
 
 `None` - изменить на `All`, это разрешит использование `.htaccess`, который в отличие от `httpd.conf` не требует перезапуска веб-сервера.
 
@@ -49,17 +53,19 @@ Summary: Настройка Apache, PHP и MySQL под Windows.
 
 Итак, в том же `httpd.conf` находим строки `LoadModule` и где-нибудь ниже их дописываем:
 
-    #PHP
-    LoadModule php5_module "C:/php5/php5apache2_2.dll"
-    AddType application/x-httpd-php .php
-    AddType application/x-httpd-php-source .phps
+```apache
+#PHP
+LoadModule php5_module "C:/php5/php5apache2_2.dll"
+AddType application/x-httpd-php .php
+AddType application/x-httpd-php-source .phps
 
-    AddType application/x-httpd-php .html
-    AddType application/x-httpd-php .htm
+AddType application/x-httpd-php .html
+AddType application/x-httpd-php .htm
+```
 
 <b>ВНИМАНИЕ!</b> Путь `C:/php5/php5apache2_2.dll` указывает, что наш PHP будет находиться в папке `C:/php5`, учитываем это при установке. А вот какую версию php5apache подключать, зависит от того, какая версия apache у вас установлена. Чтобы не запутать читателя: Apache 2.2 - `php5apache2_2.dll`, Apache 2.3 - `php5apache2_3.dll`. Подключайте то, что необходимо вам.
 
-##PHP
+## PHP
 
 Далее идём на сайт <http://php.net/downloads.php> и скачиваем оттуда zip-архив с новой версией PHP.
 
@@ -67,17 +73,20 @@ Summary: Настройка Apache, PHP и MySQL под Windows.
 
 Неплохо было бы сразу пройтись в `php.ini` и раскомментировать строки, начинающиеся с `;mysqli` и `musql`. То есть так:
 
-    было: ;mysqli
-    станет: mysqli
+```
+было: ;mysqli
+станет: mysqli
+```
 
 Проверим работоспособность PHP на нашем сервере. В корневой папке Apache есть ещё папка - `htdocs`. Нам туда. Заметили? Здесь лежит файл `index.html`, который показывал нам, что всё работает. Напишем пару строк кода на PHP и сохраним здесь же, только как `index.php`:
 
-    :::php
-    <html>
-    <?php
-    phpinfo()
-    ?>
-    </html>
+```html
+<html>
+<?php
+  phpinfo()
+?>
+</html>
+```
 
 Переходим по адресу: <http://localhost/index/php>
 
@@ -85,7 +94,7 @@ Summary: Настройка Apache, PHP и MySQL под Windows.
 
  Пока всё. Работоспособность нашего веб-сервера в связке с PHP не вызывает сомнений.
 
-##MySQL
+## MySQL
 
 Идём на сайт <http://www.mysql.com/downloads/>, скеачиваем версию `MySQL Community Server`. Другие в данном случае не нужны.
 

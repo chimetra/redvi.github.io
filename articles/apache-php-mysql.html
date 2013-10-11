@@ -46,9 +46,9 @@
 <p>Посмотрим, что же нужно настроить в первую очередь.</p>
 <p>Идём по пути <code>C:\Program Files (x86)\Apache Group\Apache2\conf</code> (или туда, где у вас установлен Apache и лежит файл <code>httpd.conf</code>). Открываем <code>httpd.conf</code>, находим строки "The following lines prevent .htaccess and .htpasswd files from being"</p>
 <p>Под ними примерно такой код:</p>
-<div class="highlight"><pre><span class="nt">&lt;Directory</span> <span class="nt">/&gt;</span>
-    Options FollowSymLinks
-    AllowOverride None
+<div class="highlight"><pre><span class="nt">&lt;Directory</span> <span class="s">/</span><span class="nt">&gt;</span>
+    <span class="nb">Options</span> FollowSymLinks
+    <span class="nb">AllowOverride</span> <span class="k">None</span>
 <span class="nt">&lt;/Directory&gt;</span>
 </pre></div>
 
@@ -56,13 +56,13 @@
 <p><code>None</code> - изменить на <code>All</code>, это разрешит использование <code>.htaccess</code>, который в отличие от <code>httpd.conf</code> не требует перезапуска веб-сервера.</p>
 <p>И, раз уж мы сюда зашли, давайте сразу подключим наш PHP, который сейчас будем устанавливать, дабы веб-сервер корректно обрабатывал файлы с расширением <code>.php</code> и наш код соответственно.</p>
 <p>Итак, в том же <code>httpd.conf</code> находим строки <code>LoadModule</code> и где-нибудь ниже их дописываем:</p>
-<div class="highlight"><pre><span class="cp">#PHP</span>
-<span class="n">LoadModule</span> <span class="n">php5_module</span> <span class="s">&quot;C:/php5/php5apache2_2.dll&quot;</span>
-<span class="n">AddType</span> <span class="n">application</span><span class="o">/</span><span class="n">x</span><span class="o">-</span><span class="n">httpd</span><span class="o">-</span><span class="n">php</span> <span class="p">.</span><span class="n">php</span>
-<span class="n">AddType</span> <span class="n">application</span><span class="o">/</span><span class="n">x</span><span class="o">-</span><span class="n">httpd</span><span class="o">-</span><span class="n">php</span><span class="o">-</span><span class="n">source</span> <span class="p">.</span><span class="n">phps</span>
+<div class="highlight"><pre><span class="c">#PHP</span>
+<span class="nb">LoadModule</span> php5_module <span class="s2">&quot;C:/php5/php5apache2_2.dll&quot;</span>
+<span class="nb">AddType</span> application/x-httpd-php .php
+<span class="nb">AddType</span> application/x-httpd-php-source .phps
 
-<span class="n">AddType</span> <span class="n">application</span><span class="o">/</span><span class="n">x</span><span class="o">-</span><span class="n">httpd</span><span class="o">-</span><span class="n">php</span> <span class="p">.</span><span class="n">html</span>
-<span class="n">AddType</span> <span class="n">application</span><span class="o">/</span><span class="n">x</span><span class="o">-</span><span class="n">httpd</span><span class="o">-</span><span class="n">php</span> <span class="p">.</span><span class="n">htm</span>
+<span class="nb">AddType</span> application/x-httpd-php .html
+<span class="nb">AddType</span> application/x-httpd-php .htm
 </pre></div>
 
 
@@ -77,11 +77,11 @@
 
 
 <p>Проверим работоспособность PHP на нашем сервере. В корневой папке Apache есть ещё папка - <code>htdocs</code>. Нам туда. Заметили? Здесь лежит файл <code>index.html</code>, который показывал нам, что всё работает. Напишем пару строк кода на PHP и сохраним здесь же, только как <code>index.php</code>:</p>
-<div class="highlight"><pre><span class="x">&lt;html&gt;</span>
+<div class="highlight"><pre><span class="nt">&lt;html&gt;</span>
 <span class="cp">&lt;?php</span>
-<span class="nb">phpinfo</span><span class="p">()</span>
-<span class="cp">?&gt;</span><span class="x"></span>
-<span class="x">&lt;/html&gt;</span>
+<span class="cp">  phpinfo()</span>
+<span class="cp">?&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
 </pre></div>
 
 
@@ -111,32 +111,32 @@
 <p>Задать пароль для входа в БД:</p>
 <p><img alt="MySQL10" src="http://1.bp.blogspot.com/-I-A0-eoq67M/T8DavjC0_aI/AAAAAAAAApg/48u66lg_fqY/s1600/mysql10.png" title="MySQL server" /></p>
 <p>Готово. Позднее установим <a href="phpmyadmin.html">phpmyadmin</a> и попробуем проделать <a href="mysql-install.html">ручную установку СУБД MySQL</a> для тех, у кого зависает  инсталлятор. К несчастью, такое бывает.</p>
-<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi.html">redVi</a>,
-<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/server.html">Server</a> /
-<a href="http://www.unix-lab.org/tag/windows.html">Windows</a> /
+<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi/">redVi</a>,
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/server/">Server</a> /
+<a href="http://www.unix-lab.org/tag/windows/">Windows</a> /
 </h5>
 <p align="center"><a href="#">наверх</a></p>
 </div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-       <li class="footer"><a href="http://www.unix-lab.org/tag/android.html">Android&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/arch.html">Arch&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/blog.html">Blog&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/debian.html">Debian&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations.html">Decorations&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/django.html">Django&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/editors.html">Editors&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo.html">Gentoo&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/git.html">Git&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript.html">JavaScript&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel.html">Kernel&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/latex.html">LaTeX&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/linux.html">Linux&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/python.html">Python&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/server.html">Server&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/web.html">Web&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/windows.html">Windows&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
   </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>

@@ -32,7 +32,7 @@
 <p>Для всех остальных предназначен данный пост, где мы рассмотрим такую замечательную штуку как clonezilla. Clonezilla умеет работать с любой операционной системой, поэтому создаст вам точную копию диска как Windows, так и Linux машины.</p>
 <p>Скачать live cd clonezilla можно <a href="http://clonezilla.org/downloads.php">по этому адресу</a>. После чего следует записать образ на диск либо создать загрузочную флешку. Собственно, как с этим работать:</p>
 <p>clonezilla так же как и dd берёт всё содержимое вашего жёсткого диска и архивирует его. При последующем восстановлении системы, хоть на пустой диск, хоть на диск с какими-либо данными ( которые затрутся впоследствии) вы получите те же разделы того же размера, которые имелись на момент создания образа. Что ж, начали.</p>
-<h3>I. Загружаемся с live cd — параметры можно оставить по дефолту</h3>
+<h3>Загружаемся с live cd — параметры можно оставить по дефолту</h3>
 <p>Далее нам будет предложено выбрать язык и раскладку клавиатуры. Поскольку мы являемся носителями русского языка, его и выберем. Также убедительно попросим не трогать раскладку.</p>
 <p><img alt="img" src="http://3.bp.blogspot.com/-053eQvEIivQ/UGUy1p3iQEI/AAAAAAAABj4/uh8D7ru8LEc/s1600/language.jpg" /></p>
 <p>Далее выберите, что угодно вам: создание образа диска как в этом примере или же работа с отдельными разделами</p>
@@ -40,50 +40,50 @@
 <p>После чего нас снова попросят сделать выбор:</p>
 <p>clonezilla может создать образ на локальном диске, передать его по ssh или на samba-сервер/nfs-сервер. Skip следует нажать в случае, если настройки были произведены вами ранее и уже сохранены — не наш случай</p>
 <p><img alt="img" src="http://4.bp.blogspot.com/-HCy8IbLWVZ0/UGUzDcQxP0I/AAAAAAAABkI/VOf5f3Y3V1w/s1600/local_dev.jpg" /></p>
-<h3>II. Теперь внимание! — ответственный момент</h3>
+<h3>Теперь внимание! — ответственный момент</h3>
 <p>Сначала следует выбрать диск-источник, с которого будет снят образ.</p>
 <p>И уже после диск-приёмник, куда наш образ будет сохранён и откуда будет с лёгкостью восстановлен при необходимости.</p>
 <p><img alt="img2" src="http://3.bp.blogspot.com/-u8XX9bapta0/UGUzOoZsq2I/AAAAAAAABkQ/T2a7gaxvC3o/s1600/sda.jpg" /></p>
 <p>Программа предложит сохранить данные на usb-накопитель, что чаще всего и бывает нужно. Если так, подключите usb-диск, подождите немного пока он смонтируется в нужную директорию и жмите <code>Enter</code>. Сохраним диск как образ системы</p>
 <p><img alt="img2" src="http://3.bp.blogspot.com/-52Ee6CrfqRc/UGUzWPAOlPI/AAAAAAAABkY/W85cr9I70x4/s1600/savedisk.jpg" /></p>
-<h3>III. После этого надо будет лишь изъявить своё желание в последующей проверке образа либо отказаться от этой процедуры.</h3>
+<h3>После этого надо будет лишь изъявить своё желание в последующей проверке образа либо отказаться от этой процедуры.</h3>
 <p>В завершение выйдем в командную строку и перезугрузимся:</p>
 <div class="highlight"><pre><span class="gp">$</span> <span class="nb">exit</span>
 <span class="gp">$</span><span class="nb"> </span>sudo reboot
 </pre></div>
 
 
-<h3>IV. Восстановление образа происходит так же</h3>
+<h3>Восстановление образа происходит так же</h3>
 <p>Выбор диска откуда восстанавливать, выбор места, куда.</p>
 <p>Только теперь вместо сохранения на диск будет использован другой пункт — <code>restore</code>:</p>
 <p><img alt="img3" src="http://2.bp.blogspot.com/-xO7bxANOtGo/UGUzjP3yo1I/AAAAAAAABkg/kEEl0oExGWY/s1600/restore.jpg" /></p>
 <p>Просто и удобно. Также помните, что в случае выбора каких-либо неверных настроек до начала процедуры архивирования/восстановления вы всегда можете выйти в консоль и начать заново.</p>
-<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi.html">redVi</a>,
-<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/arch.html">Arch</a> /
-<a href="http://www.unix-lab.org/tag/linux.html">Linux</a> /
+<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi/">redVi</a>,
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/arch/">Arch</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
 </h5>
 <p align="center"><a href="#">наверх</a></p>
 </div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-       <li class="footer"><a href="http://www.unix-lab.org/tag/android.html">Android&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/arch.html">Arch&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/blog.html">Blog&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/debian.html">Debian&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations.html">Decorations&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/django.html">Django&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/editors.html">Editors&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo.html">Gentoo&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/git.html">Git&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript.html">JavaScript&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel.html">Kernel&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/latex.html">LaTeX&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/linux.html">Linux&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/python.html">Python&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/server.html">Server&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/web.html">Web&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/windows.html">Windows&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
   </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>

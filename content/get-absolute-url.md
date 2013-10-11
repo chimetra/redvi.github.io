@@ -16,7 +16,7 @@ Summary: Как получить полный путь URL-страницы в D
 
 ###Вид urls.py
 
-Создание файла `ursl.py`, отвечающего нашим запросам. Отображено использование обобщённых представлений, подробности о которых вы без труда найдёте в документации.
+Создание файла `urls.py`, отвечающего нашим запросам. Отображено использование обобщённых представлений, подробности о которых вы без труда найдёте в документации.
 
 У нас имеется представление `IndexView`, на которое возложен вывод индексной страницы со списком последних публикаций, а также `DetailView`, которое выводит отдельную запись. В шаблоне к ним можно обращаться как к `latest_articles_list` и `detail` соответственно.
 
@@ -136,9 +136,9 @@ Summary: Как получить полный путь URL-страницы в D
     <h2><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h2>
     {{ article.content }}
     <div class="links">
-    <a href="{{ article.get_next_by_pub_date.get_absolute_url }}">{{ article.get_next_by_pub_date }}</a>
-    <a href="#">наверх</a>
-    <a href="{{ article.get_previous_by_pub_date.get_absolute_url }}">{{ article.get_previous_by_pub_date }}</a>
+    <a href="{{ article.get_next_by_pub_date.get_absolute_url }}">Next</a>
+    <a href="#">on top</a>
+    <a href="{{ article.get_previous_by_pub_date.get_absolute_url }}">Prev</a>
     </div>
     </div>
     {% endblock %}
@@ -147,4 +147,4 @@ Summary: Как получить полный путь URL-страницы в D
 
 `Model.get_previous_by_pub_date` отобразит предыдущую публикацию.
 
-Применив к этим ссылкам метод `get_absolute_url`, мы получим искомое решение.
+Применив к ним метод `get_absolute_url`, мы получим искомое решение.

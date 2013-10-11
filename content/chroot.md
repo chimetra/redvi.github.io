@@ -13,59 +13,67 @@ Summary: Изменение корня это процесс изменения 
 Убедитесь, что архитектура среды Linux, с которой вы загрузились соответствует архитектуре системы, с которой вы будете работать (т.e. i686, x86_64). Вы можете просмотреть архитектуру среды командой:
 `uname -m`
 
-##Монтирование каталогов
+## Монтирование каталогов
 
 Чтобы просмотреть все имеющиеся дисковые разделы и их типы введите:
 
-    :::console
-    # fdisk -l
+```console
+# fdisk -l
+```
 
 Создайте директорию, куда вы хотели бы подмонтировать устройство или раздел:
 
-    :::console
-    # mkdir /mnt/arch
-    # mount /dev/sda3 /mnt/arch
+```console
+# mkdir /mnt/arch
+# mount /dev/sda3 /mnt/arch
+```
 
-##Изменение корневой директории
+## Изменение корневой директории
 
 Подмонтируйте временные файловые системы:
 
-    :::console
-    # mount -t proc none /mnt/arch/proc
-    # mount -t sysfs sys /mnt/arch/sys
-    # mount -o bind /dev /mnt/arch/dev
+```console
+# mount -t proc none /mnt/arch/proc
+# mount -t sysfs sys /mnt/arch/sys
+# mount -o bind /dev /mnt/arch/dev
+```
 
 Монтируйте другие разделы, если нуждаетесь в них (такие как  `/boot, /var, /usr`). Например:
 
-    :::console
-    # mount /dev/sda1 /mnt/arch/boot
+```console
+# mount /dev/sda1 /mnt/arch/boot
+```
 
 После выхода из изолированной среды, вы сможете отмонтировать все разделы одной командой. Это позволит безопасно отключить систему.
 
 Если при нахождении в среде chroot вам нужна будет работа в сети, скопируйте информацию о DNS в новый корневой каталог:
 
-    :::console
-    # cp -L /etc/resolv.conf etc/resolv.conf
+```console
+# cp -L /etc/resolv.conf etc/resolv.conf
+```
 
 Переходим в новую среду:
 
-    :::console
-    # chroot /mnt/arch /bin/bash
+```console
+# chroot /mnt/arch /bin/bash
+```
 
 Если вы увидите ошибку `"chroot: cannot run command '/bin/bash': Exec format error"` это может означать, что архитектуры не совпадают.
 
 При работе с GRUB в изолированной среде нужно быть уверенным, что каталог `/etc/mtab` содержит актуальную информацию:
 
-    :::console
-    # grep -v rootfs /proc/mounts > /etc/mtab
+```console
+# grep -v rootfs /proc/mounts > /etc/mtab
+```
 
 Следующие шаги:
 
-    :::console
-    # source /etc/profile
-    # export PS1="(chroot) $PS1"
+```console
+# source /etc/profile
+# export PS1="(chroot) $PS1"
+```
 
-##Обслуживание системы:
+## Обслуживание системы:
 
 * Вот то, что вы можете сделать в изолированной среде:
     - Обновить или откатить пакеты
@@ -74,25 +82,28 @@ Summary: Изменение корня это процесс изменения 
     - Исправить /etc/fstab
     - Переустановить GRUB
 
-##Выход из chroot окружения:
+## Выход из chroot окружения:
 
 Когда вы закончите работу, выйдите из chroot, введя команду `exit`.
 
 Теперь отмонтируйте устройства и каталоги, которые вам больше не нужны:
 
-    :::console
-    # umount {proc,sys,dev,boot...}
+```console
+# umount {proc,sys,dev,boot...}
+```
 
 Наконец отмонтируйте ваш жёсткий диск:
 
-    :::console
-    # cd /
-    # umount /mnt/arch
+```console
+# cd /
+# umount /mnt/arch
+```
 
 Если вы видите ошибку подобную этой: `"/mnt (или другой каталог) is busy"`, вы можете узнать причину (используя `lsof`) или принудительно отмонтировать каталог:
 
-    :::console
-    # umount -f /mnt
+```console
+# umount -f /mnt
+```
 
 После этого вы сможете безопасно отключить систему.
 

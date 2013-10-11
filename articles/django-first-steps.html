@@ -28,7 +28,7 @@
 <h5><i class="icon-feather"></i> 20 Июль 2013 </h5>
 <p>Не правда ли, было бы любопытно опробовать знаменитый фреймворк Django для создания сайтов разной степени сложности? Если вам по душе узнавать что-то новое или вы по каким-либо причинам решили отказаться от разработки на PHP — Django как раз то, что вам нужно. В сегодняшнем посте будут оговорены элементарные, но такие необходимые вещи: создание проекта и приложения, модели и отображения, шаблонов с использованием стандартных фильтров. Не исключено, что автор продолжит начатую тему и в последующем будет опубликован ряд постов об этом популярном фреймворке.</p>
 <p>Далее предполагается, что у читателя установлен <code>Python3</code> и <code>Django &gt;=1.5</code>: именно на них рассчитаны наши последующие телодвижения. Устанавливать необходимые для конкретного проекта приложения лучше используя <a href="virtualenv.html">virtualenw и pip</a>. Так вы сможете избавить себя от чтения руководств по установке и захламления системных файлов.</p>
-<h2>I. Создание проекта и приложения</h2>
+<h2>Создание проекта и приложения</h2>
 <p>Проект — основной каталог, где будут располагаться те или иные приложения, также проект содержит основные настройки будущего сайта. Создадим корневой каталог для проекта и сам проект:</p>
 <div class="highlight"><pre><span class="gp">$</span> mkdir djcode <span class="o">&amp;&amp;</span> <span class="nb">cd </span>djcode
 <span class="gp">$</span> django-admin.py startproject pySite
@@ -80,7 +80,7 @@
 <p><code>admin.py</code> — создаётся вручную, нужен исключительно для удобства: настройка отображения моделей в административной панели</p>
 <p><code>views.py</code> — самое интересное, управляет логикой приложения</p>
 <p>С приложением определились. Отлично! Пора браться за настройки.</p>
-<h2>II. Настройки для сайта</h2>
+<h2>Настройки для сайта</h2>
 <p>Заглянем в файл <code>settings.py</code> и настроим его под свои скромные пока нужды.</p>
 <p><code>PROJECT_PATH</code> — указание на то, где Django нужно искать корень проекта. Лучше использовать запись, приведённую ниже, чем писать полный путь вроде <code>~/home/user/djcode/pySite</code>.</p>
 <p><code>DEBUG = True</code> — отладка влючена, Django будет выводить информативные сообщения об ошибках.</p>
@@ -143,7 +143,7 @@
 
 <p>Первая команда создаст записи в базе данных и предложит создать суперпользователя, если вы подключили приложение административной панели, вторая — запустит тестовый сервер разработки.</p>
 <p>По адресу <code>127.0.0.1:8000/</code> должно появиться стандартное окно приветствия Django.</p>
-<h2>III. Создание модели и представления, конфигурация <code>urls.py</code></h2>
+<h2>Создание модели и представления, конфигурация <code>urls.py</code></h2>
 <p>Следующим шагом будет настройка моделей для взаимодействия с БД, создание представления (логика приложения), настройка файла <code>urls.py</code>.</p>
 <p>В примере ниже создаётся класс <code>Post</code>, подкласс абстрактного класса <code>models.Model</code>. Мы хотим видеть у нашего поста название (<code>title</code>), его тело (<code>body</code>), дату создания (<code>timestamp</code>) и автора (<code>author</code>). Обратите внимание на <code>models.*Field</code>. Каждая модель соответствует указанному полю.</p>
 <p>Так, <code>models.CharField</code> выведет несколько символов, максимальное их значение 150, этого должно хватить для названия;</p>
@@ -252,20 +252,20 @@
 <div class="highlight"><pre># djcode/pySite/templates/news/news.html
 
 {% extends &#39;base.html&#39; %} <span class="c">&lt;!-- подключаем базовый шаблон --&gt;</span>
-{%block title%}News{%endblock%}
-    {% block content %}
-        <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;post&quot;</span><span class="nt">&gt;</span>
-            {% for post in posts %} <span class="c">&lt;!-- итерация по всем постам --&gt;</span>
-                <span class="nt">&lt;ul&gt;</span>
-                    <span class="nt">&lt;li&gt;&lt;h3&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;{% url &#39;news:one_new&#39; post.id %}&quot;</span><span class="nt">&gt;</span>{{ post.title }}<span class="nt">&lt;/a&gt;&lt;/h3&gt;&lt;br</span> <span class="nt">/&gt;&lt;/li&gt;&lt;br</span> <span class="nt">/&gt;</span>
-                <span class="nt">&lt;/ul&gt;</span>
-          {{ post.timestamp }} <span class="c">&lt;!-- дата публикации --&gt;</span>
-          {{ post.author }} <span class="c">&lt;!-- автор --&gt;</span>
-           {{ post.body|truncatewords:80|safe }}<span class="nt">&lt;br</span> <span class="nt">/&gt;</span> <span class="c">&lt;!-- обрезаем посты, вывод по 80 слов --&gt;</span>
-           <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{% url &#39;news:one_new&#39; post.id %}&quot;</span><span class="nt">&gt;</span>Читать полностью<span class="ni">&amp;raquo;</span><span class="nt">&lt;/a&gt;</span> <span class="c">&lt;!-- ссылаемся на полный текст поста --&gt;</span>
-           {% endfor %}
-        <span class="nt">&lt;/div&gt;</span>
-    {% endblock %}
+{% block title %}News{% endblock %}
+{% block content %}
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;post&quot;</span><span class="nt">&gt;</span>
+        {% for post in posts %} <span class="c">&lt;!-- итерация по всем постам --&gt;</span>
+            <span class="nt">&lt;ul&gt;</span>
+                <span class="nt">&lt;li&gt;&lt;h3&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;{% url &#39;news:one_new&#39; post.id %}&quot;</span><span class="nt">&gt;</span>{{ post.title }}<span class="nt">&lt;/a&gt;&lt;/h3&gt;&lt;br</span> <span class="nt">/&gt;&lt;/li&gt;&lt;br</span> <span class="nt">/&gt;</span>
+            <span class="nt">&lt;/ul&gt;</span>
+        {{ post.timestamp }} <span class="c">&lt;!-- дата публикации --&gt;</span>
+        {{ post.author }} <span class="c">&lt;!-- автор --&gt;</span>
+        {{ post.body|truncatewords:80|safe }}<span class="nt">&lt;br</span> <span class="nt">/&gt;</span> <span class="c">&lt;!-- обрезаем посты, вывод по 80 слов --&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{% url &#39;news:one_new&#39; post.id %}&quot;</span><span class="nt">&gt;</span>Читать полностью<span class="ni">&amp;raquo;</span><span class="nt">&lt;/a&gt;</span> <span class="c">&lt;!-- ссылаемся на полный текст поста --&gt;</span>
+        {% endfor %}
+    <span class="nt">&lt;/div&gt;</span>
+{% endblock %}
 </pre></div>
 
 
@@ -295,14 +295,14 @@
 {% extends &#39;base.html&#39; %} <span class="c">&lt;!-- подключаем базовый шаблон --&gt;</span>
 <span class="c">&lt;!-- отображать название поста как title страницы--&gt;</span>
 {% block title %}{{ title }}{% endblock %}
-    {% block content %}
-    <span class="nt">&lt;b&gt;</span>Дата: {{ timestamp }}<span class="nt">&lt;/b&gt;&lt;br</span> <span class="nt">/&gt;</span>
-    <span class="nt">&lt;b&gt;</span>Автор: {{ author }}<span class="nt">&lt;/b&gt;&lt;br</span> <span class="nt">/&gt;</span>
-    <span class="nt">&lt;h1&gt;</span>{{ title }}<span class="nt">&lt;/h1&gt;</span>
-    <span class="nt">&lt;div&gt;</span>{{ body|safe|escape}}<span class="nt">&lt;/div&gt;</span> <span class="c">&lt;!-- экранировать HTML--&gt;</span>
+{% block content %}
+<span class="nt">&lt;b&gt;</span>Дата: {{ timestamp }}<span class="nt">&lt;/b&gt;&lt;br</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;b&gt;</span>Автор: {{ author }}<span class="nt">&lt;/b&gt;&lt;br</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;h1&gt;</span>{{ title }}<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;div&gt;</span>{{ body|safe|escape}}<span class="nt">&lt;/div&gt;</span> <span class="c">&lt;!-- экранировать HTML--&gt;</span>
 <span class="c">&lt;!-- escape переводит HTML-теги, если вы использовали их</span>
-<span class="c">при написании статьи в админке --&gt;</span>
-    {% endblock %}
+<span class="c">    при написании статьи в админке --&gt;</span>
+{% endblock %}
 </pre></div>
 
 
@@ -317,12 +317,9 @@
 
 <span class="c"># можно переписать как в news/views.py</span>
 <span class="k">def</span> <span class="nf">home</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-
-
     <span class="nb">vars</span> <span class="o">=</span> <span class="nb">dict</span> <span class="p">(</span>
             <span class="n">posts</span><span class="o">=</span><span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;-timestamp&#39;</span><span class="p">)[:</span><span class="mi">10</span><span class="p">],</span>
-            <span class="p">)</span>
-
+                <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;index.html&#39;</span><span class="p">,</span> <span class="nb">vars</span><span class="p">,</span> <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
 </pre></div>
@@ -333,15 +330,15 @@
 
 {% extends &quot;base.html&quot; %}
 {% block title %}Index Page{% endblock %}
-    {% block content %}
-        <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;post&quot;</span><span class="nt">&gt;</span>
-                <span class="nt">&lt;ul&gt;</span>
-                {% for post in posts %}
-                    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;{% url &#39;news:one_new&#39; post.id %}&quot;</span><span class="nt">&gt;</span>{{ post.title }}<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-                {% endfor %}
-                <span class="nt">&lt;/ul&gt;</span>
-        <span class="nt">&lt;/div&gt;</span>
-    {%endblock%}
+{% block content %}
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;post&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;ul&gt;</span>
+            {% for post in posts %}
+                <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;{% url &#39;news:one_new&#39; post.id %}&quot;</span><span class="nt">&gt;</span>{{ post.title }}<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+            {% endfor %}
+            <span class="nt">&lt;/ul&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+{%endblock%}
 </pre></div>
 
 
@@ -380,31 +377,31 @@
 <p>Дело сделано. Если всё прошло гладко, мы должны прийти примерно к подобному результату:</p>
 <p><a href="http://farm6.staticflickr.com/5343/9470178553_84ec6b3262_o.png" data-lighter><img src="http://farm6.staticflickr.com/5343/9470178553_84ec6b3262_o.png"/></a></p>
 <p>Успехов в изучении этого отличного фреймворка!</p>
-<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi.html">redVi</a>,
-<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/django.html">Django</a> /
+<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi/">redVi</a>,
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/django/">Django</a> /
 </h5>
 <p align="center"><a href="#">наверх</a></p>
 </div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-       <li class="footer"><a href="http://www.unix-lab.org/tag/android.html">Android&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/arch.html">Arch&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/blog.html">Blog&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/debian.html">Debian&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations.html">Decorations&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/django.html">Django&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/editors.html">Editors&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo.html">Gentoo&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/git.html">Git&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript.html">JavaScript&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel.html">Kernel&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/latex.html">LaTeX&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/linux.html">Linux&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/python.html">Python&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/server.html">Server&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/web.html">Web&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/windows.html">Windows&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
   </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>

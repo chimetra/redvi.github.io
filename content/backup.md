@@ -10,17 +10,18 @@ Summary: Для проведения резервного копирования
 
 Для начала следует установить rsync. Применительно к дистрибутиву Gentoo Linux выглядит это так:
 
-    :::console
-    # emerge -av rsync
-    net-misc/rsync-3.0.9-r2  USE="acl iconv -ipv6 -static -xattr"
-
+```console
+# emerge -av rsync
+net-misc/rsync-3.0.9-r2  USE="acl iconv -ipv6 -static -xattr"
+```
 Резервное копирование без отмонтирования разделов
 
 Создание полной резервной копии  пользовательского раздела:
 
-    :::console
-    # mkdir /home/backup-root
-    # rsync -PavHx /home/* /home/backup-root/
+```console
+# mkdir /home/backup-root
+# rsync -PavHx /home/* /home/backup-root/
+```
 
 * Разбор аргументов (см. man rsync):
 - -Pav --- "стандартный джентльменский набор": докачка оборванных файлов, сохранение прав доступа/времени;
@@ -60,7 +61,8 @@ Summary: Для проведения резервного копирования
 
 При последующем обновлении бэкапа:
 
-    :::console
-    # rsync -PavHx --delete-after /home/* /home/backup-root/
+```console
+# rsync -PavHx --delete-after /home/* /home/backup-root/
+```
 
 Этот способ отлично подходит для периодического создания копии `home`-каталога. Запустив всего одну команду, мы можем не терять время на перезагрузку и нам не нужен livecd. Но делать полный бэкап системы этим способом не рекомендуется, лучше воспользоваться утилитой [cp](linux-on-hdd.html).

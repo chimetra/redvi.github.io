@@ -89,15 +89,15 @@ deb http://ftp.debian.org/debian experimental main
 
 
 <p><code>4.</code> Добавить скрипт в <code>/etc/rc.local</code>, вот так:</p>
-<div class="highlight"><pre><span class="cp"># By default this script does nothing</span>
-<span class="n">echo</span> <span class="n">OFF</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">debug</span><span class="o">/</span><span class="n">vgaswitcheroo</span><span class="o">/</span><span class="k">switch</span>
-<span class="n">exit</span> <span class="mi">0</span>
+<div class="highlight"><pre><span class="c"># By default this script does nothing</span>
+<span class="nb">echo </span>OFF &gt; /sys/kernel/debug/vgaswitcheroo/switch
+<span class="nb">exit </span>0
 </pre></div>
 
 
 <h2>Шаг второй: русификация интерфейса, настройки ввода</h2>
 <p>Русификация всего и вся проходит быстро и безболезненно внесением одной лишь записи в <code>/etc/default/locale</code>:</p>
-<div class="highlight"><pre><span class="n">LANG</span><span class="o">=</span><span class="s">&quot;ru_RU.UTF-8&quot;</span>
+<div class="highlight"><pre><span class="nv">LANG</span><span class="o">=</span><span class="s2">&quot;ru_RU.UTF-8&quot;</span>
 </pre></div>
 
 
@@ -105,56 +105,56 @@ deb http://ftp.debian.org/debian experimental main
 <p>Раскладки клавиатуры также не предлагают того, что хочется — не беда. Сделаем переключение через <code>Alt + Shift</code> , да чтобы раскладку было видно по индикатору <code>Caps Lock</code>.</p>
 <p><img alt="layout" src="http://1.bp.blogspot.com/-qJBM-kr1uO4/UYjzLXk8TCI/AAAAAAAAEuo/7P2-PyXhqus/s1600/layout.jpg" /></p>
 <p>Настройка раскладки клавиатуры, поведения тачпада... мелочи жизни:</p>
-<div class="highlight"><pre><span class="cp"># /etc/X11/xorg.conf.d/10-evdev.conf</span>
-<span class="cp">#</span>
-<span class="n">Section</span> <span class="s">&quot;InputClass&quot;</span>
-    <span class="n">Identifier</span> <span class="s">&quot;evdev keyboard catchall&quot;</span>
-    <span class="n">MatchIsKeyboard</span> <span class="s">&quot;on&quot;</span>
-    <span class="n">MatchDevicePath</span> <span class="s">&quot;/dev/input/event*&quot;</span>
-<span class="n">Driver</span> <span class="s">&quot;evdev&quot;</span> <span class="n">EndSection</span>
+<div class="highlight"><pre><span class="c"># /etc/X11/xorg.conf.d/10-evdev.conf</span>
+<span class="c">#</span>
+Section <span class="s2">&quot;InputClass&quot;</span>
+    Identifier <span class="s2">&quot;evdev keyboard catchall&quot;</span>
+    MatchIsKeyboard <span class="s2">&quot;on&quot;</span>
+    MatchDevicePath <span class="s2">&quot;/dev/input/event*&quot;</span>
+Driver <span class="s2">&quot;evdev&quot;</span> EndSection
 
 
-<span class="cp"># /etc/X11/xorg.conf.d/20-keyboard-layout.conf</span>
-<span class="cp">#</span>
-<span class="n">Section</span> <span class="s">&quot;InputClass&quot;</span>
-    <span class="n">Identifier</span> <span class="s">&quot;Keyboard Defaults&quot;</span>
-    <span class="n">MatchIsKeyboard</span> <span class="s">&quot;yes&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;XkbLayout&quot;</span> <span class="s">&quot;us,ru&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;XkbOptions&quot;</span> <span class="s">&quot;grp:alt_shift_toggle, grp_led:caps&quot;</span>
-<span class="n">EndSection</span>
+<span class="c"># /etc/X11/xorg.conf.d/20-keyboard-layout.conf</span>
+<span class="c">#</span>
+Section <span class="s2">&quot;InputClass&quot;</span>
+    Identifier <span class="s2">&quot;Keyboard Defaults&quot;</span>
+    MatchIsKeyboard <span class="s2">&quot;yes&quot;</span>
+    Option <span class="s2">&quot;XkbLayout&quot;</span> <span class="s2">&quot;us,ru&quot;</span>
+    Option <span class="s2">&quot;XkbOptions&quot;</span> <span class="s2">&quot;grp:alt_shift_toggle, grp_led:caps&quot;</span>
+EndSection
 
-<span class="cp"># /etc/X11/xorg.conf.d/50-synaptics.conf</span>
-<span class="cp">#</span>
-<span class="n">Section</span> <span class="s">&quot;InputClass&quot;</span>
-    <span class="n">Identifier</span> <span class="s">&quot;touchpad catchall&quot;</span>
-    <span class="n">Driver</span> <span class="s">&quot;synaptics&quot;</span>
-    <span class="n">MatchIsTouchpad</span> <span class="s">&quot;on&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;TapButton1&quot;</span> <span class="s">&quot;1&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;TapButton2&quot;</span> <span class="s">&quot;2&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;TapButton3&quot;</span> <span class="s">&quot;3&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;VertEdgeScroll&quot;</span> <span class="s">&quot;on&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;VertTwoFingerScroll&quot;</span> <span class="s">&quot;on&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;HorizEdgeScroll&quot;</span> <span class="s">&quot;on&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;HorizTwoFingerScroll&quot;</span> <span class="s">&quot;on&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;CircularScrolling&quot;</span> <span class="s">&quot;on&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;CircScrollTrigger&quot;</span> <span class="s">&quot;2&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;EmulateTwoFingerMinZ&quot;</span> <span class="s">&quot;40&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;EmulateTwoFingerMinW&quot;</span> <span class="s">&quot;8&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;CoastingSpeed&quot;</span> <span class="s">&quot;0&quot;</span>
-    <span class="n">MatchDevicePath</span> <span class="s">&quot;/dev/input/event*&quot;</span>
-<span class="n">EndSection</span>
-    <span class="n">Section</span> <span class="s">&quot;InputClass&quot;</span>
-    <span class="n">Identifier</span> <span class="s">&quot;touchpad ignore duplicates&quot;</span>
-    <span class="n">MatchIsTouchpad</span> <span class="s">&quot;on&quot;</span>
-    <span class="n">MatchOS</span> <span class="s">&quot;Linux&quot;</span>
-    <span class="n">MatchDevicePath</span> <span class="s">&quot;/dev/input/mouse*&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;Ignore&quot;</span> <span class="s">&quot;on&quot;</span>
-<span class="n">EndSection</span>
-    <span class="n">Section</span> <span class="s">&quot;InputClass&quot;</span>
-    <span class="n">Identifier</span> <span class="s">&quot;Default clickpad buttons&quot;</span>
-    <span class="n">MatchDriver</span> <span class="s">&quot;synaptics&quot;</span>
-    <span class="n">Option</span> <span class="s">&quot;SoftButtonAreas&quot;</span> <span class="s">&quot;50% 0 82% 0 0 0 0 0&quot;</span>
-<span class="n">EndSection</span>
+<span class="c"># /etc/X11/xorg.conf.d/50-synaptics.conf</span>
+<span class="c">#</span>
+Section <span class="s2">&quot;InputClass&quot;</span>
+    Identifier <span class="s2">&quot;touchpad catchall&quot;</span>
+    Driver <span class="s2">&quot;synaptics&quot;</span>
+    MatchIsTouchpad <span class="s2">&quot;on&quot;</span>
+    Option <span class="s2">&quot;TapButton1&quot;</span> <span class="s2">&quot;1&quot;</span>
+    Option <span class="s2">&quot;TapButton2&quot;</span> <span class="s2">&quot;2&quot;</span>
+    Option <span class="s2">&quot;TapButton3&quot;</span> <span class="s2">&quot;3&quot;</span>
+    Option <span class="s2">&quot;VertEdgeScroll&quot;</span> <span class="s2">&quot;on&quot;</span>
+    Option <span class="s2">&quot;VertTwoFingerScroll&quot;</span> <span class="s2">&quot;on&quot;</span>
+    Option <span class="s2">&quot;HorizEdgeScroll&quot;</span> <span class="s2">&quot;on&quot;</span>
+    Option <span class="s2">&quot;HorizTwoFingerScroll&quot;</span> <span class="s2">&quot;on&quot;</span>
+    Option <span class="s2">&quot;CircularScrolling&quot;</span> <span class="s2">&quot;on&quot;</span>
+    Option <span class="s2">&quot;CircScrollTrigger&quot;</span> <span class="s2">&quot;2&quot;</span>
+    Option <span class="s2">&quot;EmulateTwoFingerMinZ&quot;</span> <span class="s2">&quot;40&quot;</span>
+    Option <span class="s2">&quot;EmulateTwoFingerMinW&quot;</span> <span class="s2">&quot;8&quot;</span>
+    Option <span class="s2">&quot;CoastingSpeed&quot;</span> <span class="s2">&quot;0&quot;</span>
+    MatchDevicePath <span class="s2">&quot;/dev/input/event*&quot;</span>
+EndSection
+    Section <span class="s2">&quot;InputClass&quot;</span>
+    Identifier <span class="s2">&quot;touchpad ignore duplicates&quot;</span>
+    MatchIsTouchpad <span class="s2">&quot;on&quot;</span>
+    MatchOS <span class="s2">&quot;Linux&quot;</span>
+    MatchDevicePath <span class="s2">&quot;/dev/input/mouse*&quot;</span>
+    Option <span class="s2">&quot;Ignore&quot;</span> <span class="s2">&quot;on&quot;</span>
+EndSection
+    Section <span class="s2">&quot;InputClass&quot;</span>
+    Identifier <span class="s2">&quot;Default clickpad buttons&quot;</span>
+    MatchDriver <span class="s2">&quot;synaptics&quot;</span>
+    Option <span class="s2">&quot;SoftButtonAreas&quot;</span> <span class="s2">&quot;50% 0 82% 0 0 0 0 0&quot;</span>
+EndSection
 </pre></div>
 
 
@@ -208,32 +208,32 @@ deb http://ftp.debian.org/debian experimental main
 <li>система считает себя <code>умнее хозяина</code> (одна из причин, почему так много дружелюбных к пользователю дистрибутивов основано на Дебиане)</li>
 </ul>
 <p>Итог: ностальгия быстро улетучилась, Дебиан остался на внешнем жёстком диске в качестве запасной рабочей лошадки и бэкап-хранилища для <code>/home</code> каталога.</p>
-<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi.html">redVi</a>,
-<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/debian.html">Debian</a> /
-<a href="http://www.unix-lab.org/tag/linux.html">Linux</a> /
+<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi/">redVi</a>,
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/debian/">Debian</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
 </h5>
 <p align="center"><a href="#">наверх</a></p>
 </div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-       <li class="footer"><a href="http://www.unix-lab.org/tag/android.html">Android&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/arch.html">Arch&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/blog.html">Blog&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/debian.html">Debian&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations.html">Decorations&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/django.html">Django&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/editors.html">Editors&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo.html">Gentoo&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/git.html">Git&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript.html">JavaScript&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel.html">Kernel&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/latex.html">LaTeX&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/linux.html">Linux&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/python.html">Python&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/server.html">Server&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/web.html">Web&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/windows.html">Windows&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
+       <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
   </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>

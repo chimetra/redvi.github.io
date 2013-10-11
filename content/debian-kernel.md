@@ -19,37 +19,43 @@ Summary: Что нужно знать для сборки своего ядра 
 
 Для подобного дела нужно сначала подготовиться. А именно заняться установкой следующих пакетов:
 
-    :::console
-    $ sudo aptitude install  build-essential kernel-package fakeroot initrd-tools pkg-config libncurses5-dev ( и `linux-source` - для тех, кто перекомпилирует имеющееся ядро)
+```console
+$ sudo aptitude install  build-essential kernel-package fakeroot initrd-tools pkg-config libncurses5-dev ( и `linux-source` - для тех, кто перекомпилирует имеющееся ядро)
+```
 
 Если вы решили ставить новое ядро, то идём на kernel.org  или зеркало yandex &mdash; `mirror.yandex.ru/kernel.org/linux/kernel/` &mdash; и скачиваем необходимую версию ядра. У нас это `linux-3.0.4.tar.bz2`.
 
 Смотрим есть ли пакет `linux-source` в каталоге `/usr/src`. В случае с перекомпиляцией он будет, если вы скачали новое ядро, то переместите его туда.
 
-    :::console
-    $ ls /usr/src/
-    linux-source-3.0.4.tar.bz2
+```console
+$ ls /usr/src/
+linux-source-3.0.4.tar.bz2
+```
 
 Переходим в каталог и распаковываем архив:
 
-    :::console
-    $ cd /usr/src
-    $ sudo tar xjf linux-source-3.0.4.tar.bz2
+```console
+$ cd /usr/src
+$ sudo tar xjf linux-source-3.0.4.tar.bz2
+```
 
 Идём в созданную после разархивирования директорию:
 
-    :::console
-    $ cd linux-source-3.0.4/
+```console
+$ cd linux-source-3.0.4/
+```
 
 Теперь можно заняться конфигурированием ядра. Автором это было сделано в консоли с остановленным X-Window. В таком случае пишем от рута:
 
-    :::console
-    # make menuconfig
+```console
+# make menuconfig
+```
 
 Если желаете конфигурировать в графическом терминале, вам послужит команда
 
-    :::console
-    # make xconfig
+```console
+# make xconfig
+```
 
 Но понадобится установить дополнительные пакеты/библиотеки, в общем ну её....
 
@@ -57,8 +63,9 @@ Summary: Что нужно знать для сборки своего ядра 
 
 Тогда собираем наше новенькое ядрышко:
 
-    :::console
-    # fakeroot make-kpkg --initrd --revision=debian.3.0.4 kernel_image
+```console
+# fakeroot make-kpkg --initrd --revision=debian.3.0.4 kernel_image
+```
 
 В `'--revision'` можете выставить свои названия/значения вместо приведённых здесь debian и 3.0.4
 
@@ -68,19 +75,22 @@ Summary: Что нужно знать для сборки своего ядра 
 
 &laquo;не сработать&raquo; &mdash; это когда сборка останавливается с ошибкой компиляции
 
+```
     .....
     make: *** Documentation/lguest: Нет такого файла или каталога. Останов.
     make: *** [debian/stamp/build/kernel] Ошибка 2-------------------------
+```
 
 Довольно известный баг дебиана.
 
 Тогда собираем ядро как все люди:
 
-    :::console
-    # make mrproper
-    # make menuconfig
-    # make && make modules_install
-    # cp arch/$ARCH/boot/bzImage /boot/linux-$VERSION
+```console
+# make mrproper
+# make menuconfig
+# make && make modules_install
+# cp arch/$ARCH/boot/bzImage /boot/linux-$VERSION
+```
 
 где `$VERSION` &mdash; версия вашего ядра.
 
@@ -91,12 +101,14 @@ Summary: Что нужно знать для сборки своего ядра 
 
 Мы уже там, так что даём команду:
 
-    :::console
-    # dpkg -i ./linux-image-3.0.4_debian.3.0.4_amd64.deb
+```console
+# dpkg -i ./linux-image-3.0.4_debian.3.0.4_amd64.deb
+```
 
 И перезагружаемся
 
-    :::console
-    # reboot
+```console
+# reboot
+```
 
 В итоге при следующем старте системы получаем целых два ядра. Пробуем загрузиться с новым, если напортачили, имеем возможность выбрать из списка загрузки предыдущее ядро.

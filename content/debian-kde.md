@@ -9,13 +9,15 @@ Summary: Давайте установим графическую среду KDE
 
 Для установки полного пакета со всеми "примочками" просто введите в консоли от рута:
 
-    :::console
-    # aptitude install kde-full
+```console
+# aptitude install kde-full
+```
 
 Впрочем, можете установить только базовую систему или же лишь необходимое вам из написанного ниже:
 
-    :::console
-    # aptitude install kdm kdebase-runtime kdebase-workspace kdebase kde-minimal kdeplasma-addons kdegraphics kdegames kdemultimedia kdenetwork kdepim kdeutils kdeadmin kdeartwork
+```console
+# aptitude install kdm kdebase-runtime kdebase-workspace kdebase kde-minimal kdeplasma-addons kdegraphics kdegames kdemultimedia kdenetwork kdepim kdeutils kdeadmin kdeartwork
+```
 
 Минималистам достаточно установить пакеты `kdm` и `kdebase-workspace`.
 

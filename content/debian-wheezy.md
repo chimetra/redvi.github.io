@@ -17,45 +17,51 @@ Debian — первый серьёзный дистрибутив автора, 
 Сначала приводистя пример установки ядра из backports (хотя нет, и там тухло) или лучше из  experimental — единственной ветки, где имеется софт без бороды.
 Подключаем один из последних двух репозиториев:
 
-    :::sh
-    # /etc/apt/source.list
+```sh
+# /etc/apt/source.list
 
-    deb http://debian.nsu.ru/debian/ wheezy main non-free contrib
-    deb-src http://debian.nsu.ru/debian/ wheezy main non-free contrib
-    deb http://security.debian.org/ wheezy/updates main contrib non-free
-    deb-src http://security.debian.org/ wheezy/updates main contrib non-free
-    deb http://debian.org/debian/ wheezy-backports main
-    deb http://ftp.debian.org/debian experimental main
+deb http://debian.nsu.ru/debian/ wheezy main non-free contrib
+deb-src http://debian.nsu.ru/debian/ wheezy main non-free contrib
+deb http://security.debian.org/ wheezy/updates main contrib non-free
+deb-src http://security.debian.org/ wheezy/updates main contrib non-free
+deb http://debian.org/debian/ wheezy-backports main
+deb http://ftp.debian.org/debian experimental main
+```
 
 Даём debian'у сигнал о том, что список репозиториев обновился
 
-    :::console
-    # aptitude update
+```console
+# aptitude update
+```
 
 Ставим свежее ядро. В примере из ветки experimental:
 
-    :::console
-    # aptitude search linux-image
-    # apt-get -t experimental install linux-image-3.8
+```console
+# aptitude search linux-image
+# apt-get -t experimental install linux-image-3.8
+```
 
 Следующий метод предназначен для тех, кто как и автор поста, плюнув на ядра дистрибутива, захочет отправится в путь за ванильным ядром на kernel.org. Как это оговаривалось уже не раз в других заметках, нужно скачать последнюю стабильную версию ядра и распаковать её в `/usr/src`:
 
-    :::console
-    $ wget -c http://kernel.org/pub/linux/kernel/v3.x/linux-3.8.11.tar.xz
-    # mv linux-3.8.11.tar.xz /usr/src
-    # tar xvf linux-3.8.11.tar.xz
+```console
+$ wget -c http://kernel.org/pub/linux/kernel/v3.x/linux-3.8.11.tar.xz
+# mv linux-3.8.11.tar.xz /usr/src
+# tar xvf linux-3.8.11.tar.xz
+```
 
 После чего собрать ядро с нужными параметрами и дать команду на сборку и установку самого ядра, а также всех его модулей:
 
-    :::console
-    # make menuconfig
-    # make bzImage modules modules_install install
+```console
+# make menuconfig
+# make bzImage modules modules_install install
+```
 
 В результате в `/boot` разделе должно появиться ядро с указанной версией и его загрузочный образ (initrd). Дебиан даже потрудился перконфигурировать настройки загрузчика grub2, найдя и включив новое ядро в список. Впрочем, вышеуказанные действия легко выполнить и вручную, сгенерировать образ и обновить настройки загрузчика можно двумя соответствующими командами:
 
-    :::console
-    # mkinitramfs -o /boot/initrd-3.8.11
-    # grub-mkconfig -o /boot/grub/grub.cfg
+```console
+# mkinitramfs -o /boot/initrd-3.8.11
+# grub-mkconfig -o /boot/grub/grub.cfg
+```
 
 ![grub-mkconfig](http://1.bp.blogspot.com/-93majm8ZPWs/UYjjkIN9gII/AAAAAAAAEuY/surD6dR9_m4/s1600/mkconfig.png)
 
@@ -64,9 +70,10 @@ Debian — первый серьёзный дистрибутив автора, 
 
 `1.` Убедиться, что установлен драйвер видеокарты, применительно к intel выглядит так:
 
-    :::console
-    $ aptitude search intel
-    i A libdrm-intel i A xserver-xorg-video-intel
+```console
+$ aptitude search intel
+i A libdrm-intel i A xserver-xorg-video-intel
+```
 
 Если установленных пакетов не найдено, доустановить их.
 
@@ -74,19 +81,25 @@ Debian — первый серьёзный дистрибутив автора, 
 
 `3.` Добавить debugfs в `/ets/fstab`
 
-    none  /sys/kernel/debug debugfs defaults 0 0
+```
+none  /sys/kernel/debug debugfs defaults 0 0
+```
 
 `4.` Добавить скрипт в `/etc/rc.local`, вот так:
 
-    # By default this script does nothing
-    echo OFF > /sys/kernel/debug/vgaswitcheroo/switch
-    exit 0
+```sh
+# By default this script does nothing
+echo OFF > /sys/kernel/debug/vgaswitcheroo/switch
+exit 0
+```
 
 ## Шаг второй: русификация интерфейса, настройки ввода
 
 Русификация всего и вся проходит быстро и безболезненно внесением одной лишь записи в `/etc/default/locale`:
 
-    LANG="ru_RU.UTF-8"
+```sh
+LANG="ru_RU.UTF-8"
+```
 
 Следуя какой-то своей особой логике, Debian предлагает выбор русского языка при установке, но это никоим образом не отражается на практике: что ж, русифицируем самостоятельно.
 
@@ -97,56 +110,58 @@ Debian — первый серьёзный дистрибутив автора, 
 
 Настройка раскладки клавиатуры, поведения тачпада... мелочи жизни:
 
-    # /etc/X11/xorg.conf.d/10-evdev.conf
-    #
-    Section "InputClass"
-        Identifier "evdev keyboard catchall"
-        MatchIsKeyboard "on"
-        MatchDevicePath "/dev/input/event*"
-    Driver "evdev" EndSection
+```sh
+# /etc/X11/xorg.conf.d/10-evdev.conf
+#
+Section "InputClass"
+    Identifier "evdev keyboard catchall"
+    MatchIsKeyboard "on"
+    MatchDevicePath "/dev/input/event*"
+Driver "evdev" EndSection
 
 
-    # /etc/X11/xorg.conf.d/20-keyboard-layout.conf
-    #
-    Section "InputClass"
-        Identifier "Keyboard Defaults"
-        MatchIsKeyboard "yes"
-        Option "XkbLayout" "us,ru"
-        Option "XkbOptions" "grp:alt_shift_toggle, grp_led:caps"
-    EndSection
+# /etc/X11/xorg.conf.d/20-keyboard-layout.conf
+#
+Section "InputClass"
+    Identifier "Keyboard Defaults"
+    MatchIsKeyboard "yes"
+    Option "XkbLayout" "us,ru"
+    Option "XkbOptions" "grp:alt_shift_toggle, grp_led:caps"
+EndSection
 
-    # /etc/X11/xorg.conf.d/50-synaptics.conf
-    #
+# /etc/X11/xorg.conf.d/50-synaptics.conf
+#
+Section "InputClass"
+    Identifier "touchpad catchall"
+    Driver "synaptics"
+    MatchIsTouchpad "on"
+    Option "TapButton1" "1"
+    Option "TapButton2" "2"
+    Option "TapButton3" "3"
+    Option "VertEdgeScroll" "on"
+    Option "VertTwoFingerScroll" "on"
+    Option "HorizEdgeScroll" "on"
+    Option "HorizTwoFingerScroll" "on"
+    Option "CircularScrolling" "on"
+    Option "CircScrollTrigger" "2"
+    Option "EmulateTwoFingerMinZ" "40"
+    Option "EmulateTwoFingerMinW" "8"
+    Option "CoastingSpeed" "0"
+    MatchDevicePath "/dev/input/event*"
+EndSection
     Section "InputClass"
-        Identifier "touchpad catchall"
-        Driver "synaptics"
-        MatchIsTouchpad "on"
-        Option "TapButton1" "1"
-        Option "TapButton2" "2"
-        Option "TapButton3" "3"
-        Option "VertEdgeScroll" "on"
-        Option "VertTwoFingerScroll" "on"
-        Option "HorizEdgeScroll" "on"
-        Option "HorizTwoFingerScroll" "on"
-        Option "CircularScrolling" "on"
-        Option "CircScrollTrigger" "2"
-        Option "EmulateTwoFingerMinZ" "40"
-        Option "EmulateTwoFingerMinW" "8"
-        Option "CoastingSpeed" "0"
-        MatchDevicePath "/dev/input/event*"
-    EndSection
-        Section "InputClass"
-        Identifier "touchpad ignore duplicates"
-        MatchIsTouchpad "on"
-        MatchOS "Linux"
-        MatchDevicePath "/dev/input/mouse*"
-        Option "Ignore" "on"
-    EndSection
-        Section "InputClass"
-        Identifier "Default clickpad buttons"
-        MatchDriver "synaptics"
-        Option "SoftButtonAreas" "50% 0 82% 0 0 0 0 0"
-    EndSection
+    Identifier "touchpad ignore duplicates"
+    MatchIsTouchpad "on"
+    MatchOS "Linux"
+    MatchDevicePath "/dev/input/mouse*"
+    Option "Ignore" "on"
+EndSection
+    Section "InputClass"
+    Identifier "Default clickpad buttons"
+    MatchDriver "synaptics"
+    Option "SoftButtonAreas" "50% 0 82% 0 0 0 0 0"
+EndSection
+```
 
 ## Шаг третий: настройка шрифтов
 
@@ -160,8 +175,9 @@ Debian — первый серьёзный дистрибутив автора, 
 
 <u>debian</u>
 
-    :::console
-    $ sudo dpkg-reconfigure fontconfig-config
+```console
+$ sudo dpkg-reconfigure fontconfig-config
+```
 
 ![autohinter](http://1.bp.blogspot.com/-Aa5vY-sY4JY/UYh0hvFh65I/AAAAAAAAEtk/YUk3mNX_SY4/s1600/fontconfig.png)
 
@@ -191,8 +207,9 @@ Debian — первый серьёзный дистрибутив автора, 
 
 Команда добавления в автозапуск, которая вряд ли когда-либо понадобится ввиду излишней интеллектуальности Дебиана:
 
-    :::console
-    # update-rc.d cups defaults # или insserv cups defaults (≥ debian 6)
+```console
+# update-rc.d cups defaults # или insserv cups defaults (≥ debian 6)
+```
 
 ## Прочее
 
