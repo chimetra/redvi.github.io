@@ -3,7 +3,7 @@
 <head>
   <title>unix-lab.org redVi</title>
   <meta charset="utf-8">
-  <meta name="description" content="Блог об операционных системах, open source и программировании">  <meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+<meta name="description" content="Блог об операционных системах, open source и программировании"><meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
   <link href="http://www.unix-lab.org/theme/css/screen.css" rel="stylesheet" type="text/css" />
   <meta name='yandex-verification' content='494a81ecb0e796d6' />
   <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
@@ -17,69 +17,57 @@
     <a href="http://www.unix-lab.org"><div class="logo"></div></a>
     <div class="small">блог об операционных системах, open source и программировании</div>
 <div class="nav">
-        <ul>
+    <ul>
       <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
       <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
       <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
     </ul>
 </div>
-</div>    <div id="main">
+</div><div id="main">
+<h2><a href="http://www.unix-lab.org/articles/nginx.html">Nginx как самостоятельный веб-сервер</a></h2>
+<h5><i class="icon-feather"></i> 06 Ноябрь 2012 </h5>
+Пост в продолжение цикла о веб-серверах. В этот раз будет затронут вопрос установки и настройки сервера nginx не как дополнение к apache, а абсолютно отдельно от последнего. Если вас также интересует настройка apache под различными операционными системами, возможно, вам пригодятся данные ниже ссылки: Apache + Archlinux Apache + Windows Немного предыстории: Nginx (энджин-экс) был разработан нашим соотечественником Игорем Сысоевым, первый релиз увидел свет осенью 2004 года. Nginx - это HTTP-сервер и ...
+<h2><a href="http://www.unix-lab.org/articles/xmonad.html">Знакомьтесь, xmonad</a></h2>
+<h5><i class="icon-feather"></i> 23 Октябрь 2012 </h5>
+I. Вступление Xmonad — фреймовый оконный менеджер, написанный на языке Haskell. Для приведения его к рабочему состоянию знать haskell совсем не обязательно, хотя уж точно не помешает. Об этом менеджере окон можно говорить очень долго, но пост предназначен по большей части для опытных пользователей и не ставит в круг своих задач объяснение простых истин. Возгласы "я не новичок, но всё равно ничего не понял!" без рассмотрения отправляются в /dev/null. Тема достаточно объёмная и содержит несколько новых понятий, лучше объяснить не смогу. II. Начали: 1. Как ...
+<h2><a href="http://www.unix-lab.org/articles/clonezilla.html">Простое создание резервных копий с clonezilla</a></h2>
+<h5><i class="icon-feather"></i> 16 Октябрь 2012 </h5>
+Весьма и весьма удобно создавать образ своей операционной системы, дабы затем восстанавливать не отдельные разделы, а всё — целиком и полностью. В linux традиционно принято проводить эту процедуру при помощи утилиты dd, которая копирует содержимое диска поблочно, ну и восстанавливает так же. То есть если объём вашего нынешнего HDD 500 Гб, то восстановив свои данные на новый диск, вы получите те же 500 Гб, даже если ваш новый диск имеет куда больший размер. Остальное пространство использовано не будет. По этому поводу сегодня вспомним другую полезность в лице cp, а также упростим процедуру создания образа ...
+<h2><a href="http://www.unix-lab.org/articles/javascript.html">Шпаргалка по JavaScript</a></h2>
+<h5><i class="icon-feather"></i> 09 Октябрь 2012 </h5>
+Что представляет из себя сам JavaScript? По сути своей это скриптовый язык программирования. В подавляющем большинстве случаев используется при веб-разработке для придания интерактивности веб-страницам. JavaScript работает на стороне клиента — браузера — а не на сервере. Может способствовать как созданию более привлекательных или же функциональных веб-страниц, так и появлению уязвимостей. А посему будьте аккуратны при написании JS-скриптов или при возможности откажитесь от них вовсе. Как должна выглядеть страница с «прикрученным» JavaScript Как обычная ...
 <h2><a href="http://www.unix-lab.org/articles/systemd.html">Systemd: загрузись по-новому</a></h2>
 <h5><i class="icon-feather"></i> 22 Сентябрь 2012 </h5>
-Предыстория Поскольку всех арчеводов облетела благая весть о переходе на более современную систему инициализации, на которую, собственно, переходить немногие торопились, случилось и автору сего поста опробовать её в действии. Надо заметить, в archlinux имеется интеграция этой весёлой вещи со стандартными конфигурационными файлами системы. Но мы, конечно, не стали пользоваться такими благами цивилизации и решили опробовать "чистый" systemd в действии. После этого благого намерения был установлен ...
-<h2><a href="http://www.unix-lab.org/articles/texreview.html">TeXобзор</a></h2>
-<h5><i class="icon-feather"></i> 04 Май 2013 </h5>
-Что такое TeX? TeX — это система компьютерной вёрстки, разработанная американским профессором информатики Дональдом Кнутом в целях создания компьютерной типографии. Что такое LaTeX? LaTeX — набор макрорасширений (или макропакет) системы компьютерной вёрстки ΤeΧ, который облегчает набор сложных документов. Кому и зачем это нужно? Студентам, аспирантам, преподавателям, учёным мужам и всем, кому по долгу службы или повелению души нужно сделать качественную вёрстку текста. Не говоря уже об особях, чьё ...
-<h2><a href="http://www.unix-lab.org/articles/title-latex.html">Оформление глав TeX/LaTeX</a></h2>
-<h5><i class="icon-feather"></i> 06 Июль 2013 </h5>
-Достаточно любопытная вещь, которой просто невозможно не поделиться: довелось наткнуться на пару способов оформления главы в TeX. Здесь имеется ввиду то, как будет отображаться стиль названия главы, но не её содержимое. Можно использовать указанные ниже методы как в «голом» TeX, так и в LaTeX. Первый способ требует подключение пакета fncychap, второй — titlesec и ручного переопределения внешнего ...
-<h2><a href="http://www.unix-lab.org/articles/top-programms.html">Топ программ под Linux</a></h2>
-<h5><i class="icon-feather"></i> 21 Июнь 2012 </h5>
-Заметка написана в основном для юных пользователей операционной системы GNU Linux, которые при первом знакомстве с каким-либо дистрибутивом либо используют его «умолчательные», не всегда наилучшим способом подобранные программы, либо теряются в множестве названий и не знают, какое ПО выбрать для тех или иных своих нужд. Этот обзор не преследует цели быть истиной в последней инстанции, но отражает повседневные предпочтения автора. Чем пользуюсь, то и вам рекомендую. Графика и чтение ...
-<h2><a href="http://www.unix-lab.org/articles/udev.html">Udisks, udev и все-все-все</a></h2>
-<h5><i class="icon-feather"></i> 18 Май 2013 </h5>
-На кону тема монтирования файловых систем: локальных и сетевых. В процессе рассуждения будут затронуты общие положения, вспомогательные программы (21 век на дворе, не ручками же монтировать), ну и, собственно, настройки оных. Сразу надо оговориться, что пост вряд ли будет интересен с практической точки зрения линуксоидам, сидящим под Ubuntu или Fedora. В user-friendly дистрибутивах это работает «из коробки». Пользователи gentoo или arch linux вполне могут потратить несколько минут на чтение, чтобы настроить то, ...
-<h2><a href="http://www.unix-lab.org/articles/unpack-archive.html">Распаковка архива на сервере</a></h2>
-<h5><i class="icon-feather"></i> 05 Январь 2012 </h5>
-Зачастую перед web-мастером или администратором сайта встаёт задача работы с архивами. В случае, если вам необходимо залить на хостинг большой объём файлов или же целый сайт, временные затраты могут быть достаточно велики. Архивы весят куда меньше, да и распаковка проходит быстро, но не каждый хостер предоставляет инструменты для работы с архивами. Поэтому мы воспользуемся двумя php-файлами, которые и будут этими инструментами. Что понадобится? ftp-доступ, блокнот и zip-архиватор. I. ...
-<h2><a href="http://www.unix-lab.org/articles/utf8.html">Как перекодировать cp1251 в UTF-8</a></h2>
-<h5><i class="icon-feather"></i> 24 Июль 2012 </h5>
-Небольшая заметка, посвящённая борьбе с засильем кодировки cp1251, которая фактически стала стандартом де-факто благодаря операционной системе Windows и её многочисленным адептам. Кодировать будем под ОС Linux. Не волнуйтесь, это не займёт много сил и не подорвёт вашего душевного равновесия. Момент первый. Когда нужно перекодировать текст (.txt, .php, .css или что-то в этом духе) Идём в директорию, где лежат файлы, подлежащие преобразованию, например: <span ...
-<h2><a href="http://www.unix-lab.org/articles/vim.html">Vim как основной текстовый редактор</a></h2>
-<h5><i class="icon-feather"></i> 19 Август 2012 </h5>
-Есть такой замечательный редактор — vim. Насколько он удобен в использовании, настолько и сложен в освоении. Помнится, когда автору впервые пришлось открыть сие чудо работы с текстом, минут семь было затрачено на поиск того, как же это дело теперь закрыть. На самом деле vim содержит большое количество труднозапоминаемых команд, но использовать их все как правило не приходится. Ниже представлен список основных команд, нужных для обычной повседневной работы, а также файл .vimrc, очень ...
-<h2><a href="http://www.unix-lab.org/articles/virtualenv.html">Слово о virtualenv</a></h2>
-<h5><i class="icon-feather"></i> 29 Июнь 2013 </h5>
-Так случилось, что на данный момент автор балуется скриптами на python и стоит на пороге изучения Django. Естественно, в такой интересной ситуации нельзя однажды не наткнуться на сложности в работе с несколькими проектами и призванным решить все проблемы virtualenv. Впрочем, о нём уже только ленивый не писал, и если читателю приходилось сталкиваться с указанным приложением, этот пост вряд ли расскажет ему о чём-то новом. Тем не менее, поговорим о виртуальных окружениях. На кой ...
-<h2><a href="http://www.unix-lab.org/articles/vnstat.html">Считаем трафик с vnstat</a></h2>
-<h5><i class="icon-feather"></i> 20 Ноябрь 2012 </h5>
-В сегодняшнем посте затронем тему учёта трафика сетевых интерфейсов. Как правило, это нужно на предприятиях, но если у вас не безлимитный интернет, то и дома эта заметка может пригодиться. Установка проста и тривиальна, ничего кроме самого vnstat за собой не потянет. # pacman -S vnstat Дальше следует создать базу данных для вашего сетевого интерфейса: # vnstat -u -i ...
+Предыстория Поскольку всех арчеводов облетела благая весть о переходе на более современную систему инициализации, на которую, собственно, переходить немногие торопились, случилось и автору сего поста опробовать её в действии. Надо заметить, в archlinux имеется интеграция этой весёлой вещи со стандартными конфигурационными файлами системы. Но мы, конечно, не стали пользоваться такими благами цивилизации и решили опробовать "чистый" systemd в действии. После этого благого намерения был установлен systemd, перезагружена система и... началось! Интернет, конечно, работать отказался. Любимый ...
+<h2><a href="http://www.unix-lab.org/articles/android-and-bb.html">Сквозное подключение. Android и ББ</a></h2>
+<h5><i class="icon-feather"></i> 15 Сентябрь 2012 </h5>
+ББ — большой брат, то есть компьютер или ноутбук с каким-либо подключением к интернету. Зачем это нужно? Например, ситуация: у вас есть доступ к сети по DSL, wi-fi нет, GPRS слишком дорог. Что делать? Правильно, заняться подключением брата меньшего к брату старшему, дабы спокойно обновлять приложения и ходить в твиттер через android-устройство. Внимание! Для сквозного подлючения необходимо получить права рута для вашего устройства. Один из способов рассмотрим прямо сейчас. Шаг 1. Root-права Для прошивок 4.0.4 и 4.0.3 Закинуть Root SuperSU в ...
 <div class="pagination">
-                    <a href="http://www.unix-lab.org/author/redvi6.html">&larr;Предыдущая</a>
-        страница 7 из 8.
-            <a href="http://www.unix-lab.org/author/redvi8.html">Следующая&rarr;</a>
-    </div></div>
+        <a href="http://www.unix-lab.org/author/redvi6.html">&larr;Предыдущая</a>
+    страница 7 из 13.
+        <a href="http://www.unix-lab.org/author/redvi8.html">Следующая&rarr;</a>
+</div></div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-       <li class="footer"><a href="http://www.unix-lab.org/tag/android.html">Android&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/arch.html">Arch&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/blog.html">Blog&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/debian.html">Debian&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations.html">Decorations&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/django.html">Django&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/editors.html">Editors&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo.html">Gentoo&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/git.html">Git&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript.html">JavaScript&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel.html">Kernel&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/latex.html">LaTeX&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/linux.html">Linux&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/python.html">Python&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/server.html">Server&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/web.html">Web&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/windows.html">Windows&nbsp;&bull;</a></li>
-  </ul><ul class="footer">
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+</ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
     <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>

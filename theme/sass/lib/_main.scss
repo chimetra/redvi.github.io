@@ -120,9 +120,15 @@ th {
     height: 100%;
 }
 
+  pre, code {
+    border-bottom: 1px solid $base1_sol;
+    border-top: 1px solid $base1_sol;
+    @extend .border-radius;
+    font-size: 90%;
+  }
   code {
     display: inline-block;
-    font-size: 100%;
+    border: 1px 0 solid rgba(0, 0, 0, 0.15);
     background-color: transparent;
     color: $base0_sol;
   }
@@ -133,8 +139,6 @@ th {
     overflow: auto;
     background-color: #fdf6e3;
     border: 1px solid rgba(0, 0, 0, 0.15);
-    @extend .border-radius;
-    font-size: 90%;
     code {
       padding: 0;
       border: none;

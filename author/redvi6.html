@@ -3,7 +3,7 @@
 <head>
   <title>unix-lab.org redVi</title>
   <meta charset="utf-8">
-  <meta name="description" content="Блог об операционных системах, open source и программировании">  <meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+<meta name="description" content="Блог об операционных системах, open source и программировании"><meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
   <link href="http://www.unix-lab.org/theme/css/screen.css" rel="stylesheet" type="text/css" />
   <meta name='yandex-verification' content='494a81ecb0e796d6' />
   <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
@@ -17,69 +17,57 @@
     <a href="http://www.unix-lab.org"><div class="logo"></div></a>
     <div class="small">блог об операционных системах, open source и программировании</div>
 <div class="nav">
-        <ul>
+    <ul>
       <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
       <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
       <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
     </ul>
 </div>
-</div>    <div id="main">
-<h2><a href="http://www.unix-lab.org/articles/quotes.html">Квоты или Как наказать нерадивого пользователя</a></h2>
-<h5><i class="icon-feather"></i> 13 Ноябрь 2011 </h5>
-Сегодня редко приходится задумываться об экономии места на HDD. Но что делать, если дисковое пространство одно, а пользователей много и каждый из них занимает столько места, сколько ему нравится? Ограничим их вольготный образ жизни квотами. Для использования данной возможности в ядре должна быть включена поддержка квот. Проверить это можно так: $ gzip -cd /proc/config.gz | grep QUOTA В ответ вы должны получить небольшой список ...
-<h2><a href="http://www.unix-lab.org/articles/samsung-galaxy.html">Опыт использования Samsung Galaxy S II или Знакомство с Android</a></h2>
-<h5><i class="icon-feather"></i> 10 Август 2012 </h5>
-Стандартный обзор гаджета можно найти как на сайте Samsung, так и на просторах интернета. Поскольку смартфон вышел в 2011 году обзоров множество. Мы же рассмотрим с каким успехом эта штуковина сможет работать на практике. В плане: - краткий обзор возможностей и фич - энергосбережение - рекомендуемые автором приложения - подключение к линукс - горячие клавиши. Итак, приступим, ...
-<h2><a href="http://www.unix-lab.org/articles/sass.html">Верстаем макеты с SASS/SCSS</a></h2>
-<h5><i class="icon-feather"></i> 08 Сентябрь 2013 </h5>
-Пожалуй, стоило бы затронуть тему «быстрого написания css-кода, разложенного по полочкам». Именно таким автору данной заметки видится sass — инструмент, позволяющий совершить волшебное преобразование: превратить рутинное написание css-кода в любопытное занятие. Цель данного поста заключается не в том, чтобы объять необъятное и попытаться рассказать обо всём подробно, но в том, чтобы заинтересовать потенциального читателя, дабы в последующем ему захотелось разобраться с представленными здесь ...
+</div><div id="main">
+<h2><a href="http://www.unix-lab.org/articles/dict.html">Пишем консольный словарь на python</a></h2>
+<h5><i class="icon-feather"></i> 18 Декабрь 2012 </h5>
+Пост создан для рассмотрения небольшого примера возможностей языка python. Мы не станем углубляться в сложные темы языка, например, такие как объектно-ориентированное программирование и связанные с ним классы. Да, они являются мощным инструментом для создания сложных приложений, но нам этого пока не требуется. Цель: создать англо-русский, русско-английский словарь с возможностью вносить в него новые, пользовательские значения. Первое, что приходи на ум — словари языка python. Словарь в питоне - неупорядоченная последовательность пар ключ - значение. Что, собственно, и ...
 <h2><a href="http://www.unix-lab.org/articles/screencast.html">Скринкасты в Linux</a></h2>
 <h5><i class="icon-feather"></i> 11 Декабрь 2012 </h5>
-В этом посте затронем тему записи скринкастов под linux. Будет рассмотрено несколько наиболее популярных утилит для захвата видео с монитора компьютера, также обратим внимание на их функционал, для одних детально, для других — поверхностно. Вообще, в linux не так много кандидатов, которые могут устроить нас по всем показателям. Как оказалось, найти адекватную программу для указанных целей достаточно проблематично. Выбраны несколько: старый добрый ffmpeg, небезызвестные XVidCap и recordMyDesktop, а ...
-<h2><a href="http://www.unix-lab.org/articles/site-optimization.html">Со скоростью света или Игра в оптимизаторы</a></h2>
-<h5><i class="icon-feather"></i> 17 Август 2013 </h5>
-На этот раз предлагается поговорить об оптимизации. Это дело серьёзное и требует особого к себе внимания. Несмотря на распространение этих ваших интернетов в каждый дом и в каждую квартиру (автор помнит времена, когда для подключения к глобальной паутине приходилось брать карту СТК за 150 российских рублей: страницы загружались неимоверно медленно, а рубли расходовались неимоверно быстро) не у всех наших граждан имеется быстрый интернет-канал, а некоторые товарищи и вовсе пользуются исключительно ...
-<h2><a href="http://www.unix-lab.org/articles/sort.html">Сортировка строк в файле</a></h2>
-<h5><i class="icon-feather"></i> 27 Май 2013 </h5>
-Ранее мы уже писали различные скрипты для примера использования возможностей языка python, но не сказать, чтобы они были нужны в повседневности и могли претендовать на какое-то практическое применение. Сегодня же будет рассмотрен один очень небольшой и очень нужный (автору) скрипт. На его написание натолкнуло использование gentoo linux поэтому считаю, что он может быть небезынтересен пользователям этой операционной системы и прикрепляю соответствующий тег к посту. В чём суть работы скрипта: он ...
-<h2><a href="http://www.unix-lab.org/articles/spo-problems.html">СПО: проблемы есть. Решения?</a></h2>
-<h5><i class="icon-feather"></i> 01 Июнь 2013 </h5>
-Каждый пользователь персонального ПК знает, что у него установлены те или иные приложения. Собственно, большинство из нас мало или совсем не работает с операционной системой, но активно использует какое-либо программное обеспечение, что-то, что позволяет нам делать свою работу с помощью электронно-вычислительной машины. Теперь разделим это ПО на свободное и проприетарное. Свободное ПО — то, за которое не нужно платить; проприетарное — то, за которое корпорации будь то Microsoft, Adobe или иные берут ...
-<h2><a href="http://www.unix-lab.org/articles/sublime-text.html">Sublime-Text 3. Коротко о главном</a></h2>
-<h5><i class="icon-feather"></i> 10 Август 2013 </h5>
-Автору довелось пользоваться многими текстовыми редакторами и IDE, среди которых были nano, vim, gedit, geany, kate, eclipse... Любой из них имеет как свои преимущества, так и свои недостатки. Речь сегодня пойдёт не о них: о том редакторе, который с первого же дня может завоевать ваше сердце, о Sublime Text. Поскольку о нём уже немало написано, пост будет достаточно коротким: целью ставится познакомить читателя с этим замечательным текстовым редактором и показать пути для его настройки под свои нужды. ...
-<h2><a href="http://www.unix-lab.org/articles/subtle-wm.html">Subtle WM: свобода, ограниченная лишь фантазией</a></h2>
-<h5><i class="icon-feather"></i> 11 Июль 2013 </h5>
-Что такое subtle wm? Subtle — тайловый оконный менеджер с достаточно необычным подходом к расположению плитки окон. Subtle написан на популярном языке ruby, имеет простой конфигурационный файл, который к тому же очень недурно документирован. При правке конфигурации не требует перекомпиляции: достаточно перезагрузить wm и внесённые изменения тут же вступят в силу. Пост предположительно разбит на две части, выделяющие функциональные возможности wm и его внешний вид. Установка упоминается, хотя тут и ...
-<h2><a href="http://www.unix-lab.org/articles/symbols.html">Спецсимволы в HTML</a></h2>
-<h5><i class="icon-feather"></i> 21 Май 2012 </h5>
-Затронем тему отображения спецсимволов. Как быть, если необходимо вставить знак копирайта, амперсанд или даже евро? Здесь могут встретиться две проблемы: либо спецсимвола нет у вас на клавиатуре, либо он читается как код html. Поэтому желательно иметь под рукой небольшую шпаргалку, дабы можно было посмотреть, каким образом прописать тот или иной символ. Имя <td ...
+В этом посте затронем тему записи скринкастов под linux. Будет рассмотрено несколько наиболее популярных утилит для захвата видео с монитора компьютера, также обратим внимание на их функционал, для одних детально, для других — поверхностно. Вообще, в linux не так много кандидатов, которые могут устроить нас по всем показателям. Как оказалось, найти адекватную программу для указанных целей достаточно проблематично. Выбраны несколько: старый добрый ffmpeg, небезызвестные XVidCap и recordMyDesktop, а также подающий надежды новичок — eidete. 1. Начнём с ffmpeg. Что он умеет и ...
+<h2><a href="http://www.unix-lab.org/articles/dwm.html">DWM: тайлинг — наше всё</a></h2>
+<h5><i class="icon-feather"></i> 04 Декабрь 2012 </h5>
+Ну чем можно заняться линуксоиду, у которого в системе всё, решительно всё работает? Конечно же, довести до ума свой оконный менеджер. Или попробовать новый. К примеру, dwm — динамический фреймовый оконный менеджер. Написан на языке C. Настройка производится посредством правки заголовочного файла, для чего необходимо иметь исходники dwm. Если вас не пугает перспектива потратить час-другой на настройку этой штуки под свои нужды, то давайте приступим. I. Где взять? Если ваш дистрибутив — ArchLinux, ставьте вместе с автором сего поста abs — это наилучшее решение, так вы будете ...
+<h2><a href="http://www.unix-lab.org/articles/github.html">GitHub и pastebin: что и зачем?</a></h2>
+<h5><i class="icon-feather"></i> 27 Ноябрь 2012 </h5>
+Сегодня поговорим о сотрудничестве и личной выгоде. В жизни бывает немало ситуаций, когда нужно выложить плоды своих ночных бдений в место, где они уже не смогут потеряться. Например, хранили вы свои наработки на жёстком диске, долго и с интересом записывали нестандартные решения, но однажды - бывает и так - ноутбук ваш упал в бассейн и восстановлению не подлежит, а вместе с ним и все важные данные, и резервной копии нет к тому же. Что бывает гораздо чаще, вам стало нужно делиться своими скриптами, а может, даже проектами с другими людьми. Ясно, что в нашей повседневной жизни люди эти могут быть от вас за ...
+<h2><a href="http://www.unix-lab.org/articles/vnstat.html">Считаем трафик с vnstat</a></h2>
+<h5><i class="icon-feather"></i> 20 Ноябрь 2012 </h5>
+В сегодняшнем посте затронем тему учёта трафика сетевых интерфейсов. Как правило, это нужно на предприятиях, но если у вас не безлимитный интернет, то и дома эта заметка может пригодиться. Установка проста и тривиальна, ничего кроме самого vnstat за собой не потянет. # pacman -S vnstat Дальше следует создать базу данных для вашего сетевого интерфейса: # vnstat -u -i eth0 и запустить демон vnstat (systemctl для тех, кто уже перешёл ...
+<h2><a href="http://www.unix-lab.org/articles/grub2.html">GRUB2: основные настройки</a></h2>
+<h5><i class="icon-feather"></i> 13 Ноябрь 2012 </h5>
+Не так давно в archlinux всё же прекратили поддержку grub-legacy. Теперь выбор варьируется между двумя загрузчиками: Syslinux и Grub2. Как ясно из названия поста, автор отдаёт предпочтение второму варианту. Говорят, syslinux проще, поэтому большинство пользователей может обратить внимание на него. А вот владельцам UEFI BIOS рекомендуют второй граб. I. Установка # pacman -S grub-bios grub2-common # grub-install /dev/sda # grub-mkconfig -o /boot/grub/grub.cfg Теперь заглянем в файл ...
 <div class="pagination">
-                    <a href="http://www.unix-lab.org/author/redvi5.html">&larr;Предыдущая</a>
-        страница 6 из 8.
-            <a href="http://www.unix-lab.org/author/redvi7.html">Следующая&rarr;</a>
-    </div></div>
+        <a href="http://www.unix-lab.org/author/redvi5.html">&larr;Предыдущая</a>
+    страница 6 из 13.
+        <a href="http://www.unix-lab.org/author/redvi7.html">Следующая&rarr;</a>
+</div></div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-       <li class="footer"><a href="http://www.unix-lab.org/tag/android.html">Android&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/arch.html">Arch&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/blog.html">Blog&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/debian.html">Debian&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations.html">Decorations&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/django.html">Django&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/editors.html">Editors&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo.html">Gentoo&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/git.html">Git&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript.html">JavaScript&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel.html">Kernel&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/latex.html">LaTeX&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/linux.html">Linux&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/python.html">Python&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/server.html">Server&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/web.html">Web&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/windows.html">Windows&nbsp;&bull;</a></li>
-  </ul><ul class="footer">
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+</ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
     <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <title>unix-lab.org - Gentoo</title>
+  <meta charset="utf-8">
+<meta name="description" content="Блог об операционных системах, open source и программировании"><meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link href="http://www.unix-lab.org/theme/css/screen.css" rel="stylesheet" type="text/css" />
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
+  <link href="http://www.unix-lab.org/feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="http://www.unix-lab.org"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+    <ul>
+      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+    </ul>
+</div>
+</div><div id="main">
+<h2><a href="http://www.unix-lab.org/articles/sort.html">Сортировка строк в файле</a></h2>
+<h5><i class="icon-feather"></i> 27 Май 2013 </h5>
+Ранее мы уже писали различные скрипты для примера использования возможностей языка python, но не сказать, чтобы они были нужны в повседневности и могли претендовать на какое-то практическое применение. Сегодня же будет рассмотрен один очень небольшой и очень нужный (автору) скрипт. На его написание натолкнуло использование gentoo linux поэтому считаю, что он может быть небезынтересен пользователям этой операционной системы и прикрепляю соответствующий тег к посту. В чём суть работы скрипта: он сортирует в алфавитном порядке записи в /etc/portage/*. При пополнении парка программ такие ...
+<h2><a href="http://www.unix-lab.org/articles/udev.html">Udisks, udev и все-все-все</a></h2>
+<h5><i class="icon-feather"></i> 18 Май 2013 </h5>
+На кону тема монтирования файловых систем: локальных и сетевых. В процессе рассуждения будут затронуты общие положения, вспомогательные программы (21 век на дворе, не ручками же монтировать), ну и, собственно, настройки оных. Сразу надо оговориться, что пост вряд ли будет интересен с практической точки зрения линуксоидам, сидящим под Ubuntu или Fedora. В user-friendly дистрибутивах это работает «из коробки». Пользователи gentoo или arch linux вполне могут потратить несколько минут на чтение, чтобы настроить то, что ещё не настроено или поправить то, что работает не так, как хочется. I. Конфигурация ...
+<h2><a href="http://www.unix-lab.org/articles/gentoo-update.html">Руководство по обновлению Gentoo Linux</a></h2>
+<h5><i class="icon-feather"></i> 16 Май 2013 </h5>
+После установки и первоначальной настройки пользователю gentoo linux, кажется, уже не о чем больше беспокоиться. Разве что о такой важной вещи как поддержание своей операционной системы в актуальном состоянии. Собственно, этот вопрос и будет затронут сегодня. Детально разберём особенности обновления gentoo, немного поговорим о командах и программах, с которыми не мешало бы разобраться каждому гентушнику, ну и постараемся предугадать и осветить возможные вопросы начинающих пользователей. Начнём, пожалуй. В тексте вы можете видеть сноски, выделенные красным цветом и более мелким по сравнению с основным ...
+<h2><a href="http://www.unix-lab.org/articles/kernel-v3.html">Ядерная физика для домохозяек v.3</a></h2>
+<h5><i class="icon-feather"></i> 19 Апрель 2013 </h5>
+Достаточно давно была написана отличная статья, послужившая верой и правдой многим линуксоидам, кто самостоятельно собирал своё ядро. Называлась она «Ядерная физика для домохозяек, версия 2». Ранее, когда деревья были выше, небо голубее, а настольные компьютеры не столь производительны, сборка ядра под своё железо могла внести весомый вклад в увеличение производительности железного друга. Теперь это уже не столь важно и в большинстве случаев даже не нужно, ибо прирост будет незначительным. Да и среднестатистический линуксоид как-то обмельчал, «скуксился» что ли. Тем не менее, ...
+<h2><a href="http://www.unix-lab.org/articles/backup.html">Ещё один способ резервного копирования</a></h2>
+<h5><i class="icon-feather"></i> 12 Апрель 2013 </h5>
+Для проведения резервного копирования файлов в linux есть множество способов и инструментов. Всё зависит от постановки задачи. В нашем распоряжении как консольные утилиты, так и графические. Как создание полного бэкапа, так и инкременального. Как сохранение резервной копии на внешний жёсткий диск, так и передача файлов на сервер. Многое из этого уже описывалось, что-то описываться не будет совсем за неименеем возможности проверить инструкцию на практике. Сегодня же захотелось ещё раз вспомнить о rsync, ранее уже вскользь упоминавшемся. Коротко, в виде шпаргалки для себя. Для начала следует установить ...
+<h2><a href="http://www.unix-lab.org/articles/fbsplash.html">Стартовые красоты с fbsplash</a></h2>
+<h5><i class="icon-feather"></i> 19 Март 2013 </h5>
+Как правило, то, чем мы собираемся сегодня заняться, не приносит никакой пользы, кроме разве что эстетической. Но иногда хочется красоты. В том числе и при стартовой загрузке системы. Все user-friendly дистрибутивы балуют своих пользователей симпатичными графическими заставками и последним это, вроде бы, нравится. Что касается пользователей дистрибутивов типа "сделай сам", изначально заставка при загрузке считается лишней и не ставится по-умолчанию. Но мы можем это легко исправить. В течение десяти-пятнадцати минут. Тем, кто хотел бы настроить fbsplash, посвящается. Начнём. I. Настройки ...
+<div class="pagination">
+    страница 1 из 2.
+        <a href="http://www.unix-lab.org/tag/gentoo/2.html">Следующая&rarr;</a>
+</div></div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+</ul><ul class="footer">
+    <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
+    <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
+    <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>
+    <li class="footer"><a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-42400517-1', 'www.unix-lab.org');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <title>unix-lab.org - Linux</title>
+  <meta charset="utf-8">
+<meta name="description" content="Блог об операционных системах, open source и программировании"><meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link href="http://www.unix-lab.org/theme/css/screen.css" rel="stylesheet" type="text/css" />
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
+  <link href="http://www.unix-lab.org/feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="http://www.unix-lab.org"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+    <ul>
+      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+    </ul>
+</div>
+</div><div id="main">
+<h2><a href="http://www.unix-lab.org/articles/quotes.html">Квоты или Как наказать нерадивого пользователя</a></h2>
+<h5><i class="icon-feather"></i> 13 Ноябрь 2011 </h5>
+Сегодня редко приходится задумываться об экономии места на HDD. Но что делать, если дисковое пространство одно, а пользователей много и каждый из них занимает столько места, сколько ему нравится? Ограничим их вольготный образ жизни квотами. Для использования данной возможности в ядре должна быть включена поддержка квот. Проверить это можно так: $ gzip -cd /proc/config.gz | grep QUOTA В ответ вы должны получить небольшой список параметров конфигурации ядра и среди них: CONFIG_QUOTA=y теперь посмотрим, ...
+<h2><a href="http://www.unix-lab.org/articles/debian-dsl.html">Настройка DSL в Debian/Ubuntu Linux</a></h2>
+<h5><i class="icon-feather"></i> 30 Октябрь 2011 </h5>
+После установки linux первое, что обычно делает счастливый пользователь - настройка интернет-соединения. Но не у всех получается произвести её корректно. Поэтому сегодня рассмотрим простейший способ настройки ADSL под Debian Squeeze. Итак, поехали. I. Используем конфигуратор Введите в терминале: # ifconfig -a Это позволит просмотреть список найденных сетевых интерфейсов Примечание: lo – интерфейс вашего локального хоста, на нём внимание не заостряем. Нас интересует eth0 или же ...
+<h2><a href="http://www.unix-lab.org/articles/arch-settings.html">Arch Linux. Тонкая настройка</a></h2>
+<h5><i class="icon-feather"></i> 19 Октябрь 2011 </h5>
+В продолжение статьи об установке лёгкого, быстрого и простого дистрибутива. В конце поста небольшой видеоролик с установкой LXDE. Не красоты ради, а удобства для. Чтобы вам не приходилось настраивать свой арч, сидя в консоли. В общем и целом настройка arhclinux будет сведена к нескольким несложным действиям как то: Настройка интернет-соединения Установка драйверов на видео + xorg Установка окружения рабочего стола Настройка тачпада <a ...
+<h2><a href="http://www.unix-lab.org/articles/arch-install.html">Arch Linux. Быстрая установка</a></h2>
+<h5><i class="icon-feather"></i> 17 Октябрь 2011  &nbsp; <i class="icon-spin4"></i> 7 Июль 2012 </h5>
+Статья написана по большей части как быстрый старт для тех, кто уже ознакомился с официальной страничкой вики, и устанавливает систему не в первый раз. В случае, если вы никогда ранее не сталкивались с ArchLinux, рекомендуется обратиться к официальной документации по этому вопросу. Арч — стремительно меняющийся дистрибутив, буквально за два-три месяца (лето-осень 2012) процесс установки претерпел кардинальные изменения, от замены любимого bsd-подобного AIF до gentoo-подобной системы установки, от rc.conf и ...
+<h2><a href="http://www.unix-lab.org/articles/install-gentoo.html">Установка Gentoo. По-русски</a></h2>
+<h5><i class="icon-feather"></i> 30 Сентябрь 2011  &nbsp; <i class="icon-spin4"></i> 2 Январь 2013 </h5>
+Сегодня будем развенчивать миф о сложности установки Gentoo. Почему установка "по-русски"? Потому что настраивать станем русскую локаль, раскладку и временную зону. Статья получилась довольно объёмной, для тех, кто не знает, как скоротать долгий вечер). Загрузитесь с СD-диска. Грузимся с параметрами по умолчанию. Настройка интернет-соединения: автор использует модемное соединение, данные передаются автоматически при помощи DHCP. <div ...
+<h2><a href="http://www.unix-lab.org/articles/iptables.html">Firewall в Linux. Настройка iptables</a></h2>
+<h5><i class="icon-feather"></i> 02 Сентябрь 2011 </h5>
+Iptables отвечает преимущественно за фильтрацию пакетов. Настройка Iptables вручную является довольно непростой задачей. Не надейтесь, что разберётесь в этом «снаскока». К счастью, есть много инструментов, которые могут оказать вам помощь в случае, если с iptables вы ещё не разобрались, а обезопасить систему нужно срочно: fwbuilder , firestarter , guarddog, arno firewall - по сути это GUI к iptables. Однозначного ответа что лучше нет. Выбирать вам. Однако, сегодняшняя статья посвящена именно iptables и делится на две части: теория и практика. Самые нетерпеливые могут сразу выполнить практическую часть, хотя ...
+<div class="pagination">
+        <a href="http://www.unix-lab.org/tag/linux/5.html">&larr;Предыдущая</a>
+    страница 6 из 7.
+        <a href="http://www.unix-lab.org/tag/linux/7.html">Следующая&rarr;</a>
+</div></div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+</ul><ul class="footer">
+    <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
+    <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
+    <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>
+    <li class="footer"><a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-42400517-1', 'www.unix-lab.org');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <title>блог об операционных системах, open source и программировании</title>
+  <meta charset="utf-8">
+<meta name="description" content="Блог об операционных системах, open source и программировании"><meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link href="http://www.unix-lab.org/theme/css/screen.css" rel="stylesheet" type="text/css" />
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
+  <link href="http://www.unix-lab.org/feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="http://www.unix-lab.org"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+    <ul>
+      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+    </ul>
+</div>
+</div><div id="main">
+<h2><a href="http://www.unix-lab.org/articles/openbox.html">Поваренная книга openbox</a></h2>
+<h5><i class="icon-feather"></i> 02 Август 2012 </h5>
+В мире open source имеется великое множество различных оконных менеджеров. Как растворяющийся в роскошном одеянии KDE, так и более скромные и лёгкие Gnome, XFCE. Но сегодня мы будем учиться готовить нечто ещё более легковесное. Тем, кто неравнодушен к openbox посвящается. Задача: привести openbox к подобному виду: Полный боевой комплект: $ sudo pacman -S openbox ...
+<h2><a href="http://www.unix-lab.org/articles/utf8.html">Как перекодировать cp1251 в UTF-8</a></h2>
+<h5><i class="icon-feather"></i> 24 Июль 2012 </h5>
+Небольшая заметка, посвящённая борьбе с засильем кодировки cp1251, которая фактически стала стандартом де-факто благодаря операционной системе Windows и её многочисленным адептам. Кодировать будем под ОС Linux. Не волнуйтесь, это не займёт много сил и не подорвёт вашего душевного равновесия. Момент первый. Когда нужно перекодировать текст (.txt, .php, .css или что-то в этом духе) Идём в директорию, где лежат файлы, подлежащие преобразованию, например: $ cd ~/Documents После чего даём ...
+<h2><a href="http://www.unix-lab.org/articles/kde.html">Оптимизация KDE</a></h2>
+<h5><i class="icon-feather"></i> 21 Июль 2012 </h5>
+Кто не сталкивался с проблемой излишнего потребления ресурсов любимой многими графической оболочкой KDE? Думаю, все. Даже при минимальной установке "кеды" несут с собой много никому не нужных обязательных пакетов. Для сравнения на системе автора gnome нагружает процессор на 1-3%, свежеустановленный KDE - 18-20% . Про потребление оперативной памяти и вспоминать не будем. Просто исправим ситуацию. Откройте любимым текстовым редактором файл: ~/.kde4/share/config/nepomukserverrc Пропишите или исправьте строки: [Basic ...
+<h2><a href="http://www.unix-lab.org/articles/top-programms.html">Топ программ под Linux</a></h2>
+<h5><i class="icon-feather"></i> 21 Июнь 2012 </h5>
+Заметка написана в основном для юных пользователей операционной системы GNU Linux, которые при первом знакомстве с каким-либо дистрибутивом либо используют его «умолчательные», не всегда наилучшим способом подобранные программы, либо теряются в множестве названий и не знают, какое ПО выбрать для тех или иных своих нужд. Этот обзор не преследует цели быть истиной в последней инстанции, но отражает повседневные предпочтения автора. Чем пользуюсь, то и вам рекомендую. Графика и чтение книг Gimp Единственный в своём роде. Классический представитель ...
+<h2><a href="http://www.unix-lab.org/articles/phpmyadmin.html">Установка PHPMyAdmin</a></h2>
+<h5><i class="icon-feather"></i> 16 Июнь 2012 </h5>
+Что ж, в предыдущем посте мы благополучно установили веб-сервер Apache, php, MySQL... Но с базами данных намного удобнее работать при помощи PHPMyAdmin. Давайте его установим. Идём по адресу http://www.phpmyadmin.net/home_page/downloads.php, скачиваем архив. Желательно выбирать мультиязычный, где уже имеется русский. На родном языке всегда лучше. Предварительно создаём папку pma и распаковываем архив по адресу, где живёт наш веб-сервер. В моём случае это C:\Program Files ...
+<h2><a href="http://www.unix-lab.org/articles/mysql-install.html">Установка СУБД MySQL. Вручную</a></h2>
+<h5><i class="icon-feather"></i> 03 Июнь 2012 </h5>
+Как было обещано ранее в статье о настройке веб-сервера, выкладываю пост о настройке MySQL вручную для тех, у кого по каким-то причинам корректно не сработал инсталлятор. Как всегда начнём с того, что достанм необходимую программу. На этот раз будем качать архив вместо установщика: http://www.mysql.com/downloads/mysql/ Займёмся созданием необходимых папок. Как правило по пути C:\Program Files\MySQL\MySQL Server 5.5. То есть папку MySQL и вложенную MySQL Server 5.5. Распаковываем в нее содержимое ...
+<div class="pagination">
+        <a href="http://www.unix-lab.org/index8.html">&larr;Предыдущая</a>
+    страница 9 из 13.
+        <a href="http://www.unix-lab.org/index10.html">Следующая&rarr;</a>
+</div></div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+</ul><ul class="footer">
+    <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
+    <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
+    <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>
+    <li class="footer"><a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-42400517-1', 'www.unix-lab.org');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

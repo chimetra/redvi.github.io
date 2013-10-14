@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <title>unix-lab.org - Linux</title>
+  <meta charset="utf-8">
+<meta name="description" content="Блог об операционных системах, open source и программировании"><meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link href="http://www.unix-lab.org/theme/css/screen.css" rel="stylesheet" type="text/css" />
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
+  <link href="http://www.unix-lab.org/feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="http://www.unix-lab.org"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+    <ul>
+      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+    </ul>
+</div>
+</div><div id="main">
+<h2><a href="http://www.unix-lab.org/articles/screencast.html">Скринкасты в Linux</a></h2>
+<h5><i class="icon-feather"></i> 11 Декабрь 2012 </h5>
+В этом посте затронем тему записи скринкастов под linux. Будет рассмотрено несколько наиболее популярных утилит для захвата видео с монитора компьютера, также обратим внимание на их функционал, для одних детально, для других — поверхностно. Вообще, в linux не так много кандидатов, которые могут устроить нас по всем показателям. Как оказалось, найти адекватную программу для указанных целей достаточно проблематично. Выбраны несколько: старый добрый ffmpeg, небезызвестные XVidCap и recordMyDesktop, а также подающий надежды новичок — eidete. 1. Начнём с ffmpeg. Что он умеет и ...
+<h2><a href="http://www.unix-lab.org/articles/dwm.html">DWM: тайлинг — наше всё</a></h2>
+<h5><i class="icon-feather"></i> 04 Декабрь 2012 </h5>
+Ну чем можно заняться линуксоиду, у которого в системе всё, решительно всё работает? Конечно же, довести до ума свой оконный менеджер. Или попробовать новый. К примеру, dwm — динамический фреймовый оконный менеджер. Написан на языке C. Настройка производится посредством правки заголовочного файла, для чего необходимо иметь исходники dwm. Если вас не пугает перспектива потратить час-другой на настройку этой штуки под свои нужды, то давайте приступим. I. Где взять? Если ваш дистрибутив — ArchLinux, ставьте вместе с автором сего поста abs — это наилучшее решение, так вы будете ...
+<h2><a href="http://www.unix-lab.org/articles/vnstat.html">Считаем трафик с vnstat</a></h2>
+<h5><i class="icon-feather"></i> 20 Ноябрь 2012 </h5>
+В сегодняшнем посте затронем тему учёта трафика сетевых интерфейсов. Как правило, это нужно на предприятиях, но если у вас не безлимитный интернет, то и дома эта заметка может пригодиться. Установка проста и тривиальна, ничего кроме самого vnstat за собой не потянет. # pacman -S vnstat Дальше следует создать базу данных для вашего сетевого интерфейса: # vnstat -u -i eth0 и запустить демон vnstat (systemctl для тех, кто уже перешёл ...
+<h2><a href="http://www.unix-lab.org/articles/grub2.html">GRUB2: основные настройки</a></h2>
+<h5><i class="icon-feather"></i> 13 Ноябрь 2012 </h5>
+Не так давно в archlinux всё же прекратили поддержку grub-legacy. Теперь выбор варьируется между двумя загрузчиками: Syslinux и Grub2. Как ясно из названия поста, автор отдаёт предпочтение второму варианту. Говорят, syslinux проще, поэтому большинство пользователей может обратить внимание на него. А вот владельцам UEFI BIOS рекомендуют второй граб. I. Установка # pacman -S grub-bios grub2-common # grub-install /dev/sda # grub-mkconfig -o /boot/grub/grub.cfg Теперь заглянем в файл ...
+<h2><a href="http://www.unix-lab.org/articles/nginx.html">Nginx как самостоятельный веб-сервер</a></h2>
+<h5><i class="icon-feather"></i> 06 Ноябрь 2012 </h5>
+Пост в продолжение цикла о веб-серверах. В этот раз будет затронут вопрос установки и настройки сервера nginx не как дополнение к apache, а абсолютно отдельно от последнего. Если вас также интересует настройка apache под различными операционными системами, возможно, вам пригодятся данные ниже ссылки: Apache + Archlinux Apache + Windows Немного предыстории: Nginx (энджин-экс) был разработан нашим соотечественником Игорем Сысоевым, первый релиз увидел свет осенью 2004 года. Nginx - это HTTP-сервер и ...
+<h2><a href="http://www.unix-lab.org/articles/xmonad.html">Знакомьтесь, xmonad</a></h2>
+<h5><i class="icon-feather"></i> 23 Октябрь 2012 </h5>
+I. Вступление Xmonad — фреймовый оконный менеджер, написанный на языке Haskell. Для приведения его к рабочему состоянию знать haskell совсем не обязательно, хотя уж точно не помешает. Об этом менеджере окон можно говорить очень долго, но пост предназначен по большей части для опытных пользователей и не ставит в круг своих задач объяснение простых истин. Возгласы "я не новичок, но всё равно ничего не понял!" без рассмотрения отправляются в /dev/null. Тема достаточно объёмная и содержит несколько новых понятий, лучше объяснить не смогу. II. Начали: 1. Как ...
+<div class="pagination">
+        <a href="http://www.unix-lab.org/tag/linux/2.html">&larr;Предыдущая</a>
+    страница 3 из 7.
+        <a href="http://www.unix-lab.org/tag/linux/4.html">Следующая&rarr;</a>
+</div></div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+</ul><ul class="footer">
+    <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
+    <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
+    <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>
+    <li class="footer"><a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-42400517-1', 'www.unix-lab.org');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

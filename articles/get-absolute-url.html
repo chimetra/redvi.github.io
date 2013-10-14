@@ -3,7 +3,7 @@
 <head>
   <title>Абсолютные пути URL в Django</title>
   <meta charset="utf-8">
-  <meta name="description" content="Как получить полный путь URL-страницы в Django">  <meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+<meta name="description" content="Как получить полный путь URL-страницы в Django"><meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
   <link href="http://www.unix-lab.org/theme/css/screen.css" rel="stylesheet" type="text/css" />
   <meta name='yandex-verification' content='494a81ecb0e796d6' />
   <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
@@ -17,13 +17,13 @@
     <a href="http://www.unix-lab.org"><div class="logo"></div></a>
     <div class="small">блог об операционных системах, open source и программировании</div>
 <div class="nav">
-        <ul>
+    <ul>
       <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
       <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
       <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
     </ul>
 </div>
-</div>    <div id="main">
+</div><div id="main">
 <h2><a href="http://www.unix-lab.org/articles/get-absolute-url.html">Абсолютные пути URL в Django</a></h2>
 <h5><i class="icon-feather"></i> 03 Октябрь 2013 </h5>
 <p>В одной из <a href="http://www.unix-lab.org/articles/django-first-steps.html">предыдущих заметок</a>, нами был написан шаблон для вывода списка публикаций на главной странице. Ссылка на полный текст публикации имеет вид <code>{% url 'articles:detail' post.id %}</code>, что позволяет получить определённую страницу по её идентификатору (<code>id</code>). За отображение страницы ответственность несёт представление <code>articles</code> из пространства имён (<code>namespace</code>) <code>detail</code>. В данном ниже примере для разнообразия используем другую модель, а также для упрощения понимания материала откажемся от использования пространств имён: одно приложение &mdash; одна модель &mdash; один urls.py.</p>
@@ -160,31 +160,31 @@
 <p><code>Model.get_previous_by_pub_date</code> отобразит предыдущую публикацию.</p>
 <p>Применив к ним метод <code>get_absolute_url</code>, мы получим искомое решение.</p>
 <h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi.html">redVi</a>,
-<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/django.html">Django</a> /
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/django/">Django</a> /
 </h5>
 <p align="center"><a href="#">наверх</a></p>
 </div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-       <li class="footer"><a href="http://www.unix-lab.org/tag/android.html">Android&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/arch.html">Arch&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/blog.html">Blog&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/debian.html">Debian&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/decorations.html">Decorations&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/django.html">Django&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/editors.html">Editors&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo.html">Gentoo&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/git.html">Git&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/javascript.html">JavaScript&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/kernel.html">Kernel&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/latex.html">LaTeX&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/linux.html">Linux&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/python.html">Python&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/server.html">Server&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/web.html">Web&nbsp;&bull;</a></li>
-       <li class="footer"><a href="http://www.unix-lab.org/tag/windows.html">Windows&nbsp;&bull;</a></li>
-  </ul><ul class="footer">
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+</ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
     <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>
