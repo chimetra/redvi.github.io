@@ -146,5 +146,6 @@ CREATE TABLE "books_author" (
 "email" varchar(75) NOT NULL
   )
 ;
+```
 
 Готово!

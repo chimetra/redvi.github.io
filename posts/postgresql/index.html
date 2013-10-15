@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <title>Настройка PostgreSQL для Django</title>
+  <title>Настройка PostgreSQL для Django | UNIX-LAB.ORG</title>
   <meta charset="utf-8">
 <meta name="description" content="Об установке python и django мы уже говорили. Но зачастую для полноценной работы в django нужно взаимодействие с той или иной СУБД."><meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
   <link href="http://www.unix-lab.org/theme/css/screen.css" rel="stylesheet" type="text/css" />
   <meta name='yandex-verification' content='494a81ecb0e796d6' />
   <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
-  <link href="http://www.unix-lab.org/" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
-  <link href="http://www.unix-lab.org/feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
+  <link href="http://www.unix-lab.org/" type="application/atom+xml" rel="alternate" title="UNIX-LAB.ORG ATOM Feed" />
+  <link href="http://www.unix-lab.org/feeds/rss.xml" type="application/rss+xml" rel="alternate" title="UNIX-LAB.ORG RSS Feed" />
 </head>
 <body>
 <div id="outer-wrapper">
@@ -139,16 +139,18 @@
 
 
 <p>Инициализируем таблицы БД:</p>
-<p>```console
-$ python manage.py sqlall books
-BEGIN;
-CREATE TABLE "books_author" (
-"id" serial NOT NULL PRIMARY KEY,
-"first_name" varchar(30) NOT NULL,
-"last_name" varchar(40) NOT NULL,
-"email" varchar(75) NOT NULL
-  )
-;</p>
+<div class="highlight"><pre><span class="gp">$</span> python manage.py sqlall books
+<span class="go">BEGIN;</span>
+<span class="go">CREATE TABLE &quot;books_author&quot; (</span>
+<span class="go">&quot;id&quot; serial NOT NULL PRIMARY KEY,</span>
+<span class="go">&quot;first_name&quot; varchar(30) NOT NULL,</span>
+<span class="go">&quot;last_name&quot; varchar(40) NOT NULL,</span>
+<span class="go">&quot;email&quot; varchar(75) NOT NULL</span>
+<span class="go">  )</span>
+<span class="go">;</span>
+</pre></div>
+
+
 <p>Готово!</p>
 
 <br />
@@ -169,12 +171,13 @@ CREATE TABLE "books_author" (
      <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
      <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
      <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/ruby/">Ruby </a></li>
      <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
      <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
      <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
 </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
-    <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
+    <li class="footer"><a href="http://www.unix-lab.org">UNIX-LAB.ORG </a>&nbsp;::</li>
     <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
 </ul>
 </div><script>
