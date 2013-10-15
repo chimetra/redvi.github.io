@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <title>Arch Linux. Быстрая установка</title>
+  <meta charset="utf-8">
+<meta name="description" content="Статья написана по большей части как быстрый старт для тех, кто уже ознакомился с официальной страничкой вики, и устанавливает систему не в первый раз."><meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link href="http://www.unix-lab.org/theme/css/screen.css" rel="stylesheet" type="text/css" />
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
+  <link href="http://www.unix-lab.org/feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="http://www.unix-lab.org"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+    <ul>
+      <li><a href="http://www.unix-lab.org/archives/">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about/">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors/">Автор</a></li>
+    </ul>
+</div>
+</div><div id="main">
+<h2><a href="http://www.unix-lab.org/posts/arch-install/">Arch Linux. Быстрая установка</a></h2>
+<h5><i class="icon-feather"></i> 17 Октябрь 2011
+ &nbsp; <i class="icon-spin4"></i> 7 Июль 2012 <i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/arch/">Arch</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
+</h5>
+<p>Статья написана по большей части как быстрый старт для тех, кто уже ознакомился с официальной страничкой вики, и устанавливает систему не в первый раз. В случае, если вы никогда ранее не сталкивались с ArchLinux, рекомендуется обратиться <a href="https://wiki.archlinux.org/index.php/Installation_Guide">к официальной документации</a> по этому вопросу. Арч &mdash; стремительно меняющийся дистрибутив, буквально за два-три месяца (лето-осень 2012) процесс установки претерпел кардинальные изменения, от замены любимого bsd-подобного AIF до gentoo-подобной системы установки, от <code>rc.conf</code> и <code>rc.local</code> до <code>netcfg</code> и <code>systemd</code>. Тем не менее: внесены поправки от июля 2012 года, добавлена небольшая видеоинструкция.</p>
+<p><code>1.</code> Скачиваем <a href="http://mirror.yandex.ru/archlinux/iso/">нужный вам образ</a> дистрибутива, прожигаем его на болванку или же делаем загрузочную флешку (например, при помощи <code>unetbootin</code> для windows или стандартного <code>dd</code> для линукс:</p>
+<div class="highlight"><pre><span class="gp">#</span> dd <span class="k">if</span><span class="o">=</span>имя_образа.iso <span class="nv">of</span><span class="o">=</span>куда_записать
+</pre></div>
+
+
+<p>Загружаемся с диска/флешки. Если с загрузкой непорядок, например, чёрный экран при загрузке, пробуем грузиться снова и при появлении главного меню жмём TAB, дописываем параметр nomodeset или же указываем с каким разрешением экрана стартовать системе (для разрешения 1366х768 впишите <code>vga=0x362</code>).</p>
+<p><code>2.</code> Выбор раскладки, отличной от us</p>
+<div class="highlight"><pre><span class="gp">#</span> loadkeys ru
+</pre></div>
+
+
+<p><code>3.</code> Конфигурирование сетевого интерфейса (подробно <a href="https://wiki.archlinux.org/index.php/Configuring_network">в вики</a>):</p>
+<p>Для DSL-соединения:</p>
+<div class="highlight"><pre><span class="gp">#</span> pppoe-setup
+</pre></div>
+
+
+<p>Выполняем настройку по инструкции и стартуем соединение</p>
+<div class="highlight"><pre><span class="gp">#</span> pppoe-start
+</pre></div>
+
+
+<p>Для wi-fi-соединения:</p>
+<p><code>-</code> поднимем сеть</p>
+<div class="highlight"><pre><span class="gp">#</span> ip link <span class="nb">set </span>wlan0 up
+</pre></div>
+
+
+<p><code>-</code> просканируем доступные точки доступа</p>
+<div class="highlight"><pre><span class="gp">#</span> iwlist wlan0 scan
+</pre></div>
+
+
+<p><code>-</code> получим DNS и IP-адреса через DHCP</p>
+<div class="highlight"><pre><span class="gp">#</span> iwconfig wlan0
+<span class="gp">#</span> dhcpcd wlan0
+</pre></div>
+
+
+<p><code>-</code> есть ли подключение к интернету:</p>
+<div class="highlight"><pre><span class="gp">#</span> ping ya.ru
+</pre></div>
+
+
+<p>Если пинги идут, значит всё отлично и можно двигаться дальше.</p>
+<p><code>4.</code> Разметка жёсткого диска</p>
+<p><code>-</code> просмотр всех имеющихся дисков</p>
+<div class="highlight"><pre><span class="gp">#</span> fdisk -l
+</pre></div>
+
+
+<p><code>-</code> теперь нужно создать разделы, отформатировать их в нужную вам файловую систему и назначить точки монтирования для будущих разделов. То есть с 2012 года archlinux ровным счётом ничем не уступает в установке <a href="http://www.unix-lab.org/posts/install-gentoo/">великой и ужасной Gentoo</a>, так что можете смело читать о нижеописанных действиях немного более подробно в приведённой по ссылке заметке. Впрочем, нелишним будет повториться:</p>
+<p><code>-</code> Создание разделов диска:
+Для этого воспользуемся <code>cfdisk</code></p>
+<div class="highlight"><pre><span class="gp">#</span> cfdisk /dev/sda - где sda ваш-диск
+</pre></div>
+
+
+<ul>
+<li>news - создание нового раздела</li>
+<li>type - выбор типа файловой системы (83 - Linux, 82 - swap)</li>
+<li>bootable - отметить как загрузочный (укажите для раздела,в который хотите смонтировать /boot!)</li>
+<li>write - записать изменения</li>
+<li>delete - удалить</li>
+<li>quit - выйти</li>
+</ul>
+<p><code>-</code> Назначение файловой системы:</p>
+<div class="highlight"><pre><span class="gp">#</span> mkfs.ext4 /dev/sda1 - создание ext4 на разделе /dev/sda1 под /root
+<span class="gp">#</span> mkfs.ext4  /dev/sda3 - создание ext4 на разделе /dev/sda3 под /home
+<span class="gp">#</span> mkswap /dev/sda2 - создание раздела подкачки на /dev/sda2
+<span class="gp">#</span> swapon /dev/sda2 - и его активация
+</pre></div>
+
+
+<p><code>-</code> Назначение точек монтирования:</p>
+<div class="highlight"><pre><span class="gp">#</span> mount /dev/sda1 /mnt - монтируем корень
+<span class="gp">#</span> mkdir /mnt/home <span class="o">&amp;&amp;</span> mount /dev/sda3 /mnt/home - монтирование домашней директории пользователя
+</pre></div>
+
+
+<p><code>5.</code> Установка базовой системы:</p>
+<div class="highlight"><pre><span class="gp">#</span> pacstrap /mnt base base-devel
+</pre></div>
+
+
+<p><b>Примечанние:</b> <code>base-devel</code> нужен в случае, если вы в будущем собираетесь использовать AUR</p>
+<p><code>6.</code> Установка загрузчика (в примере это GRUB2):</p>
+<p>Для обычного BIOS:</p>
+<div class="highlight"><pre><span class="gp">#</span> pacstrap /mnt grub-bios
+</pre></div>
+
+
+<p>Для UEFI:</p>
+<div class="highlight"><pre><span class="gp">#</span> pacstrap /mnt grub-efi-x86_64
+</pre></div>
+
+
+<p>И разного рода необходимые мелочи:</p>
+<p><code>-</code> Генерация файла <code>fstab</code>:</p>
+<div class="highlight"><pre><span class="gp">#</span> genfstab -p /mnt &gt;&gt; /mnt/etc/fstab
+</pre></div>
+
+
+<p><code>-</code> Чрутимся в новую систему:</p>
+<div class="highlight"><pre><span class="gp">#</span> arch-chroot /mnt
+</pre></div>
+
+
+<p><code>7.</code> Конфигурация системы:</p>
+<p>В <code>/etc/hostname</code> &mdash; пишем имя вашего хоста (машины):</p>
+<div class="highlight"><pre><span class="cp"># /etc/hostname</span>
+<span class="n">myhost</span>
+</pre></div>
+
+
+<p>Вносим соответствующие правки в <code>/etc/hosts</code>:</p>
+<div class="highlight"><pre><span class="mf">127.0.0.1</span>   <span class="n">myhost</span> <span class="n">localhost</span> <span class="o">::</span><span class="mi">1</span>   <span class="n">myhost</span> <span class="n">localhost</span>
+</pre></div>
+
+
+<p>Или так:</p>
+<div class="highlight"><pre><span class="gp">#</span> hostnamectl <span class="nb">set</span>-hostname myhost
+</pre></div>
+
+
+<p>Настройка раскладки клавиатуры и шрифтов в <code>/etc/vconsole.conf</code>:</p>
+<div class="highlight"><pre><span class="n">KEYMAP</span><span class="o">=</span><span class="n">ru</span>
+<span class="n">FONT</span><span class="o">=</span><span class="n">cyr</span><span class="o">-</span><span class="n">sun16</span>
+<span class="n">FONT_MAP</span><span class="o">=</span>
+</pre></div>
+
+
+<p>Временная зона:
+В <code>/etc/timezone</code>:</p>
+<div class="highlight"><pre><span class="n">Europe</span><span class="o">/</span><span class="n">Moskow</span>
+</pre></div>
+
+
+<p>Выполняем:</p>
+<div class="highlight"><pre><span class="gp">#</span> ln -s /usr/share/zoneinfo/Europe/Moskow /etc/localtime
+</pre></div>
+
+
+<p>Для корректной установки системного времени необходимо сгенерировать файл /<code>etc/adjtime</code>:</p>
+<div class="highlight"><pre><span class="gp">#</span> hwclock --systohc --utc
+</pre></div>
+
+
+<p>Русский язык:</p>
+<div class="highlight"><pre><span class="gp">#</span> nano /etc/locale.gen:
+<span class="go">en_US.UTF-8 UTF-8 ru_RU.UTF-8 UTF-8</span>
+</pre></div>
+
+
+<p>Создаём файл <code>/etc/locale.conf</code>:</p>
+<div class="highlight"><pre><span class="n">LANG</span><span class="o">=</span><span class="s">&quot;ru_RU.UTF-8&quot;</span>
+</pre></div>
+
+
+<p>Или так:</p>
+<div class="highlight"><pre><span class="gp">#</span> localectl <span class="nb">set</span>-locale <span class="nv">LANG</span><span class="o">=</span><span class="s2">&quot;ru_RU.UTF-8&quot;</span>
+</pre></div>
+
+
+<p>После чего:</p>
+<div class="highlight"><pre><span class="gp">#</span> locale-gen
+<span class="go">Generating locales...</span>
+<span class="go">en_US.UTF-8... done</span>
+<span class="go">ru_RU.UTF-8... done</span>
+<span class="go">Generation complete.</span>
+</pre></div>
+
+
+<p>Настройте <code>/etc/mkinitcpio.conf</code>,  если это нужно,  и создайте ramdisk:</p>
+<div class="highlight"><pre><span class="gp">#</span> mkinitcpio -p linux
+</pre></div>
+
+
+<p><code>8.</code> Установка загрузчика GRUB2</p>
+<div class="highlight"><pre><span class="gp">#</span> grub-install /dev/sda
+<span class="gp">#</span> grub-mkconfig -o /boot/grub/grub.cfg
+</pre></div>
+
+
+<p><code>9.</code> Зададим пароль суперпользователя, размонтируем разделы и выйдем из системы:</p>
+<div class="highlight"><pre><span class="gp">#</span> passwd
+<span class="gp">#</span> umount /mnt/home
+<span class="gp">#</span> umount /mnt
+</pre></div>
+
+
+<p><code>10.</code> После установки. Из уже новой системы:</p>
+<p>Понадобится разобраться с подписями ключей, дабы нормально устанавливать программы:</p>
+<div class="highlight"><pre><span class="gp">$</span> pacman-key --init
+<span class="gp">$</span> pacman-key --populate archlinux
+</pre></div>
+
+
+<p>Ну и настроить интернет заново</p>
+<p>И то единственное, что осталось от старого поста об установке (насколько проще было, а?)</p>
+<p>Добавление нового пользователя</p>
+<div class="highlight"><pre><span class="gp">#</span> adduser
+</pre></div>
+
+
+<p>Теперь введите его имя пароль и прочее, не забыв прописать в дополнительных группах принадлежность к <code>wheel</code> &mdash; группе администраторов. Это чтобы мы могли воспользоваться преимуществами <code>sudo</code>.</p>
+<p><b>Примечание:</b> в новых установочных образах команда <code>adduser</code> была удалена. Используйте <code>useradd</code>:</p>
+<div class="highlight"><pre><span class="go">useradd [параметры] LOGIN</span>
+<span class="gp">#</span> useradd -g users -G wheel,video -m newbie
+</pre></div>
+
+
+<p>создаст пользователя с именем <code>newbie</code>, с начальной группой <code>users</code>, с дополнительными группами <code>wheel</code> и <code>video</code>, ключ <code>-m</code> позволит создать домашний каталог для нового пользователя. Подробнее <code>man useradd</code>.</p>
+<div class="highlight"><pre><span class="gp">#</span> visudo
+</pre></div>
+
+
+<p>после ввода этой команды найдите в файле строки</p>
+<p><code>root ALL=(ALL)ALL</code> и допишите внизу имя вновь созданного пользователя-админа</p>
+<p><code>username ALL=(ALL)ALL</code> выйдите из файла, нажав <code>Esc</code> и затем введя <code>:wq</code></p>
+<p>Поднимаем сеть (для DSL-соединений) /неактуально, если вы используете <code>systemd</code></p>
+<div class="highlight"><pre><span class="gp">$</span> sudo pppoe-setup
+</pre></div>
+
+
+<p>теперь вам предстоит ответить на несколько несложных вопросов, перезапустить сеть или же сделать перезагрузку. И можно бороздить просторы глобальной паутины.</p>
+<p>Как только подключились к сети, сразу же синхронизируем репозитории:</p>
+<div class="highlight"><pre><span class="gp">#</span> pacman -Syy
+</pre></div>
+
+
+<p>и обновляем систему:</p>
+<div class="highlight"><pre><span class="gp">#</span> pacman -Syu
+</pre></div>
+
+
+<p>Или используем <a href="http://www.unix-lab.org/posts/debian-dsl/">способ №3 из поста о debian</a>.</p>
+<p><b>Примечание:</b></p>
+<div class="highlight"><pre><span class="gp">#</span> pacman -Rnsc gnome - удаление всех пакетов группы gnome
+<span class="gp">#</span> pacman -Qdtc - удаление пакетов, от которых не зависит ни одна программа
+<span class="gp">#</span> pacman -Scc - чистка кеша
+</pre></div>
+
+
+<p>Как? Вы наивно полагали, что на этом работа наша кончается? Э-э, батенька, впереди нас ждёт увлекательное путешествие, самое главное: <a href="http://www.unix-lab.org/posts/arch-settings/">настройка arch.</a></p>
+<div class="video"><iframe width="400" height="300" src="http://www.youtube.com/embed/D2N__iEWveo?rel=0" frameborder="0" allowfullscreen></iframe></div>
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
+</ul><ul class="footer">
+    <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
+    <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
+    <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-42400517-1', 'www.unix-lab.org');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

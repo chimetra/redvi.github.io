@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <title>Пользователи и группы в Archlinux</title>
+  <meta charset="utf-8">
+<meta name="description" content="Наиболее удобным инструментом для создания нового пользователя служит команда adduser."><meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link href="http://www.unix-lab.org/theme/css/screen.css" rel="stylesheet" type="text/css" />
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
+  <link href="http://www.unix-lab.org/feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="http://www.unix-lab.org"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+    <ul>
+      <li><a href="http://www.unix-lab.org/archives/">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about/">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors/">Автор</a></li>
+    </ul>
+</div>
+</div><div id="main">
+<h2><a href="http://www.unix-lab.org/posts/arch-users/">Пользователи и группы в Archlinux</a></h2>
+<h5><i class="icon-feather"></i> 27 Ноябрь 2011
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/arch/">Arch</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
+</h5>
+<p>Наиболее удобным инструментом для создания нового пользователя служит команда <code>adduser</code>.</p>
+<p>Вам будут заданы вопросы касательно имени, домашней директории, пароля, принадлежности к тем или иным пользовательским группам. После ввода основной информации вы сможете добавить дополнительную как то: полное имя, рабочий и домашний телефоны и прочее.</p>
+<p>Список доступных в archlinux групп можно посмотреть в файле <code>/etc/group</code>. Если вы уже создали пользователя и назначили ему список групп, его имя также будет записано в этот файл напротив тех групп, которым он принадлежит.</p>
+<ul>
+<li>Примерный список групп, куда можно внести пользователя:<ul>
+<li>lp - доступ к печати</li>
+<li>wheel - административные привилегии</li>
+<li>ftp - доступ к указанной службе</li>
+<li>mail - почта</li>
+<li>games - доступ к играм</li>
+<li>network - управление сетью</li>
+<li>video - доступ к видео (графика, фильмы)</li>
+<li>audio - возможность "слышать"</li>
+<li>optical - доступ к оптическим дискам</li>
+<li>floppy - возможность использовать floppy-дисковод (если он ещё есть)</li>
+<li>storage - доступ к различным накопителям</li>
+<li>power - управление питанием</li>
+<li>users - стандартные привилегии, группа по умолчанию</li>
+</ul>
+</li>
+</ul>
+<p>Вы можете использовать <code>useradd</code> для добавления пользователя в систему. Например формат записи:
+<code>useradd опции имя пользователя</code></p>
+<ul>
+<li>Некоторые опции useradd:<ul>
+<li>-c - комментарий</li>
+<li>-d - задать домашний каталог</li>
+<li>-D - создать с настройками по умолчанию</li>
+<li>-e - отключить учётную запись в указанный день. задаётся в формате YYYY-MM-DD - год. месяц, день</li>
+<li>-G - принадлежность к дополнительным группам</li>
+<li>-m - создать пользовательскую директорию в /home</li>
+<li>-p - задать пароль</li>
+<li>-n - не создавать индивидуальную группу для пользователя</li>
+</ul>
+</li>
+</ul>
+<p>Впрочем, пароль вы можете задать позже, но пока его не будет, учётная запись останется заблокированной.
+А как вносить изменения в учётную запись уже созданного пользователя?</p>
+<p><code>useradd, usermod, userdel</code> — команды для добавления, модификации и удаления пользователей.</p>
+<p><code>groupadd, groupmod, groupdel</code> — команды для добавления, модификации и удаления групп.</p>
+<p><code>gpasswd</code> — команда для модификации файла <code>/etc/group</code>.</p>
+<ul>
+<li>
+<p>Что можно сделать с помощью usermod:</p>
+<ul>
+<li>-d - изменить домашний каталог</li>
+<li>-s - изменить оболочку</li>
+<li>-p - изменить пароль</li>
+<li>-g - изменить первичную группу</li>
+<li>-G - дополнительную группу</li>
+</ul>
+</li>
+<li>
+<p>Что можно сделать с помощью userdel:</p>
+<ul>
+<li>-f - удалит пользователя даже когда он находится в системе или его каталог используется</li>
+<li>-r - удалить домашний каталог рекурсивно</li>
+</ul>
+</li>
+</ul>
+<p>Например, мы хотим добавить пользователя <code>user1</code> в группу администраторов - <code>wheel</code>. Это будет выглядеть так:</p>
+<div class="highlight"><pre><span class="gp">#</span> usermod -G wheel user1
+</pre></div>
+
+
+<p>Теперь проверьте <code>/etc/group</code>. Появился ли наш пользователь в группе <code>wheel</code>? Конечно, да.</p>
+<p>А что с группами?</p>
+<ul>
+<li>
+<p>Добавить при помощи groupadd:</p>
+<ul>
+<li>-g - GID &gt; 499</li>
+<li>-r - GID &lt; 499</li>
+<li>-f - если GID группы уже существует, он будет изменён</li>
+</ul>
+</li>
+<li>
+<p>Изменить при помощи groupmod:</p>
+<ul>
+<li>-g - GID</li>
+<li>-n - дать группе новое наименование</li>
+</ul>
+</li>
+<li>
+<p>И, наконец, очень удобная команда gpasswd:</p>
+<ul>
+<li>-a - добавить пользователя в группу</li>
+<li>-d - удалить пользователя из группы</li>
+<li>-r - удалить пароль группы</li>
+<li>-A - назначить администратора группы</li>
+<li>-M - добавить несколько пользователей в группу</li>
+</ul>
+</li>
+</ul>
+<p>Заставим пользователя периодически менять его пароль:</p>
+<div class="highlight"><pre><span class="gp">#</span> change user1:
+</pre></div>
+
+
+<p><code>Minimum Password Age</code> - минимальное количество дней, в течении которых пользователю не разрешено менять пароль</p>
+<p><code>Maximum Password Age</code> - максимальное количество дней, в течении которых можно будет входить в систему под этим паролем</p>
+<p><code>Last Password Change</code> - когда произошло последнее изменение пароля</p>
+<p><code>Password Expiration Warning</code> - за какое количество дней до блокировки выводить сообщения</p>
+<p><code>Password Inactive</code> - число дней после истечения срока действия пароля перед его блокировкой</p>
+<p><code>Account Expiration Date</code> - истечение срока действия учётной записи, при отрицательном значении - никогда</p>
+<p>Вот такая вышла небольшая заметка для юных администраторов.</p>
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
+</ul><ul class="footer">
+    <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
+    <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
+    <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-42400517-1', 'www.unix-lab.org');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

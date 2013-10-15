@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <title>Установка KDE в Debian</title>
+  <meta charset="utf-8">
+<meta name="description" content="Давайте установим графическую среду KDE, зовущуюся в народе кедами."><meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link href="http://www.unix-lab.org/theme/css/screen.css" rel="stylesheet" type="text/css" />
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
+  <link href="http://www.unix-lab.org/feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="http://www.unix-lab.org"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+    <ul>
+      <li><a href="http://www.unix-lab.org/archives/">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about/">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors/">Автор</a></li>
+    </ul>
+</div>
+</div><div id="main">
+<h2><a href="http://www.unix-lab.org/posts/debian-kde/">Установка KDE в Debian</a></h2>
+<h5><i class="icon-feather"></i> 18 Июль 2011
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/debian/">Debian</a> /
+<a href="http://www.unix-lab.org/tag/decorations/">Decorations</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
+</h5>
+<p>Надоел gnome.... хочется чего-то свежего и красивого для настольной системы? Чтобы радовало глаз и была широта настроек? Давайте установим графическую среду KDE, зовущуюся в народе "кедами".</p>
+<p>Для установки полного пакета со всеми "примочками" просто введите в консоли от рута:</p>
+<div class="highlight"><pre><span class="gp">#</span> aptitude install kde-full
+</pre></div>
+
+
+<p>Впрочем, можете установить только базовую систему или же лишь необходимое вам из написанного ниже:</p>
+<div class="highlight"><pre><span class="gp">#</span> aptitude install kdm kdebase-runtime kdebase-workspace kdebase kde-minimal kdeplasma-addons kdegraphics kdegames kdemultimedia kdenetwork kdepim kdeutils kdeadmin kdeartwork
+</pre></div>
+
+
+<p>Минималистам достаточно установить пакеты <code>kdm</code> и <code>kdebase-workspace</code>.</p>
+<p>Начнётся установка необходимых компонентов. На все поступающие вопросы отвечайте <code>"yes"</code></p>
+<p>В конце установки вам предложат выбрать графическую среду по умолчанию. Тут уж я советовать не вправе: хотите просто ознакомиться с KDE - оставьте gnome, хотите с KDE мирно сосуществовать длительное время - оставьте его. Выбор за вами.</p>
+<p>Перезагружаемся и выбираем в какой среде хотим работать:</p>
+<p><img alt="kde" src="http://1.bp.blogspot.com/-m6dLB3wYgqg/ToWa4uo93aI/AAAAAAAAANs/S71SSi2gBzM/s1600/kde.jpg" title="kde" /></p>
+<p><b>Примечание:</b> для русификации среды поставьте пакет kde-l10n-ru</p>
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
+</ul><ul class="footer">
+    <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
+    <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
+    <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-42400517-1', 'www.unix-lab.org');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

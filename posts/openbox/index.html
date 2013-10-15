@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <title>Поваренная книга openbox</title>
+  <meta charset="utf-8">
+<meta name="description" content="Тем, кто неравнодушен к openbox посвящается."><meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link href="http://www.unix-lab.org/theme/css/screen.css" rel="stylesheet" type="text/css" />
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
+  <link href="http://www.unix-lab.org/feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="http://www.unix-lab.org"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+    <ul>
+      <li><a href="http://www.unix-lab.org/archives/">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about/">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors/">Автор</a></li>
+    </ul>
+</div>
+</div><div id="main">
+<h2><a href="http://www.unix-lab.org/posts/openbox/">Поваренная книга openbox</a></h2>
+<h5><i class="icon-feather"></i> 02 Август 2012
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/decorations/">Decorations</a> /
+<a href="http://www.unix-lab.org/tag/arch/">Arch</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
+</h5>
+<p>В мире open source имеется великое множество различных оконных менеджеров. Как растворяющийся в роскошном одеянии KDE, так и более скромные и лёгкие Gnome, XFCE. Но сегодня мы будем учиться готовить нечто ещё более легковесное. Тем, кто неравнодушен к openbox посвящается.</p>
+<p><b>Задача:</b> привести openbox к подобному виду:</p>
+<p><a href="http://farm4.staticflickr.com/3689/9263779986_67819076be_b.jpg" data-lighter><img src="http://farm4.staticflickr.com/3689/9263779986_67819076be_b.jpg"/></a></p>
+<p>Полный боевой комплект:</p>
+<div class="highlight"><pre><span class="gp">$</span> sudo pacman -S openbox openbox-themes conky nitrogen tint2 setxkbmap wbar gmrun xxkb
+<span class="gp">$</span> yaourt -S xev xcompmgr-dana
+</pre></div>
+
+
+<h2>Сразу займёмся делами насущными</h2>
+<p>А именно настроим раскладку клавиатуры и заодно пропишем всё, что должно быть в автозапуске  и запуск самого openbox, дабы нас не встречал голый экран. Копируем примеры для редактирования:</p>
+<div class="highlight"><pre><span class="gp">$</span> mkdir -p ~/.config/openbox
+<span class="gp">$</span> cp /etc/xdg/openbox/<span class="o">{</span>rc.xml,menu.xml,autostart,environment<span class="o">}</span> ~/.config/openbox
+</pre></div>
+
+
+<p>Openbox может быть выбран в качестве сессии, если у вас уже установлен slim, kdm, gdm или ещё что-то. Если же нет и это вам не нужно, идём потрошить <code>.xinitrc</code>:</p>
+<div class="highlight"><pre><span class="c"># .xinitrc</span>
+<span class="c">#</span>
+<span class="c">#! /bin/bash</span>
+<span class="nb">exec </span>openbox-session
+
+<span class="c"># ~/.config/openbox/autostart</span>
+conky &amp;
+nitrogen --restore &amp;
+tint2 &amp;
+<span class="c"># раскладка клавиатуры</span>
+setxkbmap -layout us,ru -variant -option grp:alt_shift_toggle,terminate:ctrl_alt_bksp &amp;
+wbar -above-desk -pos top &amp;
+<span class="c"># композитный менеджер</span>
+xcompmgr -с -C -t5 -l8.28.2 -r8.2 -o.55 &amp;
+<span class="c"># networkmanager applet ( при надобности )</span>
+nm-applet --sm-disable &amp;
+</pre></div>
+
+
+<p>Таким образом раскладка настроена на переключение по <code>Shift+Alt</code>, вверху запускается wbar, о котором сказано будет чуть ниже, выбранная обоина на рабочем столе восстанавливается при старте системы, стартует conky. Причём фон у conky прозрачный. Если это не так, устанавливаем композитный менеджер. Коротко о его свойствах ниже, он отвечает за различные графические эффекты: тени, прозрачность и тому подобное.</p>
+<div class="highlight"><pre><span class="gp">$</span> sudo yaourt xcompmgr-dana
+</pre></div>
+
+
+<p><b>P.S.</b> Чтобы на панели tint2 отображалась используемая раскладка, нам понадобится установить xxkb и создать его конфигурационный файл в домашней директории:</p>
+<div class="highlight"><pre><span class="c"># ~.xxkbrc:</span>
+<span class="c">#</span>
+XXkb.image.path: /usr/share/xxkb/
+XXkb.mainwindow.type:  tray
+XXkb.group.base: 1
+XXkb.group.alt: 2
+XXkb.mainwindow.enable:  yes
+XXkb.mainwindow.image.1: en15.xpm
+XXkb.mainwindow.image.2: ru15.xpm
+XXkb.mainwindow.image.3:
+XXkb.mainwindow.image.4:
+XXkb.mainwindow.appicon:  yes
+XXkb.mainwindow.geometry:  20x20+2+2
+XXkb.mainwindow.in_tray:  GNOME2
+XXkb.button.enable:  no
+XXkb.app_list.wm_class_name.start_alt: skype
+XXkb.controls.add_when_start: yes
+XXkb.controls.add_when_create: yes
+XXkb.controls.add_when_change: no
+XXkb.controls.focusout: no
+XXkb.mainwindow.xpm.1: en15.xpm
+XXkb.mainwindow.xpm.2: ru15.xpm
+XXkb.mainwindow.label.enable: no
+</pre></div>
+
+
+<h2>Меню и внешний вид openbox</h2>
+<p>Проверьте, что файл кофигурации располагается в домашней директории пользователя, дабы можно было редактировать его, не опасаясь последствий. Если его нет, копируем:</p>
+<div class="highlight"><pre><span class="gp">$</span> mkdir ~/.config/openbox <span class="o">&amp;&amp;</span> cp /etc/xdg/openbox/menu.xml ~/.config/openbox/menu.xml
+</pre></div>
+
+
+<p>Можно редактировать данный файл вручную, поскольку синтаксис достаточно тривиален. Но хочу предложить вам второй вариант &mdash; obmenu.</p>
+<div class="highlight"><pre><span class="gp">$</span> sudo pacman -S obmenu
+<span class="gp">$</span> obmenu
+</pre></div>
+
+
+<ul>
+<li>Можно добавить своё меню - New Menu</li>
+<li>Добавить в него подпункты - New item</li>
+<li>После чего удалить всё ненужное.</li>
+</ul>
+<p><code>Obmenu</code> требует, чтобы вы ввели название нового приложения в меню, действие &mdash; Execute и путь к нему.
+Так, для добавления редактора eclipse, введём его наименование и пропишем путь <code>/usr/bin/eclipse</code>.</p>
+<p>Для остальных приложений аналогично.</p>
+<p><img alt="obmenu" src="http://3.bp.blogspot.com/-9QMD4AfZiz4/T983kqIyT9I/AAAAAAAAA50/18M-S5vU_Tw/s1600/obmenu.png" /></p>
+<p>Впрочем, можете воспользоваться программой menumaker, которая генерирует меню самостоятельно.</p>
+<div class="highlight"><pre><span class="gp">$</span> sudo pacman -S menumaker
+<span class="gp">$</span> mmaker -v openbox    <span class="c">#  Не перезаписывать существующий файл меню.</span>
+<span class="gp">$</span> mmaker -vf openbox   <span class="c">#  Принудительно перезаписать файл меню.</span>
+</pre></div>
+
+
+<p>Теперь кликаем правой клавишей мыши по рабочему столу, выбираем из меню "System" - "Openbox configuration Manager".</p>
+<p>Так-то лучше. И здесь нам не придётся вручную редактировать файл конфигурации.
+Настройки как правило уже русифицированы и в них нет ничего, с чем было бы сложно разобраться.</p>
+<h2>Смена обоев на рабочем столе</h2>
+<div class="highlight"><pre><span class="gp">$</span> sudo pacman -S nitrogen
+<span class="gp">$</span> nitrogen
+</pre></div>
+
+
+<p>Здесь всё просто. Укажите путь к вашим изображениям, и они появятся в <code>nitrogen</code> &mdash; выбирайте любое. Можно добавить nitrogen в меню с помощью obmenu. Подобную операцию мы уже проделывали.</p>
+<p><img alt="notrigen" src="http://4.bp.blogspot.com/-1POgF6mIfpg/T9877g5KvrI/AAAAAAAAA6I/js_PTGXhziQ/s1600/nitrogen.png" /></p>
+<h2>Иконки и шрифты</h2>
+<p>Кто-то предпочитает настраивать ручками, но мы опять сэкономим своё время, установив <code>lxappearance</code>:</p>
+<div class="highlight"><pre><span class="gp">$</span> sudo pacman -S lxappearance
+</pre></div>
+
+
+<p>Запускаем и выбираем, что больше нравится.</p>
+<p><img alt="lxappearance" src="http://1.bp.blogspot.com/-u8QtWjlNH80/T-WyPrHJkWI/AAAAAAAAA70/Gyliajlkpqc/s1600/lxappearance.png" /></p>
+<p>Если есть желание отображать иконки на рабочем столе, idesk к вашим услугам. Автор сего поста не пользуется этой программой, поэтому долго не обсуждает.</p>
+<p>Вообще, процедура сводится к созданию файла <code>название_программы.lnk</code> в директории <code>.idesktop/</code> , где прописыватся примерно такое:</p>
+<div class="highlight"><pre><span class="n">table</span> <span class="n">Icon</span>
+<span class="nl">Caption:</span> <span class="n">firefox</span>
+<span class="nl">Command:</span> <span class="n">firefox</span>
+<span class="nl">Icon:</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">arch</span><span class="o">/</span><span class="p">.</span><span class="n">idesktop</span><span class="o">/</span><span class="n">firefox</span><span class="p">.</span><span class="n">png</span>
+<span class="nl">Width:</span> <span class="mi">48</span>
+<span class="nl">Height:</span> <span class="mi">48</span>
+<span class="nl">X:</span> <span class="mi">40</span>
+<span class="nl">Y:</span> <span class="mi">40</span>
+<span class="n">end</span>
+</pre></div>
+
+
+<p>Думаю, в объяснении не нуждается.</p>
+<p>Файл конфигурации лежит по пути <code>/usr/share/idesk/dot.ideskrc</code></p>
+<p>Отображать иконку уровня звука призван obmixer, который также надо просто добавить в автозагрузку.</p>
+<h2>Горячие клавиши</h2>
+<p>Сочетания горячих клавиш настраиваются в <code>~/.config/openbox/rc.xml</code>.
+Ищем эти настройки в соответствующих секциях.</p>
+<p>Перемещение между рабочими столами:</p>
+<div class="highlight"><pre><span class="o">&lt;!--</span> <span class="n">Keybindings</span> <span class="k">for</span> <span class="n">desktop</span> <span class="n">switching</span> <span class="o">--&gt;</span>
+</pre></div>
+
+
+<p>За управление окнами отвечает секция:</p>
+<div class="highlight"><pre><span class="o">&lt;!--</span> <span class="n">Keybindings</span> <span class="k">for</span> <span class="n">windows</span> <span class="o">--&gt;</span>
+</pre></div>
+
+
+<p>Переключение окон:</p>
+<div class="highlight"><pre><span class="o">&lt;!--</span> <span class="n">Keybindings</span> <span class="k">for</span> <span class="n">window</span> <span class="n">switching</span> <span class="o">--&gt;</span>
+</pre></div>
+
+
+<p>Запуск приложений:</p>
+<div class="highlight"><pre><span class="o">&lt;!--</span> <span class="n">Keybindings</span> <span class="k">for</span> <span class="n">running</span> <span class="n">applications</span> <span class="o">--&gt;</span>
+</pre></div>
+
+
+<p>И так далее.
+Например, если нужно подцепить горячую клавишу для firefox, создаём такой блок:</p>
+<div class="highlight"><pre><span class="nt">&lt;keybind</span> <span class="na">key=</span><span class="s">&quot;W-w&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;action</span> <span class="na">name=</span><span class="s">&quot;Execute&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;command&gt;</span>firefox<span class="nt">&lt;/command&gt;</span>
+    <span class="nt">&lt;startupnotify&gt;</span>
+        <span class="nt">&lt;enabled&gt;</span>yes<span class="nt">&lt;/enabled&gt;</span>
+        <span class="nt">&lt;name&gt;</span>Minefield Web Browser<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;/startupnotify&gt;</span>
+    <span class="nt">&lt;/action&gt;</span>
+<span class="nt">&lt;/keybind&gt;</span>
+</pre></div>
+
+
+<ul>
+<li>keybind key - привязка определённой клавиши</li>
+<li>action name - execute значит, что это приложение запуска</li>
+<li>command - либо вводим путь вроде <code>/usr/bin/firefox</code>, либо просто указываем, какое приложение надо запустить</li>
+<li>enabled - включено</li>
+<li>name - имя для программы</li>
+</ul>
+<p>Для примера назначим горячую клавишу самому меню openbox:</p>
+<div class="highlight"><pre><span class="nt">&lt;keybind</span> <span class="na">key=</span><span class="s">&quot;W-space&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;action</span> <span class="na">name=</span><span class="s">&quot;ShowMenu&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;menu&gt;</span>root-menu<span class="nt">&lt;/menu&gt;</span>
+      <span class="nt">&lt;/action&gt;</span>
+<span class="nt">&lt;/keybind&gt;</span>
+</pre></div>
+
+
+<p>Теперь нажатием клавиш <code>super</code> (win) + <code>пробел</code> мы сможем вызвать главное меню со списком наших приложений.</p>
+<p>Сокращения клавиш:</p>
+<ul>
+<li><code>A</code> - Alt</li>
+<li><code>W</code> - win</li>
+<li><code>C</code> - ctrl</li>
+</ul>
+<p>И так далее по смыслу</p>
+<h3>Настраиваем клавиши для перемещения окон с клавиатуры</h3>
+<p>Возможные действия над окнами:</p>
+<ul>
+<li><code>SendToDesktop</code> (отправить окно на указанный аргументом опции рабочий стол; опция <to>, её значение – номер стола);</li>
+<li><code>Focus</code> (передать окну фокус);</li>
+<li><code>Raise</code> (поднять окно на передний план);</li>
+<li><code>Lower</code> (переместить окно на задний план);</li>
+<li><code>Iconify</code> (свернуть окно на панель);</li>
+<li><code>Close</code> (закрыть окно);</li>
+<li><code>ToggleShade</code> (свернуть в заголовок/развернуть из заголовка);</li>
+<li><code>ToggleMaximize</code> (включить/отключить режим полного развёртывания);</li>
+<li><code>ToggleFullscreen</code> (включить/отключить полноэкранный режим);</li>
+<li><code>ToggleDecorations</code> (включить/отключить заголовок);</li>
+<li><code>Move</code> (переместить);</li>
+<li><code>Resize</code> (изменить размер).</li>
+</ul>
+<p>Пример:</p>
+<p>В секции <code>&lt;!-- Keybindings for window switching with the arrow keys --&gt;</code></p>
+<div class="highlight"><pre><span class="nt">&lt;keybind</span> <span class="na">key=</span><span class="s">&quot;W-k&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;action</span> <span class="na">name=</span><span class="s">&quot;ToggleShade&quot;</span><span class="nt">&gt;&lt;/action&gt;</span>
+<span class="nt">&lt;/keybind&gt;</span>
+<span class="nt">&lt;keybind</span> <span class="na">key=</span><span class="s">&quot;W-f&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;action</span> <span class="na">name=</span><span class="s">&quot;ToggleFullscreen&quot;</span><span class="nt">&gt;&lt;/action&gt;</span>
+<span class="nt">&lt;/keybind&gt;</span>
+<span class="nt">&lt;keybind</span> <span class="na">key=</span><span class="s">&quot;W-Left&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;action</span> <span class="na">name=</span><span class="s">&quot;Move&quot;</span><span class="nt">&gt;&lt;/action&gt;</span>
+<span class="nt">&lt;/keybind&gt;</span>
+<span class="nt">&lt;keybind</span> <span class="na">key=</span><span class="s">&quot;W-Right&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;action</span> <span class="na">name=</span><span class="s">&quot;Resize&quot;</span><span class="nt">&gt;&lt;/action&gt;</span>
+<span class="nt">&lt;/keybind&gt;</span>
+</pre></div>
+
+
+<p>Так, по <code>Win+k</code> окно сворачиается, остаётся лишь заголовок</p>
+<ul>
+<li><code>Win+f</code> - развернуть/свернуть</li>
+<li><code>Win+Left</code> - перемещение окна</li>
+<li><code>Win+Right</code> - изменение размера окна</li>
+</ul>
+<h2>Мультимедийные клавиши</h2>
+<p>Универсальный способ. Код клавиш нужно перевести в 16-ричную систему счисления.
+Например, вы хотите прикрутить какую-то клавишу на увеличение громкости звука. Запустите в терминале утилиту xev, нажмите нужную клавишу и посмотрите ее keycode.</p>
+<p>Например:</p>
+<div class="highlight"><pre><span class="n">KeyRelease</span> <span class="n">event</span><span class="p">,</span> <span class="n">serial</span> <span class="mi">39</span><span class="p">,</span> <span class="n">synthetic</span> <span class="n">NO</span><span class="p">,</span> <span class="n">window</span> <span class="mh">0x1e00001</span><span class="p">,</span>
+<span class="n">root</span> <span class="mh">0x15a</span><span class="p">,</span> <span class="n">subw</span> <span class="mh">0x0</span><span class="p">,</span> <span class="n">time</span> <span class="mi">1613305</span><span class="p">,</span> <span class="p">(</span><span class="mi">627</span><span class="p">,</span><span class="mi">558</span><span class="p">),</span> <span class="n">root</span><span class="o">:</span><span class="p">(</span><span class="mi">655</span><span class="p">,</span><span class="mi">831</span><span class="p">),</span>
+<span class="n">state</span> <span class="mh">0x0</span><span class="p">,</span> <span class="n">keycode</span> <span class="mi">122</span> <span class="p">(</span><span class="n">keysym</span> <span class="mh">0x1008ff11</span><span class="p">,</span> <span class="n">XF86AudioLowerVolume</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Теперь это число (122) нужно перевести в шестнадцатеричное. Вот так:</p>
+<div class="highlight"><pre><span class="gp">$</span> <span class="nb">printf</span> <span class="s2">&quot;%X\n&quot;</span> 122
+<span class="go">7A</span>
+</pre></div>
+
+
+<p>К этому числу добавить <code>"0x"</code>, т.е.  <code>"0x7A"</code>. Пример конфига, где <code>Fn-10</code> (0x122) увеличивает уровень звука, а <code>Fn-9</code> (0x123) уменьшает:</p>
+<div class="highlight"><pre><span class="nt">&lt;keybind</span> <span class="na">key=</span><span class="s">&quot;0x7A&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;action</span> <span class="na">name=</span><span class="s">&quot;Execute&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;command&gt;</span>amixer sset Front 1+<span class="nt">&lt;/command&gt;</span>
+    <span class="nt">&lt;startupnotify&gt;</span>
+        <span class="nt">&lt;enabled&gt;</span>yes<span class="nt">&lt;/enabled&gt;</span>
+        <span class="nt">&lt;name&gt;</span>Folume +<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;/startupnotify&gt;</span>
+    <span class="nt">&lt;/action&gt;</span>
+<span class="nt">&lt;/keybind&gt;</span>
+
+<span class="nt">&lt;keybind</span> <span class="na">key=</span><span class="s">&quot;0x7B&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;action</span> <span class="na">name=</span><span class="s">&quot;Execute&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;command&gt;</span>amixer sset Front 1-<span class="nt">&lt;/command&gt;</span>
+    <span class="nt">&lt;startupnotify&gt;</span>
+        <span class="nt">&lt;enabled&gt;</span>yes<span class="nt">&lt;/enabled&gt;</span>
+        <span class="nt">&lt;name&gt;</span>Folume -<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;/startupnotify&gt;</span>
+    <span class="nt">&lt;/action&gt;</span>
+<span class="nt">&lt;/keybind&gt;</span>
+</pre></div>
+
+
+<p>Хотя, наилучший способ настроить мультимедийную клавиатуру - <code>xmodmap</code></p>
+<p>Пример: настраиваем регулировку яркости экрана</p>
+<div class="highlight"><pre><span class="gp">$</span> xmodmap -pke
+<span class="go">keycode 231 = Cancel NoSymbol Cancel</span>
+<span class="go">keycode 232 = XF86MonBrightnessDown NoSymbol XF86MonBrightnessDown</span>
+<span class="go">keycode 233 = XF86MonBrightnessUp NoSymbol XF86MonBrightnessUp</span>
+<span class="go">keycode 234 = XF86AudioMedia NoSymbol XF86AudioMedia и прочее...</span>
+
+<span class="gp">$</span> vim .xmodmaprc
+<span class="go">keycode 232 = XF86MonBrightnessDown keycode 233 = XF86MonBrightnessUp</span>
+</pre></div>
+
+
+<p>После чего следует добавить в файл автозапуска (в нашем случае <code>.config/openbox/autostart</code>):</p>
+<div class="highlight"><pre><span class="gp">$</span> xmodmap ~/.xmodmaprc
+</pre></div>
+
+
+<h2>Wbar</h2>
+<div class="highlight"><pre><span class="gp">$</span> sudo pacman -S wbar
+</pre></div>
+
+
+<p>Редактировать эту утилиту очень просто. И очень долго, поскольку ваши темы иконок кушать она не станет. К каждой иконке прописывается свой путь. Впрочем, возможно автор просто не знает удобных утилит для автоматизации этого процесса.</p>
+<p>Если хотите, чтобы кроме иконок приложений в баре отображались и открытые на данный момент окна, не забудьте выставить флаг <code>"Enable Taskbar"</code> в настройках.</p>
+<p><img alt="wbar" src="http://1.bp.blogspot.com/-pKsGXbWUjSE/T980607U8-I/AAAAAAAAA5o/dXFml5vAROw/s1600/wbar.png" /></p>
+<h2>Xcompmgr и различные эффекты</h2>
+<p>Управление xcompmgr осуществляется при помощи его запуска с разными опциями.</p>
+<ul>
+<li><code>-c</code> - добавить мягкие тени к окнам</li>
+<li><code>-С</code> - убрать отрисовку теней у баров (wbar, например)</li>
+<li><code>f</code> - плавные эффекты затухания при сворачивании окон</li>
+</ul>
+<p>полный перечень в <code>man xcpomgr</code></p>
+<p>Для просмотра полных возможностей можно обратиться к странице man'а.
+Чтобы окна были прозрачными понадобится пакет <code>transset</code>.
+Можно использовать альтернативу: <code>cairo-compmgr</code></p>
+<h2>Tint2</h2>
+<p>А вот это приберегите для бессонных ночей.</p>
+<div class="highlight"><pre><span class="gp">$</span> sudo pacman -S tint2
+</pre></div>
+
+
+<p>После запуска в директории <code>~/.config/tint2/</code> появится конфигурационный файл <code>tint2rc</code>, со стандартными настройками.</p>
+<p>Фон и рамки. При минимальном знании английского или даже интуитивно настраивается легко. Все опции просты и понятны. Можно, например, настроить ширину и цвет рамки.</p>
+<div class="highlight"><pre><span class="cp">#———————————————</span>
+<span class="cp"># BACKGROUND AND BORDER</span>
+<span class="cp">#———————————————</span>
+
+<span class="n">rounded</span> <span class="o">-</span>  <span class="err">закругление</span> <span class="err">углов</span> <span class="p">(</span><span class="err">в</span> <span class="err">пикселях</span><span class="p">)</span>
+<span class="n">border_width</span> <span class="err">–</span> <span class="err">ширина</span> <span class="err">границы</span> <span class="p">(</span><span class="err">в</span> <span class="err">пикселях</span><span class="p">)</span>
+<span class="n">background_color</span> <span class="err">–</span> <span class="err">цвет</span> <span class="err">фона</span>
+<span class="n">border_color</span> <span class="err">–</span> <span class="err">цвет</span> <span class="err">границы</span>
+</pre></div>
+
+
+<p>Секция настройки панели</p>
+<div class="highlight"><pre><span class="cp">#———————————————</span>
+<span class="cp"># PANEL</span>
+<span class="cp">#———————————————</span>
+
+
+<span class="n">panel_monitor</span> <span class="o">=</span> <span class="err">определяет</span> <span class="err">как</span> <span class="err">отображать</span> <span class="err">панель</span> <span class="p">(</span><span class="n">all</span> <span class="err">–</span> <span class="err">на</span> <span class="err">всех</span> <span class="err">мониторах</span><span class="p">,</span> <span class="mf">1..2</span> <span class="err">–</span> <span class="err">на</span> <span class="err">выбранных</span><span class="p">)</span>
+<span class="n">panel_position</span> <span class="o">=</span> <span class="err">расположение</span> <span class="err">панели</span>
+<span class="n">panel_margin</span> <span class="o">=</span> <span class="err">отступ</span> <span class="err">от</span> <span class="err">краев</span> <span class="err">экрана</span>
+<span class="n">panel_padding</span> <span class="o">=</span> <span class="err">отступ</span> <span class="err">индикатора</span> <span class="err">окна</span> <span class="err">от</span> <span class="err">левого</span> <span class="err">края</span> <span class="err">панели</span><span class="p">,</span>  <span class="err">от</span> <span class="err">верхнего</span> <span class="err">края</span> <span class="err">панели</span> <span class="err">и</span> <span class="err">отступ</span> <span class="err">между</span> <span class="err">индикаторами</span> <span class="err">соответственно</span>
+<span class="n">font_shadow</span> <span class="o">=</span> <span class="err">Тень</span> <span class="err">фона</span>
+<span class="n">panel_background_id</span> <span class="o">=</span> <span class="err">фон</span> <span class="err">панели</span> <span class="err">и</span> <span class="err">толщина</span> <span class="err">границы</span>
+<span class="n">wm_menu</span> <span class="o">=</span> <span class="mi">0</span> <span class="err">или</span> <span class="mi">1</span> <span class="err">–</span> <span class="err">не</span> <span class="err">показывать</span> <span class="err">или</span> <span class="err">показывать</span> <span class="err">меню</span> <span class="n">WM</span> <span class="err">при</span> <span class="err">клике</span> <span class="err">на</span> <span class="err">панели</span>
+<span class="n">panel_dock</span> <span class="o">=</span>  <span class="mi">0</span> <span class="err">или</span> <span class="mi">1</span> <span class="err">–</span> <span class="err">использовать</span> <span class="err">интеграцию</span> <span class="err">с</span> <span class="n">WM</span>
+<span class="n">panel_layer</span> <span class="o">=</span> <span class="n">bottom</span><span class="p">,</span><span class="n">normal</span><span class="p">,</span><span class="n">top</span> <span class="err">–</span> <span class="err">определяет</span> <span class="err">слой</span> <span class="err">панели</span><span class="p">,</span> <span class="err">используется</span> <span class="err">для</span> <span class="err">улучшения</span> <span class="err">отображения</span> <span class="err">прозрачности</span>
+</pre></div>
+
+
+<p>Секция Taskbar</p>
+<div class="highlight"><pre><span class="cp">#———————————————</span>
+<span class="cp"># TASKBAR</span>
+<span class="cp">#———————————————</span>
+
+
+<span class="n">taskbar_mode</span> <span class="o">=</span> <span class="n">single_desktop</span> <span class="err">или</span> <span class="n">multi_desktop</span> <span class="err">–</span> <span class="err">на</span> <span class="err">каждом</span> <span class="err">рабочем</span> <span class="err">столе</span> <span class="err">своя</span> <span class="err">панель</span><span class="p">,</span> <span class="err">либо</span> <span class="err">одна</span> <span class="err">для</span> <span class="err">всех</span> <span class="err">соответственно</span>
+<span class="n">taskbar_paddin</span> <span class="o">=</span> <span class="mi">3</span> <span class="err">переменные</span><span class="p">,</span> <span class="mi">1</span>  <span class="err">–</span> <span class="err">расстояние</span> <span class="err">между</span> <span class="err">значками</span> <span class="err">и</span> <span class="err">краем</span> <span class="err">панели</span><span class="p">,</span> <span class="err">расстояние</span> <span class="err">между</span> <span class="err">значками</span> <span class="err">и</span> <span class="err">вертикальными</span> <span class="err">границами</span> <span class="err">панели</span><span class="p">,</span> <span class="err">расстояние</span> <span class="err">между</span> <span class="err">значками</span><span class="p">.</span>
+<span class="n">taskbar_background_id</span> <span class="o">=</span> <span class="err">фон</span> <span class="err">и</span> <span class="err">границы</span> <span class="err">области</span> <span class="err">открытого</span> <span class="err">окна</span>
+<span class="n">taskbar_active_background_id</span> <span class="o">=</span> <span class="err">фон</span> <span class="err">и</span> <span class="err">границы</span> <span class="err">области</span> <span class="err">активного</span> <span class="err">открытого</span> <span class="err">окна</span>
+</pre></div>
+
+
+<p>Секция TASKS</p>
+<div class="highlight"><pre><span class="cp">#———————————————</span>
+<span class="cp"># TASKS</span>
+<span class="cp">#———————————————</span>
+
+
+<span class="n">task_icon</span> <span class="o">=</span> <span class="mi">1</span> <span class="err">или</span> <span class="mi">0</span> <span class="err">–</span> <span class="err">показывать</span> <span class="err">иконку</span> <span class="err">приложения</span> <span class="err">или</span> <span class="err">нет</span>
+<span class="n">task_text</span>  <span class="o">=</span> <span class="mi">1</span> <span class="err">или</span> <span class="mi">0</span> <span class="err">–</span> <span class="err">показывать</span> <span class="err">текст</span> <span class="err">на</span> <span class="err">кнопке</span> <span class="err">или</span> <span class="err">нет</span>
+<span class="n">task_maximum_size</span> <span class="o">=</span> <span class="err">максимальный</span> <span class="err">размер</span> <span class="err">кнопки</span> <span class="err">по</span> <span class="err">горизонтали</span> <span class="p">(</span><span class="err">для</span> <span class="err">вертикальной</span> <span class="err">панели</span><span class="p">)</span> <span class="err">и</span> <span class="err">по</span> <span class="err">вертикали</span> <span class="p">(</span><span class="err">для</span> <span class="err">вертикальной</span> <span class="err">панели</span><span class="p">)</span>
+<span class="n">task_centered</span> <span class="o">=</span> <span class="mi">1</span> <span class="err">или</span> <span class="mi">0</span>  <span class="err">–</span> <span class="err">центрировать</span> <span class="err">кнопку</span>
+<span class="n">task_padding</span> <span class="o">=</span> <span class="err">расстояние</span> <span class="err">текста</span> <span class="p">(</span><span class="err">иконки</span><span class="p">)</span> <span class="err">от</span> <span class="err">краев</span> <span class="err">кнопки</span> <span class="p">(</span><span class="err">первая</span> <span class="err">цифра</span> <span class="err">–</span> <span class="err">по</span> <span class="err">горизонтали</span><span class="p">,</span> <span class="err">вторая</span> <span class="err">–</span> <span class="err">по</span> <span class="err">вертикали</span><span class="p">)</span>
+<span class="n">task_font</span> <span class="o">=</span> <span class="err">Шрифт</span>
+<span class="n">task_font_color</span>  <span class="o">=</span> <span class="err">Цвет</span> <span class="err">шрифта</span>
+<span class="n">task_background_id</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">=</span> <span class="err">фон</span> <span class="err">и</span> <span class="err">границы</span> <span class="err">области</span> <span class="err">кнопки</span> <span class="err">панели</span> <span class="err">задач</span>
+<span class="n">task_icon_asb</span> <span class="o">=</span> <span class="p">(</span><span class="n">saturation</span><span class="o">-</span><span class="n">brightness</span><span class="p">)</span> <span class="err">настройка</span> <span class="err">отображения</span> <span class="err">иконки</span> <span class="err">приложения</span>
+<span class="n">task_active_background_id</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">=</span> <span class="err">настройка</span> <span class="err">для</span> <span class="err">активного</span> <span class="err">окна</span>
+<span class="n">task_active_font_color</span> <span class="o">=</span> <span class="err">настройка</span> <span class="err">шрифта</span> <span class="err">для</span> <span class="err">активного</span> <span class="err">окна</span>
+<span class="n">task_active_icon_asb</span> <span class="o">=</span> <span class="err">настройка</span> <span class="err">отображения</span> <span class="err">иконки</span> <span class="err">для</span> <span class="err">активного</span> <span class="err">окнам</span>
+<span class="n">urgent_nb_of_blink</span> <span class="o">=</span> <span class="err">количество</span> <span class="err">“миганий”</span>
+</pre></div>
+
+
+<p>Секция Systraybar</p>
+<div class="highlight"><pre><span class="cp">#———————————————</span>
+<span class="cp"># SYSTRAYBAR</span>
+<span class="cp">#———————————————</span>
+
+<span class="n">systray</span> <span class="o">=</span> <span class="mi">1</span> <span class="err">или</span> <span class="mi">0</span> <span class="err">–</span> <span class="err">включить</span> <span class="err">или</span> <span class="err">отключить</span> <span class="err">систем</span> <span class="err">трей</span>
+<span class="n">systray_padding</span> <span class="o">=</span> <span class="mi">3</span> <span class="err">параметра</span> <span class="err">–</span> <span class="err">расстояние</span> <span class="err">между</span> <span class="err">краем</span> <span class="err">панели</span> <span class="err">и</span> <span class="err">значком</span> <span class="err">приложения</span><span class="p">,</span> <span class="err">расстояние</span> <span class="err">между</span> <span class="err">значком</span> <span class="err">и</span> <span class="err">вертикальными</span> <span class="err">краями</span> <span class="err">панели</span><span class="p">,</span> <span class="err">расстояние</span> <span class="err">между</span> <span class="err">значками</span>
+<span class="n">systray_background_id</span> <span class="o">=</span> <span class="err">фон</span> <span class="err">и</span> <span class="err">границы</span> <span class="err">области</span> <span class="err">панели</span> <span class="err">задач</span>
+<span class="n">systray_sort</span> <span class="o">=</span> <span class="n">left2right</span> <span class="o">=</span> <span class="err">способ</span> <span class="err">расположения</span> <span class="err">приложений</span> <span class="err">на</span> <span class="err">панели</span> <span class="err">задач</span>
+<span class="n">systray_icon_size</span> <span class="o">=</span> <span class="err">размер</span> <span class="err">иконки</span>
+<span class="n">systray_icon_asb</span> <span class="o">=</span> <span class="err">настройка</span> <span class="err">отображения</span> <span class="err">иконки</span> <span class="err">приложения</span>
+</pre></div>
+
+
+<p>Секция Clock</p>
+<div class="highlight"><pre><span class="cp">#———————————————</span>
+<span class="cp"># CLOCK</span>
+<span class="cp">#———————————————</span>
+
+<span class="n">time1_format</span> <span class="o">=</span> <span class="o">%</span><span class="n">H</span><span class="o">:%</span><span class="n">M</span>  <span class="err">–</span> <span class="err">Формат</span> <span class="err">отображения</span> <span class="err">времени</span> <span class="err">в</span> <span class="err">первой</span> <span class="err">строке</span>
+<span class="n">time1_font</span> <span class="o">=</span> <span class="n">sans</span> <span class="mi">8</span>  <span class="err">–</span> <span class="err">шрифт</span> <span class="err">отображения</span> <span class="err">времени</span> <span class="err">в</span> <span class="err">первой</span> <span class="err">строке</span>
+<span class="n">time2_format</span> <span class="o">=</span> <span class="o">%</span><span class="n">A</span> <span class="o">%</span><span class="n">d</span> <span class="o">%</span><span class="n">B</span> <span class="err">–</span> <span class="err">формат</span> <span class="err">отображения</span> <span class="err">времени</span> <span class="err">во</span> <span class="err">второй</span> <span class="err">строке</span> <span class="p">(</span><span class="err">здесь</span>  <span class="err">–</span> <span class="err">дата</span><span class="p">)</span>
+<span class="n">time2_font</span> <span class="o">=</span> <span class="n">sans</span> <span class="mi">6</span> <span class="err">–</span> <span class="err">шрифт</span> <span class="err">отображения</span> <span class="err">во</span> <span class="err">второй</span> <span class="err">строке</span>
+<span class="n">clock_font_color</span> <span class="o">=</span> <span class="err">#</span><span class="n">ffffff</span> <span class="mi">76</span> <span class="err">–</span> <span class="err">цвет</span> <span class="err">шрифта</span> <span class="err">и</span> <span class="err">прозрачность</span>
+<span class="n">clock_padding</span> <span class="o">=</span> <span class="mi">1</span> <span class="mi">0</span> <span class="o">-</span>  <span class="err">два</span> <span class="err">параметра</span> <span class="err">–</span> <span class="err">расстояние</span> <span class="err">между</span> <span class="err">краем</span> <span class="err">панели</span> <span class="err">и</span> <span class="err">временем</span><span class="p">,</span> <span class="err">расстояние</span> <span class="err">между</span> <span class="err">временем</span> <span class="err">и</span> <span class="err">вертикальными</span> <span class="err">краями</span> <span class="err">панели</span>
+<span class="n">clock_background_id</span> <span class="o">=</span> <span class="err">фон</span> <span class="err">и</span> <span class="err">границы</span> <span class="err">области</span> <span class="err">панели</span> <span class="err">задач</span>
+<span class="n">clock_lclick_command</span> <span class="o">=</span> <span class="n">text</span> <span class="err">–</span> <span class="err">запуск</span> <span class="err">команды</span> <span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="err">при</span> <span class="err">нажатии</span> <span class="err">на</span> <span class="err">часах</span> <span class="err">левой</span> <span class="err">кнопкой</span> <span class="err">мыши</span>
+<span class="n">clock_rclick_command</span> <span class="o">=</span> <span class="n">text</span> <span class="err">–</span> <span class="err">запуск</span> <span class="err">команды</span> <span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="err">при</span> <span class="err">нажатии</span> <span class="err">на</span> <span class="err">часах</span> <span class="err">правой</span> <span class="err">кнопкой</span> <span class="err">мыши</span>
+<span class="n">clock_tooltip</span> <span class="o">=</span> <span class="o">%</span><span class="n">A</span> <span class="o">%</span><span class="n">d</span> <span class="o">%</span><span class="n">B</span> <span class="err">–</span> <span class="err">формат</span> <span class="err">и</span> <span class="err">вывод</span> <span class="err">подсказки</span> <span class="err">при</span> <span class="err">наведении</span> <span class="err">мышки</span> <span class="err">на</span> <span class="err">область</span> <span class="err">часов</span>
+<span class="n">time1_timezone</span> <span class="o">=</span> <span class="err">часовой</span> <span class="err">пояс</span> <span class="err">первой</span> <span class="err">строки</span>
+<span class="n">time2_timezone</span> <span class="o">=</span> <span class="err">часовой</span> <span class="err">пояс</span> <span class="err">второй</span> <span class="err">строки</span>
+<span class="n">clock_tooltip_timezone</span> <span class="o">=</span> <span class="err">часовой</span> <span class="err">пояс</span> <span class="err">подсказки</span> <span class="err">при</span> <span class="err">наведении</span> <span class="err">мышки</span> <span class="err">на</span> <span class="err">область</span> <span class="err">часов</span>
+</pre></div>
+
+
+<p>Секция Battery</p>
+<div class="highlight"><pre><span class="cp">#———————————————</span>
+<span class="cp"># BATTERY</span>
+<span class="cp">#———————————————</span>
+
+<span class="n">battery</span> <span class="o">=</span> <span class="mi">1</span> <span class="err">или</span> <span class="mi">0</span> <span class="err">–</span> <span class="err">показывать</span> <span class="err">или</span> <span class="err">нет</span> <span class="err">заряд</span> <span class="err">батареи</span> <span class="err">на</span> <span class="err">панели</span>
+<span class="n">battery_hide</span> <span class="o">=</span> <span class="p">(</span><span class="err">от</span> <span class="mi">0</span> <span class="err">до</span> <span class="mi">100</span><span class="p">)</span> <span class="err">–</span> <span class="err">показывать</span> <span class="err">на</span> <span class="err">панели</span><span class="p">,</span> <span class="err">когда</span> <span class="err">заряд</span> <span class="err">батареи</span> <span class="err">опуститься</span> <span class="err">до</span> <span class="err">заданного</span> <span class="err">значения</span>
+<span class="n">battery_low_status</span> <span class="o">=</span> <span class="p">(</span><span class="err">от</span> <span class="mi">0</span> <span class="err">до</span> <span class="mi">100</span><span class="p">)</span> <span class="err">–</span> <span class="err">показывает</span> <span class="err">низкий</span> <span class="err">заряд</span> <span class="err">батареи</span><span class="p">,</span> <span class="err">когда</span> <span class="err">он</span> <span class="err">опускается</span> <span class="err">до</span> <span class="err">заданного</span> <span class="err">значения</span>
+<span class="n">battery_low_cmd</span> <span class="o">=</span> <span class="n">notify</span><span class="o">-</span><span class="n">send</span> <span class="err">“</span><span class="n">battery</span> <span class="n">low</span><span class="err">”</span> <span class="err">–</span> <span class="err">что</span> <span class="err">делать</span> <span class="err">если</span> <span class="err">заряд</span> <span class="err">батареи</span> <span class="err">достиг</span> <span class="err">минимального</span> <span class="err">значения</span>
+<span class="n">bat1_font</span>  <span class="err">–</span> <span class="err">шрифт</span> <span class="err">отображения</span> <span class="err">первой</span> <span class="err">строки</span>
+<span class="n">bat2_font</span> <span class="err">–</span> <span class="err">шрифт</span> <span class="err">отображения</span> <span class="err">второй</span> <span class="err">строки</span>
+<span class="n">battery_font_color</span> <span class="o">=</span> <span class="err">#</span><span class="n">ffffff</span> <span class="mi">76</span> <span class="err">–</span> <span class="err">цвет</span> <span class="err">шрифта</span> <span class="err">и</span> <span class="err">прозрачность</span>
+<span class="n">battery_padding</span> <span class="o">=</span> <span class="mi">1</span> <span class="mi">0</span> <span class="err">–</span> <span class="err">два</span> <span class="err">параметра</span> <span class="err">–</span> <span class="err">расстояние</span> <span class="err">между</span> <span class="err">краем</span> <span class="err">панели</span> <span class="err">и</span> <span class="err">индикатором</span> <span class="err">батареи</span><span class="p">,</span> <span class="err">расстояние</span> <span class="err">между</span> <span class="err">индикатором</span> <span class="err">и</span> <span class="err">вертикальными</span> <span class="err">краями</span> <span class="err">панели</span>
+<span class="n">battery_background_id</span> <span class="err">–</span> <span class="err">фон</span> <span class="err">и</span> <span class="err">границы</span> <span class="err">области</span> <span class="err">панели</span> <span class="err">задач</span>
+</pre></div>
+
+
+<p>Секция Tooltip</p>
+<div class="highlight"><pre><span class="cp">#———————————————</span>
+<span class="cp"># TOOLTIP</span>
+<span class="cp">#———————————————</span>
+
+<span class="n">tooltip</span>  <span class="err">–</span> <span class="mi">1</span> <span class="err">или</span> <span class="mi">0</span> <span class="err">–</span> <span class="err">показывать</span> <span class="err">или</span> <span class="err">нет</span> <span class="err">подсказки</span>
+<span class="n">tooltip_padding</span> <span class="err">–</span> <span class="err">размер</span> <span class="err">подсказок</span> <span class="p">(</span><span class="err">по</span> <span class="err">вертикали</span> <span class="err">и</span> <span class="err">горизонтали</span><span class="p">)</span>
+<span class="n">tooltip_show_timeout</span> <span class="err">–</span> <span class="err">через</span> <span class="err">какое</span> <span class="err">время</span> <span class="err">показывать</span><span class="p">,</span> <span class="err">после</span> <span class="err">наведения</span> <span class="err">мыши</span> <span class="err">на</span> <span class="err">элемент</span> <span class="err">панели</span>
+<span class="n">tooltip_hide_timeout</span> <span class="err">–</span> <span class="err">как</span> <span class="err">долго</span> <span class="err">отображать</span> <span class="err">подсказки</span>
+<span class="n">tooltip_background_id</span> <span class="err">–</span> <span class="err">фон</span> <span class="err">и</span> <span class="err">границы</span> <span class="err">области</span> <span class="err">подсказок</span>
+<span class="n">tooltip_font_color</span> <span class="err">–</span> <span class="err">цвет</span> <span class="err">шрифта</span> <span class="err">и</span> <span class="err">прозрачность</span>
+<span class="n">tooltip_font</span> <span class="err">–</span> <span class="err">шрифт</span> <span class="err">подсказок</span> <span class="err">и</span> <span class="err">размер</span>
+</pre></div>
+
+
+<p>Секция Mouse Action and task</p>
+<div class="highlight"><pre><span class="cp">#———————————————</span>
+<span class="cp"># MOUSE ACTION ON TASK</span>
+<span class="cp">#———————————————</span>
+
+<span class="n">mouse_middle</span> <span class="err">–</span> <span class="err">Средняя</span> <span class="err">кнопка</span> <span class="err">мыши</span>
+<span class="n">mouse_right</span> <span class="err">–</span> <span class="err">правая</span> <span class="err">кнопка</span> <span class="err">мыши</span>
+<span class="n">mouse_scroll_up</span> <span class="err">–</span> <span class="err">прокрутка</span> <span class="err">колесика</span> <span class="err">мыши</span> <span class="err">вверх</span>
+<span class="n">mouse_scroll_down</span> <span class="err">–</span> <span class="err">прокрутка</span> <span class="err">колесика</span> <span class="err">мыши</span> <span class="err">вниз</span>
+</pre></div>
+
+
+<p>Каждый из этих параметров может принимать следующие значения – none, close, toggle, iconify, shade, toggle_iconify, maximize_restore, desktop_left, desktop_right, next_task, prev_task.</p>
+<p>Если параметр задан как  <code>none</code> и <code>wm_menu = 1</code> установлен, то события возвращаются приложению отвечающему за окна (WM)</p>
+<p>Секция Autohide</p>
+<div class="highlight"><pre><span class="cp">#———————————————</span>
+<span class="cp"># AUTOHIDE OPTIONS</span>
+<span class="cp">#———————————————</span>
+<span class="n">autohide</span> <span class="err">–</span> <span class="mi">1</span> <span class="err">или</span> <span class="mi">0</span> <span class="err">–</span> <span class="err">включить</span> <span class="err">или</span> <span class="err">выключить</span> <span class="err">автоскрытие</span> <span class="err">панели</span>
+<span class="n">autohide_show_timeout</span> <span class="err">–</span> <span class="err">чарез</span> <span class="err">какое</span> <span class="err">время</span> <span class="err">показывать</span> <span class="err">панель</span><span class="p">,</span> <span class="err">после</span> <span class="err">подвода</span> <span class="err">мыши</span> <span class="err">к</span> <span class="err">краю</span> <span class="err">экрана</span>
+<span class="n">autohide_hide_timeout</span> <span class="err">–</span> <span class="err">через</span> <span class="err">какое</span> <span class="err">время</span> <span class="err">скрыть</span> <span class="err">панель</span>
+<span class="n">autohide_height</span> <span class="err">–</span> <span class="err">высота</span> <span class="err">скрытой</span> <span class="err">панели</span>
+</pre></div>
+
+
+<p>Что из этого может получиться</p>
+<p>Пример первый:</p>
+<p><a href="http://fc04.deviantart.net/fs70/i/2013/053/9/4/openbox_blue_by_redvi9-d5vt3yx.jpg" data-lighter><img src="http://fc04.deviantart.net/fs70/i/2013/053/9/4/openbox_blue_by_redvi9-d5vt3yx.jpg"/></a></p>
+<p>Пример второй:</p>
+<p><a href="http://fc02.deviantart.net/fs71/i/2013/072/2/c/gentoo_openbox_by_redvi9-d5xz7ii.png" data-lighter><img src="http://fc02.deviantart.net/fs71/i/2013/072/2/c/gentoo_openbox_by_redvi9-d5xz7ii.png"/></a></p>
+<p>Итак, openbox у нас настроен. Быстрый и симпатичный оконный менеджер. Если же по каким-то причинам он вам не подходит, а громоздкие DE вы ставить не желаете, обратите внимание на xmonad. Возможно, он сумеет вас порадовать.</p>
+<p><b>P.S.</b> в качестве легковесного файлового менеджера рекомендую <code>pcmanfm</code></p>
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
+</ul><ul class="footer">
+    <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
+    <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
+    <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-42400517-1', 'www.unix-lab.org');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

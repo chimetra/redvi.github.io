@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <title>Репозитории Debian Squeeze</title>
+  <meta charset="utf-8">
+<meta name="description" content="Как известно, изначально в Debian Squeeze задействованы только репозитории security и main. Для домашнего использования маловато."><meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link href="http://www.unix-lab.org/theme/css/screen.css" rel="stylesheet" type="text/css" />
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
+  <link href="http://www.unix-lab.org/feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="http://www.unix-lab.org"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+    <ul>
+      <li><a href="http://www.unix-lab.org/archives/">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about/">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors/">Автор</a></li>
+    </ul>
+</div>
+</div><div id="main">
+<h2><a href="http://www.unix-lab.org/posts/debian-repo/">Репозитории Debian Squeeze</a></h2>
+<h5><i class="icon-feather"></i> 05 Август 2011
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/debian/">Debian</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
+</h5>
+<p>Как известно, изначально в Debian Squeeze задействованы только репозитории <code>security</code> и <code>main</code>. Для домашнего использования маловато. Хочется и к мультимедия иметь доступ, и любимые программы устанавливать, а они зачастую non-free. Добавим несколько интересных вещей для Squeeze, тем более, что для следюущего стабильного релиза - Wheezy - они, скорее всего тоже подойдут. Надо будет лишь вместо squeeze wheezy поставить. Конечно, пока это недоказанная гипотеза, но так было с lenny,поживём - увидим.</p>
+<p>Добавляем репозитории:</p>
+<div class="highlight"><pre><span class="c"># /etc/apt/sources.list</span>
+<span class="c"># /etc/apt/sources.list</span>
+<span class="c">#</span>
+<span class="c"># Main repo&#39;s</span>
+deb http://ftp.ru.debian.org/debian/ squeeze main contrib non-free
+deb-src http://ftp.ru.debian.org/debian/ squeeze main
+deb http://volatile.debian.org/debian-volatile squeeze/volatile main contrib non-free
+deb-src http://volatile.debian.org/debian-volatile squeeze/volatile main contrib
+
+<span class="c"># Multimedia</span>
+deb http://www.debian-multimedia.org stable main
+deb ftp://ftp.debian-multimedia.org stable main
+deb http://www.debian-multimedia.org testing main
+deb ftp://ftp.debian-multimedia.org testing main
+
+<span class="c">#Yandex</span>
+deb http://mirror.yandex.ru/debian squeeze main contrib non-free
+deb http://mirror.yandex.ru/debian-multimedia/ squeeze main
+deb http://ftp.debian.org/debian/ squeeze main
+
+<span class="c">#Opera</span>
+deb http://deb.opera.com/opera/ squeeze non-free
+
+<span class="c">#Wine</span>
+deb http://www.lamaresh.net/apt squeeze main
+
+<span class="c">#VirtualBox</span>
+deb http://download.virtualbox.org/virtualbox/debian squeeze non-free
+
+<span class="c"># Программы от Google</span>
+deb http://dl.google.com/linux/deb/ stable non-free
+
+<span class="c">#Emacs</span>
+deb http://emacs.naquadah.org/ unstable/
+<span class="c">#deb-src http://emacs.naquadah.org/ unstable/</span>
+
+<span class="c">#KDE 4 backports для Debian Lenny</span>
+<span class="c">#deb http://www.debian-desktop.org/pub/linux/debian/kde43 lenny-backports main contrib non.free</span>
+<span class="c">#deb-src http://www.debian-desktop.org/pub/linux/debian/kde43 lenny-backports main contrib non.free</span>
+<span class="c">#Testing!</span>
+<span class="c">#deb http://ftp.ru.debian.org/debian/dists/ testing contrib main non-free</span>
+
+<span class="c">#skype</span>
+deb http://download.skype.com/linux/repos/debian/ stable non-free
+</pre></div>
+
+
+<p>Сохраняем список нажатием клавиш <code>Ctrl+O</code>, выходим - <code>Ctrl+X</code>.
+Обновляем наши записи:</p>
+<div class="highlight"><pre><span class="gp">$</span> sudo aptitude update
+</pre></div>
+
+
+<p>Примечание для новоприбывших: закомментированные (#)строки игнорируются.
+Данная статья, скорее всего, не будет обновляться, т.к. репозитории неизменны. Но могут измениться ключи. Список репозиториев может быть расширен. Поэтому обратите внимание на сайт <a href="http://linuxoid.in/Полезные_репозитории_для_Debian">linuxoid</a>.</p>
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
+</ul><ul class="footer">
+    <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
+    <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
+    <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-42400517-1', 'www.unix-lab.org');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>

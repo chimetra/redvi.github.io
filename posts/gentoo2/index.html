@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <title>Gentoo. Попытка № 2</title>
+  <meta charset="utf-8">
+<meta name="description" content="О возвращении на дистрибутив Gentoo Linux"><meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link href="http://www.unix-lab.org/theme/css/screen.css" rel="stylesheet" type="text/css" />
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/" type="application/atom+xml" rel="alternate" title="unix-lab.org ATOM Feed" />
+  <link href="http://www.unix-lab.org/feeds/rss.xml" type="application/rss+xml" rel="alternate" title="unix-lab.org RSS Feed" />
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="http://www.unix-lab.org"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+    <ul>
+      <li><a href="http://www.unix-lab.org/archives/">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about/">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors/">Автор</a></li>
+    </ul>
+</div>
+</div><div id="main">
+<h2><a href="http://www.unix-lab.org/posts/gentoo2/">Gentoo. Попытка № 2</a></h2>
+<h5><i class="icon-feather"></i> 16 Февраль 2013
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/gentoo/">Gentoo</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
+</h5>
+<p>Ранее был написан пост <a href="http://www.unix-lab.org/posts/install-gentoo/">об установке gentoo</a>, было это больше полутора лет назад и тогда эта замечательная ОС долго не продержалась на моём десктопе, уступив место archlinux'у. Не так давно в сознание начали закрадываться предательские мысли о смене дистрибутива. Связано это было с отходом команды разработчиков от традиций и философии archlinux. Несогласие с майнтейнерами в пути развития дистрибутива, ощущение того, что арч уже <s>«не торт»</s> не K.I.S.S., досада от того, что фактически разработчики не оставляют большого выбора, а просто навязывают свою волю.</p>
+<p>Перебарывать это и искать обходные пути в то время, когда хотелось бы просто работать? Не думаю. Кроме того, стало появляться чувство, что пользователь в арче всё больше начинает походить на бета-тестера.</p>
+<p>В то же время в философии gentoo можно найти такие строки:</p>
+<blockquote>
+<p>«Из исходников» — важный и ключевой аспект Gentoo, который был и останется необходимым, но не единственный и не главный. Основополагающая задача — создание технологии, позволяющей как нам, так и другим делать то, что хочется, без ограничений.</p>
+</blockquote>
+<p>Отлично звучит, хотя на практике всё немного иначе. Из исходников &mdash; основополагающий аспект, как ни крути. Собственно, поэтому gentoo пока не стал моим основным дистрибутивом (это ещё не решено). Да, есть возможность создать свои локальные оверлеи, да есть бинхосты, но... действительно ли это выход? Разумеется, можно обновлять (читай &mdash; пересобирать) пакеты раз в день, затратив на это несколько минут, а можно раз в несколько месяцев, затратив на это куда больше времени. Это уже зависит от личных предпочтений каждого. Вопрос в том, можно ли в gentoo просто жить, а не посвящать всего себя системе. Поживём &mdash; увидим.</p>
+<p>Что же, распускать сопли дальше не имеет смысла, давайте лучше посмотрим, как можно более или менее быстро создать на основе свежеустановленной генты рабочий десктоп. Все шаги описываться не будут &mdash; это есть в документации &mdash; лишь моменты, которые заставили автора задуматься и прикинуть как сделать лучше/быстрее.</p>
+<p>Итак, некоторые подводные камни и методы их обхода:</p>
+<h2>Споткнулись раз. Две видеокарты и vgaswitcheroo + неработающий wi-fi</h2>
+<p>В archlinux стоило лишь подмонтировать debugfs и отключить одну из карточек. В gentoo, поскольку ядро мы собираем сами, нужно сделать чуть больше телодвижений.
+Прямо в конфиге ядра включаем опции:</p>
+<div class="highlight"><pre><span class="c"># .config</span>
+<span class="c">#</span>
+<span class="nv">CONFIG_VGA_SWITCHEROO</span><span class="o">=</span>y
+<span class="nv">CONFIG_DRM_KMS_HELPER</span><span class="o">=</span>m
+<span class="nv">CONFIG_DRM_RADEON_KMS</span><span class="o">=</span>y
+<span class="nv">CONFIG_DRM_I915_KMS</span><span class="o">=</span>y
+<span class="nv">CONFIG_DRM</span><span class="o">=</span>m
+<span class="nv">CONFIG_DRM_RADEON</span><span class="o">=</span>m
+<span class="nv">CONFIG_DRM_I915</span><span class="o">=</span>m
+</pre></div>
+
+
+<p>Это для владельцев видеокарт ATI + Intel. Владельцы карт NVidia должны шаманить с NOUVEAU.
+Правим конфиг <code>/etc/genkernel.conf</code>, включив в нём:</p>
+<div class="highlight"><pre><span class="nv">OLDCONFIG</span><span class="o">=</span><span class="s2">&quot;yes&quot;</span>
+<span class="nv">MENUCONFIG</span><span class="o">=</span><span class="s2">&quot;yes&quot;</span>
+<span class="nv">CLEAN</span><span class="o">=</span><span class="s2">&quot;no&quot;</span>
+<span class="nv">MRPROPER</span><span class="o">=</span><span class="s2">&quot;no&quot;</span>
+</pre></div>
+
+
+<p>В <code>/etc/portage/make.conf</code> определяем свои карточки. Например:</p>
+<div class="highlight"><pre><span class="nv">VIDEO_CARDS</span><span class="o">=</span><span class="s2">&quot;intel i915 radeon&quot;</span>
+</pre></div>
+
+
+<p>Собираем ядро с genkernel:</p>
+<div class="highlight"><pre><span class="gp">#</span> genkernel all
+</pre></div>
+
+
+<p>А после установки grub, добавляем в конец строки загрузчика (для intel, в одну строку):</p>
+<div class="highlight"><pre>i915.i915_enable_rc6<span class="o">=</span>1 i915.i915_enable_fbc<span class="o">=</span>1 i915.lvds_downclock<span class="o">=</span>1
+</pre></div>
+
+
+<p>Это может понадобиться в случае, если видеокарта работает на всю мощность. В последних версиях ядра, как правило, подобное уже не требуется.</p>
+<p>Это может понадобиться в случае, если видеокарта работает на всю мощность. В последних версиях ядра, как правило, подобное уже не требуется.</p>
+<p>И вносим debugfs в <code>/etc/fstab</code>:</p>
+<div class="highlight"><pre>none   /sys/kernel/debug debugfs       defaults 0 0
+</pre></div>
+
+
+<p>Теперь можно также просто как в арче отключать неиспользуемую видеокарту.</p>
+<div class="highlight"><pre><span class="gp">#</span> <span class="nb">echo </span>OFF &gt; /sys/kernel/debug/vgaswitcheroo/switch
+</pre></div>
+
+
+<p>Или запускать эту команду автоматически при старте системы:</p>
+<div class="highlight"><pre><span class="gp">#</span> vim /etc/local.d/cards.start
+
+<span class="gp">#</span>!/bin/bash
+<span class="go">echo OFF &gt; /sys/kernel/debug/vgaswitcheroo/switch</span>
+
+<span class="gp">#</span> chmod +x /etc/local.d/cards.start
+</pre></div>
+
+
+<p>Касаемо оборудования, стоило бы также отметить, что у автора изначально не определялась wi-fi карточка: не было интерфейса wlan0. К счастью, это решается даже проще:</p>
+<div class="highlight"><pre><span class="gp">#</span> lspci -v 04:00.0
+
+<span class="go">Network controller: Broadcom Corporation BCM4313 802.11b/g/n Wireless LAN Controller (rev 01)</span>
+<span class="go">Kernel driver in use: bcma-pci-bridge</span>
+</pre></div>
+
+
+<p>Для данной железки в ядре должно быть включено:</p>
+<div class="highlight"><pre><span class="nx">Networking</span> <span class="nx">Support</span> <span class="o">--&gt;</span> <span class="nx">Wireless</span> <span class="o">--&gt;</span>
+    <span class="o">&lt;</span><span class="nx">M</span><span class="o">&gt;</span>   <span class="nx">cfg80211</span> <span class="o">-</span> <span class="nx">wireless</span> <span class="nx">configuration</span> <span class="nx">API</span>
+    <span class="err">[</span><span class="o">*</span><span class="cp">]</span>     cfg80211 wireless extensions compatibility
+Device Drivers --&gt; Network Device Support --&gt; Wireless LAN --&gt;
+    <span class="nt">&lt;M&gt;</span>   Broadcom IEEE802.11n PCIe SoftMAC WLAN driver
+Device Drivers --&gt; Broadcom specific AMBA  ---&gt;
+    <span class="nt">&lt;M&gt;</span> BCMA support
+    <span class="cp">[</span><span class="o">*</span><span class="cp">]</span>   Support for BCMA on PCI-host bus
+</pre></div>
+
+
+<p><img alt="wifi" src="http://2.bp.blogspot.com/-eog7d_a1-Oo/USuFLN4NX6I/AAAAAAAAEDI/aB6JI0WLHeY/s1600/cfg80211.png" /></p>
+<p><img alt="bcma" src="http://3.bp.blogspot.com/-GkhLdgPkbBo/USuFQHOn9OI/AAAAAAAAEDQ/AGt5Aaq6E8g/s1600/BCMA.png" /></p>
+<p><img alt="broadcom" src="http://4.bp.blogspot.com/-QFK5n4V2ZJU/USuFSoS03pI/AAAAAAAAEDY/G8RXalKQbp4/s1600/Broadcom_wireless.png" /></p>
+<p><img alt="linksus" src="http://1.bp.blogspot.com/-us8aObbmluk/USuFWutQEQI/AAAAAAAAEDg/xUCtcl6xBnY/s1600/linksus.png" /></p>
+<p>И установлена прошивка:</p>
+<div class="highlight"><pre><span class="gp">#</span> emerge sys-kernel/linux-firmware
+</pre></div>
+
+
+<p><b>Примечание:</b></p>
+<p>Если возникли проблемы, владельцам карт от broadcom предлагается просмотреть информацию о драйверах <a href="http://linuxwireless.org/en/users/Drivers/brcm80211">bcrm80211</a> и <a href="http://linuxwireless.org/en/users/Drivers/b43">b43</a> в зависимости от используемого вами и действовать по предложенной там инструкции. Если ваша карта есть в списке и поддерживается &mdash; не всё потеряно.</p>
+<h2>Споткнулись два. Сборка chromium? Нет, binhost!</h2>
+<p>Привычным браузером у автора является хромиум, ну и в gentoo захотелось его собрать, только вот собирается он не меньше двух часов, и здесь возникает вполне себе закономерная мысль: фиг с ними, с USE-флагами, поставим из бинарного пакета.</p>
+<p>Вообще, надо сказать, что при обновлении ситуация повторится, поэтому лучше отдать предпочтение лёгким браузерам, таким как uzbl, или ставить готовые бинарные пакеты: google-chrome, firefox. Но давайте для примера таки поработаем с binhost.</p>
+<p>В качестве бинхоста будем использовать <code>http://calculate.freeside.ru/CLD/grp/</code>, там можно найти достаточно много пакетов под свою архитектуру. Естественно, лучше ставить из исходников со своими USE-флагами. Так же естественно, что автор не несёт ответственности, если при использовании бинарных пакетов из CLD у вас что-то отвалится ;)</p>
+<p>Снова идём в <code>/etc/portage/make.conf</code>:</p>
+<div class="highlight"><pre><span class="nv">FEATURES</span><span class="o">=</span><span class="s2">&quot;ccache&quot;</span>
+<span class="nv">CCACHE_SIZE</span><span class="o">=</span><span class="s2">&quot;2G&quot;</span>
+<span class="nv">PORTAGE_BINHOST</span><span class="o">=</span><span class="s2">&quot;http://calculate.freeside.ru/CLD/grp/x86_64/&quot;</span>
+<span class="nv">PKGDIR</span><span class="o">=</span><span class="s2">&quot;/var/binpackages/&quot;</span>
+</pre></div>
+
+
+<p><code>ccache</code> следует сначала установить, он окажет неоценимую услугу при перекомпиляции пакетов, подробнее читаем на <a href="">gentoo wiki</a>.</p>
+<p>Что касается binhost'а здесь вы указываете откуда ставить пакеты с учётом своей архитектуры. Затем следует указание места, куда будут складываться эти пакеты.
+Ставим chromium:</p>
+<div class="highlight"><pre><span class="gp">#</span> emerge --getbinpkgonly --fetchonly --usepkgonly chromium
+</pre></div>
+
+
+<p>Заглядываем в <code>/var/binpackages/</code>:</p>
+<div class="highlight"><pre><span class="gp">$</span> ls var/binpackages/www-client/
+<span class="go">chromium-20.0.1132.57.tbz2</span>
+</pre></div>
+
+
+<p>Всё нормально.</p>
+<h2>Споткнулись три. А сколько ждать-то? Сборка пакетов из-под live cd.</h2>
+<p>Также после первоначальной установки можно доставить все пакеты, загрузившись с какого-нибудь live cd и чрутнувшись в gentoo. У автора на то был рабочий арчлинукс, gentoo ставился на внешний HDD. Повторюсь, вполне можно использовать для этого любой live cd/live usb. Загружаемся с него, монтируем нужные разделы, ставим компиляцию сразу нескольких пакетов, а сами в это время сидим в jabber или читаем gentoo handbook в привычном окружении.</p>
+<div class="highlight"><pre><span class="gp">$</span> sudo mount /dev/sdc1 /mnt/gentoo
+<span class="gp">$</span> sudo mount /dev/sdc2 /mnt/gentoo/boot
+<span class="gp">$</span> sudo mount /dev/sdc6 /mnt/gentoo/home
+<span class="gp">$</span> sudo mount -t proc none /mnt/gentoo/proc
+<span class="gp">$</span> sudo chroot /mnt/gentoo /bin/bash
+<span class="go">PS1 = &quot;(chroot) $PS1&quot;</span>
+</pre></div>
+
+
+<p>Кроме того, позволяет ускорить время компиляции <a href="http://ru.gentoo-wiki.com/wiki/%D0%A3%D1%81%D0%BA%D0%BE%D1%80%D0%B5%D0%BD%D0%B8%D0%B5_portage_%D1%87%D0%B5%D1%80%D0%B5%D0%B7_tmpfs">вынос /usr/local/portage в tmpfs</a>.
+В остальном с настройкой всё просто. При желании можете ознакомиться <a href="http://www.unix-lab.org/posts/acpi/">с настройками acpi</a>, одинаковыми для всех дистрибутивов.</p>
+<p><a href="http://farm4.staticflickr.com/3704/9469197555_672f8c1754_b.jpg" data-lighter><img src="http://farm4.staticflickr.com/3704/9469197555_672f8c1754_b.jpg"/></a></p>
+<p><a href="http://farm6.staticflickr.com/5546/9469197583_0cf90f6972_b.jpg" data-lighter><img src="http://farm6.staticflickr.com/5546/9469197583_0cf90f6972_b.jpg"/></a></p>
+<h2>IV. В заключение или краткое сравнение возможностей arch и gentoo</h2>
+<ul>
+<li>Держи мир в чистоте</li>
+</ul>
+<p>Принцип обоих дистрибутивов, хотя в gentoo это выражено ярче. Сразу о полезном: полезно иметь под рукой список установленных пакетов для быстрого восстановления системы. В gentoo таким списком является файл <code>/var/lib/portage/world</code>, куда вносятся записи об установленных программах.</p>
+<p>В archlinux нет такого файла, но его можно получить. Арчевики по этому поводу нам выдаст следующее:</p>
+<p>Если ваша система "упала" и её сложно восстановить, pacman может легко переустановить эти пакеты.
+Сначала, сохраните в список пакетов (доступных в репозитории):</p>
+<div class="highlight"><pre><span class="gp">#</span> pacman -Qqe | grep -v <span class="s2">&quot;$(pacman -Qmq)&quot;</span> &gt; pkglist
+</pre></div>
+
+
+<p>Безопасная, но и более сложная альтернатива (во избежание удаления частичных совпадений)</p>
+<div class="highlight"><pre><span class="gp">#</span> comm -13 &lt;<span class="o">(</span>pacman -Qmq | sort<span class="o">)</span> &lt;<span class="o">(</span>pacman -Qqe | sort<span class="o">)</span> &gt; pkglist
+</pre></div>
+
+
+<p>Сохраните этот файл на флешке или на другом носителе.
+Скопируйте файл pkglist в новую систему, перейдите в эту папку.
+Для восстановления используйте команду:</p>
+<div class="highlight"><pre><span class="gp">#</span> pacman -S <span class="k">$(</span>cat pkglist<span class="k">)</span>
+</pre></div>
+
+
+<ul>
+<li>Сборка из исходного кода</li>
+</ul>
+<p>Возможна в обоих дистрибутивах. В archlinux для этого есть такая вкусная вещь как ABS. С Gentoo и так всё ясно &mdash; по умолчанию.</p>
+<ul>
+<li>Ставим бинарные пакеты</li>
+</ul>
+<p>Арч &mdash; бинарный дистрибутив и возможность ставить готовые пакеты, а не компилировать всё из исходников, заложена по-умолчанию.</p>
+<p>В gentoo есть возможность ставить бинарные пакеты, как правило, лишь для очень больших приложений (оно и понятно).</p>
+<ul>
+<li>Гибкость менеджера управлением пакетов</li>
+</ul>
+<p>И pacman, и emerge хороши. Но emerge &mdash; инструмент куда более гибкий (и куда более медленный).</p>
+<ul>
+<li>Обновление конфигурационных файлов системы</li>
+</ul>
+<p>В арче делается ручками. Большинство арчеводов активно испольуют программку <code>diff</code> для сравнения изменившихся конфигурационных файлов и их последующей (ручной) правки. Не особенно удобно.</p>
+<p>Gentoo предлагает использовать команду <code>etc-update</code>, что очень удобно.</p>
+<ul>
+<li>Разнообразие софта</li>
+</ul>
+<p>Обычно имеющихся пакетов хватает как в случае с archlinux, так и в случае с gentoo. Но если нужной программы нет, это тоже не большая беда.</p>
+<p>Арч предоставляет для установки пакетов, не входящих в основной репозиторий, репозиторий пользовательский &mdash; AUR, отличная вещь.</p>
+<p>В Gentoo для подобных нужд есть оверлеи и связанная с ними программа <code>layman</code>. Так что от недостатка программного обеспечения страдать в любом случае не придётся.</p>
+<hr />
+<p>Честно сказать, автору так и не удалось ответить на главный для себя вопрос: Arch или Gentoo? Оба дистрибутива по-своему хороши, оба имеют свои недостатки. И &mdash; да &mdash; оба неидеальны. От подобных мыслей линуксоиды обычно спасались созданием дистрибутива собственного ;)</p>
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
+</ul><ul class="footer">
+    <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
+    <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
+    <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-42400517-1', 'www.unix-lab.org');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>
