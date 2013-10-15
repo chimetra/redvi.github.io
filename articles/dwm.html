@@ -18,17 +18,21 @@
     <div class="small">блог об операционных системах, open source и программировании</div>
 <div class="nav">
     <ul>
-      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
-      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
-      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+      <li><a href="http://www.unix-lab.org/archives/">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about/">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors/">Автор</a></li>
     </ul>
 </div>
 </div><div id="main">
 <h2><a href="http://www.unix-lab.org/articles/dwm.html">DWM: тайлинг — наше всё</a></h2>
-<h5><i class="icon-feather"></i> 04 Декабрь 2012 </h5>
+<h5><i class="icon-feather"></i> 04 Декабрь 2012
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/decorations/">Decorations</a> /
+<a href="http://www.unix-lab.org/tag/arch/">Arch</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
+</h5>
 <p>Ну чем можно заняться линуксоиду, у которого в системе всё, решительно всё работает? Конечно же, довести до ума свой оконный менеджер. Или попробовать новый.</p>
 <p>К примеру, dwm — динамический фреймовый оконный менеджер. Написан на языке C. Настройка производится посредством правки заголовочного файла, для чего необходимо иметь исходники dwm. Если вас не пугает перспектива потратить час-другой на настройку этой штуки под свои нужды, то давайте приступим.</p>
-<h2>I. Где взять?</h2>
+<h2>Где взять?</h2>
 <p>Если ваш дистрибутив — ArchLinux, ставьте вместе с автором сего поста <code>abs</code> — это наилучшее решение, так вы будете иметь возможность внести свои правки в конфигурационный файл dwm - сделать всё по-своему, а затем установить то, что получилось. Обладатели других дистрибутивов могут найти исходники dwm и загрузить их. Например, с сайта <a href="http://dwm.suckless.org/">http://dwm.suckless.org/</a> - вкладка <code>downloads</code>.</p>
 <p>Метода арча:</p>
 <div class="highlight"><pre><span class="gp">#</span> pacman -S abs
@@ -38,9 +42,9 @@
 
 <p>Здесь поменяем каталог <code>/var/abs</code> на какой-нибудь другой. Можно оставить по-умолчанию, но тогда все исходники лягут в директорию <code>/var</code>, что не есть хорошо, если под содержащий её раздел выделено мало места.</p>
 <p>Пример настройки:</p>
-<div class="highlight"><pre><span class="cp"># /etc/abs.conf</span>
-<span class="cp"># the top-level directory of all your PKGBUILDs</span>
-<span class="p">[</span> <span class="s">&quot;$ABSROOT&quot;</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> <span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="n">ABSROOT</span><span class="o">=</span><span class="s">&quot;/home/user/abs/&quot;</span>
+<div class="highlight"><pre><span class="c"># /etc/abs.conf</span>
+<span class="c"># the top-level directory of all your PKGBUILDs</span>
+<span class="o">[</span> <span class="s2">&quot;$ABSROOT&quot;</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">ABSROOT</span><span class="o">=</span><span class="s2">&quot;/home/user/abs/&quot;</span>
 </pre></div>
 
 
@@ -81,7 +85,7 @@
 <p>И входите по startx - добро пожаловать!</p>
 <p>Можно приступать к настройке, но... прежде позвольте разжечь ваш аппетит. Давайте посмотрим, что мы можем получить в итоге. Прежде всего тайловые wm проповедуют принцип "ничего лишнего":</p>
 <p><a href="http://farm3.staticflickr.com/2889/9263499596_54c76c71a6_b.jpg" data-lighter><img src="http://farm3.staticflickr.com/2889/9263499596_54c76c71a6_b.jpg"/></a></p>
-<h2>II. Как настроить ?</h2>
+<h2>Как настроить ?</h2>
 <p>Посмотрим, что можно изменить в файле <code>config.h</code></p>
 <p>В первую очередь это шрифт. Здесь нужно чуть изменить настройки, поскольку в противном случае в статус-баре будут забавные "кракозябры" вместо кириллицы.</p>
 <p>Для определения поддержки тем или иным шрифтом кириллицы, используйте утилиту <code>xfontsel</code>.</p>
@@ -140,7 +144,7 @@
 
 <p>Настройка горячих клавиш. Из приведённого ниже кода ясно, что нажатие <code>клавиши-модификатора + p</code> вызовет <code>dmenu</code>, нажатие <code>клавиши-модификатора + Return</code> (Enter) вызовет эмулятор терминала, ну и так далее. В принципе, стандартные обозначения вполне даже удобны и вряд ли вам захочется их менять. Мы вернёмся к этому чуть позже, далее будет приведён более полный перечень горячих клавиш.</p>
 <div class="highlight"><pre><span class="k">static</span> <span class="n">Key</span> <span class="n">keys</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
-<span class="cm">/* modifier            key        function        argument */</span>
+ <span class="cm">/* modifier            key        function        argument */</span>
 <span class="p">{</span> <span class="n">MODKEY</span><span class="p">,</span>              <span class="n">XK_p</span><span class="p">,</span>      <span class="n">spawn</span><span class="p">,</span>     <span class="p">{.</span><span class="n">v</span> <span class="o">=</span> <span class="n">dmenucmd</span> <span class="p">}</span> <span class="p">},</span>
 <span class="p">{</span> <span class="n">MODKEY</span><span class="p">,</span>              <span class="n">XK_Return</span><span class="p">,</span> <span class="n">spawn</span><span class="p">,</span>  <span class="p">{.</span><span class="n">v</span> <span class="o">=</span> <span class="n">termcmd</span> <span class="p">}</span> <span class="p">},</span>
 <span class="p">{</span> <span class="n">MODKEY</span><span class="p">,</span>              <span class="n">XK_b</span><span class="p">,</span>      <span class="n">togglebar</span><span class="p">,</span>  <span class="p">{</span><span class="mi">0</span><span class="p">}</span> <span class="p">},</span>
@@ -165,7 +169,7 @@
 <p>~0 - приложение будет запускаться сразу на всех тегах. Это может быть удобно для какого-нибудь док-бара, трея и прочих</p>
 <p>1 &lt;&lt; 0 — запуск на первом теге 1 &lt;&lt; 2 — запуск на третьем теге 1 &lt;&lt; 3 — запуск на четвертом теге и так далее</p>
 <p><code>isfloating</code> указывает на то, будут ли окна приложения плавающими</p>
-<h2>III. Расположение окон. Горячие клавиши</h2>
+<h2>Расположение окон. Горячие клавиши</h2>
 <p>По умолчанию DWM поддерживает три режима расположения окон, плиточный []= , монокль [M] ,  плавающий &gt;&lt;&gt;. Как правило, этого бывает достаточно.</p>
 <p>По умолчанию при запуске dwm отображается плиточный режим окон. Чтобы поставить вместо него свой любимый режим, просто найдите нижеуказанные строки и поставьте нужный режим на первое место:</p>
 <div class="highlight"><pre><span class="k">static</span> <span class="k">const</span> <span class="n">Layout</span> <span class="n">layouts</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
@@ -191,7 +195,7 @@
 <p><code>Super + K</code> - переход на неактивное окно</p>
 <p><code>Super + J</code> - то же самое, в общем перемещение между окнами</p>
 <p><code>Alt + Tab</code> - переход на следующий/предыдущий тег</p>
-<h2>IV. Дополнительные плюшки и запуск</h2>
+<h2>Дополнительные плюшки и запуск</h2>
 <p>У dwm нет каких-либо специальных настроек для запуска приложений. Всё, что запускал ваш openbox (верно?) из файла <code>autostart</code>, прописывается просто в <code>.xinitrc</code></p>
 <p>Например:</p>
 <div class="highlight"><pre><span class="n">nitrogen</span> <span class="o">--</span><span class="n">restore</span>
@@ -216,38 +220,32 @@ CPU <span class="cp">${</span><span class="n">cpu</span> <span class="n">cpu0</s
 
 <p>Вот, пожалуй, и всё. Пусть dwm принесёт вам немало радостных минут,  позволит забыть о мыши и в целом сделает вашу работу за компьютером удобнее.
 Настройки wdm автора можно найти на <a href="https://github.com/redVi/dotfiles/tree/master/dwm">github</a> вместе с инструкцией по применению ;)</p>
-<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi.html">redVi</a>,
-<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/decorations/">Decorations</a> /
-<a href="http://www.unix-lab.org/tag/arch/">Arch</a> /
-<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
-</h5>
+
+<br />
 <p align="center"><a href="#">наверх</a></p>
 </div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
 </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
-    <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>
-    <li class="footer"><a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+    <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
 </ul>
 </div><script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <title>unix-lab.org redVi</title>
+  <title>unix-lab.org - redVi</title>
   <meta charset="utf-8">
 <meta name="description" content="Блог об операционных системах, open source и программировании"><meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
   <link href="http://www.unix-lab.org/theme/css/screen.css" rel="stylesheet" type="text/css" />
@@ -18,60 +18,110 @@
     <div class="small">блог об операционных системах, open source и программировании</div>
 <div class="nav">
     <ul>
-      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
-      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
-      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+      <li><a href="http://www.unix-lab.org/archives/">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about/">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors/">Автор</a></li>
     </ul>
 </div>
 </div><div id="main">
-<h2><a href="http://www.unix-lab.org/articles/utf8.html">Как перекодировать cp1251 в UTF-8</a></h2>
-<h5><i class="icon-feather"></i> 24 Июль 2012 </h5>
-Небольшая заметка, посвящённая борьбе с засильем кодировки cp1251, которая фактически стала стандартом де-факто благодаря операционной системе Windows и её многочисленным адептам. Кодировать будем под ОС Linux. Не волнуйтесь, это не займёт много сил и не подорвёт вашего душевного равновесия. Момент первый. Когда нужно перекодировать текст (.txt, .php, .css или что-то в этом духе) Идём в директорию, где лежат файлы, подлежащие преобразованию, например: $ cd ~/Documents После чего даём ...
-<h2><a href="http://www.unix-lab.org/articles/kde.html">Оптимизация KDE</a></h2>
-<h5><i class="icon-feather"></i> 21 Июль 2012 </h5>
-Кто не сталкивался с проблемой излишнего потребления ресурсов любимой многими графической оболочкой KDE? Думаю, все. Даже при минимальной установке "кеды" несут с собой много никому не нужных обязательных пакетов. Для сравнения на системе автора gnome нагружает процессор на 1-3%, свежеустановленный KDE - 18-20% . Про потребление оперативной памяти и вспоминать не будем. Просто исправим ситуацию. Откройте любимым текстовым редактором файл: ~/.kde4/share/config/nepomukserverrc Пропишите или исправьте строки: [Basic ...
-<h2><a href="http://www.unix-lab.org/articles/top-programms.html">Топ программ под Linux</a></h2>
-<h5><i class="icon-feather"></i> 21 Июнь 2012 </h5>
-Заметка написана в основном для юных пользователей операционной системы GNU Linux, которые при первом знакомстве с каким-либо дистрибутивом либо используют его «умолчательные», не всегда наилучшим способом подобранные программы, либо теряются в множестве названий и не знают, какое ПО выбрать для тех или иных своих нужд. Этот обзор не преследует цели быть истиной в последней инстанции, но отражает повседневные предпочтения автора. Чем пользуюсь, то и вам рекомендую. Графика и чтение книг Gimp Единственный в своём роде. Классический представитель ...
-<h2><a href="http://www.unix-lab.org/articles/phpmyadmin.html">Установка PHPMyAdmin</a></h2>
-<h5><i class="icon-feather"></i> 16 Июнь 2012 </h5>
-Что ж, в предыдущем посте мы благополучно установили веб-сервер Apache, php, MySQL... Но с базами данных намного удобнее работать при помощи PHPMyAdmin. Давайте его установим. Идём по адресу http://www.phpmyadmin.net/home_page/downloads.php, скачиваем архив. Желательно выбирать мультиязычный, где уже имеется русский. На родном языке всегда лучше. Предварительно создаём папку pma и распаковываем архив по адресу, где живёт наш веб-сервер. В моём случае это C:\Program Files ...
-<h2><a href="http://www.unix-lab.org/articles/mysql-install.html">Установка СУБД MySQL. Вручную</a></h2>
-<h5><i class="icon-feather"></i> 03 Июнь 2012 </h5>
-Как было обещано ранее в статье о настройке веб-сервера, выкладываю пост о настройке MySQL вручную для тех, у кого по каким-то причинам корректно не сработал инсталлятор. Как всегда начнём с того, что достанм необходимую программу. На этот раз будем качать архив вместо установщика: http://www.mysql.com/downloads/mysql/ Займёмся созданием необходимых папок. Как правило по пути C:\Program Files\MySQL\MySQL Server 5.5. То есть папку MySQL и вложенную MySQL Server 5.5. Распаковываем в нее содержимое ...
-<h2><a href="http://www.unix-lab.org/articles/apache-php-mysql.html">Apache+PHP+MySQL под Windows</a></h2>
-<h5><i class="icon-feather"></i> 26 Май 2012 </h5>
-Тему о веб-серверах после опубликованных постов, где производилась установка LAMP на ArchLinux, приводились настройки Nginx и прочее, хотелось закрыть. Но, как оказалось, не все хотят пользоваться готовыми пакетами, где кто-то уже сделал настройки по-своему, решил за вас. Что ж, поскольку есть спрос на данную тему, а инструкций по установке всего этого комплекта 3 в одном мало или же нет вовсе, посвятим сему сегодняшний пост. Apache Скачивается с сайта: <img alt="apache" ...
-<div class="pagination">
-        <a href="http://www.unix-lab.org/author/redvi8.html">&larr;Предыдущая</a>
-    страница 9 из 13.
-        <a href="http://www.unix-lab.org/author/redvi10.html">Следующая&rarr;</a>
-</div></div>
+<h2>redVi</h2>
+<dl>
+<dd><a href="http://www.unix-lab.org/articles/get-absolute-url.html">Абсолютные пути URL в Django</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/hyperref.html">Навигация по документу в LaTeX</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/sass.html">Верстаем макеты с SASS/SCSS</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/pull-request.html">Как сделать pull request</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/site-optimization.html">Со скоростью света или Игра в оптимизаторы</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/sublime-text.html">Sublime-Text 3. Коротко о главном</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/django-pagination.html">Django: постраничный вывод статей</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/pelican.html">Свой блог на GitHub или Как приручить пеликана</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/django-first-steps.html">Django: первые страницы</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/subtle-wm.html">Subtle WM: свобода, ограниченная лишь фантазией</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/title-latex.html">Оформление глав TeX/LaTeX</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/virtualenv.html">Слово о virtualenv</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/debian-wheezy.html">Debian 7 или Какого лешего</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/achilles.html">«Ахиллесова пята» Samsung Galaxy</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/spo-problems.html">СПО: проблемы есть. Решения?</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/sort.html">Сортировка строк в файле</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/miui.html">MIUI v5: красота и грация Android</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/udev.html">Udisks, udev и все-все-все</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/gentoo-update.html">Руководство по обновлению Gentoo Linux</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/texreview.html">TeXобзор</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/kernel-v3.html">Ядерная физика для домохозяек v.3</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/backup.html">Ещё один способ резервного копирования</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/python-gui.html">Сохранение файлов с python</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/fbsplash.html">Стартовые красоты с fbsplash</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/gentoo2.html">Gentoo. Попытка № 2</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/acpi.html">Управление питанием и настройки acpi</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/postgresql.html">Настройка PostgreSQL для Django</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/nano.html">Подсветка в nano</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/zsh-bash.html">zsh и bash: что выбрать</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/qemu.html">QEMU. Mini how-to</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/dict.html">Пишем консольный словарь на python</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/screencast.html">Скринкасты в Linux</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/dwm.html">DWM: тайлинг — наше всё</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/github.html">GitHub и pastebin: что и зачем?</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/vnstat.html">Считаем трафик с vnstat</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/grub2.html">GRUB2: основные настройки</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/nginx.html">Nginx как самостоятельный веб-сервер</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/xmonad.html">Знакомьтесь, xmonad</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/clonezilla.html">Простое создание резервных копий с clonezilla</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/systemd.html">Systemd: загрузись по-новому</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/android-and-bb.html">Сквозное подключение. Android и ББ</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/android-launchers.html">Сравнение лаунчеров для Android</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/vim.html">Vim как основной текстовый редактор</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/android-upgrade.html">Обновление Android 3.2 до 4.0.3</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/samsung-galaxy.html">Опыт использования Samsung Galaxy S II или Знакомство с Android</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/wi-fi.html">Неприступный wi-fi</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/openbox.html">Поваренная книга openbox</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/utf8.html">Как перекодировать cp1251 в UTF-8</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/kde.html">Оптимизация KDE</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/top-programms.html">Топ программ под Linux</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/phpmyadmin.html">Установка PHPMyAdmin</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/mysql-install.html">Установка СУБД MySQL. Вручную</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/apache-php-mysql.html">Apache+PHP+MySQL под Windows</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/symbols.html">Спецсимволы в HTML</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/phpbb.html">Создание форума с phpBB</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/blog-import.html">Импорт блога из blogspot в wordpress</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/lamp.html">Установка LAMP в archlinux</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/abs.html">Знакомимся с ABS</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/unpack-archive.html">Распаковка архива на сервере</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/linux-on-hdd.html">Переносим linux на внешний HDD</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/chroot.html">Chroot на практике</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/arch-users.html">Пользователи и группы в Archlinux</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/quotes.html">Квоты или Как наказать нерадивого пользователя</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/debian-dsl.html">Настройка DSL в Debian/Ubuntu Linux</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/arch-settings.html">Arch Linux. Тонкая настройка</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/arch-install.html">Arch Linux. Быстрая установка</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/install-gentoo.html">Установка Gentoo. По-русски</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/iptables.html">Firewall в Linux. Настройка iptables</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/dns-server.html">DNS-сервер не отвечает</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/debian-repo.html">Репозитории Debian Squeeze</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/debian-kernel.html">Сборка ядра Debian</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/debian-kde.html">Установка KDE в Debian</a></dd>
+</dl>
+</div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
 </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
-    <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>
-    <li class="footer"><a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+    <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
 </ul>
 </div><script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

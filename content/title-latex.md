@@ -9,16 +9,17 @@ Summary: Пара способов оформления глав в LaTeX
 
 `Fncychar` позволит выбрать несколько различных стилей, красиво оформляющих наименование глав.
 
-`~title.tex~`
-
-    \documentclass[12pt]{report} % шрифт 12pt, тип документа report
-    \usepackage[english, russian]{babel} % кодировка шрифтов
-    \usepackage[utf8]{inputenc} % кодировка входного файла
-    \usepackage[Glenn]{fncychap} % выбираем стиль Glenn
-    \begin{document} % начало документа
-    \chapter{Название главы}
-    какой-то текст...
-    \end{document} % конец документа
+```tex
+% ~title.tex~
+\documentclass[12pt]{report} % шрифт 12pt, тип документа report
+\usepackage[english, russian]{babel} % кодировка шрифтов
+\usepackage[utf8]{inputenc} % кодировка входного файла
+\usepackage[Glenn]{fncychap} % выбираем стиль Glenn
+\begin{document} % начало документа
+\chapter{Название главы}
+какой-то текст...
+\end{document} % конец документа
+```
 
 Для сборки документа в pdf вводим в консоли: `$ pdflatex title.tex`
 На выходе получим:
@@ -34,23 +35,24 @@ Summary: Пара способов оформления глав в LaTeX
 
 Пакет `titlesec` позволяет вносить изменения в стандартный стиль главы, то есть переопределять его.
 
-`~title.tex~`
-
-    \documentclass[12pt]{report}
-    \usepackage[english, russian]{babel}
-    \usepackage[utf8]{inputenc}
-    \pagestyle{plain}
-    \pagenumbering{roman}
-    % Titlesec
-    \usepackage{titlesec, blindtext, color} % подключаем нужные пакеты
-    \definecolor{gray75}{gray}{0.75} % определяем цвет
-    \newcommand{\hsp}{\hspace{20pt}} % длина линии в 20pt
-    % titleformat определяет стиль
-    \titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
-    \begin{document} % начало документа
-    \chapter{Название главы}
-    какой-то текст...
-    \end{document} % конец документа
+```tex
+% ~title.tex~
+\documentclass[12pt]{report}
+\usepackage[english, russian]{babel}
+\usepackage[utf8]{inputenc}
+\pagestyle{plain}
+\pagenumbering{roman}
+% Titlesec
+\usepackage{titlesec, blindtext, color} % подключаем нужные пакеты
+\definecolor{gray75}{gray}{0.75} % определяем цвет
+\newcommand{\hsp}{\hspace{20pt}} % длина линии в 20pt
+% titleformat определяет стиль
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+\begin{document} % начало документа
+\chapter{Название главы}
+какой-то текст...
+\end{document} % конец документа
+```
 
 В итоге получим следующий стиль:
 

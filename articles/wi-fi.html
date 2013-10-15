@@ -18,14 +18,17 @@
     <div class="small">блог об операционных системах, open source и программировании</div>
 <div class="nav">
     <ul>
-      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
-      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
-      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+      <li><a href="http://www.unix-lab.org/archives/">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about/">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors/">Автор</a></li>
     </ul>
 </div>
 </div><div id="main">
 <h2><a href="http://www.unix-lab.org/articles/wi-fi.html">Неприступный wi-fi</a></h2>
-<h5><i class="icon-feather"></i> 08 Август 2012 </h5>
+<h5><i class="icon-feather"></i> 08 Август 2012
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/web/">Web</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
+</h5>
 <p>Казалось бы, нет денег &mdash; нет интернета, путь к светлой беспроводной мечте закрыт и ничего здесь не попишешь. Но мы пойдём другим путём &mdash; обходным. Рассмотрим две хитрых программы, способные раскрасить наши беспросветные будни яркими красками. Всё нижеизложенное осуществлялось под управлением ОС Linux, но в Windows одна из используемых программ имеется точно и имя ей <code>aircrack-ng</code>.</p>
 <p><b>Задача:</b> получение пароля точки доступа WPA/PSK или WPA2/PSK.</p>
 <p>Предполагаемый алгоритм решения:</p>
@@ -67,10 +70,10 @@
 </ul>
 <p>Какой канал использует наш удалённый друг мы можем видеть в поле <code>CH</code>.</p>
 <p>Если всё складывается удачно, вывод должен быть примерно таким:</p>
-<div class="highlight"><pre>    <span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="n">Switching</span> <span class="n">mon0</span> <span class="n">to</span> <span class="n">channel</span> <span class="mi">1</span>
-    <span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="n">Waiting</span> <span class="k">for</span> <span class="n">beacon</span> <span class="n">from</span> <span class="mi">20</span><span class="o">:</span><span class="mi">4</span><span class="n">E</span><span class="o">:</span><span class="mf">7F</span><span class="o">:</span><span class="mi">37</span><span class="o">:</span><span class="mi">73</span><span class="o">:</span><span class="mi">82</span>
-    <span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="n">Associated</span> <span class="n">with</span> <span class="mi">20</span><span class="o">:</span><span class="mi">4</span><span class="n">E</span><span class="o">:</span><span class="mf">7F</span><span class="o">:</span><span class="mi">37</span><span class="o">:</span><span class="mi">73</span><span class="o">:</span><span class="mi">82</span> <span class="p">(</span><span class="n">ESSID</span><span class="o">:</span> <span class="n">marisha24</span><span class="p">)</span>
-    <span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="n">Trying</span> <span class="n">pin</span> <span class="mi">12345670</span>
+<div class="highlight"><pre><span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="n">Switching</span> <span class="n">mon0</span> <span class="n">to</span> <span class="n">channel</span> <span class="mi">1</span>
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="n">Waiting</span> <span class="k">for</span> <span class="n">beacon</span> <span class="n">from</span> <span class="mi">20</span><span class="o">:</span><span class="mi">4</span><span class="n">E</span><span class="o">:</span><span class="mf">7F</span><span class="o">:</span><span class="mi">37</span><span class="o">:</span><span class="mi">73</span><span class="o">:</span><span class="mi">82</span>
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="n">Associated</span> <span class="n">with</span> <span class="mi">20</span><span class="o">:</span><span class="mi">4</span><span class="n">E</span><span class="o">:</span><span class="mf">7F</span><span class="o">:</span><span class="mi">37</span><span class="o">:</span><span class="mi">73</span><span class="o">:</span><span class="mi">82</span> <span class="p">(</span><span class="n">ESSID</span><span class="o">:</span> <span class="n">marisha24</span><span class="p">)</span>
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="n">Trying</span> <span class="n">pin</span> <span class="mi">12345670</span>
 </pre></div>
 
 
@@ -105,7 +108,7 @@
 </pre></div>
 
 
-<p>Ну и ждём, соответственно. Занятие это долгое, параллельно на другой машине успеете <a href="install-gentoo.html">поставить gentoo</a>. И не только поставить, а даже настроить =)</p>
+<p>Ну и ждём, соответственно. Занятие это долгое, параллельно на другой машине успеете <a href="http://www.unix-lab.org/posts/install-gentoo/">поставить gentoo</a>. И не только поставить, а даже настроить =)</p>
 <p>Либо ещё способ с тем же <code>aircrack</code>, опишу с нуля, дабы не запутать читателя:</p>
 <div class="highlight"><pre><span class="gp">#</span> airodump-ng mon0 - высматриваем жертву
 <span class="gp">#</span> airodump-ng -c 1 --bssid FC:75:16:CC:20:D8 -w data mon0 -  собираем данные о конкретной точке
@@ -133,37 +136,32 @@
 <p>Словари можно стянуть по адресу:</p>
 <p><a href="http://ftp.se.kde.org/pub/security/tools/net/Openwall/wordlists">http://ftp.se.kde.org/pub/security/tools/net/Openwall/wordlists</a></p>
 <p><b>P.S.</b> Автор не несёт ответственности за ваши действия. Вся информация предоставлена исключительно в ознакомительных целях. Автор не использует полученные в результате эксперимента сведения, не разглашает их и даже не помнит. Не смотря на это ввиду любопытности темы всем сведующим лицам предлагается вносить свои правки и дополнения в комментариях: это может быть более лучший/быстрый метод взлома, могут быть ссылки на качественные словари &mdash; что угодно.</p>
-<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi.html">redVi</a>,
-<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/web/">Web</a> /
-<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
-</h5>
+
+<br />
 <p align="center"><a href="#">наверх</a></p>
 </div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
 </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
-    <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>
-    <li class="footer"><a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+    <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
 </ul>
 </div><script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

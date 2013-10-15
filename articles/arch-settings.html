@@ -18,15 +18,18 @@
     <div class="small">блог об операционных системах, open source и программировании</div>
 <div class="nav">
     <ul>
-      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
-      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
-      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+      <li><a href="http://www.unix-lab.org/archives/">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about/">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors/">Автор</a></li>
     </ul>
 </div>
 </div><div id="main">
 <h2><a href="http://www.unix-lab.org/articles/arch-settings.html">Arch Linux. Тонкая настройка</a></h2>
-<h5><i class="icon-feather"></i> 19 Октябрь 2011 </h5>
-<p>В продолжение статьи <a href="arch-install.html">об установке лёгкого, быстрого и простого дистрибутива</a>. В конце поста небольшой видеоролик с установкой LXDE. Не красоты ради, а удобства для. Чтобы вам не приходилось настраивать свой арч, сидя в консоли.</p>
+<h5><i class="icon-feather"></i> 19 Октябрь 2011
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/arch/">Arch</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
+</h5>
+<p>В продолжение статьи <a href="http://www.unix-lab.org/posts/arch-install/">об установке лёгкого, быстрого и простого дистрибутива</a>. В конце поста небольшой видеоролик с установкой LXDE. Не красоты ради, а удобства для. Чтобы вам не приходилось настраивать свой арч, сидя в консоли.</p>
 <p>В общем и целом настройка arhclinux будет сведена к нескольким несложным действиям как то:</p>
 <ul>
 <li><a href="#inet">Настройка интернет-соединения</a></li>
@@ -149,7 +152,7 @@ EndSection
 </pre></div>
 
 
-<p>Такое выдало? Отлично, всё включено. Нет? Идите и <a href="kernel-v3.html">компилируйте ядро с поддержкой vgaswitcheroo</a>.</p>
+<p>Такое выдало? Отлично, всё включено. Нет? Идите и <a href="http://www.unix-lab.org/posts/kernel-v3/">компилируйте ядро с поддержкой vgaswitcheroo</a>.</p>
 <p>Активировать ATI:</p>
 <div class="highlight"><pre><span class="gp">#</span> <span class="nb">echo </span>DDIS &gt; /sys/kernel/debug/vgaswitcheroo/switch
 </pre></div>
@@ -186,7 +189,7 @@ EndSection
 <h3 id="powersave">Энергосбережение</h3>
 <p>Не буду повторять многократно пересказанное. Вики вам в помощь, дамы и господа:</p>
 <ul>
-<li><a href="acpi.html">acpi</a></li>
+<li><a href="http://www.unix-lab.org/posts/acpi/">acpi</a></li>
 <li><a href="https://wiki.archlinux.org/index.php/Laptop_(%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9)">laptop</a></li>
 <li><a href="https://wiki.archlinux.org/index.php/Lm_sensors_(%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9)">lm sensors</a></li>
 </ul>
@@ -201,7 +204,7 @@ EndSection
 <a href="http://farm3.staticflickr.com/2812/9471540916_d9ffb37430_b.jpg" data-lighter><img src="http://farm3.staticflickr.com/2812/9471540916_d9ffb37430_b.jpg"/></a></p>
 <p><u>Gnome</u>
 <a href="http://farm6.staticflickr.com/5322/9468762349_c9cfdfa125_b.jpg" data-lighter><img src="http://farm6.staticflickr.com/5322/9468762349_c9cfdfa125_b.jpg"/></a></p>
-<p>Для любителей минимализма осмелюсь порекомендовать <a href="openbox.html">openbox</a> или же <a href="xmonad.html">xmonad</a>.</p>
+<p>Для любителей минимализма осмелюсь порекомендовать <a href="http://www.unix-lab.org/posts/openbox/">openbox</a> или же <a href="http://www.unix-lab.org/posts/xmonad/">xmonad</a>.</p>
 <p><b>ВНИМАНИЕ!</b> Поскольку с недавнего времени archlinux претерпел некоторые изменения, а именно осуществился переход к <code>systemd</code>, файл <code>/etc/rc.conf</code>, скорее всего, скоро перестанет поддерживаться, хотя на данный момент такая возможность есть. Вместо этого пишутся юниты для автозапуска тех или иных сервисов. Так, юнит запуска KDM выглядит следующим образом:</p>
 <p><img alt="systemd" src="http://2.bp.blogspot.com/---9N3-j3xxw/UEWGh2MgKKI/AAAAAAAABXs/cUMEfN5QPN0/s1600/systemd_unit.png" /></p>
 <p>Для того, чтобы KDM стартовал при загрузке системы, выполните команду:</p>
@@ -246,37 +249,32 @@ acpi-cpufreq cpufreq_conservative
 
 <p>Удачи!</p>
 <div class="video"><iframe width="400" height="300" src="http://www.youtube.com/embed/2EIo6-bH9DU?rel=0" frameborder="0" allowfullscreen></iframe></div>
-<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi.html">redVi</a>,
-<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/arch/">Arch</a> /
-<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
-</h5>
+
+<br />
 <p align="center"><a href="#">наверх</a></p>
 </div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
 </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
-    <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>
-    <li class="footer"><a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+    <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
 </ul>
 </div><script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

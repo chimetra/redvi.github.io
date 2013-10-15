@@ -6,11 +6,13 @@ Author: redVi
 Summary: Для тех, кто ещё не знаком с Z Shell, а так же тем, кто находится на распутье в выборе шелла для повседневных задач, посвящается.
 
 Для тех, кто ещё не знаком с Z Shell, а так же тем, кто находится на распутье в выборе шелла для повседневных задач, посвящается эта заметка, впервые опубликованная мной [на хабре](http://habrahabr.ru/post/162339/).
+
 Надо сказать, о преимуществах zsh написано уже достаточно много материалов. Прежде всего, автором рекомендована к прочтению развёрнутая статья Алексея Федорчука [о шеллах](http://citkit.ru/articles/1083/) вообще и о zsh в частности. Что касается этой скромной заметки, она призвана показать читателю возможности обеих оболочек на конкретных примерах конфигурационных файлов. Упор сделан таки на zsh, ибо в понимании автора bash, как правило, пригоден к использованию изначально, zsh без собственных настроек лучше не использовать вовсе.
+
 Полные конфигурационные файлы как обычно можно [забрать с github](https://github.com/redVi/dotfiles/tree/master/shell).
 
 
-##I. Лучшее в shell - автодополнение
+## Лучшее в shell - автодополнение
 
 Автодополнение есть и в bash, этим в наше время никого не удивишь. Особенно хорош в этом смысле `bash-completion`, который позволяет дополнять не только пути к каталогам, но и эффективно искать пакеты для установки. Если вы ранее не использовали его, мой вам совет: обязательно установите. Дополнительных настроек для работы этого пакета не требуется.
 
@@ -18,30 +20,29 @@ Zsh может удивить вас, это действительно так. 
 
 для ArchLinux лучше сразу установить  пакеты, подобные `bash-completion`, что позволит использовать автодополнение в поиске пакетов с pacman и AUR: это `zsh-yaourt` и `zsh-packer`. Найти их можно в том же AUR. Подключим наше автодополнение:
 
-    :::sh
-    #Включить автодополнение
-    autoload -U compinit promptinit
-    compinit
-    promptinit
-    # Для pacman
-    [[ -a $(whence -p pacman-color) ]] && compdef _pacman pacman-color=pacman
-    # Корректировка ввода
-    setopt CORRECT_ALL
-    # Если в слове есть ошибка, предложить исправить её
-    SPROMPT="Ошибка! ввести %r вместо %R? ([Y]es/[N]o/[E]dit/[A]bort) "
-    # Не нужно всегда вводить cd
-    # просто наберите нужный каталог и окажитесь в нём
-    setopt autocd
-    # При совпадении первых букв слова вывести меню выбора
-    zstyle ':completion:*' menu select=long-list select=0
-    zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-
-
+```sh
+#Включить автодополнение
+autoload -U compinit promptinit
+compinit
+promptinit
+# Для pacman
+[[ -a $(whence -p pacman-color) ]] && compdef _pacman pacman-color=pacman
+# Корректировка ввода
+setopt CORRECT_ALL
+# Если в слове есть ошибка, предложить исправить её
+SPROMPT="Ошибка! ввести %r вместо %R? ([Y]es/[N]o/[E]dit/[A]bort) "
+# Не нужно всегда вводить cd
+# просто наберите нужный каталог и окажитесь в нём
+setopt autocd
+# При совпадении первых букв слова вывести меню выбора
+zstyle ':completion:*' menu select=long-list select=0
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+```
 
 Уже неплохо, верно? Честно сказать, меня не прельщала перспектива перехода на zsh, поскольку в целом устраивал и bash. Но эксперимент показал: zsh &mdash; это очень удобно.
 
 
-##II. Горячие клавиши
+## Горячие клавиши
 
 Насколько мне известно, в bash горячие клавиши изменению не подлежат. Впрочем, не исключено, что я ошибаюсь. Это известные всем линуксоидам клавиши редактора `emacs`. Они взяты за основу и будут работать на любой машине, где установлен bash. Конечно, никто не запретит вам использовать стрелки для перемещения между символами или клавишу `delete` для удаления символа &mdash; это тоже есть в bash, и это тоже не нужно настраивать.
 
@@ -50,111 +51,108 @@ Zsh может удивить вас, это действительно так. 
 Разумеется, можно настроить отдельные сочетания клавиш так, как вам нравится.
 Пример:
 
-    :::sh
-    bindkey '\e[3~' delete-char # del
-    bindkey ';5D' backward-word # ctrl+left
-    bindkey ';5C' forward-word #ctrl+right
-
+```sh
+bindkey '\e[3~' delete-char # del
+bindkey ';5D' backward-word # ctrl+left
+bindkey ';5C' forward-word #ctrl+right
+```
 
 Стандартные клавиши редактора emacs:
 
-    Ctrl+a     в начало строки
-    Ctrl+e     в конец строки
-    Ctrl+b     на символ назад
-    Ctrl+c     завершить
-    Ctrl+f     на символ вперед
-    Ctrl+k     удалить до конца строки
-    Ctrl+u     удалить все символы слева от курсора до начала строки
-    Сtrl+w     удалить символы слева от курсора до начала слова
-    Ctrl+t     меняет символ под курсором на предыдущий
-    Ctrl+Shift+- отмена
-    ALt+l      привести к нижнему регистру
-    Alt+u      привести к верхнему регистру
-    Alt+C      первая буква заглавная
-    Ctrl+l     clear
-    Ctrl+p     previous
-    Ctrl+n     next
+```
+Ctrl+a     в начало строки
+Ctrl+e     в конец строки
+Ctrl+b     на символ назад
+Ctrl+c     завершить
+Ctrl+f     на символ вперед
+Ctrl+k     удалить до конца строки
+Ctrl+u     удалить все символы слева от курсора до начала строки
+Сtrl+w     удалить символы слева от курсора до начала слова
+Ctrl+t     меняет символ под курсором на предыдущий
+Ctrl+Shift+- отмена
+ALt+l      привести к нижнему регистру
+Alt+u      привести к верхнему регистру
+Alt+C      первая буква заглавная
+Ctrl+l     clear
+Ctrl+p     previous
+Ctrl+n     next
+```
 
-
-
-##III. Псевдонимы
+## Псевдонимы
 
 Очень удобно бывает использовать псевдонимы различных команд. Алиасы замечательно настраиваются как в bash, так и в zsh. Отличие в том, что в zsh можно использовать не только команды, но и назначить расширения типов файлов для отдельных приложений. Чем это полезно? Благодаря этой возможности zsh может заменить вам даже файловый менеджер. Смотрите сами:
 
-    :::sh
-    # Aliases
-    alias ls='ls --color=auto'
-    alias grep='grep --colour=auto'
-    alias sudo='A=`alias` sudo '
-    alias pacman='sudo pacman-color'
-    alias sc='sudo systemctl'
-    alias nc='sudo netcfg'
-    alias -s {avi,mpeg,mpg,mov,m2v}=mplayer
-    alias -s {odt,doc,sxw,rtf}=openoffice.org
-    alias -s {ogg,mp3,wav,wma}=cmus
-    autoload -U pick-web-browser
-    alias -s {html,htm}=chromium
-
+```sh
+# Aliases
+alias ls='ls --color=auto'
+alias grep='grep --colour=auto'
+alias sudo='A=`alias` sudo '
+alias pacman='sudo pacman-color'
+alias sc='sudo systemctl'
+alias nc='sudo netcfg'
+alias -s {avi,mpeg,mpg,mov,m2v}=mplayer
+alias -s {odt,doc,sxw,rtf}=openoffice.org
+alias -s {ogg,mp3,wav,wma}=cmus
+autoload -U pick-web-browser
+alias -s {html,htm}=chromium
+```
 
 Обратите внимание на строки, начинающиеся с `alias -s`. Теперь представьте: вы находитесь в директории с документами и среди них есть один или несколько с расширением `.html`. Что мы делаем обычно? Запускаем браузер, жмём `Ctrl+O`, выбираем файл и просматриваем его. Что позволяют сделать псевдонимы в zsh? Просто напишите название документа и он тут же будет открыт в браузере.
 Для этого сначала подгружается отдельный модуль `pick-web-browser`
 
-
-##IV. История команд
+## История команд
 
 И уж, конечно, ни один пользователь не оспорит удобство использования истории команд. Здесь zsh ничем особенным не отличается от bash. Настроим его:
 
-    :::sh
-    #  History
-    # хранить историю в указанном файле
-    export HISTFILE=~/.zsh_history
-    # максимальное число команд, хранимых в сеансе
-    export HISTSIZE=1000
-    export SAVEHIST=$HISTSIZE
-    # включить историю команд
-    setopt APPEND_HISTORY
-    # убрать повторяющиеся команды, пустые строки и пр.
-    setopt HIST_IGNORE_ALL_DUPS
-    setopt HIST_IGNORE_SPACE
-    setopt HIST_REDUCE_BLANKS
+```sh
+#  History
+# хранить историю в указанном файле
+export HISTFILE=~/.zsh_history
+# максимальное число команд, хранимых в сеансе
+export HISTSIZE=1000
+export SAVEHIST=$HISTSIZE
+# включить историю команд
+setopt APPEND_HISTORY
+# убрать повторяющиеся команды, пустые строки и пр.
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_REDUCE_BLANKS
+```
 
-
-
-
-##V. Прочие удобства
+## Прочие удобства
 
 Для zsh есть одна прелюбопытнейшая вещь: плагин `zsh-syntax-highlighting`. Пользователи ArchLinux могут установить его из AUR, остальные &mdash; скачать из одноимённого проекта на github. Поставьте его, и ваш эмулятор терминала заиграет новыми красками.
 Изначально он ориентирован на любые терминалы &mdash; не только поддерживающие 256 цветов, поэтому некоторые цвета могут выглядеть не так, как нам нравится, но это можно настроить. Главный файл с настройками цветов располагается по пути:
+
 `/usr/share/zsh/plugins/zsh-syntax-highlight/highlighters/main/main-highlighter.zsh`. Но править непосредственно его нет нужды. Просто посмотрите, что хотели бы там исправить и измените цвета так, как вам нравится, используя таблицу поддерживаемых цветов.
 
 Пример:
 
-    :::sh
-    # zsh-syntax-highlighting from AUR
-    typeset -A ZSH_HIGHLIGHT_STYLES
-    ZSH_HIGHLIGHT_STYLES=(
-            'alias'           'fg=153,bold'
-            'builtin'         'fg=153'
-            'function'        'fg=166'
-            'command'         'fg=153'
-            'precommand'      'fg=153, underline'
-            'hashed-commands' 'fg=153'
-            'path'            'underline'
-            'globbing'        'fg=166'
-    )
-    source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-
+```sh
+# zsh-syntax-highlighting from AUR
+typeset -A ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES=(
+        'alias'           'fg=153,bold'
+        'builtin'         'fg=153'
+        'function'        'fg=166'
+        'command'         'fg=153'
+        'precommand'      'fg=153, underline'
+        'hashed-commands' 'fg=153'
+        'path'            'underline'
+        'globbing'        'fg=166'
+)
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+```
 
 Также в zsh имеется очень популярный способ запаковки/распаковки архивов. Введите команду `extract myfile.tar`  - распакуете архив, введите команду `pk tar myfile` - запакуете файл в архив указанного формата. Выходит, zsh может заменить архиватор?
 
 Для распаковки впишем в `.zhsrc`:
 
-    :::sh
-    # Распаковка архивов
-    # example: extract file
-    extract () {
-     if [ -f $1 ] ; then
+```sh
+# Распаковка архивов
+# example: extract file
+extract () {
+    if [ -f $1 ] ; then
      case $1 in
      *.tar.bz2)   tar xjf $1        ;;
      *.tar.gz)    tar xzf $1     ;;
@@ -173,48 +171,46 @@ Zsh может удивить вас, это действительно так. 
      else
      echo "'$1' is not a valid file"
      fi
-    }
-
+}
+```
 
 Для создания архивов:
 
-    :::sh
-    # Запаковать архив
-    # example: pk tar file
-    pk () {
-     if [ $1 ] ; then
-     case $1 in
-     tbz)       tar cjvf $2.tar.bz2 $2      ;;
-     tgz)       tar czvf $2.tar.gz  $2       ;;
-     tar)      tar cpvf $2.tar  $2       ;;
-     bz2)    bzip $2 ;;
-     gz)        gzip -c -9 -n $2 > $2.gz ;;
-     zip)       zip -r $2.zip $2   ;;
-     7z)        7z a $2.7z $2    ;;
-     *)         echo "'$1' cannot be packed via pk()" ;;
-     esac
-     else
-     echo "'$1' is not a valid file"
-     fi
-    }
+```sh
+# Запаковать архив
+# example: pk tar file
+pk () {
+    if [ $1 ] ; then
+    case $1 in
+    tbz) tar cjvf $2.tar.bz2 $2 ;;
+    tgz) tar czvf $2.tar.gz  $2 ;;
+    tar) tar cpvf $2.tar  $2 ;;
+    bz2) bzip $2 ;;
+    gz) gzip -c -9 -n $2 > $2.gz ;;
+    zip) zip -r $2.zip $2 ;;
+    7z) 7z a $2.7z $2 ;;
+    *) echo "'$1' cannot be packed via pk()" ;;
+    esac
+    else
+    echo "'$1' is not a valid file"
+    fi
+}
+```
 
-
-
-##VI. Итоги
+## Итоги
 
 Zsh очень удобен для повседневной работы и делает добрую половину рутины за вас. Но стоит обратить внимание на различия между этими двумя оболочками. Например, в zsh после `for` обязательно вставлять пробел, нумерация массивов в zsh начинается с 1, чего совершенно невозможно понять.
 Так, если вы используете shell для повседневной работы, исключающей написание скриптов, используйте zsh. Если вам часто приходится писать свои скрипты, только bash! Впрочем, можно комбинировать.
 Как установить zsh в качестве оболочки по-умолчанию для отдельного пользователя:
 
-    :::console
-    $ chsh -s /bin/zsh your_user
-
+```console
+$ chsh -s /bin/zsh your_user
+```
 
 P.S. Те арчеводы, которым при установке дистрибутива понравился `.zshrc` арча, могут установить готовый пакет из AUR: `grml-zsh-config`.
 Кроме того, вы можете заметить, что zsh работает медленнее в сравнении с bash. Чтобы ускорить некоторые команды, например, поиск по базе пакетов, следует включить кэш. Для этого создайте директорию `.zsh/cache` и укажите в `.zshrc`:
 
-    :::sh
-    zstyle ':completion:*' use-cache on
-    zstyle ':completion:*' cache-path ~/.zsh/cache
-
-
+```sh
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+```

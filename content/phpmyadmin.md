@@ -5,7 +5,7 @@ Slug: phpmyadmin
 Author: redVi
 Summary: Установка PHPMyAdmin на Windows
 
-Что ж, [в предыдущем посте](apache-php-mysql.html) мы благополучно установили веб-сервер Apache, php, MySQL... Но с базами данных намного удобнее работать при помощи `PHPMyAdmin`. Давайте его установим.
+Что ж, [в предыдущем посте](http://www.unix-lab.org/posts/apache-php-mysql/) мы благополучно установили веб-сервер Apache, php, MySQL... Но с базами данных намного удобнее работать при помощи `PHPMyAdmin`. Давайте его установим.
 
 Идём по адресу <http://www.phpmyadmin.net/home_page/downloads.php>, скачиваем архив. Желательно выбирать мультиязычный, где уже имеется русский. На родном языке всегда лучше.
 
@@ -15,18 +15,24 @@ Summary: Установка PHPMyAdmin на Windows
 
 Хотя следует проверить настройки конфигурации PHP в `php.ini`:
 
-    extension=mysql.so
-    extension=mysqli.so
+```
+extension=mysql.so
+extension=mysqli.so
+```
 
 И, если вдруг возникнут проблемы, конфигурацию веб-сервера в `httpd.conf`:
 
 Добавить в блок начинающийся строкой:
 
-    <IfModule alias_module>
+```
+<IfModule alias_module>
+```
 
 Следующее:
 
-    Alias /phpmyadmin "C:\Program Files (x86)\Apache Software Foundation\Apache2.2\htdocs\pma"
+```
+Alias /phpmyadmin "C:\Program Files (x86)\Apache Software Foundation\Apache2.2\htdocs\pma"
+```
 
 Всё. Заходим <htttp://localhost/pma/index.php>
 
@@ -35,4 +41,3 @@ Summary: Установка PHPMyAdmin на Windows
 Вспоминаем пароль пользователя root, входим под этой учётной записью. Можно создавать свои базы данных и заполнять их содержимым.
 
 ![bd](http://4.bp.blogspot.com/-wkDN-gylCgs/T8JMT_El6II/AAAAAAAAArE/fLHjXx9SvYY/s1600/bd.png "base")
-

@@ -10,57 +10,65 @@ Summary: Настройка тайлового менеджера окон DWM
 К примеру, dwm — динамический фреймовый оконный менеджер. Написан на языке C. Настройка производится посредством правки заголовочного файла, для чего необходимо иметь исходники dwm. Если вас не пугает перспектива потратить час-другой на настройку этой штуки под свои нужды, то давайте приступим.
 
 
-##I. Где взять?
+## Где взять?
 
 Если ваш дистрибутив — ArchLinux, ставьте вместе с автором сего поста `abs` — это наилучшее решение, так вы будете иметь возможность внести свои правки в конфигурационный файл dwm - сделать всё по-своему, а затем установить то, что получилось. Обладатели других дистрибутивов могут найти исходники dwm и загрузить их. Например, с сайта <http://dwm.suckless.org/> - вкладка `downloads`.
 
 Метода арча:
 
-    :::console
-    # pacman -S abs
-    # vim /etc/abs.conf
+```console
+# pacman -S abs
+# vim /etc/abs.conf
+```
 
 Здесь поменяем каталог `/var/abs` на какой-нибудь другой. Можно оставить по-умолчанию, но тогда все исходники лягут в директорию `/var`, что не есть хорошо, если под содержащий её раздел выделено мало места.
 
 Пример настройки:
 
-
-    # /etc/abs.conf
-    # the top-level directory of all your PKGBUILDs
-    [ "$ABSROOT" = "" ] && ABSROOT="/home/user/abs/"
+```sh
+# /etc/abs.conf
+# the top-level directory of all your PKGBUILDs
+[ "$ABSROOT" = "" ] && ABSROOT="/home/user/abs/"
+```
 
 Синхронизируем дерево abs:
 
-    :::console
-    # abs
-    ==> Starting ABS sync...
-    receiving file list ... done
-    ./
-    community/python-memcached/PKGBUILD
-    core/
-    multilib/
-    multilib/binutils-multilib/
-    multilib/binutils-multilib/PKGBUILD
-    multilib/binutils-multilib/binutils.install
+```console
+# abs
+==> Starting ABS sync...
+receiving file list ... done
+./
+community/python-memcached/PKGBUILD
+core/
+multilib/
+multilib/binutils-multilib/
+multilib/binutils-multilib/PKGBUILD
+multilib/binutils-multilib/binutils.install
+```
 
 Если вам не нужна вся коллекция `abs`, можно получить только dwm:
 
-    :::console
-    # abs community/dwm/
+```console
+# abs community/dwm/
+```
 
 Отлично. Теперь находим dwm и начинаем разбираться с его настройкой. Перейдите в нужную директорию
 
-    :::console
-    $ cd /home/user/abs/community/dwm
+```console
+$ cd /home/user/abs/community/dwm
+```
 
 Вносим нужные правки (об этом ниже) и собираем пакет для установки. Но постойте-ка! Мы ведь нарушим целостность файла, изменив его, соответственно, не пройдём проверку на контрольные суммы. Что ж, давайте отключим эту проверку. Итак, установка:
 
-    :::console
-    $ sudo makepkg --skipchecksums --asroot
+```console
+$ sudo makepkg --skipchecksums --asroot
+```
 
 Добавьте в ваш `.xinitrc` запись
 
-    exec dwm
+```
+exec dwm
+```
 
 И входите по startx - добро пожаловать!
 
@@ -68,7 +76,7 @@ Summary: Настройка тайлового менеджера окон DWM
 
 <a href="http://farm3.staticflickr.com/2889/9263499596_54c76c71a6_b.jpg" data-lighter><img src="http://farm3.staticflickr.com/2889/9263499596_54c76c71a6_b.jpg"/></a>
 
-##II. Как настроить ?
+## Как настроить ?
 
 Посмотрим, что можно изменить в файле `config.h`
 
@@ -76,35 +84,34 @@ Summary: Настройка тайлового менеджера окон DWM
 
 Для определения поддержки тем или иным шрифтом кириллицы, используйте утилиту `xfontsel`.
 
-    :::c
-    static const char font[]= "-*-dejavu sans-medium-r-*-*-8-*-*-*-*-*-*-ru";
+```c
+static const char font[]= "-*-dejavu sans-medium-r-*-*-8-*-*-*-*-*-*-ru";
+```
 
 Вам может потребоваться явно указать пути к шрифтам в файле `/etc/X11/xorg.conf`:
 
-    :::c
-    Section "Files"
-        FontPath "/usr/share/fonts/local"
-        FontPath "/usr/share/fonts/misc"
-        FontPath "/usr/share/fonts/cyrillic"
-    EndSection
-
-
+```c
+Section "Files"
+    FontPath "/usr/share/fonts/local"
+    FontPath "/usr/share/fonts/misc"
+    FontPath "/usr/share/fonts/cyrillic"
+EndSection
+```
 
 Далее идёт настройка цветов статус-бара:
 
-    :::c
-    static const char normbordercolor[] = "#8181ff";
-    static const char normbgcolor[]     = "#222222";
-    static const char normfgcolor[]     = "#bbbbbb";
-    static const char selbordercolor[]  = "#4e4eff";
-    static const char selbgcolor[]      = "#606060";
-    static const char selfgcolor[]      = "#eeeeee";
-    static const unsigned int borderpx  = 1;
-    static const unsigned int snap      = 32;
-    static const Bool showbar           = True;
-    static const Bool topbar            = True;
-
-
+```c
+static const char normbordercolor[] = "#8181ff";
+static const char normbgcolor[]     = "#222222";
+static const char normfgcolor[]     = "#bbbbbb";
+static const char selbordercolor[]  = "#4e4eff";
+static const char selbgcolor[]      = "#606060";
+static const char selfgcolor[]      = "#eeeeee";
+static const unsigned int borderpx  = 1;
+static const unsigned int snap      = 32;
+static const Bool showbar           = True;
+static const Bool topbar            = True;
+```
 
 - normbordercolorp[] = цвет границ окна
 - normbgcolor[] = цвет фона
@@ -117,48 +124,49 @@ Summary: Настройка тайлового менеджера окон DWM
 
 Настроим как нам нравится наши теги (это что-то вроде рабочих столов в других менеджерах окон)
 
-    :::c
-    static const char *tags[] = { "term", "chat", "www", "media", "work" };
+```c
+static const char *tags[] = { "term", "chat", "www", "media", "work" };
+```
 
 Теперь вместо цифр мы имеем человекопонятные обозначения для каждого тега.
 
 Как и во всех — мне известных — оконных менеджерах, dwm использует клавишу-модификатор. По умолчанию это `Mod1Mask` — то есть клавиша `Alt`. Чтобы изменить её на клавишу `super` (там, где лого windows) — изменим запись `#define MODKEY`:
 
-    :::c
-    /* key definitions */
-    #define MODKEY Mod4Mask
-    #define TAGKEYS(KEY,TAG)
-    { MODKEY,          KEY,      view,   .ui = 1 << TAG} }, \
-    { MODKEY|ControlMask,  KEY,      toggleview,{.ui = 1 << TAG} }, \
-    { MODKEY|ShiftMask,   KEY,      tag,  {.ui = 1 << TAG} }, \
-    { MODKEY|ControlMask|ShiftMask, KEY,   toggletag, {.ui = 1 << TAG} },
-
+```c
+/* key definitions */
+#define MODKEY Mod4Mask
+#define TAGKEYS(KEY,TAG)
+{ MODKEY,          KEY,      view,   .ui = 1 << TAG} }, \
+{ MODKEY|ControlMask,  KEY,      toggleview,{.ui = 1 << TAG} }, \
+{ MODKEY|ShiftMask,   KEY,      tag,  {.ui = 1 << TAG} }, \
+{ MODKEY|ControlMask|ShiftMask, KEY,   toggletag, {.ui = 1 << TAG} },
+```
 
 Настройка горячих клавиш. Из приведённого ниже кода ясно, что нажатие `клавиши-модификатора + p` вызовет `dmenu`, нажатие `клавиши-модификатора + Return` (Enter) вызовет эмулятор терминала, ну и так далее. В принципе, стандартные обозначения вполне даже удобны и вряд ли вам захочется их менять. Мы вернёмся к этому чуть позже, далее будет приведён более полный перечень горячих клавиш.
 
-    :::c
-    static Key keys[] = {
-    /* modifier            key        function        argument */
-    { MODKEY,              XK_p,      spawn,     {.v = dmenucmd } },
-    { MODKEY,              XK_Return, spawn,  {.v = termcmd } },
-    { MODKEY,              XK_b,      togglebar,  {0} },
-    { MODKEY,              XK_j,      focusstack,  {.i = +1 } },
-    { MODKEY,              XK_k,      focusstack,  {.i = -1 } },
+```c
+static Key keys[] = {
+ /* modifier            key        function        argument */
+{ MODKEY,              XK_p,      spawn,     {.v = dmenucmd } },
+{ MODKEY,              XK_Return, spawn,  {.v = termcmd } },
+{ MODKEY,              XK_b,      togglebar,  {0} },
+{ MODKEY,              XK_j,      focusstack,  {.i = +1 } },
+{ MODKEY,              XK_k,      focusstack,  {.i = -1 } },
 
-    }
-
+}
+```
 
 Настройка правил для приложений
 
-    :::c
-    static const Rule rules[] = {
+```c
+static const Rule rules[] = {
 
-    /* class      instance    title       tags mask     isfloating   monitor */
-    { "Gimp",     NULL,       NULL,       0,            True,        -1 },
-    { "Firefox",  NULL,       NULL,       1 << 2,       False,       -1 },
+/* class      instance    title       tags mask     isfloating   monitor */
+{ "Gimp",     NULL,       NULL,       0,            True,        -1 },
+{ "Firefox",  NULL,       NULL,       1 << 2,       False,       -1 },
 
-    };
-
+};
+```
 
 ~0 - приложение будет запускаться сразу на всех тегах. Это может быть удобно для какого-нибудь док-бара, трея и прочих
 
@@ -167,20 +175,21 @@ Summary: Настройка тайлового менеджера окон DWM
 
 `isfloating` указывает на то, будут ли окна приложения плавающими
 
-##III. Расположение окон. Горячие клавиши
+## Расположение окон. Горячие клавиши
 
 По умолчанию DWM поддерживает три режима расположения окон, плиточный []= , монокль [M] ,  плавающий ><>. Как правило, этого бывает достаточно.
 
 По умолчанию при запуске dwm отображается плиточный режим окон. Чтобы поставить вместо него свой любимый режим, просто найдите нижеуказанные строки и поставьте нужный режим на первое место:
 
-    :::c
-    static const Layout layouts[] = {
+```c
+static const Layout layouts[] = {
 
-    /* symbol     arrange function */
-    { "><>",      NULL },
-    { "[]=",      tile },
-    { "[M]",      monocle },
-    };
+/* symbol     arrange function */
+{ "><>",      NULL },
+{ "[]=",      tile },
+{ "[M]",      monocle },
+};
+```
 
 <a href="http://fc05.deviantart.net/fs70/i/2013/001/d/e/arch_linux__dwm__december_2012_by_redvi9-d5pkhy7.png" data-lighter><img src="http://fc05.deviantart.net/fs70/i/2013/001/d/e/arch_linux__dwm__december_2012_by_redvi9-d5pkhy7.png"/></a>
 
@@ -209,30 +218,32 @@ Summary: Настройка тайлового менеджера окон DWM
 `Alt + Tab` - переход на следующий/предыдущий тег
 
 
-##IV. Дополнительные плюшки и запуск
+## Дополнительные плюшки и запуск
 
 У dwm нет каких-либо специальных настроек для запуска приложений. Всё, что запускал ваш openbox (верно?) из файла `autostart`, прописывается просто в `.xinitrc`
 
 Например:
 
-    nitrogen --restore
-    xmodmap ~/.xmodmaprc
-    conky | while read -r; do xsetroot -name "$REPLY"; done &
-    и прочее...
-
+```
+nitrogen --restore
+xmodmap ~/.xmodmaprc
+conky | while read -r; do xsetroot -name "$REPLY"; done &
+и прочее...
+```
 
 Естественно, если вы пожелаете отображать информацию из conky, нужно будет сделать его покороче ;) Так, чтобы он вмещался в статус-бар dwm.
 
-    .conkyrc:
+```
+.conkyrc:
 
-    out_to_x no
-    out_to_console yes
-    background no
-    update_interval 100
-    total_run_times 0
-    TEXT
-    CPU ${cpu cpu0}% :: Mem $mem :: HDD ${fs_used} :: ${totaldown eth0} / ${totalup eth0} :: ${time %d:%m:%H:%M}
-
+out_to_x no
+out_to_console yes
+background no
+update_interval 100
+total_run_times 0
+TEXT
+CPU ${cpu cpu0}% :: Mem $mem :: HDD ${fs_used} :: ${totaldown eth0} / ${totalup eth0} :: ${time %d:%m:%H:%M}
+```
 
 Вот, пожалуй, и всё. Пусть dwm принесёт вам немало радостных минут,  позволит забыть о мыши и в целом сделает вашу работу за компьютером удобнее.
 Настройки wdm автора можно найти на [github](https://github.com/redVi/dotfiles/tree/master/dwm) вместе с инструкцией по применению ;)

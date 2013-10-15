@@ -18,14 +18,16 @@
     <div class="small">блог об операционных системах, open source и программировании</div>
 <div class="nav">
     <ul>
-      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
-      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
-      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+      <li><a href="http://www.unix-lab.org/archives/">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about/">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors/">Автор</a></li>
     </ul>
 </div>
 </div><div id="main">
 <h2><a href="http://www.unix-lab.org/articles/texreview.html">TeXобзор</a></h2>
-<h5><i class="icon-feather"></i> 04 Май 2013 </h5>
+<h5><i class="icon-feather"></i> 04 Май 2013
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/latex/">LaTeX</a> /
+</h5>
 <p>Что такое TeX? TeX — это система компьютерной вёрстки, разработанная американским профессором информатики Дональдом Кнутом в целях создания компьютерной типографии.
 Что такое LaTeX? LaTeX — набор макрорасширений (или макропакет) системы компьютерной вёрстки ΤeΧ, который облегчает набор сложных документов.</p>
 <p>Кому и зачем это нужно? Студентам, аспирантам, преподавателям, учёным мужам и всем, кому по долгу службы или повелению души нужно сделать качественную вёрстку текста. Не говоря уже об особях, чьё ремесло  —  издательское дело. Если вам хоть немного интересна эта тема, но вы не знаете, с чего начать: добро пожаловать на сегодняшний TeXобзор.</p>
@@ -81,8 +83,8 @@
 
 <h2>LaTeX. Особенности использования</h2>
 <p>Как уже наверняка заметил читатель, изготовление документов в LaTeX совершенно не похоже на привычные и повсеместно используемые MS Office, LibreOffice и иже с ними. Но пока совершенно неясно: чем он лучше? А начать разговор об этом следует издалека.</p>
-<p>В 1974 году появилась технология WYSIWYG, работающая по принципу «что видишь, то и получишь». До появления оной при создании документов со сложным форматированием использовались программы, применяющие язык разметки подобно тому, как читатель изволил видеть выше. Первой программой, использующей WYSIWYG считается текстовый редактор Bravo, разработанный в Xerox PARC для компьютеров Alto. Современные WYSIWYG-редакторы являются объектно-ориентированными визуальными средами программирования, в которых имеются шаблоны (классы) объектов, наборы готовых форм-объектов для блочного визуального программирования, включая скрипт-объекты на языках JavaScript, VBScript и прочих. К ним и относятся все нынешние офисные пакеты, так широко используемые пользователями.
-Почему они уступают LaTeX? Как справедливо отмечает товарищ Львовский в книге «Набор и вёрстка в системе LaTeX»:</p>
+<p>В 1974 году появилась технология WYSIWYG, работающая по принципу «что видишь, то и получишь». До появления оной при создании документов со сложным форматированием использовались программы, применяющие язык разметки подобно тому, как читатель изволил видеть выше. Первой программой, использующей WYSIWYG считается текстовый редактор Bravo, разработанный в Xerox PARC для компьютеров Alto. Современные WYSIWYG-редакторы являются объектно-ориентированными визуальными средами программирования, в которых имеются шаблоны (классы) объектов, наборы готовых форм-объектов для блочного визуального программирования, включая скрипт-объекты на языках JavaScript, VBScript и прочих. К ним и относятся все нынешние офисные пакеты, так широко используемые пользователями.</p>
+<p>Почему они уступают LaTeX? Как справедливо отмечает товарищ Львовский в книге «Набор и вёрстка в системе LaTeX»:</p>
 <ul>
 <li>никакая другая из существующих в настоящее время издательсикх систем не может сравниться с TeX’ом в полиграфическом качестве текстов с математическими формулами</li>
 <li>система TeX реализована на всех современных компьютерных платформах</li>
@@ -202,9 +204,9 @@
 <p>За табличку выражаю благодарность <a href="http://zagrei.livejournal.com/">@zagrei</a>.</p>
 <h3>Выравнивание</h3>
 <p>Для выравнивания документа служат теги:</p>
-<div class="highlight"><pre> <span class="k">\flushleft</span> — выравнивание по левому краю
- <span class="k">\flushrigth</span> — выравнивание по правому краю
- <span class="k">\center</span> — выравнивание по центру
+<div class="highlight"><pre><span class="k">\flushleft</span> — выравнивание по левому краю
+<span class="k">\flushrigth</span> — выравнивание по правому краю
+<span class="k">\center</span> — выравнивание по центру
 </pre></div>
 
 
@@ -224,7 +226,7 @@
 
 <span class="k">\begin</span><span class="nb">{</span>descrption<span class="nb">}</span> <span class="c">% начало описания</span>
 <span class="k">\item</span><span class="na">[Гай Юлий Цезарь]</span> был государственный и политический деятель.
-    Своим завоеванием Галлии Цезарь расширил римскую державу до берегов северной Атлантики
+  Своим завоеванием Галлии Цезарь расширил римскую державу до берегов северной Атлантики
 <span class="k">\end</span><span class="nb">{</span>descrption<span class="nb">}</span> <span class="c">% конец описания</span>
 <span class="k">\end</span><span class="nb">{</span>enumerate<span class="nb">}</span> <span class="c">% конец нумерованного списка</span>
 </pre></div>
@@ -355,23 +357,23 @@
 <div class="highlight"><pre><span class="k">\begin</span><span class="nb">{</span>verbatim<span class="nb">}</span>
 package = input(&#39;Choose file for sort: &#39;)
 try:
-    file = open(package, &#39;r+&#39;)
-    pos = 0
-    line = file.readlines()
-    file.seek(pos)
-    sort<span class="nb">_</span>text = sorted(line)
-    for new<span class="nb">_</span>line in sort<span class="nb">_</span>text:
-        file.write(new<span class="nb">_</span>line)
-        pos = file.tell()
-    file.close()
-except IOError:
-    print(&#39;No such file or directory. Repeat, please!&#39;)
+  file = open(package, &#39;r+&#39;)
+  pos = 0
+  line = file.readlines()
+  file.seek(pos)
+  sort<span class="nb">_</span>text = sorted(line)
+  for new<span class="nb">_</span>line in sort<span class="nb">_</span>text:
+      file.write(new<span class="nb">_</span>line)
+      pos = file.tell()
+      file.close()
+  except IOError:
+      print(&#39;No such file or directory. Repeat, please!&#39;)
 <span class="k">\end</span><span class="nb">{</span>verbatim<span class="nb">}</span>
 </pre></div>
 
 
-<p><a href="http://1.bp.blogspot.com/-WCVRJNvIb3I/UVLiJjy-WII/AAAAAAAAEPE/Ba0FyQS3zxg/s1600/verbatim.png"><img alt="verbatim" src="http://1.bp.blogspot.com/-WCVRJNvIb3I/UVLiJjy-WII/AAAAAAAAEPE/Ba0FyQS3zxg/s1600/verbatim.png" /></a></p>
-<p>Вводу математических формул посвящены целые главы. В первую очередь для этого и предназначен TeX. Поэтому данный вопрос не будет рассматриваться в обзоре, который и без того получился не самым коротким. Хотя ради иллюстрации всё же нужно продемонстрировать как выглядят формулы в LaTeX'e.</p>
+<p><a href="http://1.bp.blogspot.com/-WCVRJNvIb3I/UVLiJjy-WII/AAAAAAAAEPE/Ba0FyQS3zxg/s1600/verbatim.png"><img alt="verbatim" src="http://1.bp.blogspot.com/-WCVRJNvIb3I/UVLiJjy-WII/AAAAAAAAEPE/Ba0FyQS3zxg/s1600/verbatim.png" /></a>
+Вводу математических формул посвящены целые главы. В первую очередь для этого и предназначен TeX. Поэтому данный вопрос не будет рассматриваться в обзоре, который и без того получился не самым коротким. Хотя ради иллюстрации всё же нужно продемонстрировать как выглядят формулы в LaTeX'e.</p>
 <div class="highlight"><pre><span class="k">\newpage</span>
 Чтобы пронумеровать формулу, оберните её в процедуру <span class="k">\texttt</span><span class="nb">{</span>equation<span class="nb">}</span>:
 <span class="k">\begin</span><span class="nb">{</span>equation<span class="nb">}</span>
@@ -390,36 +392,32 @@ except IOError:
 <li><a href="http://mydebianblog.blogspot.ru/search/label/%D0%9B%D0%B0%D0%A2%D0%B5%D0%A5">В блоге virens'а по тегу ЛаТеХ</a></li>
 <li><a href="http://www.rpi.edu/dept/arc/training/latex/LaTeX_symbols.pdf">Перечень символов LaTeX</a></li>
 </ul>
-<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi.html">redVi</a>,
-<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/latex/">LaTeX</a> /
-</h5>
+
+<br />
 <p align="center"><a href="#">наверх</a></p>
 </div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
 </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
-    <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>
-    <li class="footer"><a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+    <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
 </ul>
 </div><script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

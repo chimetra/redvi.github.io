@@ -10,37 +10,38 @@ Summary: Включаем подсветку синтаксиса в редак�
 
 Шаблоны с различной подсветкой находятся по пути `/usr/share/nano`. Что там удастся найти?
 
-    :::console
-    $ tree /usr/share/nano
-    /usr/share/nano
-    |-- asm.nanorc
-    |-- awk.nanorc
-    |-- cmake.nanorc
-    |-- c.nanorc
-    |-- css.nanorc
-    |-- debian.nanorc
-    |-- fortran.nanorc
-    |-- gentoo.nanorc
-    |-- groff.nanorc
-    |-- html.nanorc
-    |-- java.nanorc
+```console
+$ tree /usr/share/nano
+/usr/share/nano
+|-- asm.nanorc
+|-- awk.nanorc
+|-- cmake.nanorc
+|-- c.nanorc
+|-- css.nanorc
+|-- debian.nanorc
+|-- fortran.nanorc
+|-- gentoo.nanorc
+|-- groff.nanorc
+|-- html.nanorc
+|-- java.nanorc
+```
 
 Итак, в нашем распоряжении подсветка языков программирования c, python, php и java. Можно раскрасить html и css файлы и кое-что ещё. Не так уж много, но для дел насущных должно хватить.
 
 Дело за малым: создать файл `.nanorc` в домашней директории и включить в него необходимые стили. Это может выглядеть так:
 
-    :::console
-    $ cat .nanorc
-    include /usr/share/nano/makefile.nanorc
-    include /usr/share/nano/python.nanorc
-    include /usr/share/nano/xml.nanorc
-    include /usr/share/nano/sh.nanorc
-    include /usr/share/nano/cmake.nanorc
-    include /usr/share/nano/css.nanorc
-    include /usr/share/nano/html.nanorc
-    include /usr/share/nano/patch.nanorc
-    include /usr/share/nano/php.nanorc
-
+```console
+$ cat .nanorc
+include /usr/share/nano/makefile.nanorc
+include /usr/share/nano/python.nanorc
+include /usr/share/nano/xml.nanorc
+include /usr/share/nano/sh.nanorc
+include /usr/share/nano/cmake.nanorc
+include /usr/share/nano/css.nanorc
+include /usr/share/nano/html.nanorc
+include /usr/share/nano/patch.nanorc
+include /usr/share/nano/php.nanorc
+```
 
 Теперь посмотрим как отображается файл с одним из влюченных шаблонов.
 
@@ -49,4 +50,3 @@ Summary: Включаем подсветку синтаксиса в редак�
 
 
 Не так уж плохо. По крайней мере, это гораздо удобнее, чем отсутствие подсветки как таковой. И &mdash; да &mdash; это всё, пользуемся.
-

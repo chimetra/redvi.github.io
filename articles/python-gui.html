@@ -18,14 +18,16 @@
     <div class="small">блог об операционных системах, open source и программировании</div>
 <div class="nav">
     <ul>
-      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
-      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
-      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+      <li><a href="http://www.unix-lab.org/archives/">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about/">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors/">Автор</a></li>
     </ul>
 </div>
 </div><div id="main">
 <h2><a href="http://www.unix-lab.org/articles/python-gui.html">Сохранение файлов с python</a></h2>
-<h5><i class="icon-feather"></i> 06 Апрель 2013 </h5>
+<h5><i class="icon-feather"></i> 06 Апрель 2013
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/python/">Python</a> /
+</h5>
 <p>В данном посте хотелось бы предложить написать небольшое приложение, использующее графический интерфейс. Задача выбора подходящего инструмента для осуществления этой задумки может оказаться достаточно нетривиальной. Python поддерживает несколько графических библиотек:</p>
 <p><b>- wxWidgest</b> и интерфейс к этой библиотеке &mdash; <b>wxPython</b>. Наилучший выбор, если вы хотите, чтобы ваши приложения выглядели в любой ОС с любым графическим интерфейсом как родные. Самый большой минус на момент написания поста &mdash; недостаточно широкая документация. Впрочем, кто-то может с этим не согласиться.</p>
 <p><b>- tkinter</b> &mdash; Tk &mdash; самая простая и распространённая библиотека. Используется очень широко. Документация подробна и содержит всё необходимое для быстрого начала работы.</p>
@@ -103,7 +105,7 @@
         <span class="k">print</span> <span class="p">(</span><span class="s">&quot;make backup &quot;</span> <span class="o">+</span> <span class="n">src2</span><span class="p">)</span>
         <span class="n">names</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">src2</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dst</span><span class="p">):</span>
-             <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
             <span class="n">srcname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">src2</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
             <span class="n">dstname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
@@ -121,15 +123,15 @@
 <p><code>os.path.join</code> - "склеивает" пути</p>
 <p>Функция, закрывающая программу</p>
 <div class="highlight"><pre><span class="k">def</span> <span class="nf">close_win</span><span class="p">():</span>
-     <span class="sd">&#39;&#39;&#39;Close window and exit programm&#39;&#39;&#39;</span>
-     <span class="k">if</span> <span class="n">askyesno</span><span class="p">(</span><span class="s">&quot;Exit&quot;</span><span class="p">,</span> <span class="s">&quot;Do you want to quit?&quot;</span><span class="p">):</span>
-          <span class="n">root</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
+    <span class="sd">&#39;&#39;&#39;Close window and exit programm&#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">askyesno</span><span class="p">(</span><span class="s">&quot;Exit&quot;</span><span class="p">,</span> <span class="s">&quot;Do you want to quit?&quot;</span><span class="p">):</span>
+        <span class="n">root</span><span class="o">.</span><span class="n">destroy</span><span class="p">()</span>
 </pre></div>
 
 
 <p>Функция, показывающая информационное окно</p>
 <div class="highlight"><pre><span class="k">def</span> <span class="nf">about</span><span class="p">():</span>
-     <span class="n">showinfo</span><span class="p">(</span><span class="s">&quot;Backup&quot;</span><span class="p">,</span> <span class="s">&quot;This is simple backup programm.</span><span class="se">\n</span><span class="s">(test version)&quot;</span><span class="p">)</span>
+    <span class="n">showinfo</span><span class="p">(</span><span class="s">&quot;Backup&quot;</span><span class="p">,</span> <span class="s">&quot;This is simple backup programm.</span><span class="se">\n</span><span class="s">(test version)&quot;</span><span class="p">)</span>
 </pre></div>
 
 
@@ -166,29 +168,29 @@
 <h2>Что не так?</h2>
 <p>Если вам понятен приведённый пример, вы уже можете сказать, чего в нём не хватает. Например, вы можете обнаружить, что при повторном копировании объектов одной и той же директории, замена файлов происходит, а замена поддиректорий &mdash; нет. Вам лишь укажут на тот факт, что такая поддиректория уже существует и выполнение программы прекратится. В качестве самостоятельной работы предлагается изучить конструкцию <code>try-except</code> или модуль <code>errno</code> и проработать этот момент. Например:</p>
 <div class="highlight"><pre><span class="k">def</span> <span class="nf">save2</span><span class="p">():</span>
-        <span class="sd">&#39;&#39;&#39;Save directories&#39;&#39;&#39;</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">print</span> <span class="p">(</span><span class="s">&quot;make backup &quot;</span> <span class="o">+</span> <span class="n">src2</span><span class="p">)</span>
-            <span class="n">names</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">src2</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dst</span><span class="p">):</span>
-                 <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
-                <span class="n">srcname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">src2</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-                <span class="n">dstname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">srcname</span><span class="p">):</span>
-                    <span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">srcname</span><span class="p">,</span> <span class="n">dstname</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">srcname</span><span class="p">):</span>
-                    <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">srcname</span><span class="p">,</span> <span class="n">dstname</span><span class="p">)</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">&quot;Backup is OK&quot;</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
-            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">dstname</span><span class="p">)</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">&quot;Try again&quot;</span><span class="p">)</span>
+    <span class="sd">&#39;&#39;&#39;Save directories&#39;&#39;&#39;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">print</span> <span class="p">(</span><span class="s">&quot;make backup &quot;</span> <span class="o">+</span> <span class="n">src2</span><span class="p">)</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">src2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dst</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+            <span class="n">srcname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">src2</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="n">dstname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">srcname</span><span class="p">):</span>
-                <span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">srcname</span><span class="p">,</span><span class="n">dstname</span><span class="p">)</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">srcname</span><span class="p">,</span> <span class="n">dstname</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">srcname</span><span class="p">):</span>
-                <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">srcname</span><span class="p">,</span><span class="n">dstname</span><span class="p">)</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">&quot;Backup is OK&quot;</span><span class="p">)</span>
-    <span class="n">save2</span><span class="p">()</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">srcname</span><span class="p">,</span> <span class="n">dstname</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Backup is OK&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">dstname</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Try again&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">srcname</span><span class="p">):</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">srcname</span><span class="p">,</span><span class="n">dstname</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">srcname</span><span class="p">):</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">srcname</span><span class="p">,</span><span class="n">dstname</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Backup is OK&quot;</span><span class="p">)</span>
+<span class="n">save2</span><span class="p">()</span>
 </pre></div>
 
 
@@ -196,36 +198,32 @@
 <p><b>Кстати:</b> чтобы программа в Windows запускалась при двойном клике, измените расширение на <code>.pyw</code>
 Кроме того, предлагается поупражняться с tkinter и выводить всплывающее окно "Wait, please!" во время копирования (наподобие того, как это сделано при закрытии программы).</p>
 <p>Для удобства файл целиком: <a href="https://gist.github.com/redVi/5029005">backup.py</a></p>
-<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi.html">redVi</a>,
-<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/python/">Python</a> /
-</h5>
+
+<br />
 <p align="center"><a href="#">наверх</a></p>
 </div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
 </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
-    <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>
-    <li class="footer"><a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+    <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
 </ul>
 </div><script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

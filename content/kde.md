@@ -12,22 +12,27 @@ Summary: Кто не сталкивался с проблемой излишне
 
 Пропишите или исправьте строки:
 
-    [Basic Settings]
-    Start Nepomuk=false
+```sh
+[Basic Settings]
+Start Nepomuk=false
+```
 
 Далее заглянем в файл: `~/.kde4/share/config/kdedrc`
 
 Исправляем:
 
-    [Module-nepomuksearchmodule]
-    autoload=false
+```sh
+[Module-nepomuksearchmodule]
+autoload=false
+```
 
 Теперь дело дошло до akonadi. Файл: `~/.config/akonadi/akonadiserverrc`
 
 Строки:
 
-    [QMYSQL]
-    StartServer=false
-
+```sh
+[QMYSQL]
+StartServer=false
+```
 
 В настройках KDE можно выключить автозапуск akonadi и индексирование файлов. Также неплохо будет заглянуть в `.kde4/Autostart/` и удалить всё, связанное с нашими прожорливыми сервисами. После таких нехитрых манипуляций нагрузка на процессор и количество потребляемой памяти заметно уменьшится.

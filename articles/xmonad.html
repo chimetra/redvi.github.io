@@ -18,19 +18,22 @@
     <div class="small">блог об операционных системах, open source и программировании</div>
 <div class="nav">
     <ul>
-      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
-      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
-      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+      <li><a href="http://www.unix-lab.org/archives/">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about/">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors/">Автор</a></li>
     </ul>
 </div>
 </div><div id="main">
 <h2><a href="http://www.unix-lab.org/articles/xmonad.html">Знакомьтесь, xmonad</a></h2>
-<h5><i class="icon-feather"></i> 23 Октябрь 2012 </h5>
-<h2>I. Вступление</h2>
+<h5><i class="icon-feather"></i> 23 Октябрь 2012
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/decorations/">Decorations</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
+</h5>
+<h2>Вступление</h2>
 <p>Xmonad &mdash; фреймовый оконный менеджер, написанный на языке Haskell. Для приведения его к рабочему состоянию знать haskell совсем не обязательно, хотя уж точно не помешает. Об этом менеджере окон можно говорить очень долго, но пост предназначен по большей части для опытных пользователей и не ставит в круг своих задач объяснение простых истин.</p>
 <p>Возгласы "я не новичок, но всё равно ничего не понял!" без рассмотрения отправляются в <code>/dev/null</code>. Тема достаточно объёмная и содержит несколько новых понятий, лучше объяснить не смогу.</p>
-<h2>II. Начали:</h2>
-<h3>1. Как запустить?</h3>
+<h2>Начали:</h2>
+<h3>Как запустить?</h3>
 <p>Мы не сможем найти то, что ищем либо в репозитории community, либо в Arch User Repository. Пример того, как ставятся пакеты из AUR:</p>
 <div class="highlight"><pre><span class="gp">$</span> sudo yaourt -S xmonad xmonad-contirb
 </pre></div>
@@ -68,8 +71,7 @@
 </pre></div>
 
 
-<hr />
-<h3>2. Автозапуск программ</h3>
+<h3>Автозапуск программ</h3>
 <p>Что ж, давайте хотя бы прозрачность настроим. Для этого нужно стартовать при запуске графической среды compton, а как настроить этот самый запуск?</p>
 <div class="highlight"><pre><span class="gp">$</span> vim .xmonad/xmonad.hs:
 <span class="gp">$</span> mkdir .xmonad
@@ -98,8 +100,8 @@
 
 
 <p>Так уже лучше, верно? Мы указали, что являемся русскоязычными пользователями (<code>LANG=ru.RU</code>), включили переключение раскладок клавиатуры (<code>setxkbmap -layout</code>) и запустили несколько иных программ. Это по желанию. Подразумевается, что соответствующие программы у вас установлены. Если нет, просмотрите заметку о настройке openbox, где объясняется, какая программа за что отвечает.</p>
-<p>Неплохо было бы сразу заставить работать мультимедийные клавиши. Здесь нам пригодится уже упомянутая <a href="openbox.html">в заметке про openbox</a> программка xmodmap.</p>
-<h3>3. Расположение окон</h3>
+<p>Неплохо было бы сразу заставить работать мультимедийные клавиши. Здесь нам пригодится уже упомянутая <a href="http://www.unix-lab.org/posts/openbox/">в заметке про openbox</a> программка xmodmap.</p>
+<h3>Расположение окон</h3>
 <p>В файле <code>.xmonad.hs</code></p>
 <div class="highlight"><pre><span class="kr">import</span> <span class="nn">XMonad.Layout.Circle</span>
 <span class="kr">import</span> <span class="nn">XMonad.Layout.Spacing</span>
@@ -108,12 +110,12 @@
     <span class="kr">where</span>
         <span class="c1">-- default tiling algorithm partitions the screen into two panes</span>
         <span class="n">tiled</span> <span class="ow">=</span> <span class="n">spacing</span> <span class="mi">5</span> <span class="o">$</span> <span class="kt">Tall</span> <span class="n">nmaster</span> <span class="n">delta</span> <span class="n">ratio</span>
-       <span class="c1">-- The default number of windows in the master pane</span>
-       <span class="n">nmaster</span> <span class="ow">=</span> <span class="mi">1</span>
-       <span class="c1">-- Default proportion of screen occupied by master pane</span>
-       <span class="n">ratio</span> <span class="ow">=</span> <span class="mi">2</span><span class="o">/</span><span class="mi">3</span>
-       <span class="c1">-- Percent of screen to increment by when resizing panes</span>
-       <span class="n">delta</span> <span class="ow">=</span> <span class="mi">5</span><span class="o">/</span><span class="mi">100</span>
+        <span class="c1">-- The default number of windows in the master pane</span>
+        <span class="n">nmaster</span> <span class="ow">=</span> <span class="mi">1</span>
+        <span class="c1">-- Default proportion of screen occupied by master pane</span>
+        <span class="n">ratio</span> <span class="ow">=</span> <span class="mi">2</span><span class="o">/</span><span class="mi">3</span>
+        <span class="c1">-- Percent of screen to increment by when resizing panes</span>
+        <span class="n">delta</span> <span class="ow">=</span> <span class="mi">5</span><span class="o">/</span><span class="mi">100</span>
 </pre></div>
 
 
@@ -128,11 +130,11 @@ Circle - небольшие плавающие окна</p>
 <span class="nf">myLayout</span> <span class="ow">=</span> <span class="n">onWorkspace</span> <span class="s">&quot;1:main&quot;</span> <span class="kt">Circle</span>  <span class="o">$</span> <span class="n">onWorkspace</span> <span class="s">&quot;2:net&quot;</span> <span class="kt">Full</span> <span class="o">$</span> <span class="n">onWorkspace</span> <span class="s">&quot;3:work&quot;</span> <span class="n">simpleTabbed</span> <span class="o">$</span> <span class="n">defaultLayouts</span>
 <span class="nf">myWorkspaces</span>  <span class="ow">=</span> <span class="p">[</span><span class="s">&quot;1:main&quot;</span><span class="p">,</span><span class="s">&quot;2:net&quot;</span><span class="p">,</span><span class="s">&quot;3:work&quot;</span><span class="p">,</span><span class="s">&quot;4:media&quot;</span><span class="p">]</span>  <span class="o">++</span> <span class="n">map</span> <span class="n">show</span> <span class="p">[</span><span class="mi">5</span><span class="o">..</span><span class="mi">9</span><span class="p">]</span>
 <span class="nf">main</span> <span class="ow">=</span> <span class="kr">do</span>
-     <span class="n">xmproc</span> <span class="ow">&lt;-</span> <span class="n">spawnPipe</span> <span class="s">&quot;/usr/bin/xmobar /home/arch/.xmobarrc&quot;</span>
-     <span class="n">xmonad</span> <span class="o">$</span> <span class="n">defaultConfig</span><span class="p">{</span>
-     <span class="n">workspaces</span>  <span class="ow">=</span> <span class="n">myWorkspaces</span>
-     <span class="p">,</span> <span class="n">layoutHook</span> <span class="ow">=</span>  <span class="n">avoidStruts</span> <span class="o">$</span> <span class="n">myLayout</span>
-     <span class="p">}</span>
+    <span class="n">xmproc</span> <span class="ow">&lt;-</span> <span class="n">spawnPipe</span> <span class="s">&quot;/usr/bin/xmobar /home/arch/.xmobarrc&quot;</span>
+    <span class="n">xmonad</span> <span class="o">$</span> <span class="n">defaultConfig</span><span class="p">{</span>
+    <span class="n">workspaces</span>  <span class="ow">=</span> <span class="n">myWorkspaces</span>
+    <span class="p">,</span> <span class="n">layoutHook</span> <span class="ow">=</span>  <span class="n">avoidStruts</span> <span class="o">$</span> <span class="n">myLayout</span>
+    <span class="p">}</span>
 </pre></div>
 
 
@@ -146,7 +148,7 @@ Circle - небольшие плавающие окна</p>
 </li>
 </ul>
 <p>и так далее</p>
-<h3>4. Горячие клавиши</h3>
+<h3>Горячие клавиши</h3>
 <p>Поскольку у автора сочетания завязаны на клавишу <code>win</code> (которую теперь можно смело заменить наклейкой с надписью "xmonad") - <code>modMask = mod4Mask</code> в <code>xmonad.sh</code>, то и сочетания клавиш соответствующие.</p>
 <p>По умолчанию стоит другая комбинация <code>modMask = mod1Mask</code> - это левый alt.</p>
 <p>Сочетание клавиш:</p>
@@ -169,23 +171,23 @@ Circle - небольшие плавающие окна</p>
 
 
 <p>То есть <code>win + Return</code>, <code>win + b</code> и так далее. Формат записи: ((кнопка маскировки, xK_клавиша), spawn "приложение")</p>
-<h3>5. Прикручиваем xmobar</h3>
-<div class="highlight"><pre><span class="gp">$</span> vim .xmobarrc:
+<h3>Прикручиваем xmobar</h3>
+<div class="highlight"><pre><span class="o">#</span> <span class="o">.</span><span class="n">xmobarrc</span><span class="kt">:</span>
 
-<span class="go">Config { font = &quot;-*-terminus-bold-r-*-*-14-*-*-*-*-*-*-*&quot;</span>
-<span class="go">    , bgColor = &quot;black&quot;</span>
-<span class="go">    , fgColor = &quot;grey&quot;</span>
-<span class="go">    , position = TopW L 100</span>
-<span class="go">    , commands = [ Run Cpu [&quot;-L&quot;,&quot;3&quot;,&quot;-H&quot;,&quot;50&quot;,&quot;--normal&quot;,&quot;green&quot;,&quot;--high&quot;,&quot;red&quot;] 10</span>
-<span class="go">        , Run Memory [&quot;-t&quot;,&quot;Mem: &lt;usedratio&gt;%&quot;] 10</span>
-<span class="go">        , Run Swap [] 10</span>
-<span class="go">        , Run Date &quot;%a %b %_d %l:%M&quot; &quot;date&quot; 10</span>
-<span class="go">        , Run StdinReader</span>
-<span class="go">          ]</span>
-<span class="go">    , sepChar = &quot;%&quot;</span>
-<span class="go">    , alignSep = &quot;}{&quot;</span>
-<span class="go">    , template = &quot;%StdinReader% }{ %cpu% | %memory% * %swap%  &lt;fc=#ee9a00&gt;%date%&lt;/fc&gt;&quot;</span>
-<span class="go">    }</span>
+<span class="kt">Config</span> <span class="p">{</span> <span class="n">font</span> <span class="ow">=</span> <span class="s">&quot;-*-terminus-bold-r-*-*-14-*-*-*-*-*-*-*&quot;</span>
+    <span class="p">,</span> <span class="n">bgColor</span> <span class="ow">=</span> <span class="s">&quot;black&quot;</span>
+    <span class="p">,</span> <span class="n">fgColor</span> <span class="ow">=</span> <span class="s">&quot;grey&quot;</span>
+    <span class="p">,</span> <span class="n">position</span> <span class="ow">=</span> <span class="kt">TopW</span> <span class="kt">L</span> <span class="mi">100</span>
+    <span class="p">,</span> <span class="n">commands</span> <span class="ow">=</span> <span class="p">[</span> <span class="kt">Run</span> <span class="kt">Cpu</span> <span class="p">[</span><span class="s">&quot;-L&quot;</span><span class="p">,</span><span class="s">&quot;3&quot;</span><span class="p">,</span><span class="s">&quot;-H&quot;</span><span class="p">,</span><span class="s">&quot;50&quot;</span><span class="p">,</span><span class="s">&quot;--normal&quot;</span><span class="p">,</span><span class="s">&quot;green&quot;</span><span class="p">,</span><span class="s">&quot;--high&quot;</span><span class="p">,</span><span class="s">&quot;red&quot;</span><span class="p">]</span> <span class="mi">10</span>
+        <span class="p">,</span> <span class="kt">Run</span> <span class="kt">Memory</span> <span class="p">[</span><span class="s">&quot;-t&quot;</span><span class="p">,</span><span class="s">&quot;Mem: &lt;usedratio&gt;%&quot;</span><span class="p">]</span> <span class="mi">10</span>
+        <span class="p">,</span> <span class="kt">Run</span> <span class="kt">Swap</span> <span class="kt">[]</span> <span class="mi">10</span>
+        <span class="p">,</span> <span class="kt">Run</span> <span class="kt">Date</span> <span class="s">&quot;%a %b %_d %l:%M&quot;</span> <span class="s">&quot;date&quot;</span> <span class="mi">10</span>
+        <span class="p">,</span> <span class="kt">Run</span> <span class="kt">StdinReader</span>
+            <span class="p">]</span>
+    <span class="p">,</span> <span class="n">sepChar</span> <span class="ow">=</span> <span class="s">&quot;%&quot;</span>
+    <span class="p">,</span> <span class="n">alignSep</span> <span class="ow">=</span> <span class="s">&quot;}{&quot;</span>
+    <span class="p">,</span> <span class="n">template</span> <span class="ow">=</span> <span class="s">&quot;%StdinReader% }{ %cpu% | %memory% * %swap%  &lt;fc=#ee9a00&gt;%date%&lt;/fc&gt;&quot;</span>
+    <span class="p">}</span>
 </pre></div>
 
 
@@ -198,16 +200,16 @@ Circle - небольшие плавающие окна</p>
 <span class="p">{</span> <span class="n">manageHook</span> <span class="ow">=</span> <span class="n">manageDocks</span> <span class="o">&lt;+&gt;</span> <span class="n">manageHook</span> <span class="n">defaultConfig</span>
 <span class="p">,</span> <span class="n">layoutHook</span> <span class="ow">=</span>  <span class="n">avoidStruts</span> <span class="o">$</span> <span class="n">myLayout</span> <span class="c1">-- avoidStruts чтобы окна --не загораживали xmobar</span>
 <span class="p">{</span> <span class="n">ppOutput</span> <span class="ow">=</span> <span class="n">hPutStrLn</span> <span class="n">xmproc</span>
-                     <span class="p">,</span> <span class="n">ppTitle</span> <span class="ow">=</span> <span class="n">xmobarColor</span> <span class="s">&quot;green&quot;</span> <span class="s">&quot;&quot;</span> <span class="o">.</span> <span class="n">shorten</span> <span class="mi">50</span>
-                        <span class="p">}</span>
+            <span class="p">,</span> <span class="n">ppTitle</span> <span class="ow">=</span> <span class="n">xmobarColor</span> <span class="s">&quot;green&quot;</span> <span class="s">&quot;&quot;</span> <span class="o">.</span> <span class="n">shorten</span> <span class="mi">50</span>
+                <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 
 
-<h3>6. Trayer</h3>
+<h3>Trayer</h3>
 <p>Небольшой симпатичный трей. В примере имеет ширину 60% экрана, расположен внизу по центру.
 В файл <code>.xmonad/startup.sh</code> добавьте строки:</p>
-<div class="highlight"><pre><span class="n">trayer</span> <span class="o">--</span><span class="n">edge</span> <span class="n">bottom</span> <span class="o">--</span><span class="n">align</span> <span class="n">center</span> <span class="o">--</span><span class="n">SetDockType</span> <span class="nb">true</span> <span class="o">--</span><span class="n">SetPartialStrut</span> <span class="nb">true</span> <span class="o">--</span><span class="n">expand</span> <span class="nb">true</span> <span class="o">--</span><span class="n">width</span> <span class="mi">60</span> <span class="o">--</span><span class="n">height</span> <span class="mi">10</span> <span class="o">--</span><span class="n">transparent</span> <span class="nb">true</span> <span class="o">--</span><span class="n">tint</span> <span class="mh">0x000000</span> <span class="o">&amp;</span>
+<div class="highlight"><pre><span class="gp">$</span> trayer --edge bottom --align center --SetDockType <span class="nb">true</span> --SetPartialStrut <span class="nb">true</span> --expand <span class="nb">true</span> --width 60 --height 10 --transparent <span class="nb">true</span> --tint 0x000000 &amp;
 </pre></div>
 
 
@@ -245,30 +247,30 @@ Circle - небольшие плавающие окна</p>
 <span class="nf">myBorderWidth</span> <span class="ow">=</span> <span class="mi">2</span>
 <span class="nf">myStartupHook</span> <span class="ow">=</span> <span class="n">spawn</span> <span class="s">&quot;~/.xmonad/startup.sh&quot;</span>
 <span class="nf">myManageHook</span> <span class="ow">=</span> <span class="n">composeAll</span>
-     <span class="p">[</span> <span class="n">className</span> <span class="o">=?</span> <span class="s">&quot;MPlayer&quot;</span> <span class="o">--&gt;</span> <span class="n">doFloat</span>
-     <span class="p">,</span> <span class="n">className</span> <span class="o">=?</span> <span class="s">&quot;Eclipse&quot;</span> <span class="o">--&gt;</span> <span class="n">doFloat</span>
-     <span class="p">,</span> <span class="n">className</span> <span class="o">=?</span> <span class="s">&quot;Eidete&quot;</span> <span class="o">--&gt;</span> <span class="n">doFloat</span>
-     <span class="p">,</span> <span class="n">className</span> <span class="o">=?</span> <span class="s">&quot;Gimp&quot;</span> <span class="o">--&gt;</span> <span class="n">doFloat</span>
-     <span class="p">,</span> <span class="n">className</span> <span class="o">=?</span> <span class="s">&quot;Pidgin&quot;</span> <span class="o">--&gt;</span> <span class="n">doShift</span> <span class="s">&quot;5:chat&quot;</span>
-     <span class="p">,</span> <span class="n">className</span> <span class="o">=?</span> <span class="s">&quot;Pidgin&quot;</span> <span class="o">--&gt;</span> <span class="n">doFloat</span>
-     <span class="p">,</span> <span class="n">className</span> <span class="o">=?</span> <span class="s">&quot;arch - Skype™ (Beta)&quot;</span> <span class="o">--&gt;</span> <span class="n">doFloat</span>
-     <span class="p">,</span> <span class="n">className</span> <span class="o">=?</span> <span class="s">&quot;arch - Skype™ (Beta)&quot;</span> <span class="o">--&gt;</span> <span class="n">doShift</span> <span class="s">&quot;5:chat&quot;</span>
-<span class="p">,</span> <span class="n">className</span> <span class="o">=?</span> <span class="s">&quot;Ktorrent&quot;</span> <span class="o">--&gt;</span> <span class="n">doShift</span> <span class="s">&quot;1:main&quot;</span><span class="p">]</span>
+    <span class="p">[</span> <span class="n">className</span> <span class="o">=?</span> <span class="s">&quot;MPlayer&quot;</span> <span class="o">--&gt;</span> <span class="n">doFloat</span>
+    <span class="p">,</span> <span class="n">className</span> <span class="o">=?</span> <span class="s">&quot;Eclipse&quot;</span> <span class="o">--&gt;</span> <span class="n">doFloat</span>
+    <span class="p">,</span> <span class="n">className</span> <span class="o">=?</span> <span class="s">&quot;Eidete&quot;</span> <span class="o">--&gt;</span> <span class="n">doFloat</span>
+    <span class="p">,</span> <span class="n">className</span> <span class="o">=?</span> <span class="s">&quot;Gimp&quot;</span> <span class="o">--&gt;</span> <span class="n">doFloat</span>
+    <span class="p">,</span> <span class="n">className</span> <span class="o">=?</span> <span class="s">&quot;Pidgin&quot;</span> <span class="o">--&gt;</span> <span class="n">doShift</span> <span class="s">&quot;5:chat&quot;</span>
+    <span class="p">,</span> <span class="n">className</span> <span class="o">=?</span> <span class="s">&quot;Pidgin&quot;</span> <span class="o">--&gt;</span> <span class="n">doFloat</span>
+    <span class="p">,</span> <span class="n">className</span> <span class="o">=?</span> <span class="s">&quot;arch - Skype™ (Beta)&quot;</span> <span class="o">--&gt;</span> <span class="n">doFloat</span>
+    <span class="p">,</span> <span class="n">className</span> <span class="o">=?</span> <span class="s">&quot;arch - Skype™ (Beta)&quot;</span> <span class="o">--&gt;</span> <span class="n">doShift</span> <span class="s">&quot;5:chat&quot;</span>
+    <span class="p">,</span> <span class="n">className</span> <span class="o">=?</span> <span class="s">&quot;Ktorrent&quot;</span> <span class="o">--&gt;</span> <span class="n">doShift</span> <span class="s">&quot;1:main&quot;</span><span class="p">]</span>
 
 <span class="nf">defaultLayouts</span> <span class="ow">=</span> <span class="n">tiled</span> <span class="o">|||</span> <span class="kt">Mirror</span> <span class="n">tiled</span> <span class="o">|||</span> <span class="kt">Full</span> <span class="o">|||</span> <span class="kt">Circle</span> <span class="o">|||</span> <span class="n">simpleTabbed</span> <span class="o">|||</span> <span class="kt">ThreeCol</span> <span class="mi">1</span> <span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">|||</span> <span class="kt">ThreeColMid</span> <span class="mi">1</span> <span class="p">(</span><span class="mi">3</span><span class="o">/</span><span class="mi">100</span><span class="p">)</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">|||</span> <span class="kt">Accordion</span> <span class="o">|||</span> <span class="kt">Grid</span>
 <span class="kr">where</span>
-      <span class="c1">-- default tiling algorithm partitions the screen into two panes</span>
-      <span class="n">tiled</span> <span class="ow">=</span> <span class="n">spacing</span> <span class="mi">5</span> <span class="o">$</span> <span class="kt">Tall</span> <span class="n">nmaster</span> <span class="n">delta</span> <span class="n">ratio</span>
+    <span class="c1">-- default tiling algorithm partitions the screen into two panes</span>
+    <span class="n">tiled</span> <span class="ow">=</span> <span class="n">spacing</span> <span class="mi">5</span> <span class="o">$</span> <span class="kt">Tall</span> <span class="n">nmaster</span> <span class="n">delta</span> <span class="n">ratio</span>
 
-      <span class="c1">-- The default number of windows in the master pane</span>
-      <span class="n">nmaster</span> <span class="ow">=</span> <span class="mi">1</span>
-      <span class="n">nmaster2</span> <span class="ow">=</span> <span class="mi">2</span>
+    <span class="c1">-- The default number of windows in the master pane</span>
+    <span class="n">nmaster</span> <span class="ow">=</span> <span class="mi">1</span>
+    <span class="n">nmaster2</span> <span class="ow">=</span> <span class="mi">2</span>
 
-      <span class="c1">-- Default proportion of screen occupied by master pane</span>
-      <span class="n">ratio</span> <span class="ow">=</span> <span class="mi">2</span><span class="o">/</span><span class="mi">3</span>
+    <span class="c1">-- Default proportion of screen occupied by master pane</span>
+    <span class="n">ratio</span> <span class="ow">=</span> <span class="mi">2</span><span class="o">/</span><span class="mi">3</span>
 
-      <span class="c1">-- Percent of screen to increment by when resizing panes</span>
-      <span class="n">delta</span> <span class="ow">=</span> <span class="mi">3</span><span class="o">/</span><span class="mi">100</span>
+    <span class="c1">-- Percent of screen to increment by when resizing panes</span>
+    <span class="n">delta</span> <span class="ow">=</span> <span class="mi">3</span><span class="o">/</span><span class="mi">100</span>
 <span class="nf">gridLayout</span> <span class="ow">=</span> <span class="n">spacing</span> <span class="mi">8</span> <span class="o">$</span> <span class="kt">Grid</span>
 <span class="nf">pidginLayout</span> <span class="ow">=</span> <span class="n">withIM</span> <span class="p">(</span><span class="mi">1</span><span class="o">%</span><span class="mi">7</span><span class="p">)(</span><span class="kt">Role</span> <span class="s">&quot;buddy_list&quot;</span><span class="p">)</span> <span class="n">gridLayout</span>
 
@@ -276,68 +278,63 @@ Circle - небольшие плавающие окна</p>
     <span class="n">xmproc</span> <span class="ow">&lt;-</span> <span class="n">spawnPipe</span> <span class="s">&quot;/usr/bin/xmobar /home/arch/.xmobarrc&quot;</span>
     <span class="n">xmonad</span> <span class="o">$</span> <span class="n">defaultConfig</span>
         <span class="p">{</span> <span class="n">manageHook</span> <span class="ow">=</span> <span class="n">manageDocks</span> <span class="o">&lt;+&gt;</span> <span class="n">myManageHook</span> <span class="o">&lt;+&gt;</span> <span class="n">manageHook</span> <span class="n">defaultConfig</span>
-<span class="p">,</span> <span class="n">borderWidth</span> <span class="ow">=</span> <span class="n">myBorderWidth</span>
-<span class="p">,</span> <span class="n">normalBorderColor</span> <span class="ow">=</span> <span class="n">myNormalBorderColor</span>
-<span class="p">,</span> <span class="n">startupHook</span> <span class="ow">=</span> <span class="n">myStartupHook</span>
-<span class="p">,</span> <span class="n">focusedBorderColor</span> <span class="ow">=</span> <span class="n">myFocusedBorderColor</span>
-        <span class="p">,</span> <span class="n">terminal</span> <span class="ow">=</span> <span class="n">myTerm</span>
-   <span class="p">,</span> <span class="n">workspaces</span> <span class="ow">=</span> <span class="n">myWorkspaces</span>
-<span class="p">,</span> <span class="n">layoutHook</span> <span class="ow">=</span> <span class="n">avoidStruts</span> <span class="o">$</span> <span class="n">myLayout</span> <span class="c1">-- avoidStruts чтобы окна не загораживали xmobar</span>
-   <span class="p">,</span> <span class="n">logHook</span> <span class="ow">=</span> <span class="n">dynamicLogWithPP</span> <span class="o">$</span> <span class="n">xmobarPP</span>
-                        <span class="p">{</span> <span class="n">ppOutput</span> <span class="ow">=</span> <span class="n">hPutStrLn</span> <span class="n">xmproc</span>
-                     <span class="p">,</span> <span class="n">ppTitle</span> <span class="ow">=</span> <span class="n">xmobarColor</span> <span class="s">&quot;green&quot;</span> <span class="s">&quot;&quot;</span> <span class="o">.</span> <span class="n">shorten</span> <span class="mi">50</span>
-                        <span class="p">}</span>
-        <span class="p">,</span> <span class="n">modMask</span> <span class="ow">=</span> <span class="n">mod4Mask</span>
-        <span class="p">}</span> <span class="p">`</span><span class="n">additionalKeys</span><span class="p">`</span>
-        <span class="p">[((</span><span class="n">mod4Mask</span><span class="p">,</span> <span class="n">xK_Print</span><span class="p">),</span> <span class="n">spawn</span> <span class="s">&quot;xfce4-screenshooter&quot;</span><span class="p">)</span>
-<span class="p">,</span> <span class="p">((</span><span class="n">mod4Mask</span><span class="p">,</span> <span class="n">xK_Return</span><span class="p">),</span> <span class="n">spawn</span> <span class="s">&quot;terminal&quot;</span><span class="p">)</span>
-<span class="p">,</span> <span class="p">((</span><span class="n">mod4Mask</span><span class="p">,</span> <span class="n">xK_b</span><span class="p">),</span> <span class="n">spawn</span> <span class="s">&quot;chromium&quot;</span><span class="p">)</span>
-<span class="p">,</span> <span class="p">((</span><span class="n">mod4Mask</span><span class="p">,</span> <span class="n">xK_f</span><span class="p">),</span> <span class="n">spawn</span> <span class="s">&quot;firefox&quot;</span><span class="p">)</span>
-<span class="p">,</span> <span class="p">((</span><span class="n">mod4Mask</span><span class="p">,</span> <span class="n">xK_w</span><span class="p">),</span> <span class="n">spawn</span> <span class="s">&quot;geany&quot;</span><span class="p">)</span>
-<span class="p">,</span> <span class="p">((</span><span class="n">mod4Mask</span><span class="p">,</span> <span class="n">xK_r</span><span class="p">),</span> <span class="n">spawn</span> <span class="s">&quot;okular&quot;</span><span class="p">)</span>
-<span class="p">,</span> <span class="p">((</span><span class="n">mod4Mask</span><span class="p">,</span> <span class="n">xK_h</span><span class="p">),</span> <span class="n">spawn</span> <span class="s">&quot;spacefm&quot;</span><span class="p">)</span>
-<span class="p">,</span> <span class="p">((</span><span class="n">mod4Mask</span><span class="p">,</span> <span class="n">xK_e</span><span class="p">),</span> <span class="n">spawn</span> <span class="s">&quot;eclipse&quot;</span><span class="p">)</span>
-<span class="p">,</span> <span class="p">((</span><span class="n">mod4Mask</span><span class="p">,</span> <span class="n">xK_x</span><span class="p">),</span> <span class="n">spawn</span> <span class="s">&quot;deadbeef&quot;</span><span class="p">)</span>
-        <span class="p">,</span> <span class="p">((</span><span class="n">mod4Mask</span><span class="p">,</span> <span class="n">xK_i</span><span class="p">),</span> <span class="n">spawn</span> <span class="s">&quot;pidgin&quot;</span><span class="p">)</span>
-        <span class="p">,</span> <span class="p">((</span><span class="n">mod4Mask</span><span class="p">,</span> <span class="n">xK_c</span><span class="p">),</span> <span class="n">spawn</span> <span class="s">&quot;cheese&quot;</span><span class="p">)</span>
-        <span class="p">]</span>
+    <span class="p">,</span> <span class="n">borderWidth</span> <span class="ow">=</span> <span class="n">myBorderWidth</span>
+    <span class="p">,</span> <span class="n">normalBorderColor</span> <span class="ow">=</span> <span class="n">myNormalBorderColor</span>
+    <span class="p">,</span> <span class="n">startupHook</span> <span class="ow">=</span> <span class="n">myStartupHook</span>
+    <span class="p">,</span> <span class="n">focusedBorderColor</span> <span class="ow">=</span> <span class="n">myFocusedBorderColor</span>
+    <span class="p">,</span> <span class="n">terminal</span> <span class="ow">=</span> <span class="n">myTerm</span>
+    <span class="p">,</span> <span class="n">workspaces</span> <span class="ow">=</span> <span class="n">myWorkspaces</span>
+    <span class="p">,</span> <span class="n">layoutHook</span> <span class="ow">=</span> <span class="n">avoidStruts</span> <span class="o">$</span> <span class="n">myLayout</span> <span class="c1">-- avoidStruts чтобы окна не загораживали xmobar</span>
+    <span class="p">,</span> <span class="n">logHook</span> <span class="ow">=</span> <span class="n">dynamicLogWithPP</span> <span class="o">$</span> <span class="n">xmobarPP</span>
+            <span class="p">{</span> <span class="n">ppOutput</span> <span class="ow">=</span> <span class="n">hPutStrLn</span> <span class="n">xmproc</span>
+                <span class="p">,</span> <span class="n">ppTitle</span> <span class="ow">=</span> <span class="n">xmobarColor</span> <span class="s">&quot;green&quot;</span> <span class="s">&quot;&quot;</span> <span class="o">.</span> <span class="n">shorten</span> <span class="mi">50</span>
+            <span class="p">}</span>
+    <span class="p">,</span> <span class="n">modMask</span> <span class="ow">=</span> <span class="n">mod4Mask</span>
+    <span class="p">}</span> <span class="p">`</span><span class="n">additionalKeys</span><span class="p">`</span>
+    <span class="p">[((</span><span class="n">mod4Mask</span><span class="p">,</span> <span class="n">xK_Print</span><span class="p">),</span> <span class="n">spawn</span> <span class="s">&quot;xfce4-screenshooter&quot;</span><span class="p">)</span>
+    <span class="p">,</span> <span class="p">((</span><span class="n">mod4Mask</span><span class="p">,</span> <span class="n">xK_Return</span><span class="p">),</span> <span class="n">spawn</span> <span class="s">&quot;terminal&quot;</span><span class="p">)</span>
+    <span class="p">,</span> <span class="p">((</span><span class="n">mod4Mask</span><span class="p">,</span> <span class="n">xK_b</span><span class="p">),</span> <span class="n">spawn</span> <span class="s">&quot;chromium&quot;</span><span class="p">)</span>
+    <span class="p">,</span> <span class="p">((</span><span class="n">mod4Mask</span><span class="p">,</span> <span class="n">xK_f</span><span class="p">),</span> <span class="n">spawn</span> <span class="s">&quot;firefox&quot;</span><span class="p">)</span>
+    <span class="p">,</span> <span class="p">((</span><span class="n">mod4Mask</span><span class="p">,</span> <span class="n">xK_w</span><span class="p">),</span> <span class="n">spawn</span> <span class="s">&quot;geany&quot;</span><span class="p">)</span>
+    <span class="p">,</span> <span class="p">((</span><span class="n">mod4Mask</span><span class="p">,</span> <span class="n">xK_r</span><span class="p">),</span> <span class="n">spawn</span> <span class="s">&quot;okular&quot;</span><span class="p">)</span>
+    <span class="p">,</span> <span class="p">((</span><span class="n">mod4Mask</span><span class="p">,</span> <span class="n">xK_h</span><span class="p">),</span> <span class="n">spawn</span> <span class="s">&quot;spacefm&quot;</span><span class="p">)</span>
+    <span class="p">,</span> <span class="p">((</span><span class="n">mod4Mask</span><span class="p">,</span> <span class="n">xK_e</span><span class="p">),</span> <span class="n">spawn</span> <span class="s">&quot;eclipse&quot;</span><span class="p">)</span>
+    <span class="p">,</span> <span class="p">((</span><span class="n">mod4Mask</span><span class="p">,</span> <span class="n">xK_x</span><span class="p">),</span> <span class="n">spawn</span> <span class="s">&quot;deadbeef&quot;</span><span class="p">)</span>
+    <span class="p">,</span> <span class="p">((</span><span class="n">mod4Mask</span><span class="p">,</span> <span class="n">xK_i</span><span class="p">),</span> <span class="n">spawn</span> <span class="s">&quot;pidgin&quot;</span><span class="p">)</span>
+    <span class="p">,</span> <span class="p">((</span><span class="n">mod4Mask</span><span class="p">,</span> <span class="n">xK_c</span><span class="p">),</span> <span class="n">spawn</span> <span class="s">&quot;cheese&quot;</span><span class="p">)</span>
+<span class="p">]</span>
 </pre></div>
 
 
 <p>И, пожалуй, ссылки на хорошие статьи по теме: <a href="http://ro-che.info/docs/xmonad/">№1</a>, <a href="http://www.linuxandlife.com/2011/11/how-to-configure-xmonad-arch-linux.html#xmonad-layout-and-workspaces">№2</a>.</p>
 <p>А так располагаются окна с компоновкой Circle</p>
 <p><a href="http://farm4.staticflickr.com/3822/9263651078_17ce45c263_b.jpg" data-lighter><img src="http://farm4.staticflickr.com/3822/9263651078_17ce45c263_b.jpg"/></a></p>
-<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi.html">redVi</a>,
-<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/decorations/">Decorations</a> /
-<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
-</h5>
+
+<br />
 <p align="center"><a href="#">наверх</a></p>
 </div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
 </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
-    <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>
-    <li class="footer"><a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+    <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
 </ul>
 </div><script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

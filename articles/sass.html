@@ -3,7 +3,7 @@
 <head>
   <title>Верстаем макеты с SASS/SCSS</title>
   <meta charset="utf-8">
-<meta name="description" content="Затронем тему быстрого написания css-кода, разложенного по полочкам. Именно таким автору данной заметки видится sass."><meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+<meta name="description" content="Затронем тему быстрого написания css-кода, разложенного по полочкам. Именно таким автору данной заметки видится sass"><meta name="author" content="redVi">  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
   <link href="http://www.unix-lab.org/theme/css/screen.css" rel="stylesheet" type="text/css" />
   <meta name='yandex-verification' content='494a81ecb0e796d6' />
   <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
@@ -18,14 +18,16 @@
     <div class="small">блог об операционных системах, open source и программировании</div>
 <div class="nav">
     <ul>
-      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
-      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
-      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+      <li><a href="http://www.unix-lab.org/archives/">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about/">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors/">Автор</a></li>
     </ul>
 </div>
 </div><div id="main">
 <h2><a href="http://www.unix-lab.org/articles/sass.html">Верстаем макеты с SASS/SCSS</a></h2>
-<h5><i class="icon-feather"></i> 08 Сентябрь 2013 </h5>
+<h5><i class="icon-feather"></i> 08 Сентябрь 2013
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/web/">Web</a> /
+</h5>
 <p>Пожалуй, стоило бы затронуть тему &laquo;быстрого написания css-кода, разложенного по полочкам&raquo;. Именно таким автору данной заметки видится sass &mdash; инструмент, позволяющий совершить волшебное преобразование: превратить рутинное написание css-кода в любопытное занятие. Цель данного поста заключается не в том, чтобы объять необъятное и попытаться рассказать обо всём подробно, но в том, чтобы заинтересовать потенциального читателя, дабы в последующем ему захотелось разобраться с представленными здесь понятиями самостоятельно. Но прежде, чем мы приступим к непосредственному разбору полётов...</p>
 <h2>Об отвлечённом</h2>
 <p>Сразу нужно отметить, что данное ранее обещание о сроках выхода новых постов будет сдержано. Это означает, что никаких сроков больше нет. Блог начинает жить по принципу Debian'a: это будет готово тогда, когда это будет готово. Вряд ли в ближайшем обозримом будущем получится публиковать по четыре-пять постов в месяц, что означало бы писать второпях. Какого качества записи могут выйти из подобной писанины, думаю, пояснять не надо.</p>
@@ -41,18 +43,18 @@
 <p>SCSS &mdash; так именуется Sass с 3-ей версии (Sassy CSS). Основным отличием от предыдущих версий является возможность писать на каноническом CSS. Также до третьей версии можно было писать код без скобок, но SCSS больше не приемлет этот синтаксис: это гарантирует, что стиль CSS3 валиден также и в SCSS:</p>
 <div class="highlight"><pre><span class="c">/* sass */</span>
 <span class="nc">.article</span>
-   <span class="nt">border</span><span class="o">:</span> <span class="nt">1px</span> <span class="nt">solid</span> <span class="err">$</span><span class="nt">light-blue</span>
-   <span class="nt">color</span><span class="o">:</span> <span class="err">$</span><span class="nt">orange</span>
+    <span class="nt">border</span><span class="o">:</span> <span class="nt">1px</span> <span class="nt">solid</span> <span class="err">$</span><span class="nt">light-blue</span>
+    <span class="nt">color</span><span class="o">:</span> <span class="err">$</span><span class="nt">orange</span>
 <span class="c">/* scss */</span>
 <span class="nc">.article</span> <span class="p">{</span>
-   <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="err">$</span><span class="n">light</span><span class="o">-</span><span class="nb">blue</span><span class="p">;</span>
-   <span class="k">color</span><span class="o">:</span> <span class="err">$</span><span class="nb">orange</span><span class="p">;</span>
-   <span class="p">}</span>
+    <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="err">$</span><span class="n">light</span><span class="o">-</span><span class="nb">blue</span><span class="p">;</span>
+    <span class="k">color</span><span class="o">:</span> <span class="err">$</span><span class="nb">orange</span><span class="p">;</span>
+    <span class="p">}</span>
 </pre></div>
 
 
 <p>Если читатель решит остановиться на использовании лишь этих инструментов (а ими вполне можно обойтись), добро пожаловать на официальный сайт, где представлена соответствующая документация: <a href="http://sass-lang.com/">http://sass-lang.com/</a>. Там вас встретит миловидная секретарша и расскажет что почём.</p>
-<p><img alt="sass" src="../source/sass.gif" /></p>
+<p><img alt="sass" src="http://www.unix-lab.org/source/sass.gif" /></p>
 <p>Интересно, что модуль Sass может быть использован как инструмент конвертирования в CSS в режиме командной строки. Для этого следует указать директорию, где лежат sass-файлы и директорию, куда складывать css:</p>
 <div class="highlight"><pre><span class="gp">$</span> sass ––watch sass_folder:stylesheets_folder
 </pre></div>
@@ -177,8 +179,8 @@
 <div class="highlight"><pre><span class="c">/* lib/_layout.scss */</span>
 
 <span class="o">*</span> <span class="p">{</span>
- <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
- <span class="k">padding</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="nt">body</span> <span class="p">{</span>
@@ -186,22 +188,22 @@
   <span class="k">background-color</span><span class="o">:</span> <span class="err">$</span><span class="n">light</span><span class="o">-</span><span class="nb">gray</span><span class="p">;</span>
 <span class="p">}</span>
 <span class="nf">#outer-wrapper</span> <span class="p">{</span>
-      <span class="k">width</span><span class="o">:</span> <span class="m">100</span><span class="o">%</span><span class="p">;</span>
-      <span class="k">font</span><span class="o">:</span> <span class="k">normal</span> <span class="m">100</span><span class="o">%</span> <span class="err">$</span><span class="n">sans</span><span class="p">;</span>
-    <span class="p">}</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">100</span><span class="o">%</span><span class="p">;</span>
+  <span class="k">font</span><span class="o">:</span> <span class="k">normal</span> <span class="m">100</span><span class="o">%</span> <span class="err">$</span><span class="n">sans</span><span class="p">;</span>
+<span class="p">}</span>
 
 <span class="c">/* lib/_main.scss */</span>
-  <span class="nt">blockquote</span> <span class="p">{</span>
-    <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">1em</span><span class="p">;</span>
-    <span class="k">padding</span><span class="o">:</span> <span class="m">.5em</span><span class="p">;</span>
-    <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">dashed</span> <span class="err">$</span><span class="k">border</span><span class="p">;</span>
-    <span class="k">padding-left</span><span class="o">:</span> <span class="m">.6em</span><span class="p">;</span>
-    <span class="k">font-style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="nt">a</span> <span class="p">{</span><span class="k">color</span><span class="o">:</span> <span class="err">$</span><span class="n">light</span><span class="o">-</span><span class="nb">blue</span><span class="p">;</span> <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-    <span class="o">&amp;:</span><span class="n">hover</span> <span class="err">{</span><span class="k">color</span><span class="o">:</span> <span class="err">$</span><span class="nb">blue</span><span class="p">;</span> <span class="k">text-decoration</span><span class="o">:</span> <span class="k">underline</span><span class="p">;}</span>
-    <span class="o">&amp;</span><span class="nd">:visited</span> <span class="p">{</span><span class="k">color</span><span class="o">:</span> <span class="err">$</span><span class="nb">violet</span><span class="p">;}</span>
-  <span class="err">}</span>
+<span class="nt">blockquote</span> <span class="p">{</span>
+  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">1em</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">.5em</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">dashed</span> <span class="err">$</span><span class="k">border</span><span class="p">;</span>
+  <span class="k">padding-left</span><span class="o">:</span> <span class="m">.6em</span><span class="p">;</span>
+  <span class="k">font-style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nt">a</span> <span class="p">{</span><span class="k">color</span><span class="o">:</span> <span class="err">$</span><span class="n">light</span><span class="o">-</span><span class="nb">blue</span><span class="p">;</span> <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+  <span class="o">&amp;:</span><span class="n">hover</span> <span class="err">{</span><span class="k">color</span><span class="o">:</span> <span class="err">$</span><span class="nb">blue</span><span class="p">;</span> <span class="k">text-decoration</span><span class="o">:</span> <span class="k">underline</span><span class="p">;}</span>
+  <span class="o">&amp;</span><span class="nd">:visited</span> <span class="p">{</span><span class="k">color</span><span class="o">:</span> <span class="err">$</span><span class="nb">violet</span><span class="p">;}</span>
+<span class="err">}</span>
 
 <span class="c">/* lib/_theme.scss */</span>
 <span class="err">$</span><span class="nt">violet</span><span class="o">:</span>     <span class="nf">#7e7e96</span><span class="o">;</span>
@@ -220,16 +222,14 @@
 
 
 <p>И соберём всё это в едином файле: <code>screen.scss</code>:</p>
-<div class="highlight"><pre><span class="cp">@import</span> <span class="s2">&quot;lib/_theme&quot;</span><span class="p">;</span>
-<span class="cp">@import</span> <span class="s2">&quot;lib/_typography&quot;</span><span class="p">;</span>
-<span class="cp">@import</span> <span class="s2">&quot;lib/_layout&quot;</span><span class="p">;</span>
-<span class="cp">@import</span> <span class="s2">&quot;lib/_main&quot;</span>
+<div class="highlight"><pre><span class="k">@import</span> <span class="s2">&quot;lib/_theme&quot;</span><span class="p">;</span>
+<span class="k">@import</span> <span class="s2">&quot;lib/_typography&quot;</span><span class="p">;</span>
+<span class="k">@import</span> <span class="s2">&quot;lib/_layout&quot;</span><span class="p">;</span>
+<span class="k">@import</span> <span class="s2">&quot;lib/_main&quot;</span>
 </pre></div>
 
 
-<blockquote>
 <p><strong>Порядок имеет значение:</strong> файлы, подключенные первыми первыми же и будут идти в выходном css-коде после сборки. Это достаточно удобно, например, в случае с media-queries, которые всегда рекомендуется ставить в конце или же выносить в отдельный файл.</p>
-</blockquote>
 <h3>Переменные</h3>
 <p>Пожалуй, это одна из наиболее удобных вещей в Sass. Вам больше не нужно пробегаться по коду с автозаменой &mdash; меняйте всего одну переменную! выше вы уже могли видеть как это выглядит на примере задания определённых цветов в <code>lib/_theme</code>.</p>
 <h3>Вложенность</h3>
@@ -253,7 +253,7 @@
 <p>На любителя. Пожалуй, как и в случае с условиями и циклами может пригодиться при вёрстке сложных макетов.</p>
 <div class="highlight"><pre><span class="c">/* играем с шириной блока */</span>
 <span class="nc">.div</span> <span class="p">{</span>
-    <span class="k">width</span><span class="o">:</span> <span class="err">$</span><span class="k">width</span><span class="o">/</span><span class="m">6</span> <span class="o">-</span> <span class="m">10px</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="err">$</span><span class="k">width</span><span class="o">/</span><span class="m">6</span> <span class="o">-</span> <span class="m">10px</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="c">/* изменяем цвета */</span>
@@ -273,7 +273,7 @@
 <span class="p">}</span> <span class="k">@else</span> <span class="p">{</span>
     <span class="nt">background-color</span><span class="o">:</span> <span class="nf">#ffffff</span><span class="o">;</span>
 <span class="p">}</span>
- <span class="c">/* цикл */</span>
+<span class="c">/* цикл */</span>
 <span class="err">$</span><span class="nt">width</span><span class="o">:</span> <span class="nt">960px</span><span class="o">;</span>
 <span class="err">$</span><span class="nt">gutter</span><span class="o">:</span> <span class="nt">20px</span><span class="o">;</span>
 <span class="err">$</span><span class="nt">columns</span><span class="o">:</span> <span class="nt">12</span><span class="o">;</span>
@@ -296,7 +296,7 @@
 
 
 <h3>Подпрограммы</h3>
-<p>Так называемые mixins помогают сберечь время, если вам нужно указать для разных элементов один и тот же набор данных. Например:</p>
+<p>Так называемые <code>mixins</code> помогают сберечь время, если вам нужно указать для разных элементов один и тот же набор данных. Например:</p>
 <div class="highlight"><pre><span class="k">@mixin</span> <span class="nt">border-circle</span> <span class="p">{</span>
   <span class="nt">border-radius</span><span class="o">:</span> <span class="nt">50</span><span class="o">%;</span>
   <span class="nt">border</span><span class="o">:</span> <span class="nt">1px</span> <span class="nt">solid</span> <span class="err">$</span><span class="nt">gray</span><span class="o">;</span>
@@ -322,7 +322,7 @@
 </pre></div>
 
 
-<p>Нужно принимать во внимание, что подпрограммы могут значительно увеличить объём css-файла, получаемого на выходе. Часто рекомендуется использовать mixins для вычислений, но заменять их на extends (расширения) там, где есть переменные. И здесь без объяснений не обойтись.</p>
+<p>Нужно принимать во внимание, что подпрограммы могут значительно увеличить объём css-файла, получаемого на выходе. Часто рекомендуется использовать <code>mixins</code> для вычислений, но заменять их на <code>extends</code> (расширения) там, где есть переменные. И здесь без объяснений не обойтись.</p>
 <p>Достаточно посмотреть на код, который получится на выходе. Обратимся к примеру:</p>
 <div class="highlight"><pre><span class="c">/* @mixins */</span>
 
@@ -384,59 +384,55 @@
     <span class="k">color</span><span class="o">:</span> <span class="m">#ddd</span><span class="p">;</span>
     <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="n">input</span><span class="o">-</span><span class="n">form</span><span class="p">;</span>
 
-<span class="c">/* css */</span>
+ <span class="c">/* css */</span>
 
 <span class="o">.</span><span class="n">input</span><span class="o">-</span><span class="n">form</span><span class="o">,</span> <span class="o">.</span><span class="n">site</span><span class="o">-</span><span class="n">form__input</span><span class="o">-</span><span class="k">text</span><span class="o">,</span> <span class="o">.</span><span class="n">site</span><span class="o">-</span><span class="n">form__input</span><span class="o">-</span><span class="k">text</span><span class="o">:</span><span class="n">focus</span> <span class="err">{</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#d0d0d0</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fcfcfc</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">15px</span><span class="p">;</span>
-  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">15px</span><span class="p">;</span>
-  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">15px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">25px</span><span class="p">;</span>
+    <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#d0d0d0</span><span class="p">;</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="m">#fcfcfc</span><span class="p">;</span>
+    <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">15px</span><span class="p">;</span>
+    <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">15px</span><span class="p">;</span>
+    <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">15px</span><span class="p">;</span>
+    <span class="k">height</span><span class="o">:</span> <span class="m">25px</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="nc">.site-form__input-text</span> <span class="p">{</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
+    <span class="k">color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="nc">.site-form__input-text</span><span class="nd">:focus</span> <span class="p">{</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#ddd</span><span class="p">;</span>
+    <span class="k">color</span><span class="o">:</span> <span class="m">#ddd</span><span class="p">;</span>
 <span class="p">}</span>
 </pre></div>
 
 
 <p>То есть в каком бы месте вы не подключили расширение, полученный в итоге код будет оптимальным. С mixin'ами же каждое новое включение влечёт за собой увеличение участков одного и того же кода. Понятно, что злоупотреблять ими не нужно.</p>
 <p>Вот такой небольшой обзор. Прошлись, как это говорится, галопом по Европам, получили примерное представление о Sass, решили для себя использовать его или нет. За дальнейшими подробностями обращаться к документации проекта.</p>
-<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi.html">redVi</a>,
-<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/web/">Web</a> /
-</h5>
+
+<br />
 <p align="center"><a href="#">наверх</a></p>
 </div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
 </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
-    <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>
-    <li class="footer"><a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+    <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
 </ul>
 </div><script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

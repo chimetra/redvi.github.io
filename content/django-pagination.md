@@ -1,6 +1,6 @@
 Title: Django: постраничный вывод статей
 Date: 2013-08-03 08:10
-Tags: Django
+Tags: Python
 Slug: django-pagination
 Author: redVi
 Summary: О том, как сделать постраничный вывод новостей в django.
@@ -9,9 +9,9 @@ Summary: О том, как сделать постраничный вывод н
 
 Для решения этой задачи в Django есть несколько способов и сегодня предлагается рассмотреть один из них: стандартный пагинатор. Рассмотрим пример, где нужно получить список всех публикаций и затем вывести их постранично.
 
-В примере используются всё те же модели, что и [в предыдущем посте](django-first-steps.html). В класс `Paginator` следует передать список объектов и количество элементов, которые нужно отображать на одной странице. Далее используются методы класса для доступа к этим элементам.
+В примере используются всё те же модели, что и [в предыдущем посте](http://www.unix-lab.org/posts/django-first-steps/). В класс `Paginator` следует передать список объектов и количество элементов, которые нужно отображать на одной странице. Далее используются методы класса для доступа к этим элементам.
 
-###Модель публикации
+### Модель публикации
 
 ```python
 # models.py
@@ -25,7 +25,7 @@ class Post(models.Model):
     meta_description = models.TextField(blank=True, max_length=250)
 ```
 
-###«Вьюха»
+### «Вьюха»
 
 `post_lists` &mdash; получаем список всех публикаций, отсортированных по времени создания.
 
@@ -60,7 +60,7 @@ def news(request):
     return render_to_response('news.html', vars, context_instance=RequestContext(request))
 ```
 
-###Шаблон
+### Шаблон
 
 `for post in posts` &mdash; итерация по элементам
 
@@ -74,7 +74,7 @@ def news(request):
 
 `post.next_page_number` &mdash; вернуть следующую страницу
 
-```html
+```html+django
 # news.html
 
 {% extends 'base.html' %}
@@ -106,4 +106,3 @@ def news(request):
 ```
 
 Страница документации: [Pagination](https://docs.djangoproject.com/en/dev/topics/pagination/)
-

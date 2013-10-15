@@ -8,34 +8,36 @@ Summary: На кону тема монтирования файловых сис
 На кону тема монтирования файловых систем: локальных и сетевых. В процессе рассуждения будут затронуты общие положения, вспомогательные программы (21 век на дворе, не ручками же монтировать), ну и, собственно, настройки оных. Сразу надо оговориться, что пост вряд ли будет интересен с практической точки зрения линуксоидам, сидящим под Ubuntu или Fedora. В user-friendly дистрибутивах это работает «из коробки». Пользователи gentoo или arch linux вполне могут потратить несколько минут на чтение, чтобы настроить то, что ещё не настроено или поправить то, что работает не так, как хочется.
 
 
-##I. Конфигурация ядра
+## Конфигурация ядра
 
 Некоторые из утилит, которые будут настраиваться, потребуют включения в ядре особенных опций. В частности udisks2 желает, чтобы был включен swap-раздел, активирована `FUSE` и `USB autosuspend`.
 
-    General setup  --->
-        [*]Support for paging of anonymous memory (swap)
-    File systems
-        <*>FUSE (Filesystem in Userspace) support
-    Device Drivers  --->
-        [*] USB support  --->
-        <*>Support for Host-side USB
-        [*]USB runtime power management (autosuspend) and wakeup
-    File Systems -->
-        Pseudo filesystems  --->
-          -*- Tmpfs virtual memory file system support (former shm fs)
-           [*]Tmpfs POSIX Access Control Lists
-        Native Language Support -->
-           <*> NLS UTF8
+```
+General setup  --->
+    [*]Support for paging of anonymous memory (swap)
+File systems
+    <*>FUSE (Filesystem in Userspace) support
+Device Drivers  --->
+    [*] USB support  --->
+    <*>Support for Host-side USB
+    [*]USB runtime power management (autosuspend) and wakeup
+File Systems -->
+    Pseudo filesystems  --->
+        -*- Tmpfs virtual memory file system support (former shm fs)
+        [*]Tmpfs POSIX Access Control Lists
+    Native Language Support -->
+        <*> NLS UTF8
+```
 
 Проверить наличие или отсутствие опций можно при помощи команды `zcat`, вот так:
 
-    :::console
-    $ zcat /proc/config.gz | grep что_изволите
+```console
+$ zcat /proc/config.gz | grep что_изволите
+```
 
 Убедившись, что нужные опции присутствуют или же собрав ядро с ними, можно приступать к следующему пункту: установке приложений.
 
-
-##Установка приложений
+## Установка приложений
 
 Прежде всего стоило бы установить `udev` или его аналог `eudev` (только для gentoo). Udev — менеджер устройств для новых версий ядра Linux, являющийся преемником devfs, hotplug и HAL. Его основная задача — обслуживание файлов устройств  в каталоге `/dev` и обработка всех действий, выполняемых в пространстве пользователя при добавлении/отключении внешних устройств, включая загрузку firmware;
 
@@ -140,49 +142,54 @@ Summary: На кону тема монтирования файловых сис
 
 Монтирование iso-образа (образ диска):
 
-    :::console
-    # mkdir /mnt/iso
-    # mount -t iso9660 image.iso /mnt/iso
+```console
+# mkdir /mnt/iso
+# mount -t iso9660 image.iso /mnt/iso
+```
 
 В примере сначала был создан каталог для монтирования, затем подмонтирован образ диска с указанием его файловой системы (`iso9660`), именем (`image.iso`), точкой монирования (`/mnt/iso`). Впрочем, сейчас в большинстве случаев файловая система устройства распознаётся автоматически.
 
 Если один и тот же накопитель должен быть смонтирован и доступен всегда, можно внести соответствующую запись в `/etc/fstab`:
 
-    :::sh
-    # /etc/fstab
-    UUID="339df6e7-91a8-4cf9-a43f-7f7b3db533c6"   /   ext4   defaults   0   1
-    /dev/sda1  /mnt/ntfs  ntfs  ro,auto,utf8  0 0
+```sh
+# /etc/fstab
+UUID="339df6e7-91a8-4cf9-a43f-7f7b3db533c6"   /   ext4   defaults   0   1
+/dev/sda1  /mnt/ntfs  ntfs  ro,auto,utf8  0 0
+```
 
 Монтировать можно как по UUID, так и с обычным указанием раздела, или даже назначить разделу метку и монтировать по ней.  В первом примере — с UUID — файловая система подмонтирована в корневой раздел, тип файловой системы etx4. Во втором примере подмонтирован раздел с ntfs в режиме только для чтения, с монтированием в каталог `/mnt/ntfs` при загрузке системы, указанием кодировки для корректного отображения имён файлов и каталогов. Но к ntfs мы ещё вернёмся чуть позже.
 
 Чтобы узнать UUID раздела используйте команду `blkid`:
 
-    :::console
-    # blkid
-    /dev/sda1: UUID="C474B30B74B2FEEC" TYPE="ntfs"
-    /dev/sda2: UUID="723c0ce1-d6f2-4272-a6fb-0c83b307d5b3" TYPE="ext2"
-    /dev/sda3: UUID="1cd73487-d108-46d5-85a1-9e1be4731d08" TYPE="ext4"
-    /dev/sda5: UUID="665079e7-1e34-41b5-b66b-93c480bb8c93" TYPE="ext4"
+```console
+# blkid
+/dev/sda1: UUID="C474B30B74B2FEEC" TYPE="ntfs"
+/dev/sda2: UUID="723c0ce1-d6f2-4272-a6fb-0c83b307d5b3" TYPE="ext2"
+/dev/sda3: UUID="1cd73487-d108-46d5-85a1-9e1be4731d08" TYPE="ext4"
+/dev/sda5: UUID="665079e7-1e34-41b5-b66b-93c480bb8c93" TYPE="ext4"
+```
 
-##III. Добавление пользователя в нужную группу
+## Добавление пользователя в нужную группу
 
 Группы в различных дистрибутивах linux могут отличаться своим наименованием. Если вы не нашли указанную здесь группу, ищите подобную ей. Список всех групп можно увидеть, открыв файл `/etc/group`:
 
-    :::console
-    # cat /etc/group
-    disk:x:6:root,adm
-    lp:x:7:lp
-    mem:x:8:
-    wheel:x:10:root,newbie
-    floppy:x:11:root
-    audio:x:18:newbie
-    cdrom:x:19:newbie
-    video:x:27:root,newbie
+```console
+# cat /etc/group
+disk:x:6:root,adm
+lp:x:7:lp
+mem:x:8:
+wheel:x:10:root,newbie
+floppy:x:11:root
+audio:x:18:newbie
+cdrom:x:19:newbie
+video:x:27:root,newbie
+```
 
 Чтобы добавить пользователя в нужную группу, скомандуйте:
 
-    :::console
-    # gpasswd -a <username> <group>
+```console
+# gpasswd -a <username> <group>
+```
 
 где username  —  имя вашего пользователя
 
@@ -190,8 +197,9 @@ Summary: На кону тема монтирования файловых сис
 
 Например:
 
-    :::console
-    # gpasswd -a newbie wheel,storage,users
+```console
+# gpasswd -a newbie wheel,storage,users
+```
 
 `wheel`  —  группа администраторов (ей мы будем давать права на монтирование)
 
@@ -201,17 +209,18 @@ Summary: На кону тема монтирования файловых сис
 
 Таким образом, можно разрешить монтирование либо пользователям с административными привилегиями, либо только пользователям, входящим в группу storage (директору и бухгалтеру можно, остальным как всегда), либо всем пользователям со стандартным набором прав.
 
-##IV. Монтирование локальных дисков
+## Монтирование локальных дисков
 
 Предположим, что мы не с гор спустились и используем для повседневных задач графический интерфейс — GUI. Открываем файловый менеджер, подключаем съёмное устройство, будь то флешка, внешний жёсткий диск или телефон. Кликаем мышью на указанное устройство, долго-долго томимся в ожидании чуда и — наконец! — получаем ответ: `Not authorized`. После чего приходит понимание, что комфорт нам только снится. Что делать? У нас есть несколько путей.
-
 
 <b>/etc/fstab</b>
 
 Классика жанра: монтирование разделов посредством правки `/etc/fstab`. Пример:
 
-    /dev/cdrom    /mnt/cdrom      iso9660     noauto,user,mode=0444   0 0
-    /dev/sdb1     /mnt/usbflash   vfat        fmask=113,noauto,user,utf8=1
+```
+/dev/cdrom    /mnt/cdrom      iso9660  noauto,user,mode=0444   0 0
+/dev/sdb1     /mnt/usbflash   vfat     fmask=113,noauto,user,utf8=1
+```
 
 В данном примере предполагается использование файловой системы `iso9669` для дисковода, `vfat` (FAT32) для съёмного накопителя. Команду и опции монтирования в случае с файловым менеджером spacefm можно легко настроить.
 
@@ -220,125 +229,137 @@ Summary: На кону тема монтирования файловых сис
 Ниже приводится два независимых правила, использование которых по прямому назначению должно быть разграничено. То есть либо первое правило, либо второе. Первый пример отлично работает у вашей покорной слуги: монтирует внешние накопители, логические диски и корректно опознает когда к нему подключен телефон (что само собой разумеется, ибо подключение также производится в режиме внешнего накопителя).
 Итак, раз и навсегда настроим права для монтирования, написав правило для `polkit`.
 
-    :::sh
-    # /etc/polkit-1/rules.d/10-udisks2.rules
+```sh
+# /etc/polkit-1/rules.d/10-udisks2.rules
 
-    polkit.addRule(function(action, subject) {
-     if ((action.id == "org.freedesktop.udisks2.filesystem-mount-system" ||
-          action.id == "org.freedesktop.udisks2.filesystem-mount") && subject.isInGroup("wheel")) {
-           return polkit.Result.YES;
-       }
-    });
+polkit.addRule(function(action, subject) {
+    if ((action.id == "org.freedesktop.udisks2.filesystem-mount-system" ||
+        action.id == "org.freedesktop.udisks2.filesystem-mount") && subject.isInGroup("wheel")) {
+        return polkit.Result.YES;
+    }
+});
 
-    polkit.addRule(function(action, subject) {
-       if ((action.id == "org.freedesktop.udisks.filesystem-mount" ||
+polkit.addRule(function(action, subject) {
+    if ((action.id == "org.freedesktop.udisks.filesystem-mount" ||
 
-     action.id == "org.freedesktop.udisks.filesystem-mount-system-internal")
-     && subject.isInGroup("wheel")) {
-           return polkit.Result.YES;
-        }
-    });
+    action.id == "org.freedesktop.udisks.filesystem-mount-system-internal")
+    && subject.isInGroup("wheel")) {
+        return polkit.Result.YES;
+    }
+});
+```
 
 Данное выше, вполне себе рабочее правило, по утверждению линуксоида-старожила `@zagrei` должно быть заменено на иное. За работу последнего не ручаюсь, но, доверяя товарищу по ОС, который дурного не посоветует, привожу здесь. Выглядит оно куда более изящно (надо полагать ввиду отсутствия xml):
 
-    :::sh
-    # /etc/polkit-1/localauthority/50-local.d/10-local-udisks.pkla
+```sh
+# /etc/polkit-1/localauthority/50-local.d/10-local-udisks.pkla
 
-    [Mount Permissions for users]
-    Identity=unix-group:users
-    Action=org.freedesktop.udisks.filesystem-mount
-    ResultAny=auth_self
+[Mount Permissions for users]
+Identity=unix-group:users
+Action=org.freedesktop.udisks.filesystem-mount
+ResultAny=auth_self
 
-    [Eject Permissions for users]
-    Identity=unix-group:users
-    Action=org.freedesktop.udisks.drive-eject
-    ResultAny=auth_self
-
+[Eject Permissions for users]
+Identity=unix-group:users
+Action=org.freedesktop.udisks.drive-eject
+ResultAny=auth_self
+```
 
 <b>UAM+PMOUNT</b>
 
 Другой способ заключается в использовании `uam` + `pmount`. Желающие пойти по этому пути должны установить указанные пакеты и добавить пользователя в соответствующую группу:
 
-    :::console
-    # emerge -av uam
-    # gpasswd -a newbie plugdev
-    # emerge -av pmount
+```console
+# emerge -av uam
+# gpasswd -a newbie plugdev
+# emerge -av pmount
+```
 
 Дабы корректно отображалась кириллица при монтировании NTFS-разделов, нужно немного видоизменить настройки в файле `/etc/udev/uam.conf`:
 
-    MOUNT_OPTS='noatime,utf8'
+```
+MOUNT_OPTS='noatime,utf8'
+```
 
-##V. Монтирование сетевых дисков
+## Монтирование сетевых дисков
 
 Для монтирования каталогов с ftp-сервера потребуется установить уже упомянутую curlftpfs, после чего монтирование в консоли сводится к нехитрым телодвижениям:
 
-    :::console
-    $ curlftpfs ftp://mirror.yandex.ru/gentoo-distfiles/ public_html
+```console
+$ curlftpfs ftp://mirror.yandex.ru/gentoo-distfiles/ public_html
+```
 
 где public_html — каталог в домашней директории пользователя, а по совместительству точка монтирования
 
 Отмонтировать:
 
-    :::console
-    $ fusermount -u public_html
+```console
+$ fusermount -u public_html
+```
 
 <a href="http://2.bp.blogspot.com/-V5znTT7Hpro/UVfnTnYCmYI/AAAAAAAAEQ4/UfqnwgrQBn0/s1600/curlftp.png" data-lighter><img src="http://2.bp.blogspot.com/-V5znTT7Hpro/UVfnTnYCmYI/AAAAAAAAEQ4/UfqnwgrQBn0/s1600/curlftp.png"/></a>
 
 Для монтирования каталогов удалённого хоста через SSH:
 
-    :::console
-    # sshfs [user@]host:[dir] mountpoint
+```console
+# sshfs [user@]host:[dir] mountpoint
+```
 
 Чтобы смонтировать от непривилегированного пользователя:
 
-    :::console
-    # sshfs [user@]host:[dir] mountpoint -o allow_other
+```console
+# sshfs [user@]host:[dir] mountpoint -o allow_other
+```
 
 Разумеется, мы и файловый менеджер можем научить монтировать удалённые каталоги. Хотя по сравнению с консолью быстротой своих действий он похвастаться не сможет. Напоминается, что для этого нужен установленный `udevil`, настройки которого мы и пойдём править в `/etc/udevil/udevil.conf`. Перед правкой рекомендуется сохранить данный файл с другим именем на случай, если что-то пойдёт не так, как нами запланировано. Сделаем это:
 
-    :::console
-    # cp /etc/udevil/udevil.conf /etc/udevil/udevil-newbie.conf
-    # vim /etc/udev/udevil.conf:
-    allowed_types = curlftpfs, ftpfs  # разрешённые файловые системы
-    allowed_media_dirs = /media, /run/media/$USER # куда монтировать
-    allowed_users = *                 # разрешение для отдельных пользователей - нет
-    allowed_groups = *                # разрешение на монтирование для отдельных групп — нет
-
+```console
+# cp /etc/udevil/udevil.conf /etc/udevil/udevil-newbie.conf
+# vim /etc/udev/udevil.conf:
+allowed_types = curlftpfs, ftpfs  # разрешённые файловые системы
+allowed_media_dirs = /media, /run/media/$USER # куда монтировать
+allowed_users = *                 # разрешение для отдельных пользователей - нет
+allowed_groups = *                # разрешение на монтирование для отдельных групп — нет
+```
 
 В такой конфигурации пользователь должен быть добавлен в группу `storage` или `plugdev`. При необходимости можно указать любую из возможных файловых систем: cifs, smbfs, nfs, curlftpfs, ftpfs, sshfs, tmpfs, ramfs.
 
-##VI. Что делать с NTFS?
+## Что делать с NTFS?
 
 Здесь есть два варианта: включить поддержку ntfs в ядре или поставить пакет `ntfs3g`. Для первого случая конфигурация будет такой:
 
-    File Systems --->
-       DOS/FAT/NT Filesystems  --->
-       <M> MSDOS fs support
-       <M> VFAT (Windows-95) fs support
-       <M> NTFS file system support
-
+```
+File Systems --->
+    DOS/FAT/NT Filesystems  --->
+    <M> MSDOS fs support
+    <M> VFAT (Windows-95) fs support
+    <M> NTFS file system support
+```
 
 Во втором (рекомендуемом) случае достаточно поставить указанный выше пакет и дать пользователю права на монтирование. Если есть надобность, смонтировать вручную:
 
-    :::console
-    # mkdir /mnt/hdd
-    # mount -t ntfs /dev/sda1 /mnt/hdd
+```console
+# mkdir /mnt/hdd
+# mount -t ntfs /dev/sda1 /mnt/hdd
+```
 
 *Примечание:* flash-накопители, используемые для хранения данных, можно отформатировать в exFAT. Windows, начиная с Win Seven, будет понимать и радостно принимать проприетарную файловую систему от разработчиков из Редмонда. Для корректной работы в UNIX-системах следует установить пакет `fuse-exfat`. ФС будет доступна как для чтения, так и для записи.
 
 Для разделов, отформатированных в FAT32 указать тип `vfat`:
 
-    :::console
-    # mount -t vfat /dev/sda1 /mnt/hdd
+```console
+# mount -t vfat /dev/sda1 /mnt/hdd
+```
 
 Для MS-DOS аналогично:
 
-    :::console
-    # mount -t msdos /dev/sda1 /mnt/hdd
+```console
+# mount -t msdos /dev/sda1 /mnt/hdd
+```
 
 Если в `rules.d` заданы права на монтирование, можно будет открывать и диски с ntfs в файловом менеджере.
 
-##Литература для любопытных
+## Литература для любопытных
 
 - [polkit Reference Manual](http://www.freedesktop.org/software/polkit/docs/latest/index.html)
 - [UDisks Reference Manual](http://udisks.freedesktop.org/docs/latest/)

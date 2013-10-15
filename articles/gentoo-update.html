@@ -18,14 +18,17 @@
     <div class="small">блог об операционных системах, open source и программировании</div>
 <div class="nav">
     <ul>
-      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
-      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
-      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+      <li><a href="http://www.unix-lab.org/archives/">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about/">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors/">Автор</a></li>
     </ul>
 </div>
 </div><div id="main">
 <h2><a href="http://www.unix-lab.org/articles/gentoo-update.html">Руководство по обновлению Gentoo Linux</a></h2>
-<h5><i class="icon-feather"></i> 16 Май 2013 </h5>
+<h5><i class="icon-feather"></i> 16 Май 2013
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/gentoo/">Gentoo</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
+</h5>
 <p>После установки и первоначальной настройки пользователю gentoo linux, кажется, уже не о чем больше беспокоиться. Разве что о такой важной вещи как поддержание своей операционной системы в актуальном состоянии. Собственно, этот вопрос и будет затронут сегодня. Детально разберём особенности обновления gentoo, немного поговорим о командах и программах, с которыми не мешало бы разобраться каждому гентушнику, ну и постараемся предугадать и осветить возможные вопросы начинающих пользователей. Начнём, пожалуй.</p>
 <p>В тексте вы можете видеть сноски, выделенные красным цветом и более мелким по сравнению с основным текстом шрифтом. Дело в том, что пост получился довольно таки объёмным и затрагивает не только сам процесс обновления, но и процесс взаимодействия/сосуществования с gentoo, поэтому пришлось вынести некоторые дополнительные материалы в заключение.</p>
 <h2>Введение</h2>
@@ -82,8 +85,8 @@
 <p>Сразу переключиться на новое ядро с помощью <code>eselect</code>.</p>
 <div class="highlight"><pre><span class="gp">$</span> eselect kernel list
 <span class="go">Available kernel symlink targets:</span>
-<span class="go">  [1]   linux-3.6.11-gentoo*</span>
-<span class="go">  [2]   linux-3.7.7-gentoo</span>
+<span class="go">    [1]   linux-3.6.11-gentoo*</span>
+<span class="go">    [2]   linux-3.7.7-gentoo</span>
 <span class="gp">#</span> eselect kernel <span class="nb">set </span>2
 </pre></div>
 
@@ -157,8 +160,8 @@
 
 
 <p>Указываем настройки в <code>/etc/portage/make.conf</code>:</p>
-<div class="highlight"><pre>source /var/lib/layman/make.conf
-PORTDIR_OVERLAY=&quot;<span class="cp">${</span><span class="n">PORTDIR_OVERLAY</span><span class="cp">}</span> /usr/local/portage&quot;
+<div class="highlight"><pre><span class="nb">source</span> /var/lib/layman/make.conf
+<span class="nv">PORTDIR_OVERLAY</span><span class="o">=</span><span class="s2">&quot;${PORTDIR_OVERLAY} /usr/local/portage&quot;</span>
 </pre></div>
 
 
@@ -190,7 +193,7 @@ PORTDIR_OVERLAY=&quot;<span class="cp">${</span><span class="n">PORTDIR_OVERLAY<
 
 
 <h3>Блокировки</h3>
-<p>Блокировки можно условно разделить на два типа: просто блокировки (их называют жёсткими) и "недоблокировки" (а эти - мягкими). Первые обозначаются заглавной <code>B</code> и требуют к себе предельного внимания. Тут без вашего вмешательства обновление или же установка пакетов не произойдёт. Иначе говоря, <code>emerge</code> сигнализирует, что не может без вас разобраться.
+<p>Блокировки можно условно разделить на два типа: просто блокировки (их называют жёсткими) и "недоблокировки" (а эти &mdash; мягкими). Первые обозначаются заглавной <code>B</code> и требуют к себе предельного внимания. Тут без вашего вмешательства обновление или же установка пакетов не произойдёт. Иначе говоря, <code>emerge</code> сигнализирует, что не может без вас разобраться.
 Вообще, жёсткие блокировки возникают, когда два (и почти никогда больше) пакета не могут быть установлены вместе. Либо вы хотите установить программу, которая требует в зависимотсях более новый пакет, чем тот, что у вас установлен, либо программы выполняют одинаковые функции и вместе сосуществовать не могут. Например, <code>udev</code> и <code>eudev</code>.</p>
 <ul>
 <li>Как можно поступить:<ul>
@@ -268,7 +271,6 @@ PORTDIR_OVERLAY=&quot;<span class="cp">${</span><span class="n">PORTDIR_OVERLAY<
 
 <p>Допустим, нам нужно, чтобы mirage умел просматривать файлы .png и .jpeg, а .gif и гном игнорировал. В соответствии с этим пропишем:</p>
 <div class="highlight"><pre><span class="gp">#</span> nano /etc/portage/package.use
-
 <span class="go">media-gfx/mirage jpeg png -gif jpeg2k -gnome</span>
 </pre></div>
 
@@ -302,8 +304,8 @@ PORTDIR_OVERLAY=&quot;<span class="cp">${</span><span class="n">PORTDIR_OVERLAY<
 <p>Пример с <code>eselect</code>:</p>
 <div class="highlight"><pre><span class="gp">#</span> eselect python list
 <span class="go">Available Python interpreters:</span>
-<span class="go">  [1]   python2.7</span>
-<span class="go">  [2]   python3.2 *</span>
+<span class="go">    [1]   python2.7</span>
+<span class="go">    [2]   python3.2 *</span>
 <span class="gp">#</span> eselect python <span class="nb">set </span>1
 </pre></div>
 
@@ -311,7 +313,7 @@ PORTDIR_OVERLAY=&quot;<span class="cp">${</span><span class="n">PORTDIR_OVERLAY<
 <h3>Зачем нужны ebuild'ы</h3>
 <p>Иногда какого-то нужного пакета может не оказаться ни в официальном репозитории gentoo, ни в каком-либо из оверлеев. В таком случае можно установить готовый ( или написать свой ) ebuild.  Найти готовые ebuild'ы можно здесь, воспользовавшись строкой поиска. Давайте рассмотрим пример установки плагина <code>save for web</code> для графического редактора gimp.</p>
 <p>Итак, мы скачали необходимый ebuild. Теперь хорошо бы проверить наличие переменной <code>PORTDIR_OVERLAY</code> в <code>make.conf</code>:</p>
-<div class="highlight"><pre>PORTDIR_OVERLAY=&quot;<span class="cp">${</span><span class="n">PORTDIR_OVERLAY</span><span class="cp">}</span> /usr/local/portage&quot;
+<div class="highlight"><pre><span class="nv">PORTDIR_OVERLAY</span><span class="o">=</span><span class="s2">&quot;${PORTDIR_OVERLAY} /usr/local/portage&quot;</span>
 </pre></div>
 
 
@@ -351,37 +353,32 @@ PORTDIR_OVERLAY=&quot;<span class="cp">${</span><span class="n">PORTDIR_OVERLAY<
 
 <p>В принципе изложенной информации должно хватить для работы без экспериментов и неожиданностей.  Хотя рекомендуется ещё пройтись по форуму на предмет вопроса: <a href="http://gentoo.ru/node/26637">что читать после handbook</a>.
 На этом сегодня всё. Безоблачной жизни в gentoo, дамы и господа!</p>
-<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi.html">redVi</a>,
-<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/gentoo/">Gentoo</a> /
-<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
-</h5>
+
+<br />
 <p align="center"><a href="#">наверх</a></p>
 </div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
 </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
-    <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>
-    <li class="footer"><a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+    <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
 </ul>
 </div><script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

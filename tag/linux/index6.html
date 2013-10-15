@@ -18,60 +18,76 @@
     <div class="small">блог об операционных системах, open source и программировании</div>
 <div class="nav">
     <ul>
-      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
-      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
-      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+      <li><a href="http://www.unix-lab.org/archives/">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about/">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors/">Автор</a></li>
     </ul>
 </div>
 </div><div id="main">
-<h2><a href="http://www.unix-lab.org/articles/quotes.html">Квоты или Как наказать нерадивого пользователя</a></h2>
-<h5><i class="icon-feather"></i> 13 Ноябрь 2011 </h5>
-Сегодня редко приходится задумываться об экономии места на HDD. Но что делать, если дисковое пространство одно, а пользователей много и каждый из них занимает столько места, сколько ему нравится? Ограничим их вольготный образ жизни квотами. Для использования данной возможности в ядре должна быть включена поддержка квот. Проверить это можно так: $ gzip -cd /proc/config.gz | grep QUOTA В ответ вы должны получить небольшой список параметров конфигурации ядра и среди них: CONFIG_QUOTA=y теперь посмотрим, ...
-<h2><a href="http://www.unix-lab.org/articles/debian-dsl.html">Настройка DSL в Debian/Ubuntu Linux</a></h2>
-<h5><i class="icon-feather"></i> 30 Октябрь 2011 </h5>
-После установки linux первое, что обычно делает счастливый пользователь - настройка интернет-соединения. Но не у всех получается произвести её корректно. Поэтому сегодня рассмотрим простейший способ настройки ADSL под Debian Squeeze. Итак, поехали. I. Используем конфигуратор Введите в терминале: # ifconfig -a Это позволит просмотреть список найденных сетевых интерфейсов Примечание: lo – интерфейс вашего локального хоста, на нём внимание не заостряем. Нас интересует eth0 или же ...
-<h2><a href="http://www.unix-lab.org/articles/arch-settings.html">Arch Linux. Тонкая настройка</a></h2>
-<h5><i class="icon-feather"></i> 19 Октябрь 2011 </h5>
-В продолжение статьи об установке лёгкого, быстрого и простого дистрибутива. В конце поста небольшой видеоролик с установкой LXDE. Не красоты ради, а удобства для. Чтобы вам не приходилось настраивать свой арч, сидя в консоли. В общем и целом настройка arhclinux будет сведена к нескольким несложным действиям как то: Настройка интернет-соединения Установка драйверов на видео + xorg Установка окружения рабочего стола Настройка тачпада <a ...
-<h2><a href="http://www.unix-lab.org/articles/arch-install.html">Arch Linux. Быстрая установка</a></h2>
-<h5><i class="icon-feather"></i> 17 Октябрь 2011  &nbsp; <i class="icon-spin4"></i> 7 Июль 2012 </h5>
-Статья написана по большей части как быстрый старт для тех, кто уже ознакомился с официальной страничкой вики, и устанавливает систему не в первый раз. В случае, если вы никогда ранее не сталкивались с ArchLinux, рекомендуется обратиться к официальной документации по этому вопросу. Арч — стремительно меняющийся дистрибутив, буквально за два-три месяца (лето-осень 2012) процесс установки претерпел кардинальные изменения, от замены любимого bsd-подобного AIF до gentoo-подобной системы установки, от rc.conf и ...
-<h2><a href="http://www.unix-lab.org/articles/install-gentoo.html">Установка Gentoo. По-русски</a></h2>
-<h5><i class="icon-feather"></i> 30 Сентябрь 2011  &nbsp; <i class="icon-spin4"></i> 2 Январь 2013 </h5>
-Сегодня будем развенчивать миф о сложности установки Gentoo. Почему установка "по-русски"? Потому что настраивать станем русскую локаль, раскладку и временную зону. Статья получилась довольно объёмной, для тех, кто не знает, как скоротать долгий вечер). Загрузитесь с СD-диска. Грузимся с параметрами по умолчанию. Настройка интернет-соединения: автор использует модемное соединение, данные передаются автоматически при помощи DHCP. <div ...
-<h2><a href="http://www.unix-lab.org/articles/iptables.html">Firewall в Linux. Настройка iptables</a></h2>
-<h5><i class="icon-feather"></i> 02 Сентябрь 2011 </h5>
-Iptables отвечает преимущественно за фильтрацию пакетов. Настройка Iptables вручную является довольно непростой задачей. Не надейтесь, что разберётесь в этом «снаскока». К счастью, есть много инструментов, которые могут оказать вам помощь в случае, если с iptables вы ещё не разобрались, а обезопасить систему нужно срочно: fwbuilder , firestarter , guarddog, arno firewall - по сути это GUI к iptables. Однозначного ответа что лучше нет. Выбирать вам. Однако, сегодняшняя статья посвящена именно iptables и делится на две части: теория и практика. Самые нетерпеливые могут сразу выполнить практическую часть, хотя ...
-<div class="pagination">
-        <a href="http://www.unix-lab.org/tag/linux/5.html">&larr;Предыдущая</a>
-    страница 6 из 7.
-        <a href="http://www.unix-lab.org/tag/linux/7.html">Следующая&rarr;</a>
-</div></div>
+<h2>Linux</h2>
+<dl>
+<dd><a href="http://www.unix-lab.org/articles/debian-kde.html">Установка KDE в Debian</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/debian-kernel.html">Сборка ядра Debian</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/debian-repo.html">Репозитории Debian Squeeze</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/iptables.html">Firewall в Linux. Настройка iptables</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/install-gentoo.html">Установка Gentoo. По-русски</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/arch-install.html">Arch Linux. Быстрая установка</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/arch-settings.html">Arch Linux. Тонкая настройка</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/debian-dsl.html">Настройка DSL в Debian/Ubuntu Linux</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/quotes.html">Квоты или Как наказать нерадивого пользователя</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/arch-users.html">Пользователи и группы в Archlinux</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/chroot.html">Chroot на практике</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/linux-on-hdd.html">Переносим linux на внешний HDD</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/abs.html">Знакомимся с ABS</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/lamp.html">Установка LAMP в archlinux</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/top-programms.html">Топ программ под Linux</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/kde.html">Оптимизация KDE</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/utf8.html">Как перекодировать cp1251 в UTF-8</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/openbox.html">Поваренная книга openbox</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/wi-fi.html">Неприступный wi-fi</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/systemd.html">Systemd: загрузись по-новому</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/clonezilla.html">Простое создание резервных копий с clonezilla</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/xmonad.html">Знакомьтесь, xmonad</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/nginx.html">Nginx как самостоятельный веб-сервер</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/grub2.html">GRUB2: основные настройки</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/vnstat.html">Считаем трафик с vnstat</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/dwm.html">DWM: тайлинг — наше всё</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/screencast.html">Скринкасты в Linux</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/qemu.html">QEMU. Mini how-to</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/zsh-bash.html">zsh и bash: что выбрать</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/acpi.html">Управление питанием и настройки acpi</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/gentoo2.html">Gentoo. Попытка № 2</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/fbsplash.html">Стартовые красоты с fbsplash</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/backup.html">Ещё один способ резервного копирования</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/kernel-v3.html">Ядерная физика для домохозяек v.3</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/gentoo-update.html">Руководство по обновлению Gentoo Linux</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/udev.html">Udisks, udev и все-все-все</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/debian-wheezy.html">Debian 7 или Какого лешего</a></dd>
+<dd><a href="http://www.unix-lab.org/articles/subtle-wm.html">Subtle WM: свобода, ограниченная лишь фантазией</a></dd>
+</dl>
+</div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
 </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
-    <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>
-    <li class="footer"><a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+    <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
 </ul>
 </div><script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

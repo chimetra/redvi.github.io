@@ -17,22 +17,23 @@ Summary: В данном посте хотелось бы предложить �
 
 Разумеется, графических библиотек намного больше. Указанные здесь &mdash; основные. Автором рекомендуется выбирать между `wxPython` и `Tkinter`. Дабы использовать какую-либо библиотеку, нужно её установить (исключением является разве что OS Windows, где python, похоже, поставляется в чуть ли не полной комплектации). Разбираемый сегодня пример будет задействовать библиотеку tkinter и потребует установки модуля `tk`. Пользователи Linux могут найти его с помощью своего пакетного менеджера или собрать python с ключом `tk` (для gentoo).
 
-##Как это работает?
+## Как это работает?
 
 tkinter  &mdash; программный слой поверх `Tk`, позволяющий сценариям на языке Python обращаться к библиотеке `Tk`, конструирующей и настраивающей интерфейсы и возвращающей управление обратно в сценарии Python, которые обрабатывают события, генерируемые пользователем (например, щелчки мышью). Таким образом, обращения к  графическому интерфейсу из сценария Python направляются в tkinter, а затем в Tk; события, возникающие в графическом интерфейсе, направляются из Tk в  tkinter, а  затем обратно в  сценарий Python. <small>~Марк Лутц - программирование на Python 4 изд. I том~</small>
 
 
-##Начали импорт
+## Начали импорт
 
-    :::python
-    # pybackup.py
-    #
-    #! /usr/bin/env python
-    # -*- coding: utf-8 -*-
-    import os
-    import shutil
-    from tkinter.messagebox import *
-    from tkinter.filedialog import *
+```python
+# pybackup.py
+#
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+import os
+import shutil
+from tkinter.messagebox import *
+from tkinter.filedialog import *
+```
 
 модуль `os` представляет переносимый интерфейс к часто используемым службам операционной системы. Нами будет использован для указания пути (`os.path`);
 
@@ -42,22 +43,23 @@ tkinter  &mdash; программный слой поверх `Tk`, позвол
 
 Функция выбора директории для копирования, получение доступа к описанию функции.
 
-
-    :::python
-    def savefiles():
-        '''Ask where save your files'''
-        global dst
-        dst = askdirectory()
-        print(type(dst))
-        print(dst)
-
+```python
+def savefiles():
+    '''Ask where save your files'''
+    global dst
+    dst = askdirectory()
+    print(type(dst))
+    print(dst)
+```
 
 Прежде всего, никогда не стоит забывать документировать ваш код хотя бы для того, чтобы спустя некоторое время вы сами могли в нём разобраться. В примере сразу ниже функции даётся её краткое описание.
 
 При импорте модуля можно будет обратиться к ней, вызвав команду `backup.savefiles.__doc__`  &mdash;  то есть `имя_модуля.имя_функции.__описание__` :
 
-    >>> backup.savefiles.__doc__
-    'Ask where save your files'
+```
+>>> backup.savefiles.__doc__
+'Ask where save your files'
+```
 
 Полученный нами в итоге модуль не предназначен для расширения или импортирования, тем не менее строки документации создавать всё же нужно.
 
@@ -70,22 +72,21 @@ tkinter  &mdash; программный слой поверх `Tk`, позвол
 
 Функция выбора файлов для бекапа и вложенная функция копирования выбранных файлов
 
-    :::python
-    def _selectfile():
-        '''Select your files for backup'''
-        src = askopenfilenames()
-        src = list(src)
-        print(type(src))
-        print(src)
-        def save():
-            '''Save files'''
-            for listcopy in src:
-                listname = os.path.join(listcopy)
-                shutil.copy(listname, dst)
-            print("Backup file is OK")
-        save()
-
-
+```python
+def _selectfile():
+    '''Select your files for backup'''
+    src = askopenfilenames()
+    src = list(src)
+    print(type(src))
+    print(src)
+    def save():
+        '''Save files'''
+        for listcopy in src:
+            listname = os.path.join(listcopy)
+            shutil.copy(listname, dst)
+        print("Backup file is OK")
+    save()
+```
 
 `askopenfilenames` - выбрать файлы для копирования. Поскольку в итоге мы получим кортеж, а кортежи неизменяемы, сразу же конвертируем его в список: `list(src)`.
 
@@ -101,28 +102,28 @@ tkinter  &mdash; программный слой поверх `Tk`, позвол
 
 Функция выбора директории и вложенная функция рекурсивного копирования
 
-    :::python
-    def _selectdirectory():
-        '''Select your directory for backup'''
-        src2 = askdirectory()
-        print(type(src2))
-        print(src2)
-        def save2():
-            '''Save directories and files'''
-            print ("make backup " + src2)
-            names = os.listdir(src2)
-            if not os.path.exists(dst):
-                 os.mkdir(dst)
-            for name in names:
-                srcname = os.path.join(src2, name)
-                dstname = os.path.join(dst, name)
-                if os.path.isdir(srcname):
-                    shutil.copytree(srcname, dstname)
-                if os.path.isfile(srcname):
-                    shutil.copy(srcname, dstname)
-            print("Backup is OK")
-        save2()
-
+```python
+def _selectdirectory():
+    '''Select your directory for backup'''
+    src2 = askdirectory()
+    print(type(src2))
+    print(src2)
+    def save2():
+        '''Save directories and files'''
+        print ("make backup " + src2)
+        names = os.listdir(src2)
+        if not os.path.exists(dst):
+            os.mkdir(dst)
+        for name in names:
+            srcname = os.path.join(src2, name)
+            dstname = os.path.join(dst, name)
+            if os.path.isdir(srcname):
+                shutil.copytree(srcname, dstname)
+            if os.path.isfile(srcname):
+                shutil.copy(srcname, dstname)
+        print("Backup is OK")
+    save2()
+```
 
 `askdirectory` &mdash; выбрать директорию для копирования. В функцию включена проверка для рекурсивного копирования поддиректорий. Если `srcname` &mdash; поддиректория (`os.path.isdir`), будет выполнено рекурсивное копирование (`copytree`). Если в выбранная директория помимо поддиректорий содержит обычные файлы (`os.path.isfile`), копирование этих файлов (`copy`).
 
@@ -132,42 +133,42 @@ tkinter  &mdash; программный слой поверх `Tk`, позвол
 
 Функция, закрывающая программу
 
-    :::python
-    def close_win():
-         '''Close window and exit programm'''
-         if askyesno("Exit", "Do you want to quit?"):
-              root.destroy()
-
+```python
+def close_win():
+    '''Close window and exit programm'''
+    if askyesno("Exit", "Do you want to quit?"):
+        root.destroy()
+```
 
 Функция, показывающая информационное окно
 
-    :::python
-    def about():
-         showinfo("Backup", "This is simple backup programm.\n(test version)")
-
+```python
+def about():
+    showinfo("Backup", "This is simple backup programm.\n(test version)")
+```
 
 Tkinter
 
-    :::python
-    root = Tk()
-    m = Menu(root)
-    root.config(menu=m)
+```python
+root = Tk()
+m = Menu(root)
+root.config(menu=m)
 
-    fm = Menu(m)
-    m.add_cascade(label="File",menu=fm)
-    fm.add_command(label="Select directory for save", command = savefiles)
-    fm.add_command(label="Select files for copy.",command=_selectfile)
-    fm.add_command(label="Select directories for copy", command=_selectdirectory)
-    fm.add_command(label="Exit",command=close_win)
+fm = Menu(m)
+m.add_cascade(label="File",menu=fm)
+fm.add_command(label="Select directory for save", command = savefiles)
+fm.add_command(label="Select files for copy.",command=_selectfile)
+fm.add_command(label="Select directories for copy", command=_selectdirectory)
+fm.add_command(label="Exit",command=close_win)
 
-    hm = Menu(m)
-    m.add_cascade(label="Help",menu=hm)
-    hm.add_command(label="About",command=about)
-    txt = Text(root,width=40,height=25,font="22")
-    txt.pack()
+hm = Menu(m)
+m.add_cascade(label="Help",menu=hm)
+hm.add_command(label="About",command=about)
+txt = Text(root,width=40,height=25,font="22")
+txt.pack()
 
-    root.mainloop()
-
+root.mainloop()
+```
 
 `root = Tk()` &mdash; создать главное окно
 
@@ -183,37 +184,36 @@ Tkinter
 
 <p align="center"><iframe width="420" height="315" src="http://www.youtube.com/embed/1dgeYI7HvmY" frameborder="0" allowfullscreen></iframe></p>
 
-##Что не так?
+## Что не так?
 
 Если вам понятен приведённый пример, вы уже можете сказать, чего в нём не хватает. Например, вы можете обнаружить, что при повторном копировании объектов одной и той же директории, замена файлов происходит, а замена поддиректорий &mdash; нет. Вам лишь укажут на тот факт, что такая поддиректория уже существует и выполнение программы прекратится. В качестве самостоятельной работы предлагается изучить конструкцию `try-except` или модуль `errno` и проработать этот момент. Например:
 
-    :::python
-    def save2():
-            '''Save directories'''
-            try:
-                print ("make backup " + src2)
-                names = os.listdir(src2)
-                if not os.path.exists(dst):
-                     os.mkdir(dst)
-                for name in names:
-                    srcname = os.path.join(src2, name)
-                    dstname = os.path.join(dst, name)
-                    if os.path.isdir(srcname):
-                        shutil.copytree(srcname, dstname)
-                    if os.path.isfile(srcname):
-                        shutil.copy(srcname, dstname)
-                print("Backup is OK")
-            except OSError:
-                shutil.rmtree(dstname)
-                print("Try again")
-                if os.path.isdir(srcname):
-                    shutil.copytree(srcname,dstname)
-                if os.path.isfile(srcname):
-                    shutil.copy(srcname,dstname)
-                print("Backup is OK")
-        save2()
-
-
+```python
+def save2():
+    '''Save directories'''
+    try:
+        print ("make backup " + src2)
+        names = os.listdir(src2)
+        if not os.path.exists(dst):
+            os.mkdir(dst)
+        for name in names:
+            srcname = os.path.join(src2, name)
+            dstname = os.path.join(dst, name)
+            if os.path.isdir(srcname):
+                shutil.copytree(srcname, dstname)
+            if os.path.isfile(srcname):
+                shutil.copy(srcname, dstname)
+        print("Backup is OK")
+    except OSError:
+        shutil.rmtree(dstname)
+        print("Try again")
+        if os.path.isdir(srcname):
+            shutil.copytree(srcname,dstname)
+        if os.path.isfile(srcname):
+            shutil.copy(srcname,dstname)
+        print("Backup is OK")
+save2()
+```
 
 В Windows копирование файла/файлов работать не будет: сие есть последствие  использования этой ОС не православных путей к файлам (обратный слэш). Возможно, пользователям Windows будет интересно изменить код таким образом, чтобы данная функция работала.
 

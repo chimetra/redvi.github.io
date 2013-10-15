@@ -7,31 +7,35 @@ Summary: В сегодняшнем посте затронем тему учёт
 
 В сегодняшнем посте затронем тему учёта трафика сетевых интерфейсов. Как правило, это нужно на предприятиях, но если у вас не безлимитный интернет, то и дома эта заметка может пригодиться.
 
-
 Установка проста и тривиальна, ничего кроме самого vnstat за собой не потянет.
 
-    :::console
-    # pacman -S vnstat
+```console
+# pacman -S vnstat
+```
 
 Дальше следует создать базу данных для вашего сетевого интерфейса:
 
-    :::console
-    # vnstat -u -i eth0
+```console
+# vnstat -u -i eth0
+```
 
 и запустить демон `vnstat` (`systemctl` для тех, кто уже перешёл на `systemd`)
 
-    :::console
-    # systemctl start vnstat
+```console
+# systemctl start vnstat
+```
 
 После запуска демона обновим нашу базу данных:
 
-    :::console
-    # vnstat -u -i eth0
+```console
+# vnstat -u -i eth0
+```
 
 Теперь можно просмотреть статистику.
 
-    :::console
-    $ vnstat -i eth0
+```console
+$ vnstat -i eth0
+```
 
 команда выдаст всю информацию о интерфейсе `eth0`
 
@@ -41,27 +45,29 @@ Summary: В сегодняшнем посте затронем тему учёт
 
 <b>Пример:</b>
 
-    :::console
-    $ vnstat -i eth0 -d
-    eth0  /  daily
+```console
+$ vnstat -i eth0 -d
+eth0  /  daily
 
-         day         rx      |     tx      |    total    |   avg. rate
-     ------------------------+-------------+-------------+---------------
-      10/22/12         0 KiB |       0 KiB |       0 KiB |    0.00 kbit/s
-      10/24/12      4.20 MiB |    1.45 MiB |    5.65 MiB |    0.55 kbit/s
-     ------------------------+-------------+-------------+---------------
-     estimated         4 MiB |       1 MiB |       5 MiB
+     day         rx      |     tx      |    total    |   avg. rate
+ ------------------------+-------------+-------------+---------------
+  10/22/12         0 KiB |       0 KiB |       0 KiB |    0.00 kbit/s
+  10/24/12      4.20 MiB |    1.45 MiB |    5.65 MiB |    0.55 kbit/s
+ ------------------------+-------------+-------------+---------------
+  estimated         4 MiB |       1 MiB |       5 MiB
+```
 
 Также можно ознакомиться и при необходимости отредактировать конфигурационный файл, располагающийся по адресу `/etc/vnstat.conf`
 
-    # vnStat 1.11 config file
-    ##
-    # default interface
-    Interface "eth0"
-    # location of the database directory
-    DatabaseDir "/var/lib/vnstat"
-    # locale (LC_ALL) ("-" = use system locale)
-    Locale "-"
+```
+# vnStat 1.11 config file
+#
+# default interface
+Interface "eth0"
+# location of the database directory
+DatabaseDir "/var/lib/vnstat"
+# locale (LC_ALL) ("-" = use system locale)
+Locale "-"
+```
 
 В большинстве случаев настройки по умолчанию менять не придётся. В выделенном блоке (конечно, это не весь конфигурационный файл, но выкладывать его полностью вряд ли нужно) указан интерфейс по умолчанию, директория с созданной базой данных, а также выбрана системная локаль.
-

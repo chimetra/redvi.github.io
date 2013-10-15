@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>unix-lab.org</title><link href="http://www.unix-lab.org/" rel="alternate"></link><link href="http://www.unix-lab.org/feeds/all-ru.atom.xml" rel="self"></link><id>http://www.unix-lab.org/</id><updated>2013-10-03T01:15:00+07:00</updated><entry><title>Абсолютные пути URL в Django</title><link href="http://www.unix-lab.org/articles/get-absolute-url.html" rel="alternate"></link><updated>2013-10-03T01:15:00+07:00</updated><author><name>redVi</name></author><id>tag:www.unix-lab.org,2013-10-03:articles/get-absolute-url.html</id><summary type="html">&lt;p&gt;В одной из &lt;a href="http://www.unix-lab.org/articles/django-first-steps.html"&gt;предыдущих заметок&lt;/a&gt;, нами был написан шаблон для вывода списка публикаций на главной странице. Ссылка на полный текст публикации имеет вид &lt;code&gt;{% url 'articles:detail' post.id %}&lt;/code&gt;, что позволяет получить определённую страницу по её идентификатору (&lt;code&gt;id&lt;/code&gt;). За отображение страницы ответственность несёт представление &lt;code&gt;articles&lt;/code&gt; из пространства имён (&lt;code&gt;namespace&lt;/code&gt;) &lt;code&gt;detail&lt;/code&gt;. В данном ниже примере для разнообразия используем другую модель, а также для упрощения понимания материала откажемся от использования пространств имён: одно приложение &amp;mdash; одна модель &amp;mdash; один urls.py.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>unix-lab.org</title><link href="http://www.unix-lab.org/" rel="alternate"></link><link href="http://www.unix-lab.org/feeds/all-ru.atom.xml" rel="self"></link><id>http://www.unix-lab.org/</id><updated>2013-10-03T01:15:00+07:00</updated><entry><title>Абсолютные пути URL в Django</title><link href="http://www.unix-lab.org/articles/get-absolute-url.html" rel="alternate"></link><updated>2013-10-03T01:15:00+07:00</updated><author><name>redVi</name></author><id>tag:www.unix-lab.org,2013-10-03:articles/get-absolute-url.html</id><summary type="html">&lt;p&gt;В одной из &lt;a href="http://www.unix-lab.org/posts/django-first-steps/"&gt;предыдущих заметок&lt;/a&gt;, нами был написан шаблон для вывода списка публикаций на главной странице. Ссылка на полный текст публикации имеет вид &lt;code&gt;{% url 'articles:detail' post.id %}&lt;/code&gt;, что позволяет получить определённую страницу по её идентификатору (&lt;code&gt;id&lt;/code&gt;). За отображение страницы ответственность несёт представление &lt;code&gt;articles&lt;/code&gt; из пространства имён (&lt;code&gt;namespace&lt;/code&gt;) &lt;code&gt;detail&lt;/code&gt;. В данном ниже примере для разнообразия используем другую модель, а также для упрощения понимания материала откажемся от использования пространств имён: одно приложение &amp;mdash; одна модель &amp;mdash; один urls.py.&lt;/p&gt;
 &lt;p&gt;И всё бы хорошо, но ссылки подобного вида иногда могут не подойти вам. Вот пара простых примеров, иллюстрирующих этот тезис:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Вам нужно получить статью по slug&lt;/li&gt;
@@ -24,14 +24,14 @@
 
 &lt;h3&gt;Обращение по первичному ключу&lt;/h3&gt;
 &lt;p&gt;В случае, когда нужно получить объект по &lt;code&gt;slug&lt;/code&gt;, нам важно знать, что любая модель имеет свой первичный ключ (&lt;code&gt;primary key&lt;/code&gt;) и его можно переопределить. По-умолчанию первичным ключом является поле &lt;code&gt;id&lt;/code&gt;, генерируемое автоматически. Таким образом, мы получаем URL вида:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nl"&gt;http:&lt;/span&gt;&lt;span class="c1"&gt;//site.org/articles/1/&lt;/span&gt;
-&lt;span class="nl"&gt;http:&lt;/span&gt;&lt;span class="c1"&gt;//site.org/articles/2/&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;http://site.org/articles/1/
+http://site.org/articles/2/
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;А хотим видеть такие адреса:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nl"&gt;http:&lt;/span&gt;&lt;span class="c1"&gt;//site.org/articles/krasivyi-url/&lt;/span&gt;
-&lt;span class="nl"&gt;http:&lt;/span&gt;&lt;span class="c1"&gt;//site.org/articles/po-poly-slug/&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;http://site.org/articles/krasivyi-url/
+http://site.org/articles/po-poly-slug/
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -55,28 +55,28 @@
 
 &lt;p&gt;Как мог заметить наблюдательный читатель, мы задали поле &lt;code&gt;slug&lt;/code&gt; со значением &lt;code&gt;primary_key=True&lt;/code&gt;. Предполагается, что в этом поле будет установлен устраивающий автора красивый URL. Теперь следует ссылаться на детальное представление публикации именно по этому полю. Конкретный пример будет приведён чуть ниже.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Примечание&lt;/strong&gt;: если при создании представления вы используете обобщённые представления, вернуть публикацию по полю &lt;code&gt;slug&lt;/code&gt;, не нагромождая ваше представление и не затрагивая &lt;code&gt;primary key&lt;/code&gt;, также может быть очень легко. В этом вам посодействуют &lt;code&gt;DetailView&lt;/code&gt; и &lt;code&gt;get_object_or_404&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;# views.py&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# views.py&lt;/span&gt;
 
-&lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;django&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shortcuts&lt;/span&gt; &lt;span class="n"&gt;import&lt;/span&gt; &lt;span class="n"&gt;get_object_or_404&lt;/span&gt;
-&lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;django&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;views&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;generic&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;detail&lt;/span&gt; &lt;span class="n"&gt;import&lt;/span&gt; &lt;span class="n"&gt;DetailView&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.shortcuts&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;get_object_or_404&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.views.generic.detail&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;DetailView&lt;/span&gt;
 
-&lt;span class="n"&gt;class&lt;/span&gt; &lt;span class="n"&gt;DetailView&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;DetailView&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-    &lt;span class="s"&gt;&amp;quot;&amp;quot;&amp;quot; Return detail data &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;DetailView&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;DetailView&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot; Return detail data &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
     &lt;span class="n"&gt;model&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Article&lt;/span&gt;
-    &lt;span class="n"&gt;context_object_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;article&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;
+    &lt;span class="n"&gt;context_object_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;article&amp;#39;&lt;/span&gt;
 
-    &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;get_object&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;get_object_or_404&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Article&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;slug__iexact&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;slug&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_object&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;get_object_or_404&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Article&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;slug__iexact&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;slug&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Прежде, чем приступить к написанию шаблонов, решим второй вопрос: о получении абсолютных путей к объекту.&lt;/p&gt;
 &lt;h3&gt;Абсолютные пути&lt;/h3&gt;
 &lt;p&gt;Итак, для примера мы решили, что будем выводить предыдущую и следующую статью при обращении к статье текущей. Если просто обращаться к статье по указанному ключу, можно поиметь некоторые проблемы. Наш URL имеет относительный путь, поэтому при наведении на любую ссылку внутри поста, которая сформирована также (то есть с указанием &lt;code&gt;{% url 'view' object.slug %}&lt;/code&gt;), первичный ключ выбранной статьи просто будет добавлен к уже имеющемуся адресу. Вот так:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;имеем&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-&lt;span class="nl"&gt;http:&lt;/span&gt;&lt;span class="c1"&gt;//site.org/articles/my-article&lt;/span&gt;
-&lt;span class="err"&gt;при&lt;/span&gt; &lt;span class="err"&gt;наведении&lt;/span&gt; &lt;span class="err"&gt;на&lt;/span&gt; &lt;span class="err"&gt;другую&lt;/span&gt; &lt;span class="err"&gt;ссылку&lt;/span&gt; &lt;span class="err"&gt;получим&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-&lt;span class="nl"&gt;http:&lt;/span&gt;&lt;span class="c1"&gt;//site.org/articles/my-article/my-next-article&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;имеем:
+http://site.org/articles/my-article
+при наведении на другую ссылку получим:
+http://site.org/articles/my-article/my-next-article
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -101,37 +101,37 @@
 &lt;p&gt;Теперь в шаблонах мы можем ссылаться на статью по её абсолютному адресу, используя &lt;code&gt;get_absolute_url&lt;/code&gt;. Примеры:&lt;/p&gt;
 &lt;p&gt;подобным образом может выглядеть индексная страница со списком последних публикаций&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;&amp;lt;!--index.html--&amp;gt;&lt;/span&gt;
-{% extends &amp;quot;base.html&amp;quot; %}
-{% block content %}
+&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;extends&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;base.html&amp;quot;&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;main&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-    {% for article in latest_articles_list %}
-      &lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{ article.get_absolute_url }}&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;{{ article.title }}&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
-    {% endfor %}
+    &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nv"&gt;article&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;latest_articles_list&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+        &lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;article.get_absolute_url&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;article.title&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+    &lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endfor&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-{% endblock content %}
+&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;а на странице детального представления можно добавить ссылки на предыдущий и следующий пост&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;&amp;lt;!--article.html--&amp;gt;&lt;/span&gt;
-{% extends &amp;quot;base.html&amp;quot; %}
-{% block content %}
+&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;extends&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;base.html&amp;quot;&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
+&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;block&lt;/span&gt; &lt;span class="nv"&gt;content&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;main&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;h2&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{ article.get_absolute_url }}&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;{{ article.title }}&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&amp;lt;/h2&amp;gt;&lt;/span&gt;
-{{ article.content }}
+&lt;span class="nt"&gt;&amp;lt;h2&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;article.get_absolute_url&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;article.title&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&amp;lt;/h2&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;article.content&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;links&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{ article.get_next_by_pub_date.get_absolute_url }}&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;Next&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;article.get_next_by_pub_date.get_absolute_url&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;Next&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;#&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;on top&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{{ article.get_previous_by_pub_date.get_absolute_url }}&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;Prev&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;article.get_previous_by_pub_date.get_absolute_url&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;Prev&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
 &lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-{% endblock %}
+&lt;span class="cp"&gt;{%&lt;/span&gt; &lt;span class="k"&gt;endblock&lt;/span&gt; &lt;span class="cp"&gt;%}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;&lt;code&gt;Model.get_next_by_pub_date&lt;/code&gt; вернёт следующую публикацию, основываясь на дате её создания&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;Model.get_previous_by_pub_date&lt;/code&gt; отобразит предыдущую публикацию.&lt;/p&gt;
-&lt;p&gt;Применив к ним метод &lt;code&gt;get_absolute_url&lt;/code&gt;, мы получим искомое решение.&lt;/p&gt;</summary><category term="Django"></category></entry><entry><title>Навигация по документу в LaTeX</title><link href="http://www.unix-lab.org/articles/hyperref.html" rel="alternate"></link><updated>2013-09-14T21:05:00+07:00</updated><author><name>redVi</name></author><id>tag:www.unix-lab.org,2013-09-14:articles/hyperref.html</id><summary type="html">&lt;p&gt;Довольно часто бывает необходимо указать в тексте ссылку на источник или какой-либо полезный ресурс. А то и просто сделать оглавление &amp;laquo;кликабельным&amp;raquo;, дабы при его просмотре сразу можно было выбрать нужную главу и перейти к ней.&lt;/p&gt;
+&lt;p&gt;Применив к ним метод &lt;code&gt;get_absolute_url&lt;/code&gt;, мы получим искомое решение.&lt;/p&gt;</summary><category term="Python"></category></entry><entry><title>Навигация по документу в LaTeX</title><link href="http://www.unix-lab.org/articles/hyperref.html" rel="alternate"></link><updated>2013-09-14T21:05:00+07:00</updated><author><name>redVi</name></author><id>tag:www.unix-lab.org,2013-09-14:articles/hyperref.html</id><summary type="html">&lt;p&gt;Довольно часто бывает необходимо указать в тексте ссылку на источник или какой-либо полезный ресурс. А то и просто сделать оглавление &amp;laquo;кликабельным&amp;raquo;, дабы при его просмотре сразу можно было выбрать нужную главу и перейти к ней.&lt;/p&gt;
 &lt;p&gt;Для этих нужд вполне можно задействовать пакет &lt;code&gt;hyperref&lt;/code&gt;, который входит в поставку с LaTeX в большинстве дистрибутивов. &lt;code&gt;Hyperref&lt;/code&gt; имеет достаточно большое количество опций, которые перечисляются через запятую при подключении пакета. Но следует иметь ввиду, что он переопределяет некоторые команды LaTeX'а, и подключать его последним. При подключении &lt;code&gt;hyperref&lt;/code&gt; все перекрёстные ссылки будут преобразованы в ссылки гипертекстовые: оглавление, сноски, цитаты...&lt;/p&gt;
 &lt;p&gt;Во многих источниках обращают внимание на опцию выбора драйвера. Честно сказать, при создании PDF-документа с &lt;code&gt;pdflatex&lt;/code&gt; &lt;em&gt;без указания&lt;/em&gt; драйвера всё собралось и сработало точно так же как и с включением нужной опции.&lt;/p&gt;
 &lt;ul&gt;
@@ -226,18 +226,18 @@
 &lt;p&gt;SCSS &amp;mdash; так именуется Sass с 3-ей версии (Sassy CSS). Основным отличием от предыдущих версий является возможность писать на каноническом CSS. Также до третьей версии можно было писать код без скобок, но SCSS больше не приемлет этот синтаксис: это гарантирует, что стиль CSS3 валиден также и в SCSS:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;/* sass */&lt;/span&gt;
 &lt;span class="nc"&gt;.article&lt;/span&gt;
-   &lt;span class="nt"&gt;border&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nt"&gt;1px&lt;/span&gt; &lt;span class="nt"&gt;solid&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;light-blue&lt;/span&gt;
-   &lt;span class="nt"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;orange&lt;/span&gt;
+    &lt;span class="nt"&gt;border&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nt"&gt;1px&lt;/span&gt; &lt;span class="nt"&gt;solid&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;light-blue&lt;/span&gt;
+    &lt;span class="nt"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;orange&lt;/span&gt;
 &lt;span class="c"&gt;/* scss */&lt;/span&gt;
 &lt;span class="nc"&gt;.article&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-   &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;1px&lt;/span&gt; &lt;span class="k"&gt;solid&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;light&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;blue&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-   &lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nb"&gt;orange&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-   &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;1px&lt;/span&gt; &lt;span class="k"&gt;solid&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;light&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;blue&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nb"&gt;orange&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;Если читатель решит остановиться на использовании лишь этих инструментов (а ими вполне можно обойтись), добро пожаловать на официальный сайт, где представлена соответствующая документация: &lt;a href="http://sass-lang.com/"&gt;http://sass-lang.com/&lt;/a&gt;. Там вас встретит миловидная секретарша и расскажет что почём.&lt;/p&gt;
-&lt;p&gt;&lt;img alt="sass" src="../source/sass.gif" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="sass" src="http://www.unix-lab.org/source/sass.gif" /&gt;&lt;/p&gt;
 &lt;p&gt;Интересно, что модуль Sass может быть использован как инструмент конвертирования в CSS в режиме командной строки. Для этого следует указать директорию, где лежат sass-файлы и директорию, куда складывать css:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="gp"&gt;$&lt;/span&gt; sass ––watch sass_folder:stylesheets_folder
 &lt;/pre&gt;&lt;/div&gt;
@@ -362,8 +362,8 @@
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;/* lib/_layout.scss */&lt;/span&gt;
 
 &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
- &lt;span class="k"&gt;margin&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
- &lt;span class="k"&gt;padding&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;margin&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;padding&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 
 &lt;span class="nt"&gt;body&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
@@ -371,22 +371,22 @@
   &lt;span class="k"&gt;background-color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;light&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;gray&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;span class="nf"&gt;#outer-wrapper&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-      &lt;span class="k"&gt;width&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-      &lt;span class="k"&gt;font&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;normal&lt;/span&gt; &lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;sans&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="k"&gt;width&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;font&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;normal&lt;/span&gt; &lt;span class="m"&gt;100&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;sans&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
 
 &lt;span class="c"&gt;/* lib/_main.scss */&lt;/span&gt;
-  &lt;span class="nt"&gt;blockquote&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;margin-bottom&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;1em&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="k"&gt;padding&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;.5em&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;1px&lt;/span&gt; &lt;span class="k"&gt;dashed&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="k"&gt;padding-left&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;.6em&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="k"&gt;font-style&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;italic&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-  &lt;span class="nt"&gt;a&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;light&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;blue&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;text-decoration&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;none&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="o"&gt;&amp;amp;:&lt;/span&gt;&lt;span class="n"&gt;hover&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;&lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nb"&gt;blue&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;text-decoration&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;underline&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;
-    &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="nd"&gt;:visited&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nb"&gt;violet&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;
-  &lt;span class="err"&gt;}&lt;/span&gt;
+&lt;span class="nt"&gt;blockquote&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;margin-bottom&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;1em&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;padding&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;.5em&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;1px&lt;/span&gt; &lt;span class="k"&gt;dashed&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;padding-left&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;.6em&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;font-style&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;italic&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nt"&gt;a&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;light&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nb"&gt;blue&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;text-decoration&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;none&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="o"&gt;&amp;amp;:&lt;/span&gt;&lt;span class="n"&gt;hover&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;&lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nb"&gt;blue&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;text-decoration&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;underline&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;
+  &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="nd"&gt;:visited&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nb"&gt;violet&lt;/span&gt;&lt;span class="p"&gt;;}&lt;/span&gt;
+&lt;span class="err"&gt;}&lt;/span&gt;
 
 &lt;span class="c"&gt;/* lib/_theme.scss */&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;violet&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;     &lt;span class="nf"&gt;#7e7e96&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
@@ -405,16 +405,14 @@
 
 
 &lt;p&gt;И соберём всё это в едином файле: &lt;code&gt;screen.scss&lt;/code&gt;:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;@import&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;lib/_theme&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="cp"&gt;@import&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;lib/_typography&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="cp"&gt;@import&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;lib/_layout&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="cp"&gt;@import&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;lib/_main&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;@import&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;lib/_theme&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;@import&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;lib/_typography&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;@import&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;lib/_layout&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;@import&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;lib/_main&amp;quot;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;Порядок имеет значение:&lt;/strong&gt; файлы, подключенные первыми первыми же и будут идти в выходном css-коде после сборки. Это достаточно удобно, например, в случае с media-queries, которые всегда рекомендуется ставить в конце или же выносить в отдельный файл.&lt;/p&gt;
-&lt;/blockquote&gt;
 &lt;h3&gt;Переменные&lt;/h3&gt;
 &lt;p&gt;Пожалуй, это одна из наиболее удобных вещей в Sass. Вам больше не нужно пробегаться по коду с автозаменой &amp;mdash; меняйте всего одну переменную! выше вы уже могли видеть как это выглядит на примере задания определённых цветов в &lt;code&gt;lib/_theme&lt;/code&gt;.&lt;/p&gt;
 &lt;h3&gt;Вложенность&lt;/h3&gt;
@@ -438,7 +436,7 @@
 &lt;p&gt;На любителя. Пожалуй, как и в случае с условиями и циклами может пригодиться при вёрстке сложных макетов.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;/* играем с шириной блока */&lt;/span&gt;
 &lt;span class="nc"&gt;.div&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;width&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="k"&gt;width&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;6&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="m"&gt;10px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;width&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="k"&gt;width&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="m"&gt;6&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="m"&gt;10px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 
 &lt;span class="c"&gt;/* изменяем цвета */&lt;/span&gt;
@@ -458,7 +456,7 @@
 &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;@else&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="nt"&gt;background-color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nf"&gt;#ffffff&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
- &lt;span class="c"&gt;/* цикл */&lt;/span&gt;
+&lt;span class="c"&gt;/* цикл */&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;width&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nt"&gt;960px&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;gutter&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nt"&gt;20px&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
 &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;columns&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nt"&gt;12&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
@@ -481,7 +479,7 @@
 
 
 &lt;h3&gt;Подпрограммы&lt;/h3&gt;
-&lt;p&gt;Так называемые mixins помогают сберечь время, если вам нужно указать для разных элементов один и тот же набор данных. Например:&lt;/p&gt;
+&lt;p&gt;Так называемые &lt;code&gt;mixins&lt;/code&gt; помогают сберечь время, если вам нужно указать для разных элементов один и тот же набор данных. Например:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;@mixin&lt;/span&gt; &lt;span class="nt"&gt;border-circle&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
   &lt;span class="nt"&gt;border-radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nt"&gt;50&lt;/span&gt;&lt;span class="o"&gt;%;&lt;/span&gt;
   &lt;span class="nt"&gt;border&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nt"&gt;1px&lt;/span&gt; &lt;span class="nt"&gt;solid&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;gray&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
@@ -507,7 +505,7 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Нужно принимать во внимание, что подпрограммы могут значительно увеличить объём css-файла, получаемого на выходе. Часто рекомендуется использовать mixins для вычислений, но заменять их на extends (расширения) там, где есть переменные. И здесь без объяснений не обойтись.&lt;/p&gt;
+&lt;p&gt;Нужно принимать во внимание, что подпрограммы могут значительно увеличить объём css-файла, получаемого на выходе. Часто рекомендуется использовать &lt;code&gt;mixins&lt;/code&gt; для вычислений, но заменять их на &lt;code&gt;extends&lt;/code&gt; (расширения) там, где есть переменные. И здесь без объяснений не обойтись.&lt;/p&gt;
 &lt;p&gt;Достаточно посмотреть на код, который получится на выходе. Обратимся к примеру:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;/* @mixins */&lt;/span&gt;
 
@@ -569,23 +567,23 @@
     &lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#ddd&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="n"&gt;extend&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;input&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;form&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 
-&lt;span class="c"&gt;/* css */&lt;/span&gt;
+ &lt;span class="c"&gt;/* css */&lt;/span&gt;
 
 &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;input&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;form&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;form__input&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;text&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;form__input&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;text&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;focus&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-  &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;1px&lt;/span&gt; &lt;span class="k"&gt;solid&lt;/span&gt; &lt;span class="m"&gt;#d0d0d0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="k"&gt;background-color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#fcfcfc&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;15px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;moz&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;15px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;webkit&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;15px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="k"&gt;height&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;25px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;1px&lt;/span&gt; &lt;span class="k"&gt;solid&lt;/span&gt; &lt;span class="m"&gt;#d0d0d0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;background-color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#fcfcfc&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;15px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;moz&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;15px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;webkit&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;border&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;radius&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;15px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;height&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;25px&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 
 &lt;span class="nc"&gt;.site-form__input-text&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-  &lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#fff&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#fff&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 
 &lt;span class="nc"&gt;.site-form__input-text&lt;/span&gt;&lt;span class="nd"&gt;:focus&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-  &lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#ddd&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;color&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="m"&gt;#ddd&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 

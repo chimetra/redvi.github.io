@@ -9,93 +9,97 @@ Summary: Что такое pull request, зачем оно нужно и как 
 
 <b>Pull Request</b> &mdash; запрос на включение. На включение написанного вами кода в чужой репозиторий.
 
-##С чего начать?
+## С чего начать?
 
 А для начала этот самый репозиторий нужно форкнуть (fork &mdash; вилка, ответвление). Разберём это нехитрое действо на примере веб-сервиса для хостинга IT-проектов, название которому GitHub. Разумеется, кроме GitHub есть и другие: BitBucket, например. Выбирать по вкусу.
 
-<u>Примечание:</u> для успешного проведения нижеизложенных операций у вас (что естественно) должен быть установлен git. Если это условие ещё не выполнено, шагом марш на [вводное руководство](github.html)!
+<u>Примечание:</u> для успешного проведения нижеизложенных операций у вас (что естественно) должен быть установлен git. Если это условие ещё не выполнено, шагом марш на [вводное руководство](http://www.unix-lab.org/posts/github/)!
 
 Заходим на страницу интересующего проекта, жмём кнопку `Fork`, ищем <u>на своей</u> странице URL для клонирования.
 
-![fork](../source/fork.jpg "fork on github")
+![fork](http://www.unix-lab.org/source/fork.jpg "fork on github")
 
 В консоли в зависимости от входных данных набираем нечто подобное:
 
-    :::console
-    $ git clone git@github.com/username/django_documentation.git
+```console
+$ git clone git@github.com/username/django_documentation.git
+```
 
 Отлично. Уже можно вносить свои изменения в код проекта.
 
 Тот репозиторий, что теперь лежит на вашем жёстком диске, независим от основного. В нём отслеживаются только ваши наработки. Но как следить за изменениями, происходящими в первоисточнике, откуда вы &laquo;стянули&raquo; репозиторий? Добавить удаленный репозиторий в отслеживаемые. Например, так:
 
-    :::console
-    $ git remote -v
-    origin  git@github.com:username/django_documentation.git (fetch)
-    origin  git@github.com:username/django_documentation.git (push)
-    $ git remote add upstream git@github.com:Alerion/django_documentation.git
+```console
+$ git remote -v
+origin  git@github.com:username/django_documentation.git (fetch)
+origin  git@github.com:username/django_documentation.git (push)
+$ git remote add upstream git@github.com:Alerion/django_documentation.git
+```
 
 После добавления `upstream` в отслеживаемые, наберите команду `git remote -v` ещё раз, вы должны увидеть произошедшие изменения.
 
 Давайте посмотрим как сливать изменения из оригинального репозитория к себе в случае, если разработка в нём ушла вперёд пока вы сосредоточенно писали коммиты:
 
-    :::console
-    $ git pull upstream master
-    From github.com:Alerion/django_documentation
-    * branch            master     -> FETCH_HEAD
-    Updating 66f032e..062b294
-    Fast-forward
-    djbook/commands/authors.py                    | 65 ++--
-    djbook/deps.txt                               |  6 ++--
-    djbook/templates/authors.html                 | 14 ++--
-    djbook/templates/base.html                    |  7 ++--
-    locale/ru/LC_MESSAGES/faq/install.po          | 94 +++-
-    locale/ru/LC_MESSAGES/faq/usage.po            | 49 +---
-    locale/ru/LC_MESSAGES/howto/outputting-csv.po | 61 ++--
-    locale/ru/LC_MESSAGES/topics/cache.po         | 77 ++--
-    locale/ru/LC_MESSAGES/topics/db/multi-db.po   | 80 +++-
-    9 files changed, 290 insertions(+), 163 deletions(-)
-
+```console
+$ git pull upstream master
+From github.com:Alerion/django_documentation
+* branch            master     -> FETCH_HEAD
+Updating 66f032e..062b294
+Fast-forward
+djbook/commands/authors.py                    | 65 ++--
+djbook/deps.txt                               |  6 ++--
+djbook/templates/authors.html                 | 14 ++--
+djbook/templates/base.html                    |  7 ++--
+locale/ru/LC_MESSAGES/faq/install.po          | 94 +++-
+locale/ru/LC_MESSAGES/faq/usage.po            | 49 +---
+locale/ru/LC_MESSAGES/howto/outputting-csv.po | 61 ++--
+locale/ru/LC_MESSAGES/topics/cache.po         | 77 ++--
+locale/ru/LC_MESSAGES/topics/db/multi-db.po   | 80 +++-
+9 files changed, 290 insertions(+), 163 deletions(-)
+```
 
 У нас есть основной репозиторий &mdash; master и недавно добавленный нами upstream. Команда, данная выше, забирает всё новое из репозитория upstream и сливает изменения в master. Так, мы всегда можем получить последние наработки.
 
 Вы можете также воспользоваться другой командой &mdash; `fetch` вместо указанной `pull`. В таком случае git заберет изменения с удаленного репозитория, но не будет пытаться слить их с вашей текущей веткой автоматически.
 
-##Что такое ветки?
+## Что такое ветки?
 
 Чаще всего ветки (branch &mdash; ответвление, ветвь, филиал) бывают тематическими. Например, при общей разработке, когда у всех участников есть право записи в репозиторий. В этом случае ветки используются для отделения изменений, сделанных одним из разработчиков, от общего репозитория. Ветки могут пригодиться и в случае с созданием pull-request'а.
 
 Создание ветки происходит довольно просто. Находясь в каталоге с проектом, наберите следующие команды:
 
-    :::console
-    $ git branch -a   # отобразить все ветки
-    * master
-    remotes/origin/1.4
-    remotes/origin/HEAD -> origin/master
-    remotes/origin/master
-    remotes/upstream/1.4
-    remotes/upstream/master
-    $ git checkout -b new_branch # создать новую ветку, переключиться на неё
+```console
+$ git branch -a   # отобразить все ветки
+* master
+remotes/origin/1.4
+remotes/origin/HEAD -> origin/master
+remotes/origin/master
+remotes/upstream/1.4
+remotes/upstream/master
+$ git checkout -b new_branch # создать новую ветку, переключиться на неё
+```
 
 Находясь в только что созданной ветке, вы можете приступить к работе. Вносите в код свои изменения, а когда закончите просто переключитесь обратно, к своей основной ветке. Вы можете отправить pull request, выбрав ветку `new_branch` или же прежде слить изменения из неё в основную ветку разработки. Рассмотрим это подробнее:
 
-    ::console
-    $ git checkout master  # вернуться к основной ветке
-    $ git merge new_branch # слить изменения из new_branch
+```console
+$ git checkout master  # вернуться к основной ветке
+$ git merge new_branch # слить изменения из new_branch
+```
 
 Если нужно отправить в свой удалённый репозиторий вновь созданную ветку (не сливать её с master), делаем следующее:
 
-    :::console
-    $ git push master new_branch
+```console
+$ git push master new_branch
+```
 
 Не торопитесь сливать изменения. Если что-то не заладилось, созданную ветку можно удалить:
 
-    :::console
-    $ git branch -d new_branch    # удалить локально
-    $ git push master :new_branch # и в удалённом репозитории
+```console
+$ git branch -d new_branch    # удалить локально
+$ git push master :new_branch # и в удалённом репозитории
+```
 
-
-
-##Отправляем изменения
+## Отправляем изменения
 
 Добрались таки до ответа на поставленный вопрос: что такое pull request, зачем оно нужно и как его достичь. Как предложить владельцу репозитория свои изменения?
 
@@ -103,13 +107,13 @@ Summary: Что такое pull request, зачем оно нужно и как 
 
 Перед тем как сделать запрос вы имеете возможность добавить комментарий, просмотреть то, какие файлы будут изменены, какие коммиты добавлены. В верхнем углу окна добавления запроса обратите внимание откуда куда и что вы сливаете. Если необходимо слить основные ветки выбор падёт на репозиторий `username:master`, если отдельную ветку (вспоминаем branch) &mdash; так и указывайте её.
 
-<a href="../source/change-and-comment.jpg" data-lighter><img src="../source/change-and-comment.jpg"/></a>
+![request](http://www.unix-lab.org/source/change-and-comment.jpg)
 
 А дальше... ждать. Пока придёт владелец оригинального репозитория и примет/отклонит ваши изменения.
 
 Ну вот, мы его достигли. Просветления то есть :)
 
-##А подробнее?
+## А подробнее?
 
 Ну, что ещё? Применительно к github'у можно отметить факт наличия у них <b>Issues</b>. Это такая &laquo;примочка&raquo;, благодаря которой можно ставить задачи для проекта, давать им описание и метку, определяющую к какому разряду данная задача относится (закрытие бага или написание фичи), а ещё назначать ответственного за выполнение определённого <b>issue</b>: всё как у больших.
 

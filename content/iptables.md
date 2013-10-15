@@ -5,12 +5,12 @@ Slug: iptables
 Author: redVi
 Summary: Iptables отвечает преимущественно за фильтрацию пакетов. Настройка Iptables вручную является довольно непростой задачей.
 
-Iptables отвечает преимущественно за фильтрацию пакетов. Настройка Iptables вручную является довольно непростой задачей. Не надейтесь, что разберётесь в этом «снаскока». К счастью, есть много инструментов, которые могут оказать вам помощь в случае, если с iptables вы ещё не разобрались, а обезопасить систему нужно срочно: fwbuilder , firestarter , guarddog, arno firewall - по сути это GUI к iptables. Однозначного ответа что лучше нет. Выбирать вам. Однако, сегодняшняя статья посвящена именно iptables и делится на две части: теория и практика. Самые нетерпеливые могут сразу выполнить практическую часть, хотя подобный подход не рекомендуется.
+Iptables отвечает преимущественно за фильтрацию пакетов. Настройка Iptables вручную является довольно непростой задачей. Не надейтесь, что разберётесь в этом «снаскока». К счастью, есть много инструментов, которые могут оказать вам помощь в случае, если с iptables вы ещё не разобрались, а обезопасить систему нужно срочно: fwbuilder, firestarter, guarddog, arno firewall &mdash; по сути это GUI к iptables. Однозначного ответа что лучше нет. Выбирать вам. Однако, сегодняшняя статья посвящена именно iptables и делится на две части: теория и практика. Самые нетерпеливые могут сразу выполнить практическую часть, хотя подобный подход не рекомендуется.
 
 
 **Внимание!** Все действия с iptables производятся от имени привелигированного пользователя!
 
-##Теория
+## Теория
 
 Формат записи iptables
 : iptables [-t таблица] [команда] [действие]
@@ -77,17 +77,18 @@ Iptables отвечает преимущественно за фильтраци
 
 **Просмотр текущей конфигурации**
 
-    :::console
-    # iptables -L
+```console
+# iptables -L
 
-    Chain INPUT (policy ACCEPT)
-    target prot opt source destination
+Chain INPUT (policy ACCEPT)
+target prot opt source destination
 
-    Chain FORWARD (policy ACCEPT)
-    target prot opt source destination
+Chain FORWARD (policy ACCEPT)
+target prot opt source destination
 
-    Chain OUTPUT (policy ACCEPT)
-    target prot opt source destination
+Chain OUTPUT (policy ACCEPT)
+target prot opt source destination
+```
 
 Если вы узрели подобное, значит ваш файрволл ещё не настроен и разрешает всё. Исправим положение.
 
@@ -99,23 +100,24 @@ Iptables отвечает преимущественно за фильтраци
 
 Поскольку входящие пакеты INPUT блокированы, пропишем правило:
 
-    :::console
-    # iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
-
+```console
+# iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+```
 
 Это разрешит принимать пакеты от ранее установленного соединения и принимать новые пакеты,порождённые этим соединением.
 
 Либо с указанием типа протокола:
 
-    :::console
-    # iptables -A INPUT -p TCP -m state --state ESTABLISHED,RELATED -j ACCEPT
-    # iptables -A INPUT -p UDP -m state --state ESTABLISHED,RELATED -j ACCEPT
-
+```console
+# iptables -A INPUT -p TCP -m state --state ESTABLISHED,RELATED -j ACCEPT
+# iptables -A INPUT -p UDP -m state --state ESTABLISHED,RELATED -j ACCEPT
+```
 
 Теперь локальный интерфейс:
 
-    :::console
-    # iptables -A INPUT -i lo -j ACCEPT
+```console
+# iptables -A INPUT -i lo -j ACCEPT
+```
 
 * NEW --- данные, начинающие новое соединение.
 * ESTABLISHED --- пакет, приходящий от уже установленного соединения.
@@ -124,56 +126,62 @@ Iptables отвечает преимущественно за фильтраци
 
 Сохранить настройки (можете прописывать настройки iptables непосредственно в созданный файл):
 
-    :::console
-    # iptables-save > /etc/iptables.up.rules
+```console
+# iptables-save > /etc/iptables.up.rules
+```
 
 Включить эти правила:
 
-    :::console
-    # iptables-restore < /etc/iptables.up.rules
+```console
+# iptables-restore < /etc/iptables.up.rules
+```
 
 И увидеть разницу:
 
-    :::console
-    # iptables-L
+```console
+# iptables-L
+```
 
 Запуск iptables при старте системы:
 
 В каталоге `/etc/init.d` создаем файл с именем iptables
 
-    :::console
-    # touch /etc/init.d/iptables
+```console
+# touch /etc/init.d/iptables
+```
 
 Прописываем в нём следующее:
 
-    :::sh
-    #!/bin/sh
-    /sbin/iptables-restore < /etc/iptables.up.rules
+```sh
+#!/bin/sh
+/sbin/iptables-restore < /etc/iptables.up.rules
+```
 
 Делаем файл iptables исполняемым:
 
-    :::console
-    # chmod +x /etc/init.d/iptables
+```console
+# chmod +x /etc/init.d/iptables
+```
 
 Добавляем его в автозапуск
 
-    :::console
-    # update-rc.d -n iptables defaults
+```console
+# update-rc.d -n iptables defaults
+```
 
 Запуск iptables при подключении к сети:
 
-    :::console
-    # echo "#! /sbin/iptables-restore" > /etc/network/if-up.d/iptables.up.rules
-    iptables-save >> /etc/network/if-up.d/iptables.up.rules
-    # chmod +x /etc/network/if-up.d/iptables.up.rules
+```console
+# echo "#! /sbin/iptables-restore" > /etc/network/if-up.d/iptables.up.rules
+# iptables-save >> /etc/network/if-up.d/iptables.up.rules
+# chmod +x /etc/network/if-up.d/iptables.up.rules
+```
 
 *Примечание:* в любой момент вы можете проверить загружены ли ваши правила, просто введя от рута
 `iptables-save`
 
 Для archlinux сохранение правил iptables осуществляется командой:
 
-    :::console
-    # rc.d save iptables
-
-
-
+```console
+# rc.d save iptables
+```

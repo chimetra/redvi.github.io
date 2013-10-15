@@ -3,11 +3,11 @@ Date: 2013-09-08 08:25
 Tags: Web
 Slug: sass
 Author: redVi
-Summary: Затронем тему быстрого написания css-кода, разложенного по полочкам. Именно таким автору данной заметки видится sass.
+Summary: Затронем тему быстрого написания css-кода, разложенного по полочкам. Именно таким автору данной заметки видится sass
 
 Пожалуй, стоило бы затронуть тему &laquo;быстрого написания css-кода, разложенного по полочкам&raquo;. Именно таким автору данной заметки видится sass &mdash; инструмент, позволяющий совершить волшебное преобразование: превратить рутинное написание css-кода в любопытное занятие. Цель данного поста заключается не в том, чтобы объять необъятное и попытаться рассказать обо всём подробно, но в том, чтобы заинтересовать потенциального читателя, дабы в последующем ему захотелось разобраться с представленными здесь понятиями самостоятельно. Но прежде, чем мы приступим к непосредственному разбору полётов...
 
-##Об отвлечённом
+## Об отвлечённом
 
 Сразу нужно отметить, что данное ранее обещание о сроках выхода новых постов будет сдержано. Это означает, что никаких сроков больше нет. Блог начинает жить по принципу Debian'a: это будет готово тогда, когда это будет готово. Вряд ли в ближайшем обозримом будущем получится публиковать по четыре-пять постов в месяц, что означало бы писать второпях. Какого качества записи могут выйти из подобной писанины, думаю, пояснять не надо.
 
@@ -23,7 +23,7 @@ Summary: Затронем тему быстрого написания css-ко�
 
 А вот после того как сели, подумали и слепили свой художественный образ, можно обратиться к конкретной его реализации. Поехали!
 
-##Введение
+## Введение
 
 Что за зверь?
 
@@ -31,32 +31,35 @@ Sass &mdash; метаязык на основе CSS, предназначенн�
 
 SCSS &mdash; так именуется Sass с 3-ей версии (Sassy CSS). Основным отличием от предыдущих версий является возможность писать на каноническом CSS. Также до третьей версии можно было писать код без скобок, но SCSS больше не приемлет этот синтаксис: это гарантирует, что стиль CSS3 валиден также и в SCSS:
 
-    :::css
-    /* sass */
-    .article
-       border: 1px solid $light-blue
-       color: $orange
-    /* scss */
-    .article {
-       border: 1px solid $light-blue;
-       color: $orange;
-       }
+```css
+/* sass */
+.article
+    border: 1px solid $light-blue
+    color: $orange
+/* scss */
+.article {
+    border: 1px solid $light-blue;
+    color: $orange;
+    }
+```
 
 Если читатель решит остановиться на использовании лишь этих инструментов (а ими вполне можно обойтись), добро пожаловать на официальный сайт, где представлена соответствующая документация: <http://sass-lang.com/>. Там вас встретит миловидная секретарша и расскажет что почём.
 
-![sass](../source/sass.gif)
+![sass](http://www.unix-lab.org/source/sass.gif)
 
 Интересно, что модуль Sass может быть использован как инструмент конвертирования в CSS в режиме командной строки. Для этого следует указать директорию, где лежат sass-файлы и директорию, куда складывать css:
 
-    :::console
-    $ sass ––watch sass_folder:stylesheets_folder
+```console
+$ sass ––watch sass_folder:stylesheets_folder
+```
 
 Sass будет отслеживать изменившиеся файлы автоматически.
 
 Для обратной конвертации нам понадобится `sass-convert`:
 
-    :::console
-    $ sass-convert ––from css ––to sass –R
+```console
+$ sass-convert ––from css ––to sass –R
+```
 
 Что же, перейдём к следующему пункту.
 
@@ -64,34 +67,35 @@ Compass &mdash; CSS фреймворк, предоставляющий набо�
 
 Поскольку на данный момент автор использует [subtle wm](subtle-wm.html), а значит ruby уже установлен, сразу обратимся к установке необходимых нам приложений. В linux последовательность команд следующая:
 
-    :::console
-    $ sudo gem install sass sass-globbing compass
+```console
+$ sudo gem install sass sass-globbing compass
+```
 
 Вместо каталога под css создадим каталог с scss-файлами, который назовём `sass`. Рядом положим конфигурационный файл `config.rb` для того, чтобы указать compass'у расположение наших данных. Примерное содержимое:
 
-    :::ruby
-    #config.rb
-    require 'sass-globbing'
+```ruby
+#config.rb
+require 'sass-globbing'
 
-    # Require any additional compass plugins here.
-    project_type = :stand_alone
+# Require any additional compass plugins here.
+project_type = :stand_alone
 
-    # Publishing paths
-    http_path = "/"
-    http_images_path = "../img"
-    http_generated_images_path = "../img"
-    http_fonts_path = "/fonts"
-    css_dir = "/css"
+# Publishing paths
+http_path = "/"
+http_images_path = "../img"
+http_generated_images_path = "../img"
+http_fonts_path = "/fonts"
+css_dir = "/css"
 
-    # Local development paths
-    sass_dir = "sass"
-    images_dir = "/img"
-    fonts_dir = "/fonts"
+# Local development paths
+sass_dir = "sass"
+images_dir = "/img"
+fonts_dir = "/fonts"
 
-    line_comments = false
-    output_style = :compressed #сжимать код
-    # output_style = :expanded
-
+line_comments = false
+output_style = :compressed #сжимать код
+# output_style = :expanded
+```
 
 В целом здесь всё ясно и без лишних слов. Тем не менее давайте немного пройдёмся по возможным опциям.
 
@@ -107,284 +111,295 @@ disable_warnings |   отключить предупреждения
 
 При указанных выше настройках структура каталогов должна быть следующей:
 
-    :::console
-    $ tree static
-    |-- config.rb
-    |-- css
-    |-- fonts
-    |-- img
-    |   |-- dotted-border.png
-    |   |-- noise.jpg
-    `-- sass
-        |-- lib
-        |   |-- _layout.scss
-        |   |-- _main.scss
-        |   |-- _theme.scss
-        |   `-- _typography.scss
-        `-- screen.scss
+```console
+$ tree static
+|-- config.rb
+|-- css
+|-- fonts
+|-- img
+|   |-- dotted-border.png
+|   |-- noise.jpg
+`-- sass
+    |-- lib
+    |   |-- _layout.scss
+    |   |-- _main.scss
+    |   |-- _theme.scss
+    |   `-- _typography.scss
+    `-- screen.scss
+```
 
 Разумеется, различных вариантов множество. И все они доступны в [стандартной документации](http://compass-style.org/help/tutorials/configuration-reference/), как и другой инструментарий.
 
 Если вы создаёте проект с нуля, последовательность команд может быть следующей:
 
-    :::console
-    $ compass create path/to/project
-    $ cd path/to/project
-    $ compass watch
+```console
+$ compass create path/to/project
+$ cd path/to/project
+$ compass watch
+```
 
 При работе с генератором статических сайтов [pelican](pelican.html), где используется определённая структура каталогов, можно создать тему следующим образом:
 
-    :::console
-    $ cd mytheme/static/    # переходим в каталог со статикой
-    $ compass compile       # компилируем код
-    $ cd ../../             # идём на верхний уровень
-    $ pelican -s local_settings.py -o ./ # собираем «мир»
+```console
+$ cd mytheme/static/    # переходим в каталог со статикой
+$ compass compile       # компилируем код
+$ cd ../../             # идём на верхний уровень
+$ pelican -s local_settings.py -o ./ # собираем «мир»
+```
 
-##Особенности
+## Особенности
 
-###Разделение кода
+### Разделение кода
 
 Вы всё ещё работаете с одним css-файлом дабы уменьшить количество запросов к серверу и не импортировать множество файлов в один? Sass найдёт для вас оптимальное решение. Мы можем описывать математику, типографику, резеты, media-queries в различных файлах и получать на выходе один css.
 
 В `_layout.scss` поместим костяк, основу нашего макета; в `_main.scss` опишем отдельные элементы страницы; в `_theme.scss` обозначим используемые цвета дабы не приходилось исследовать многостраничный код и изменять
 все места, где был использован один и тот же цвет; в `_typography.scss` укажем используемые шрифты.
 
-    :::css
-    /* lib/_layout.scss */
+```css
+/* lib/_layout.scss */
 
-    * {
-     margin: 0;
-     padding: 0;
-    }
+* {
+  margin: 0;
+  padding: 0;
+}
 
-    body {
-      color: $text-color;
-      background-color: $light-gray;
-    }
-    #outer-wrapper {
-          width: 100%;
-          font: normal 100% $sans;
-        }
+body {
+  color: $text-color;
+  background-color: $light-gray;
+}
+#outer-wrapper {
+  width: 100%;
+  font: normal 100% $sans;
+}
 
-    /* lib/_main.scss */
-      blockquote {
-        margin-bottom: 1em;
-        padding: .5em;
-        border: 1px dashed $border;
-        padding-left: .6em;
-        font-style: italic;
-      }
-      a {color: $light-blue; text-decoration: none;
-        &:hover {color: $blue; text-decoration: underline;}
-        &:visited {color: $violet;}
-      }
+/* lib/_main.scss */
+blockquote {
+  margin-bottom: 1em;
+  padding: .5em;
+  border: 1px dashed $border;
+  padding-left: .6em;
+  font-style: italic;
+}
+a {color: $light-blue; text-decoration: none;
+  &:hover {color: $blue; text-decoration: underline;}
+  &:visited {color: $violet;}
+}
 
-    /* lib/_theme.scss */
-    $violet:     #7e7e96;
-    $blue:       #688fad;
-    $gray:       #c9c9c9;
-    $dark-gray:  #4b4b4b;
-    $header-text-color: $dark-gray;
+/* lib/_theme.scss */
+$violet:     #7e7e96;
+$blue:       #688fad;
+$gray:       #c9c9c9;
+$dark-gray:  #4b4b4b;
+$header-text-color: $dark-gray;
 
-    /* lib/_typography.scss */
-    @import "_theme";
-    $sans: Arial, Helvetica, FreeSans, "Liberation Sans", "Nimbus Sans L", sans-serif;
-    $serif: Georgia, "Bitstream Charter", "Liberation Serif", Times,serif;
-    $mono: "Courier New", Courier, FreeMono, "Nimbus Mono L", "Liberation Mono", monospace;
-    $heading-font-family: "Georgia", "Helvetica Neue", Arial, sans-serif;
+/* lib/_typography.scss */
+@import "_theme";
+$sans: Arial, Helvetica, FreeSans, "Liberation Sans", "Nimbus Sans L", sans-serif;
+$serif: Georgia, "Bitstream Charter", "Liberation Serif", Times,serif;
+$mono: "Courier New", Courier, FreeMono, "Nimbus Mono L", "Liberation Mono", monospace;
+$heading-font-family: "Georgia", "Helvetica Neue", Arial, sans-serif;
+```
 
 И соберём всё это в едином файле: `screen.scss`:
 
-    @import "lib/_theme";
-    @import "lib/_typography";
-    @import "lib/_layout";
-    @import "lib/_main"
+```css
+@import "lib/_theme";
+@import "lib/_typography";
+@import "lib/_layout";
+@import "lib/_main"
+```
 
-> <strong>Порядок имеет значение:</strong> файлы, подключенные первыми первыми же и будут идти в выходном css-коде после сборки. Это достаточно удобно, например, в случае с media-queries, которые всегда рекомендуется ставить в конце или же выносить в отдельный файл.
+<strong>Порядок имеет значение:</strong> файлы, подключенные первыми первыми же и будут идти в выходном css-коде после сборки. Это достаточно удобно, например, в случае с media-queries, которые всегда рекомендуется ставить в конце или же выносить в отдельный файл.
 
-
-###Переменные
+### Переменные
 
 Пожалуй, это одна из наиболее удобных вещей в Sass. Вам больше не нужно пробегаться по коду с автозаменой &mdash; меняйте всего одну переменную! выше вы уже могли видеть как это выглядит на примере задания определённых цветов в `lib/_theme`.
 
-###Вложенность
+### Вложенность
 
 Тоже весьма удобная вещь, помимо всего прочего помогающая сделать код более наглядным. Пожалуй, наиболее показательным примером будет пример с оформлением ссылок:
 
-    :::css
-    /* этот участок SCSS */
-    a{
-      color: $blue;
-      &:hover: {
-        color: $dark-blue;
-        text-decoration: line-through;
-      }
-    }
-    /* скомпилируется в привычный и менее наглядный на css*/
-    a{color: #688fad;}
-    a:hover{color: #53728a; text-decoration: line-through;}
+```css
+/* этот участок SCSS */
+a{
+  color: $blue;
+  &:hover: {
+    color: $dark-blue;
+    text-decoration: line-through;
+  }
+}
+/* скомпилируется в привычный и менее наглядный на css*/
+a{color: #688fad;}
+a:hover{color: #53728a; text-decoration: line-through;}
+```
 
 Символ `&` равнозначен родительскому селектору.
 
-###Математика
+### Математика
 
 На любителя. Пожалуй, как и в случае с условиями и циклами может пригодиться при вёрстке сложных макетов.
 
-    :::css
-    /* играем с шириной блока */
-    .div {
-        width: $width/6 - 10px;
-    }
+```css
+/* играем с шириной блока */
+.div {
+  width: $width/6 - 10px;
+}
 
-    /* изменяем цвета */
-    .div {
-      $color: #010203;
-      a: $color;
-      &:hover { $color * 2; }
-    }
+/* изменяем цвета */
+.div {
+  $color: #010203;
+  a: $color;
+  &:hover { $color * 2; }
+}
+```
 
-###Условия, циклы
+### Условия, циклы
 
 Примеры, украденные не помню откуда. Лично не проверялось, ибо подходящей ситуации не было.
 
-    :::css
-    /* условие */
-    @if lightness($color-base) >= 51% {
-        background-color: #333333;
-    } @else {
-        background-color: #ffffff;
-    }
-     /* цикл */
-    $width: 960px;
-    $gutter: 20px;
-    $columns: 12;
-    $column_width: $width/$columns;
+```css
+/* условие */
+@if lightness($color-base) >= 51% {
+    background-color: #333333;
+} @else {
+    background-color: #ffffff;
+}
+/* цикл */
+$width: 960px;
+$gutter: 20px;
+$columns: 12;
+$column_width: $width/$columns;
 
-    .grid {
-        display: inline;
-        float:left;
-        margin-left: $gutter/ 2;
-        margin-right: $gutter/2;
-    }
+.grid {
+    display: inline;
+    float:left;
+    margin-left: $gutter/ 2;
+    margin-right: $gutter/2;
+}
 
-    @for $i from 1 through $columns {
-        .grid_#{$i} {
-            @extend .grid;
-            width: $i * $column_width - $gutter;
-        }
+@for $i from 1 through $columns {
+    .grid_#{$i} {
+        @extend .grid;
+        width: $i * $column_width - $gutter;
     }
+}
+```
 
-###Подпрограммы
+### Подпрограммы
 
-Так называемые mixins помогают сберечь время, если вам нужно указать для разных элементов один и тот же набор данных. Например:
+Так называемые `mixins` помогают сберечь время, если вам нужно указать для разных элементов один и тот же набор данных. Например:
 
-    :::css
-    @mixin border-circle {
-      border-radius: 50%;
-      border: 1px solid $gray;
-    }
-    pre {
-      @include border-circle;
-    }
-    img {
-      @include border-circle;
-    }
+```css
+@mixin border-circle {
+  border-radius: 50%;
+  border: 1px solid $gray;
+}
+pre {
+  @include border-circle;
+}
+img {
+  @include border-circle;
+}
+```
 
 Кстати, compass включает в себя достаточно большое количество готовых подпрограмм для sass и мы с лёгкостью можем этим воспользоваться:
 
-    :::css
-    @import "compass/css3/border-radius";
+```css
+@import "compass/css3/border-radius";
 
-    img {
-      display: block;
-      border: 1px solid $gray;
-      max-width: 100%;
-      @include border-radius(5px);
-    }
+img {
+  display: block;
+  border: 1px solid $gray;
+  max-width: 100%;
+  @include border-radius(5px);
+}
+```
 
-Нужно принимать во внимание, что подпрограммы могут значительно увеличить объём css-файла, получаемого на выходе. Часто рекомендуется использовать mixins для вычислений, но заменять их на extends (расширения) там, где есть переменные. И здесь без объяснений не обойтись.
+Нужно принимать во внимание, что подпрограммы могут значительно увеличить объём css-файла, получаемого на выходе. Часто рекомендуется использовать `mixins` для вычислений, но заменять их на `extends` (расширения) там, где есть переменные. И здесь без объяснений не обойтись.
 
 Достаточно посмотреть на код, который получится на выходе. Обратимся к примеру:
 
-    :::css
-    /* @mixins */
+```css
+/* @mixins */
 
-    @mixin input-form{
-        border:1px solid #d0d0d0;
-        background-color:#fcfcfc;
-        border-radius:15px;
-        -moz-border-radius:15px;
-        -webkit-border-radius:15px;
-        height:25px;
-    }
-    .site-form__input-text {
-        color: #fff;
-        @include input-form;
-    }
-    .site-form__input-text:focus {
-        color: #ddd;
-        @include input-form;
-    }
+@mixin input-form{
+    border:1px solid #d0d0d0;
+    background-color:#fcfcfc;
+    border-radius:15px;
+    -moz-border-radius:15px;
+    -webkit-border-radius:15px;
+    height:25px;
+}
+.site-form__input-text {
+    color: #fff;
+    @include input-form;
+}
+.site-form__input-text:focus {
+    color: #ddd;
+    @include input-form;
+}
 
-    /* css */
+/* css */
 
-    .site-form__input-text {
-      color: #fff;
-      border: 1px solid #d0d0d0;
-      background-color: #fcfcfc;
-      border-radius: 15px;
-      -moz-border-radius: 15px;
-      -webkit-border-radius: 15px;
-      height: 25px;
-    }
+.site-form__input-text {
+  color: #fff;
+  border: 1px solid #d0d0d0;
+  background-color: #fcfcfc;
+  border-radius: 15px;
+  -moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
+  height: 25px;
+}
 
-    .site-form__input-text:focus {
-      color: #ddd;
-      border: 1px solid #d0d0d0;
-      background-color: #fcfcfc;
-      border-radius: 15px;
-      -moz-border-radius: 15px;
-      -webkit-border-radius: 15px;
-      height: 25px;
-    }
+.site-form__input-text:focus {
+  color: #ddd;
+  border: 1px solid #d0d0d0;
+  background-color: #fcfcfc;
+  border-radius: 15px;
+  -moz-border-radius: 15px;
+  -webkit-border-radius: 15px;
+  height: 25px;
+}
 
-    /* @extends */
+/* @extends */
 
-    .input-form{
-        border:1px solid #d0d0d0;
-        background-color:#fcfcfc;
-        border-radius:15px;
-        -moz-border-radius:15px;
-        -webkit-border-radius:15px;
-        height:25px;
-    }
-    .site-form__input-text {
-        color: #fff;
-        @extend .input-form;
-    }
+.input-form{
+    border:1px solid #d0d0d0;
+    background-color:#fcfcfc;
+    border-radius:15px;
+    -moz-border-radius:15px;
+    -webkit-border-radius:15px;
+    height:25px;
+}
+.site-form__input-text {
+    color: #fff;
+    @extend .input-form;
+}
 
-    .site-form__input-text:focus {
-        color: #ddd;
-        @extend .input-form;
+.site-form__input-text:focus {
+    color: #ddd;
+    @extend .input-form;
 
-    /* css */
+ /* css */
 
-    .input-form, .site-form__input-text, .site-form__input-text:focus {
-      border: 1px solid #d0d0d0;
-      background-color: #fcfcfc;
-      border-radius: 15px;
-      -moz-border-radius: 15px;
-      -webkit-border-radius: 15px;
-      height: 25px;
-    }
+.input-form, .site-form__input-text, .site-form__input-text:focus {
+    border: 1px solid #d0d0d0;
+    background-color: #fcfcfc;
+    border-radius: 15px;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    height: 25px;
+}
 
-    .site-form__input-text {
-      color: #fff;
-    }
+.site-form__input-text {
+    color: #fff;
+}
 
-    .site-form__input-text:focus {
-      color: #ddd;
-    }
+.site-form__input-text:focus {
+    color: #ddd;
+}
+```
 
 То есть в каком бы месте вы не подключили расширение, полученный в итоге код будет оптимальным. С mixin'ами же каждое новое включение влечёт за собой увеличение участков одного и того же кода. Понятно, что злоупотреблять ими не нужно.
 

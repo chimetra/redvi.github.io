@@ -18,15 +18,18 @@
     <div class="small">блог об операционных системах, open source и программировании</div>
 <div class="nav">
     <ul>
-      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
-      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
-      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+      <li><a href="http://www.unix-lab.org/archives/">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about/">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors/">Автор</a></li>
     </ul>
 </div>
 </div><div id="main">
 <h2><a href="http://www.unix-lab.org/articles/gentoo2.html">Gentoo. Попытка № 2</a></h2>
-<h5><i class="icon-feather"></i> 16 Февраль 2013 </h5>
-<p>Ранее был написан пост <a href="http://redvi.github.io/articles/install-gentoo.html">об установке gentoo</a>, было это больше полутора лет назад и тогда эта замечательная ОС долго не продержалась на моём десктопе, уступив место archlinux'у. Не так давно в сознание начали закрадываться предательские мысли о смене дистрибутива. Связано это было с отходом команды разработчиков от традиций и философии archlinux. Несогласие с майнтейнерами в пути развития дистрибутива, ощущение того, что арч уже <s>«не торт»</s> не K.I.S.S., досада от того, что фактически разработчики не оставляют большого выбора, а просто навязывают свою волю.</p>
+<h5><i class="icon-feather"></i> 16 Февраль 2013
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/gentoo/">Gentoo</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
+</h5>
+<p>Ранее был написан пост <a href="http://www.unix-lab.org/posts/install-gentoo/">об установке gentoo</a>, было это больше полутора лет назад и тогда эта замечательная ОС долго не продержалась на моём десктопе, уступив место archlinux'у. Не так давно в сознание начали закрадываться предательские мысли о смене дистрибутива. Связано это было с отходом команды разработчиков от традиций и философии archlinux. Несогласие с майнтейнерами в пути развития дистрибутива, ощущение того, что арч уже <s>«не торт»</s> не K.I.S.S., досада от того, что фактически разработчики не оставляют большого выбора, а просто навязывают свою волю.</p>
 <p>Перебарывать это и искать обходные пути в то время, когда хотелось бы просто работать? Не думаю. Кроме того, стало появляться чувство, что пользователь в арче всё больше начинает походить на бета-тестера.</p>
 <p>В то же время в философии gentoo можно найти такие строки:</p>
 <blockquote>
@@ -35,32 +38,32 @@
 <p>Отлично звучит, хотя на практике всё немного иначе. Из исходников &mdash; основополагающий аспект, как ни крути. Собственно, поэтому gentoo пока не стал моим основным дистрибутивом (это ещё не решено). Да, есть возможность создать свои локальные оверлеи, да есть бинхосты, но... действительно ли это выход? Разумеется, можно обновлять (читай &mdash; пересобирать) пакеты раз в день, затратив на это несколько минут, а можно раз в несколько месяцев, затратив на это куда больше времени. Это уже зависит от личных предпочтений каждого. Вопрос в том, можно ли в gentoo просто жить, а не посвящать всего себя системе. Поживём &mdash; увидим.</p>
 <p>Что же, распускать сопли дальше не имеет смысла, давайте лучше посмотрим, как можно более или менее быстро создать на основе свежеустановленной генты рабочий десктоп. Все шаги описываться не будут &mdash; это есть в документации &mdash; лишь моменты, которые заставили автора задуматься и прикинуть как сделать лучше/быстрее.</p>
 <p>Итак, некоторые подводные камни и методы их обхода:</p>
-<h2>I. Споткнулись раз. Две видеокарты и vgaswitcheroo + неработающий wi-fi</h2>
+<h2>Споткнулись раз. Две видеокарты и vgaswitcheroo + неработающий wi-fi</h2>
 <p>В archlinux стоило лишь подмонтировать debugfs и отключить одну из карточек. В gentoo, поскольку ядро мы собираем сами, нужно сделать чуть больше телодвижений.
 Прямо в конфиге ядра включаем опции:</p>
-<div class="highlight"><pre><span class="cp"># .config</span>
-<span class="cp">#</span>
-<span class="n">CONFIG_VGA_SWITCHEROO</span><span class="o">=</span><span class="n">y</span>
-<span class="n">CONFIG_DRM_KMS_HELPER</span><span class="o">=</span><span class="n">m</span>
-<span class="n">CONFIG_DRM_RADEON_KMS</span><span class="o">=</span><span class="n">y</span>
-<span class="n">CONFIG_DRM_I915_KMS</span><span class="o">=</span><span class="n">y</span>
-<span class="n">CONFIG_DRM</span><span class="o">=</span><span class="n">m</span>
-<span class="n">CONFIG_DRM_RADEON</span><span class="o">=</span><span class="n">m</span>
-<span class="n">CONFIG_DRM_I915</span><span class="o">=</span><span class="n">m</span>
+<div class="highlight"><pre><span class="c"># .config</span>
+<span class="c">#</span>
+<span class="nv">CONFIG_VGA_SWITCHEROO</span><span class="o">=</span>y
+<span class="nv">CONFIG_DRM_KMS_HELPER</span><span class="o">=</span>m
+<span class="nv">CONFIG_DRM_RADEON_KMS</span><span class="o">=</span>y
+<span class="nv">CONFIG_DRM_I915_KMS</span><span class="o">=</span>y
+<span class="nv">CONFIG_DRM</span><span class="o">=</span>m
+<span class="nv">CONFIG_DRM_RADEON</span><span class="o">=</span>m
+<span class="nv">CONFIG_DRM_I915</span><span class="o">=</span>m
 </pre></div>
 
 
 <p>Это для владельцев видеокарт ATI + Intel. Владельцы карт NVidia должны шаманить с NOUVEAU.
 Правим конфиг <code>/etc/genkernel.conf</code>, включив в нём:</p>
-<div class="highlight"><pre><span class="n">OLDCONFIG</span><span class="o">=</span><span class="s">&quot;yes&quot;</span>
-<span class="n">MENUCONFIG</span><span class="o">=</span><span class="s">&quot;yes&quot;</span>
-<span class="n">CLEAN</span><span class="o">=</span><span class="s">&quot;no&quot;</span>
-<span class="n">MRPROPER</span><span class="o">=</span><span class="s">&quot;no&quot;</span>
+<div class="highlight"><pre><span class="nv">OLDCONFIG</span><span class="o">=</span><span class="s2">&quot;yes&quot;</span>
+<span class="nv">MENUCONFIG</span><span class="o">=</span><span class="s2">&quot;yes&quot;</span>
+<span class="nv">CLEAN</span><span class="o">=</span><span class="s2">&quot;no&quot;</span>
+<span class="nv">MRPROPER</span><span class="o">=</span><span class="s2">&quot;no&quot;</span>
 </pre></div>
 
 
 <p>В <code>/etc/portage/make.conf</code> определяем свои карточки. Например:</p>
-<div class="highlight"><pre><span class="n">VIDEO_CARDS</span><span class="o">=</span><span class="s">&quot;intel i915 radeon&quot;</span>
+<div class="highlight"><pre><span class="nv">VIDEO_CARDS</span><span class="o">=</span><span class="s2">&quot;intel i915 radeon&quot;</span>
 </pre></div>
 
 
@@ -70,14 +73,14 @@
 
 
 <p>А после установки grub, добавляем в конец строки загрузчика (для intel, в одну строку):</p>
-<div class="highlight"><pre><span class="n">i915</span><span class="p">.</span><span class="n">i915_enable_rc6</span><span class="o">=</span><span class="mi">1</span> <span class="n">i915</span><span class="p">.</span><span class="n">i915_enable_fbc</span><span class="o">=</span><span class="mi">1</span> <span class="n">i915</span><span class="p">.</span><span class="n">lvds_downclock</span><span class="o">=</span><span class="mi">1</span>
+<div class="highlight"><pre>i915.i915_enable_rc6<span class="o">=</span>1 i915.i915_enable_fbc<span class="o">=</span>1 i915.lvds_downclock<span class="o">=</span>1
 </pre></div>
 
 
 <p>Это может понадобиться в случае, если видеокарта работает на всю мощность. В последних версиях ядра, как правило, подобное уже не требуется.</p>
 <p>Это может понадобиться в случае, если видеокарта работает на всю мощность. В последних версиях ядра, как правило, подобное уже не требуется.</p>
 <p>И вносим debugfs в <code>/etc/fstab</code>:</p>
-<div class="highlight"><pre><span class="n">none</span>   <span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">kernel</span><span class="o">/</span><span class="n">debug</span> <span class="n">debugfs</span>       <span class="n">defaults</span> <span class="mi">0</span> <span class="mi">0</span>
+<div class="highlight"><pre>none   /sys/kernel/debug debugfs       defaults 0 0
 </pre></div>
 
 
@@ -97,10 +100,10 @@
 
 
 <p>Касаемо оборудования, стоило бы также отметить, что у автора изначально не определялась wi-fi карточка: не было интерфейса wlan0. К счастью, это решается даже проще:</p>
-<div class="highlight"><pre><span class="cp"># lspci -v 04:00.0</span>
+<div class="highlight"><pre><span class="gp">#</span> lspci -v 04:00.0
 
-<span class="n">Network</span> <span class="n">controller</span><span class="o">:</span> <span class="n">Broadcom</span> <span class="n">Corporation</span> <span class="n">BCM4313</span> <span class="mf">802.11</span><span class="n">b</span><span class="o">/</span><span class="n">g</span><span class="o">/</span><span class="n">n</span> <span class="n">Wireless</span> <span class="n">LAN</span> <span class="n">Controller</span> <span class="p">(</span><span class="n">rev</span> <span class="mo">01</span><span class="p">)</span>
-<span class="n">Kernel</span> <span class="n">driver</span> <span class="n">in</span> <span class="n">use</span><span class="o">:</span> <span class="n">bcma</span><span class="o">-</span><span class="n">pci</span><span class="o">-</span><span class="n">bridge</span>
+<span class="go">Network controller: Broadcom Corporation BCM4313 802.11b/g/n Wireless LAN Controller (rev 01)</span>
+<span class="go">Kernel driver in use: bcma-pci-bridge</span>
 </pre></div>
 
 
@@ -127,15 +130,15 @@ Device Drivers --&gt; Broadcom specific AMBA  ---&gt;
 
 <p><b>Примечание:</b></p>
 <p>Если возникли проблемы, владельцам карт от broadcom предлагается просмотреть информацию о драйверах <a href="http://linuxwireless.org/en/users/Drivers/brcm80211">bcrm80211</a> и <a href="http://linuxwireless.org/en/users/Drivers/b43">b43</a> в зависимости от используемого вами и действовать по предложенной там инструкции. Если ваша карта есть в списке и поддерживается &mdash; не всё потеряно.</p>
-<h2>II. Споткнулись два. Сборка chromium? Нет, binhost!</h2>
+<h2>Споткнулись два. Сборка chromium? Нет, binhost!</h2>
 <p>Привычным браузером у автора является хромиум, ну и в gentoo захотелось его собрать, только вот собирается он не меньше двух часов, и здесь возникает вполне себе закономерная мысль: фиг с ними, с USE-флагами, поставим из бинарного пакета.</p>
 <p>Вообще, надо сказать, что при обновлении ситуация повторится, поэтому лучше отдать предпочтение лёгким браузерам, таким как uzbl, или ставить готовые бинарные пакеты: google-chrome, firefox. Но давайте для примера таки поработаем с binhost.</p>
 <p>В качестве бинхоста будем использовать <code>http://calculate.freeside.ru/CLD/grp/</code>, там можно найти достаточно много пакетов под свою архитектуру. Естественно, лучше ставить из исходников со своими USE-флагами. Так же естественно, что автор не несёт ответственности, если при использовании бинарных пакетов из CLD у вас что-то отвалится ;)</p>
 <p>Снова идём в <code>/etc/portage/make.conf</code>:</p>
-<div class="highlight"><pre><span class="n">FEATURES</span><span class="o">=</span><span class="s">&quot;ccache&quot;</span>
-<span class="n">CCACHE_SIZE</span><span class="o">=</span><span class="s">&quot;2G&quot;</span>
-<span class="n">PORTAGE_BINHOST</span><span class="o">=</span><span class="s">&quot;http://calculate.freeside.ru/CLD/grp/x86_64/&quot;</span>
-<span class="n">PKGDIR</span><span class="o">=</span><span class="s">&quot;/var/binpackages/&quot;</span>
+<div class="highlight"><pre><span class="nv">FEATURES</span><span class="o">=</span><span class="s2">&quot;ccache&quot;</span>
+<span class="nv">CCACHE_SIZE</span><span class="o">=</span><span class="s2">&quot;2G&quot;</span>
+<span class="nv">PORTAGE_BINHOST</span><span class="o">=</span><span class="s2">&quot;http://calculate.freeside.ru/CLD/grp/x86_64/&quot;</span>
+<span class="nv">PKGDIR</span><span class="o">=</span><span class="s2">&quot;/var/binpackages/&quot;</span>
 </pre></div>
 
 
@@ -153,7 +156,7 @@ Device Drivers --&gt; Broadcom specific AMBA  ---&gt;
 
 
 <p>Всё нормально.</p>
-<h2>III. Споткнулись три. А сколько ждать-то? Сборка пакетов из-под live cd.</h2>
+<h2>Споткнулись три. А сколько ждать-то? Сборка пакетов из-под live cd.</h2>
 <p>Также после первоначальной установки можно доставить все пакеты, загрузившись с какого-нибудь live cd и чрутнувшись в gentoo. У автора на то был рабочий арчлинукс, gentoo ставился на внешний HDD. Повторюсь, вполне можно использовать для этого любой live cd/live usb. Загружаемся с него, монтируем нужные разделы, ставим компиляцию сразу нескольких пакетов, а сами в это время сидим в jabber или читаем gentoo handbook в привычном окружении.</p>
 <div class="highlight"><pre><span class="gp">$</span> sudo mount /dev/sdc1 /mnt/gentoo
 <span class="gp">$</span> sudo mount /dev/sdc2 /mnt/gentoo/boot
@@ -165,7 +168,7 @@ Device Drivers --&gt; Broadcom specific AMBA  ---&gt;
 
 
 <p>Кроме того, позволяет ускорить время компиляции <a href="http://ru.gentoo-wiki.com/wiki/%D0%A3%D1%81%D0%BA%D0%BE%D1%80%D0%B5%D0%BD%D0%B8%D0%B5_portage_%D1%87%D0%B5%D1%80%D0%B5%D0%B7_tmpfs">вынос /usr/local/portage в tmpfs</a>.
-В остальном с настройкой всё просто. При желании можете ознакомиться <a href="http://redvi.github.io/articles/acpi.html">с настройками acpi</a>, одинаковыми для всех дистрибутивов.</p>
+В остальном с настройкой всё просто. При желании можете ознакомиться <a href="http://www.unix-lab.org/posts/acpi/">с настройками acpi</a>, одинаковыми для всех дистрибутивов.</p>
 <p><a href="http://farm4.staticflickr.com/3704/9469197555_672f8c1754_b.jpg" data-lighter><img src="http://farm4.staticflickr.com/3704/9469197555_672f8c1754_b.jpg"/></a></p>
 <p><a href="http://farm6.staticflickr.com/5546/9469197583_0cf90f6972_b.jpg" data-lighter><img src="http://farm6.staticflickr.com/5546/9469197583_0cf90f6972_b.jpg"/></a></p>
 <h2>IV. В заключение или краткое сравнение возможностей arch и gentoo</h2>
@@ -218,37 +221,32 @@ Device Drivers --&gt; Broadcom specific AMBA  ---&gt;
 <p>В Gentoo для подобных нужд есть оверлеи и связанная с ними программа <code>layman</code>. Так что от недостатка программного обеспечения страдать в любом случае не придётся.</p>
 <hr />
 <p>Честно сказать, автору так и не удалось ответить на главный для себя вопрос: Arch или Gentoo? Оба дистрибутива по-своему хороши, оба имеют свои недостатки. И &mdash; да &mdash; оба неидеальны. От подобных мыслей линуксоиды обычно спасались созданием дистрибутива собственного ;)</p>
-<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi.html">redVi</a>,
-<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/gentoo/">Gentoo</a> /
-<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
-</h5>
+
+<br />
 <p align="center"><a href="#">наверх</a></p>
 </div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
 </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
-    <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>
-    <li class="footer"><a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+    <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
 </ul>
 </div><script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

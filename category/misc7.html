@@ -18,60 +18,74 @@
     <div class="small">блог об операционных системах, open source и программировании</div>
 <div class="nav">
     <ul>
-      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
-      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
-      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+      <li><a href="http://www.unix-lab.org/archives/">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about/">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors/">Автор</a></li>
     </ul>
 </div>
 </div><div id="main">
-<h2><a href="http://www.unix-lab.org/articles/grub2.html">GRUB2: основные настройки</a></h2>
-<h5><i class="icon-feather"></i> 13 Ноябрь 2012 </h5>
-Не так давно в archlinux всё же прекратили поддержку grub-legacy. Теперь выбор варьируется между двумя загрузчиками: Syslinux и Grub2. Как ясно из названия поста, автор отдаёт предпочтение второму варианту. Говорят, syslinux проще, поэтому большинство пользователей может обратить внимание на него. А вот владельцам UEFI BIOS рекомендуют второй граб. I. Установка # pacman -S grub-bios grub2-common # grub-install /dev/sda # grub-mkconfig -o /boot/grub/grub.cfg Теперь заглянем в файл ...
 <h2><a href="http://www.unix-lab.org/articles/nginx.html">Nginx как самостоятельный веб-сервер</a></h2>
-<h5><i class="icon-feather"></i> 06 Ноябрь 2012 </h5>
-Пост в продолжение цикла о веб-серверах. В этот раз будет затронут вопрос установки и настройки сервера nginx не как дополнение к apache, а абсолютно отдельно от последнего. Если вас также интересует настройка apache под различными операционными системами, возможно, вам пригодятся данные ниже ссылки: Apache + Archlinux Apache + Windows Немного предыстории: Nginx (энджин-экс) был разработан нашим соотечественником Игорем Сысоевым, первый релиз увидел свет осенью 2004 года. Nginx - это HTTP-сервер и ...
+<h5><i class="icon-feather"></i> 06 Ноябрь 2012
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/arch/">Arch</a> /
+<a href="http://www.unix-lab.org/tag/server/">Server</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
+</h5>
+Пост в продолжение цикла о веб-серверах. В этот раз будет затронут вопрос установки и настройки сервера nginx не как дополнение к apache, а абсолютно отдельно от последнего. Если вас также интересует настройка apache под различными операционными системами, возможно, вам пригодятся данные ниже ссылки: Apache + Archlinux Apache + Windows Немного ...
 <h2><a href="http://www.unix-lab.org/articles/xmonad.html">Знакомьтесь, xmonad</a></h2>
-<h5><i class="icon-feather"></i> 23 Октябрь 2012 </h5>
-I. Вступление Xmonad — фреймовый оконный менеджер, написанный на языке Haskell. Для приведения его к рабочему состоянию знать haskell совсем не обязательно, хотя уж точно не помешает. Об этом менеджере окон можно говорить очень долго, но пост предназначен по большей части для опытных пользователей и не ставит в круг своих задач объяснение простых истин. Возгласы "я не новичок, но всё равно ничего не понял!" без рассмотрения отправляются в /dev/null. Тема достаточно объёмная и содержит несколько новых понятий, лучше объяснить не смогу. II. Начали: 1. Как ...
+<h5><i class="icon-feather"></i> 23 Октябрь 2012
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/decorations/">Decorations</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
+</h5>
+Вступление Xmonad — фреймовый оконный менеджер, написанный на языке Haskell. Для приведения его к рабочему состоянию знать haskell совсем не обязательно, хотя уж точно не помешает. Об этом менеджере окон можно говорить очень долго, но пост предназначен по большей части для опытных пользователей и не ставит в круг своих задач объяснение простых истин. Возгласы "я не новичок, но всё равно ничего не понял!" без рассмотрения отправляются в /dev/null. Тема достаточно объёмная и ...
 <h2><a href="http://www.unix-lab.org/articles/clonezilla.html">Простое создание резервных копий с clonezilla</a></h2>
-<h5><i class="icon-feather"></i> 16 Октябрь 2012 </h5>
-Весьма и весьма удобно создавать образ своей операционной системы, дабы затем восстанавливать не отдельные разделы, а всё — целиком и полностью. В linux традиционно принято проводить эту процедуру при помощи утилиты dd, которая копирует содержимое диска поблочно, ну и восстанавливает так же. То есть если объём вашего нынешнего HDD 500 Гб, то восстановив свои данные на новый диск, вы получите те же 500 Гб, даже если ваш новый диск имеет куда больший размер. Остальное пространство использовано не будет. По этому поводу сегодня вспомним другую полезность в лице cp, а также упростим процедуру создания образа ...
-<h2><a href="http://www.unix-lab.org/articles/javascript.html">Шпаргалка по JavaScript</a></h2>
-<h5><i class="icon-feather"></i> 09 Октябрь 2012 </h5>
-Что представляет из себя сам JavaScript? По сути своей это скриптовый язык программирования. В подавляющем большинстве случаев используется при веб-разработке для придания интерактивности веб-страницам. JavaScript работает на стороне клиента — браузера — а не на сервере. Может способствовать как созданию более привлекательных или же функциональных веб-страниц, так и появлению уязвимостей. А посему будьте аккуратны при написании JS-скриптов или при возможности откажитесь от них вовсе. Как должна выглядеть страница с «прикрученным» JavaScript Как обычная ...
+<h5><i class="icon-feather"></i> 16 Октябрь 2012
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/arch/">Arch</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
+</h5>
+Весьма и весьма удобно создавать образ своей операционной системы, дабы затем восстанавливать не отдельные разделы, а всё — целиком и полностью. В linux традиционно принято проводить эту процедуру при помощи утилиты dd, которая копирует содержимое диска поблочно, ну и восстанавливает так же. То есть если объём вашего нынешнего HDD 500 Гб, то восстановив свои данные на новый диск, вы получите те же 500 Гб, даже если ваш новый диск имеет куда больший размер. Остальное пространство использовано не будет. По этому ...
 <h2><a href="http://www.unix-lab.org/articles/systemd.html">Systemd: загрузись по-новому</a></h2>
-<h5><i class="icon-feather"></i> 22 Сентябрь 2012 </h5>
-Предыстория Поскольку всех арчеводов облетела благая весть о переходе на более современную систему инициализации, на которую, собственно, переходить немногие торопились, случилось и автору сего поста опробовать её в действии. Надо заметить, в archlinux имеется интеграция этой весёлой вещи со стандартными конфигурационными файлами системы. Но мы, конечно, не стали пользоваться такими благами цивилизации и решили опробовать "чистый" systemd в действии. После этого благого намерения был установлен systemd, перезагружена система и... началось! Интернет, конечно, работать отказался. Любимый ...
+<h5><i class="icon-feather"></i> 22 Сентябрь 2012
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/arch/">Arch</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
+</h5>
+Предыстория Поскольку всех арчеводов облетела благая весть о переходе на более современную систему инициализации, на которую, собственно, переходить немногие торопились, случилось и автору сего поста опробовать её в действии. Надо заметить, в archlinux имеется интеграция этой весёлой вещи со стандартными конфигурационными файлами системы. Но мы, конечно, не стали пользоваться такими благами цивилизации и решили опробовать "чистый" systemd в действии. После этого благого намерения был установлен ...
+<h2><a href="http://www.unix-lab.org/articles/android-and-bb.html">Сквозное подключение. Android и ББ</a></h2>
+<h5><i class="icon-feather"></i> 15 Сентябрь 2012
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/android/">Android</a> /
+</h5>
+ББ — большой брат, то есть компьютер или ноутбук с каким-либо подключением к интернету. Зачем это нужно? Например, ситуация: у вас есть доступ к сети по DSL, wi-fi нет, GPRS слишком дорог. Что делать? Правильно, заняться подключением брата меньшего к брату старшему, дабы спокойно обновлять приложения и ходить в твиттер через android-устройство. Внимание! Для сквозного подлючения необходимо получить права рута для вашего устройства. Один из способов рассмотрим прямо ...
+<h2><a href="http://www.unix-lab.org/articles/android-launchers.html">Сравнение лаунчеров для Android</a></h2>
+<h5><i class="icon-feather"></i> 09 Сентябрь 2012
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/android/">Android</a> /
+</h5>
+Как известно, для Android-устройств имеется несколько лаунчеров - оболочек, от которых зависит как будет выглядеть и вести себя рабочий стол . Если вас не устраивает стандартный лаунчер, всегда можно подобрать на google play что-то более подходящее, соответствующее вашим представлениям об удобстве и красоте. Хотя имеющиеся на текущий момент лаунчеры так или иначе похожи. Из бесплатных самым популярным является GO Launcher, из платных – SPB Shell 3D. В обзоре рассмотрим сравнения: стандартный TouchWiez для ...
 <div class="pagination">
         <a href="http://www.unix-lab.org/category/misc6.html">&larr;Предыдущая</a>
-    страница 7 из 13.
+    страница 7 из 12.
         <a href="http://www.unix-lab.org/category/misc8.html">Следующая&rarr;</a>
 </div></div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
 </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
-    <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>
-    <li class="footer"><a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+    <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
 </ul>
 </div><script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

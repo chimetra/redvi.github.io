@@ -5,7 +5,7 @@ Slug: gentoo2
 Author: redVi
 Summary: О возвращении на дистрибутив Gentoo Linux
 
-Ранее был написан пост [об установке gentoo](http://redvi.github.io/articles/install-gentoo.html), было это больше полутора лет назад и тогда эта замечательная ОС долго не продержалась на моём десктопе, уступив место archlinux'у. Не так давно в сознание начали закрадываться предательские мысли о смене дистрибутива. Связано это было с отходом команды разработчиков от традиций и философии archlinux. Несогласие с майнтейнерами в пути развития дистрибутива, ощущение того, что арч уже <s>«не торт»</s> не K.I.S.S., досада от того, что фактически разработчики не оставляют большого выбора, а просто навязывают свою волю.
+Ранее был написан пост [об установке gentoo](http://www.unix-lab.org/posts/install-gentoo/), было это больше полутора лет назад и тогда эта замечательная ОС долго не продержалась на моём десктопе, уступив место archlinux'у. Не так давно в сознание начали закрадываться предательские мысли о смене дистрибутива. Связано это было с отходом команды разработчиков от традиций и философии archlinux. Несогласие с майнтейнерами в пути развития дистрибутива, ощущение того, что арч уже <s>«не торт»</s> не K.I.S.S., досада от того, что фактически разработчики не оставляют большого выбора, а просто навязывают свою волю.
 
 Перебарывать это и искать обходные пути в то время, когда хотелось бы просто работать? Не думаю. Кроме того, стало появляться чувство, что пользователь в арче всё больше начинает походить на бета-тестера.
 
@@ -19,42 +19,50 @@ Summary: О возвращении на дистрибутив Gentoo Linux
 
 Итак, некоторые подводные камни и методы их обхода:
 
-##I. Споткнулись раз. Две видеокарты и vgaswitcheroo + неработающий wi-fi
+## Споткнулись раз. Две видеокарты и vgaswitcheroo + неработающий wi-fi
 
 В archlinux стоило лишь подмонтировать debugfs и отключить одну из карточек. В gentoo, поскольку ядро мы собираем сами, нужно сделать чуть больше телодвижений.
 Прямо в конфиге ядра включаем опции:
 
-    # .config
-    #
-    CONFIG_VGA_SWITCHEROO=y
-    CONFIG_DRM_KMS_HELPER=m
-    CONFIG_DRM_RADEON_KMS=y
-    CONFIG_DRM_I915_KMS=y
-    CONFIG_DRM=m
-    CONFIG_DRM_RADEON=m
-    CONFIG_DRM_I915=m
+```sh
+# .config
+#
+CONFIG_VGA_SWITCHEROO=y
+CONFIG_DRM_KMS_HELPER=m
+CONFIG_DRM_RADEON_KMS=y
+CONFIG_DRM_I915_KMS=y
+CONFIG_DRM=m
+CONFIG_DRM_RADEON=m
+CONFIG_DRM_I915=m
+```
 
 Это для владельцев видеокарт ATI + Intel. Владельцы карт NVidia должны шаманить с NOUVEAU.
 Правим конфиг `/etc/genkernel.conf`, включив в нём:
 
-
-    OLDCONFIG="yes"
-    MENUCONFIG="yes"
-    CLEAN="no"
-    MRPROPER="no"
+```sh
+OLDCONFIG="yes"
+MENUCONFIG="yes"
+CLEAN="no"
+MRPROPER="no"
+```
 
 В `/etc/portage/make.conf` определяем свои карточки. Например:
 
-    VIDEO_CARDS="intel i915 radeon"
+```sh
+VIDEO_CARDS="intel i915 radeon"
+```
 
 Собираем ядро с genkernel:
 
-    :::console
-    # genkernel all
+```console
+# genkernel all
+```
 
 А после установки grub, добавляем в конец строки загрузчика (для intel, в одну строку):
 
-    i915.i915_enable_rc6=1 i915.i915_enable_fbc=1 i915.lvds_downclock=1
+```sh
+i915.i915_enable_rc6=1 i915.i915_enable_fbc=1 i915.lvds_downclock=1
+```
 
 Это может понадобиться в случае, если видеокарта работает на всю мощность. В последних версиях ядра, как правило, подобное уже не требуется.
 
@@ -62,61 +70,68 @@ Summary: О возвращении на дистрибутив Gentoo Linux
 
 И вносим debugfs в `/etc/fstab`:
 
-    none   /sys/kernel/debug debugfs       defaults 0 0
+```sh
+none   /sys/kernel/debug debugfs       defaults 0 0
+```
 
 Теперь можно также просто как в арче отключать неиспользуемую видеокарту.
 
-    :::console
-    # echo OFF > /sys/kernel/debug/vgaswitcheroo/switch
+```console
+# echo OFF > /sys/kernel/debug/vgaswitcheroo/switch
+```
 
 Или запускать эту команду автоматически при старте системы:
 
-    :::console
-    # vim /etc/local.d/cards.start
+```console
+# vim /etc/local.d/cards.start
 
-    #!/bin/bash
-    echo OFF > /sys/kernel/debug/vgaswitcheroo/switch
+#!/bin/bash
+echo OFF > /sys/kernel/debug/vgaswitcheroo/switch
 
-    # chmod +x /etc/local.d/cards.start
+# chmod +x /etc/local.d/cards.start
+```
 
 Касаемо оборудования, стоило бы также отметить, что у автора изначально не определялась wi-fi карточка: не было интерфейса wlan0. К счастью, это решается даже проще:
 
-    # lspci -v 04:00.0
+```console
+# lspci -v 04:00.0
 
-    Network controller: Broadcom Corporation BCM4313 802.11b/g/n Wireless LAN Controller (rev 01)
-    Kernel driver in use: bcma-pci-bridge
+Network controller: Broadcom Corporation BCM4313 802.11b/g/n Wireless LAN Controller (rev 01)
+Kernel driver in use: bcma-pci-bridge
+```
 
- Для данной железки в ядре должно быть включено:
+Для данной железки в ядре должно быть включено:
 
-    Networking Support --> Wireless -->
-        <M>   cfg80211 - wireless configuration API
-        [*]     cfg80211 wireless extensions compatibility
-    Device Drivers --> Network Device Support --> Wireless LAN -->
-        <M>   Broadcom IEEE802.11n PCIe SoftMAC WLAN driver
-    Device Drivers --> Broadcom specific AMBA  --->
-        <M> BCMA support
-        [*]   Support for BCMA on PCI-host bus
+```
+Networking Support --> Wireless -->
+    <M>   cfg80211 - wireless configuration API
+    [*]     cfg80211 wireless extensions compatibility
+Device Drivers --> Network Device Support --> Wireless LAN -->
+    <M>   Broadcom IEEE802.11n PCIe SoftMAC WLAN driver
+Device Drivers --> Broadcom specific AMBA  --->
+    <M> BCMA support
+    [*]   Support for BCMA on PCI-host bus
+```
 
-   ![wifi] (http://2.bp.blogspot.com/-eog7d_a1-Oo/USuFLN4NX6I/AAAAAAAAEDI/aB6JI0WLHeY/s1600/cfg80211.png)
+![wifi] (http://2.bp.blogspot.com/-eog7d_a1-Oo/USuFLN4NX6I/AAAAAAAAEDI/aB6JI0WLHeY/s1600/cfg80211.png)
 
-   ![bcma](http://3.bp.blogspot.com/-GkhLdgPkbBo/USuFQHOn9OI/AAAAAAAAEDQ/AGt5Aaq6E8g/s1600/BCMA.png)
+![bcma](http://3.bp.blogspot.com/-GkhLdgPkbBo/USuFQHOn9OI/AAAAAAAAEDQ/AGt5Aaq6E8g/s1600/BCMA.png)
 
-   ![broadcom](http://4.bp.blogspot.com/-QFK5n4V2ZJU/USuFSoS03pI/AAAAAAAAEDY/G8RXalKQbp4/s1600/Broadcom_wireless.png)
+![broadcom](http://4.bp.blogspot.com/-QFK5n4V2ZJU/USuFSoS03pI/AAAAAAAAEDY/G8RXalKQbp4/s1600/Broadcom_wireless.png)
 
-   ![linksus](http://1.bp.blogspot.com/-us8aObbmluk/USuFWutQEQI/AAAAAAAAEDg/xUCtcl6xBnY/s1600/linksus.png)
-
+![linksus](http://1.bp.blogspot.com/-us8aObbmluk/USuFWutQEQI/AAAAAAAAEDg/xUCtcl6xBnY/s1600/linksus.png)
 
 И установлена прошивка:
 
-    :::console
-    # emerge sys-kernel/linux-firmware
+```console
+# emerge sys-kernel/linux-firmware
+```
 
 <b>Примечание:</b>
 
 Если возникли проблемы, владельцам карт от broadcom предлагается просмотреть информацию о драйверах [bcrm80211](http://linuxwireless.org/en/users/Drivers/brcm80211) и [b43](http://linuxwireless.org/en/users/Drivers/b43) в зависимости от используемого вами и действовать по предложенной там инструкции. Если ваша карта есть в списке и поддерживается &mdash; не всё потеряно.
 
-##II. Споткнулись два. Сборка chromium? Нет, binhost!
-
+## Споткнулись два. Сборка chromium? Нет, binhost!
 
 Привычным браузером у автора является хромиум, ну и в gentoo захотелось его собрать, только вот собирается он не меньше двух часов, и здесь возникает вполне себе закономерная мысль: фиг с ними, с USE-флагами, поставим из бинарного пакета.
 
@@ -126,43 +141,46 @@ Summary: О возвращении на дистрибутив Gentoo Linux
 
 Снова идём в `/etc/portage/make.conf`:
 
-    FEATURES="ccache"
-    CCACHE_SIZE="2G"
-    PORTAGE_BINHOST="http://calculate.freeside.ru/CLD/grp/x86_64/"
-    PKGDIR="/var/binpackages/"
-
+```sh
+FEATURES="ccache"
+CCACHE_SIZE="2G"
+PORTAGE_BINHOST="http://calculate.freeside.ru/CLD/grp/x86_64/"
+PKGDIR="/var/binpackages/"
+```
 
 `ccache` следует сначала установить, он окажет неоценимую услугу при перекомпиляции пакетов, подробнее читаем на [gentoo wiki]().
 
 Что касается binhost'а здесь вы указываете откуда ставить пакеты с учётом своей архитектуры. Затем следует указание места, куда будут складываться эти пакеты.
 Ставим chromium:
 
-    :::console
-    # emerge --getbinpkgonly --fetchonly --usepkgonly chromium
+```console
+# emerge --getbinpkgonly --fetchonly --usepkgonly chromium
+```
 
 Заглядываем в `/var/binpackages/`:
 
-    :::console
-    $ ls var/binpackages/www-client/
-    chromium-20.0.1132.57.tbz2
+```console
+$ ls var/binpackages/www-client/
+chromium-20.0.1132.57.tbz2
+```
 
 Всё нормально.
 
-##III. Споткнулись три. А сколько ждать-то? Сборка пакетов из-под live cd.
+## Споткнулись три. А сколько ждать-то? Сборка пакетов из-под live cd.
 
 Также после первоначальной установки можно доставить все пакеты, загрузившись с какого-нибудь live cd и чрутнувшись в gentoo. У автора на то был рабочий арчлинукс, gentoo ставился на внешний HDD. Повторюсь, вполне можно использовать для этого любой live cd/live usb. Загружаемся с него, монтируем нужные разделы, ставим компиляцию сразу нескольких пакетов, а сами в это время сидим в jabber или читаем gentoo handbook в привычном окружении.
 
-    :::console
-    $ sudo mount /dev/sdc1 /mnt/gentoo
-    $ sudo mount /dev/sdc2 /mnt/gentoo/boot
-    $ sudo mount /dev/sdc6 /mnt/gentoo/home
-    $ sudo mount -t proc none /mnt/gentoo/proc
-    $ sudo chroot /mnt/gentoo /bin/bash
-    PS1 = "(chroot) $PS1"
-
+```console
+$ sudo mount /dev/sdc1 /mnt/gentoo
+$ sudo mount /dev/sdc2 /mnt/gentoo/boot
+$ sudo mount /dev/sdc6 /mnt/gentoo/home
+$ sudo mount -t proc none /mnt/gentoo/proc
+$ sudo chroot /mnt/gentoo /bin/bash
+PS1 = "(chroot) $PS1"
+```
 
 Кроме того, позволяет ускорить время компиляции [вынос /usr/local/portage в tmpfs](http://ru.gentoo-wiki.com/wiki/%D0%A3%D1%81%D0%BA%D0%BE%D1%80%D0%B5%D0%BD%D0%B8%D0%B5_portage_%D1%87%D0%B5%D1%80%D0%B5%D0%B7_tmpfs).
-В остальном с настройкой всё просто. При желании можете ознакомиться [с настройками acpi](http://redvi.github.io/articles/acpi.html), одинаковыми для всех дистрибутивов.
+В остальном с настройкой всё просто. При желании можете ознакомиться [с настройками acpi](http://www.unix-lab.org/posts/acpi/), одинаковыми для всех дистрибутивов.
 
 <a href="http://farm4.staticflickr.com/3704/9469197555_672f8c1754_b.jpg" data-lighter><img src="http://farm4.staticflickr.com/3704/9469197555_672f8c1754_b.jpg"/></a>
 
@@ -180,53 +198,47 @@ Summary: О возвращении на дистрибутив Gentoo Linux
 Если ваша система "упала" и её сложно восстановить, pacman может легко переустановить эти пакеты.
 Сначала, сохраните в список пакетов (доступных в репозитории):
 
-    :::console
-    # pacman -Qqe | grep -v "$(pacman -Qmq)" > pkglist
+```console
+# pacman -Qqe | grep -v "$(pacman -Qmq)" > pkglist
+```
 
 Безопасная, но и более сложная альтернатива (во избежание удаления частичных совпадений)
 
-    :::console
-    # comm -13 <(pacman -Qmq | sort) <(pacman -Qqe | sort) > pkglist
+```console
+# comm -13 <(pacman -Qmq | sort) <(pacman -Qqe | sort) > pkglist
+```
 
 Сохраните этот файл на флешке или на другом носителе.
 Скопируйте файл pkglist в новую систему, перейдите в эту папку.
 Для восстановления используйте команду:
 
-    :::console
-    # pacman -S $(cat pkglist)
-
-
+```console
+# pacman -S $(cat pkglist)
+```
 
 * Сборка из исходного кода
 
-
 Возможна в обоих дистрибутивах. В archlinux для этого есть такая вкусная вещь как ABS. С Gentoo и так всё ясно &mdash; по умолчанию.
 
-
 * Ставим бинарные пакеты
-
 
 Арч &mdash; бинарный дистрибутив и возможность ставить готовые пакеты, а не компилировать всё из исходников, заложена по-умолчанию.
 
 В gentoo есть возможность ставить бинарные пакеты, как правило, лишь для очень больших приложений (оно и понятно).
 
 
-* Гибкость менеджера управлением пакетов
 
+* Гибкость менеджера управлением пакетов
 
 И pacman, и emerge хороши. Но emerge &mdash; инструмент куда более гибкий (и куда более медленный).
 
-
 * Обновление конфигурационных файлов системы
-
 
 В арче делается ручками. Большинство арчеводов активно испольуют программку `diff` для сравнения изменившихся конфигурационных файлов и их последующей (ручной) правки. Не особенно удобно.
 
 Gentoo предлагает использовать команду `etc-update`, что очень удобно.
 
-
 * Разнообразие софта
-
 
 Обычно имеющихся пакетов хватает как в случае с archlinux, так и в случае с gentoo. Но если нужной программы нет, это тоже не большая беда.
 
@@ -236,4 +248,3 @@ Gentoo предлагает использовать команду `etc-update`
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
 Честно сказать, автору так и не удалось ответить на главный для себя вопрос: Arch или Gentoo? Оба дистрибутива по-своему хороши, оба имеют свои недостатки. И &mdash; да &mdash; оба неидеальны. От подобных мыслей линуксоиды обычно спасались созданием дистрибутива собственного ;)
-

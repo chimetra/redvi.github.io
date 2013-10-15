@@ -18,13 +18,15 @@ Summary: Сегодня будем развенчивать миф о сложн
 ### Настройка интернет-соединения:
 автор использует модемное соединение, данные передаются автоматически при помощи DHCP.
 
-    :::console
-    # /sbin/ifconfig
+```console
+# /sbin/ifconfig
+```
 
 если кроме интерфейса lo больше ничего нет, значит делаем следующее:
 
-    :::console
-    # dhcpcd eth0 (где ваш сетевой интерфейс - eth0)
+```console
+# dhcpcd eth0 (где ваш сетевой интерфейс - eth0)
+```
 
 после чего повторяем команду `/sbin/ifconfig`
 
@@ -32,10 +34,11 @@ Summary: Сегодня будем развенчивать миф о сложн
 
 Для настройки adsl-соединения:
 
-    :::console
-    # pppoe-setup
-    # net-setup eth0 (для обычных или беспроводных сетей)
-    # ping ya.ru - пингуем яндекс
+```console
+# pppoe-setup
+# net-setup eth0 (для обычных или беспроводных сетей)
+# ping ya.ru - пингуем яндекс
+```
 
 чтобы прервать пинги:
 
@@ -58,10 +61,11 @@ Summary: Сегодня будем развенчивать миф о сложн
 
 Лучше записать то, что вы себе насочиняли. Для домашнего использования можно обойтись стандартными каталогами `/boot`, `/` , `swap`.
 
-###Непосредственно создание разделов:
+### Непосредственно создание разделов:
 
-    :::console
-    # cfdisk /dev/sda
+```console
+# cfdisk /dev/sda
+```
 
 где `sda` - SCSI-диск; `hda` - IDE-диск. Выбирайте что нужно вам.
 
@@ -74,30 +78,33 @@ Summary: Сегодня будем развенчивать миф о сложн
 
 ![cfdisk](http://4.bp.blogspot.com/-DO3Qly4-DxU/ToWKYWy_xdI/AAAAAAAAAMU/MjAae-_QKKA/s1600/gentoo_cfdisk.png)
 
-###Назначение файловой системы:
+### Назначение файловой системы:
 
-    :::console
-    # mke2fs /dev/sda1 - создание `ext2` на разделе `/dev/sda1`
-    # mke2fs -j /dev/sda3 - создание `ext3` на разделе `/dev/sda3`
-    # mkswap /dev/sda2 - создание раздела подкачки на `/dev/sda2`
-    # swapon /dev/sda2 - и его активация
-    # mkfs.ext4 - создание `ext4`, если не желаете использовать `ext3`
+```console
+# mke2fs /dev/sda1 - создание `ext2` на разделе `/dev/sda1`
+# mke2fs -j /dev/sda3 - создание `ext3` на разделе `/dev/sda3`
+# mkswap /dev/sda2 - создание раздела подкачки на `/dev/sda2`
+# swapon /dev/sda2 - и его активация
+# mkfs.ext4 - создание `ext4`, если не желаете использовать `ext3`
+```
 
-###Назначение точек монтирования:
+### Назначение точек монтирования:
 
-    :::console
-    # mount /dev/sda3 /mnt/gentoo - монтируем корень
-    # mkdir /mnt/gentoo/boot - раздел под загрузчик
-    # mount /dev/sda1 /mnt/gentoo/boot - монтирование раздела загрузчика
+```console
+# mount /dev/sda3 /mnt/gentoo - монтируем корень
+# mkdir /mnt/gentoo/boot - раздел под загрузчик
+# mount /dev/sda1 /mnt/gentoo/boot - монтирование раздела загрузчика
+```
 
 ## Архив стадии, дерево портежей
 
 В качестве источника загрузки автором было использовано зеркало `mirror.yandex.ru`
 Внимательно следите за тем,чтобы загрузить подходящий скачанному вами образу архив. В примере использован amd64.
 
-    :::console
-    # cd /mnt/gentoo
-    # links http://mirror.yandex.ru/gentoo-distfiles/releases/amd64/current-stage3/
+```console
+# cd /mnt/gentoo
+# links http://mirror.yandex.ru/gentoo-distfiles/releases/amd64/current-stage3/
+```
 
 Выберите файл `stage*.tar.bz` и нажмите `enter`. Начнётся загрузка архива, это 161 Мб, так что пока можно попить кофейку.
 
@@ -105,13 +112,15 @@ Summary: Сегодня будем развенчивать миф о сложн
 
 Загрузили? Распаковываем:
 
-    :::console
-    # tar xvjpf stage3-*.tar.bz
+```console
+# tar xvjpf stage3-*.tar.bz
+```
 
 Теперь сделаем снимок дерева портежей
 
-    :::console
-    # links http://mirror.yandex.ru/gentoo-distfiles/snapshots/
+```console
+# links http://mirror.yandex.ru/gentoo-distfiles/snapshots/
+```
 
 выбираем внизу `portage-latest.tar.bz2`
 
@@ -119,10 +128,11 @@ Summary: Сегодня будем развенчивать миф о сложн
 
 распаковываем (из корневого каталога):
 
-    :::console
-    # tar xvjf /mnt/gentoo/portage-latest.tar.bz2 -C /mnt/gentoo/usr
+```console
+# tar xvjf /mnt/gentoo/portage-latest.tar.bz2 -C /mnt/gentoo/usr
+```
 
-##Настройка компиляции ядра
+## Настройка компиляции ядра
 
 Настройки хранятся в файле `mnt/gentoo/etc/portage/make.conf`. Его и открываем любимым редактором (joe, nano, vi?)
 Здесь используются переменные и значения. Пример:
@@ -141,19 +151,21 @@ Summary: Сегодня будем развенчивать миф о сложн
 - `MAKEOPTS="-j2"` - определяет сколько параллельных процессов компиляции можно запускать при установке пакета. Обычно ставят значение равное количеству ядер процессора +1. Если ваш процессор поддерживает технологию Hyper-threading, разумное значение будет: количество доступных ядер, умноженное на 2 +1.
 USE-флаги. Можно пока ничего не дописывать, займётесь этим позже.
 
-###Выбор зеркал, DNS, chroot
+### Выбор зеркал, DNS, chroot
 
 Действия в примере производятся из каталога `/`
 
 Выбор зеркала загрузки
 
-    :::console
-    # mirrorselect -i -o >> /mnt/gentoo/etc/portage/make.conf
+```console
+# mirrorselect -i -o >> /mnt/gentoo/etc/portage/make.conf
+```
 
 Выбор зеркала rsync:
 
-    :::console
-    # mirrorselect -i -r -o >> /mnt/gentoo/etc/portage/make.conf
+```console
+# mirrorselect -i -r -o >> /mnt/gentoo/etc/portage/make.conf
+```
 
 Из предложенного списка выберите зеркала России.
 
@@ -161,126 +173,145 @@ USE-флаги. Можно пока ничего не дописывать, за
 
 Нелишним будет скопировать информацию о DNS
 
-    :::console
-    # cp -L /etc/resolv.conf /mnt/gentoo/etc/resolv.conf
+```console
+# cp -L /etc/resolv.conf /mnt/gentoo/etc/resolv.conf
+```
 
 Монтируем `/proc` & `/dev`:
 
-    :::console
-    # mount -t proc none /mnt/gentoo/proc
-    # mount -o bind /dev /mnt/gentoo/dev
+```console
+# mount -t proc none /mnt/gentoo/proc
+# mount -o bind /dev /mnt/gentoo/dev
+```
 
 Переходим в новую среду с помощью `chroot`:
 
-    :::console
-    # chroot /mnt/gentoo /bin/bash
-    # env-update
-    # source /etc/profile
-    # export PS1="(chroot) $PS1"
+```console
+# chroot /mnt/gentoo /bin/bash
+# env-update
+# source /etc/profile
+# export PS1="(chroot) $PS1"
+```
 
 ![chroot](http://4.bp.blogspot.com/-CsPH_FFvXKY/ToWK85b1e-I/AAAAAAAAAMg/VUTZVPeXNck/s1600/gentoo3_chroot1.png)
 
-##Прочие премудрости
+## Прочие премудрости
 
 Обновите дерево портежей:
 
-    :::console
-    # mkdir /usr/portage
-    # emerge --sync`
+```console
+# mkdir /usr/portage
+# emerge --sync`
+```
 
 это может занять какое-то время, не пугайтесь
 
-    :::console
-    # emerge portage - если выдаёт сообщение о новой версии портежей
+```console
+# emerge portage - если выдаёт сообщение о новой версии портежей
+```
 
 Выбор профиля:
 
-    :::console
-    # eselect profile list
-    Available profile symlink targets:
-    [1]   default/linux/amd64/10.0 *
-    [2]   default/linux/amd64/10.0/desktop
-    [3]   default/linux/amd64/10.0/server
-    # eselect profile set 3
+```console
+# eselect profile list
+Available profile symlink targets:
+[1]   default/linux/amd64/10.0 *
+[2]   default/linux/amd64/10.0/desktop
+[3]   default/linux/amd64/10.0/server
+# eselect profile set 3
+```
 
 Думаю, приведённые действия не нуждаются в пояснении, всё ясно из названий профилей. Нужно лишь выбрать необходимый вам, исходя из ваших задач.
 
-###USE-флаги
+### USE-флаги
 
 Служат для включения/отключения поддержки необязательных функций при компиляции программ.
 Вам не нужен X-сервер? Допишите значение `"-X"`. Не нужна поддержка qt? Значит `"-qt"`. И наоборот включите поддержку unicode: `"unicode"`.
 Посмотреть допустимые значения:
 
-    :::console
-    # less /usr/portage/profiles/use.desc
+```console
+# less /usr/portage/profiles/use.desc
+```
 
 Значения дописываются в `/etc/portage/make.conf` в строку USE
 
-    :::console
-    # nano -w /etc/portage/make.conf
+```console
+# nano -w /etc/portage/make.conf
+```
 
 Например:
 
 ![gentoo use](http://4.bp.blogspot.com/-I-dahuzNfuY/ToWLIjklZvI/AAAAAAAAAMk/lrp-gm6MKbA/s1600/gentoo_use1.png)
 
-###Настройка кодировки:
+### Настройка кодировки:
 
-    :::console
-    # nano -w /etc/locale.gen
+```console
+# nano -w /etc/locale.gen
+```
 
 вы увидите список закомментированных строк с кодировками, вот сверху или же ниже его впишите:
 
-    en_US.UTF-8 UTF-8
-    ru_RU.UTF-8 UTF-8
+```
+en_US.UTF-8 UTF-8
+ru_RU.UTF-8 UTF-8
+```
 
 сохраните изменения и выйдите: `Ctrl+O`, `Ctrl+Q`
 
-    :::console
-    # locale-gen
+```console
+# locale-gen
+```
 
-###Настройка времени:
+### Настройка времени:
 
-    :::console
-    # cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+```console
+# cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+```
 
 Теперь наше локальное время идёт по Кремлёвским курантам))
 Можете скопировать любое место вашей дислокации из `/usr/share/zoneinfo`
 
-##Ядро
+## Ядро
 
 Скачаем исходники ядра
 
-    :::console
-    # USE="-doc symlink" emerge gentoo-sources
+```console
+# USE="-doc symlink" emerge gentoo-sources
+```
 
-###Установка ядра
+### Установка ядра
 
 Способ 1 - всё и сразу
 
-    :::console
-    # emerge genkernel
-    # genkernel all
+```console
+# emerge genkernel
+# genkernel all
+```
 
 В результате получим ядро с поддержкой разного ненужного хлама. Плюс этого способа - простота.
 Примечание: можно подправить `/etc/genkernel.conf`, включив в нём параметры:
 
-    OLDCONFIG="yes"
-    MENUCONFIG="yes"
-    CLEAN="no"
-    MRPROPER="no"
+```
+OLDCONFIG="yes"
+MENUCONFIG="yes"
+CLEAN="no"
+MRPROPER="no"
+```
 
 В таком случае вы сможете собрать своё ядро, а genkernel сделает всё остальное.
 После сборки можете просто проверить название созданного ядра и initrd, а затем обратиться к дальнейшему пункту о сборке программ:
 
-    :::console
-    # ls /boot/kernel* /boot/initramfs*
+```console
+# ls /boot/kernel* /boot/initramfs*
+```
 
 Способ 2 - только то, что нужно
 
-    :::console
-    # emerge pcutils (с её помощью вы сможете посмотреть аппаратную часть своего ПК)
-    # cd /usr/src/linux (переход в каталог с исходниками)
-    # make menuconfig (вызов меню с настройками)
+```console
+# emerge pcutils (с её помощью вы сможете посмотреть аппаратную часть своего ПК)
+# cd /usr/src/linux (переход в каталог с исходниками)
+# make menuconfig (вызов меню с настройками)
+```
 
 ![menuconfig](http://2.bp.blogspot.com/-Kp3waRhclrU/ToWLVz7j0xI/AAAAAAAAAMo/yjipyAJdiOw/s1600/gentoo_menuconfig.png)
 
@@ -288,41 +319,48 @@ USE-флаги. Можно пока ничего не дописывать, за
 
 Настроили? Теперь ядро нужно скомпилировать и установить:
 
-    :::console
-    # make && make modules_install - для тех, кто занимался ручной сборкой
+```console
+# make && make modules_install - для тех, кто занимался ручной сборкой
+```
 
 И скопировать ядро в `/boot`:
 
-    :::console
-    # cp arch/x86_64/boot/bzImage /boot/
+```console
+# cp arch/x86_64/boot/bzImage /boot/
+```
 
 Пример:
 
-    :::console
-    # cp arch/x86_64/boot/bzImage /boot/2.6.37-gentoo-r4
+```console
+# cp arch/x86_64/boot/bzImage /boot/2.6.37-gentoo-r4
+```
 
 Если вы собрали ядро с initrg, следует всё же установить genkernel и скомандовать:
 
-    :::console
-    # genkernel --install initramfs
+```console
+# genkernel --install initramfs
+```
 
 Сборка программ, конфигурирование модулей, настройка загрузчика
 
-    :::console
-    # emerge udev (автоматическое распознавание устройств) syslog-ng (служба журналирования) vixie-cron (что такое cron, думаю, знают все) dhcpcd (автоматическое получение IP-адреса, если у вас это дело статично, можете не ставить)
+```console
+# emerge udev (автоматическое распознавание устройств) syslog-ng (служба журналирования) vixie-cron (что такое cron, думаю, знают все) dhcpcd (автоматическое получение IP-адреса, если у вас это дело статично, можете не ставить)
+```
 
 Теперь добавляем эти вещи в автозагрузку:
 
-    :::console
-    # rc-update add udev boot
-    # rc-update add syslog-ng default
-    # rc-update add vixie-cron default
-    # rc-update add dhcpcd default
+```console
+# rc-update add udev boot
+# rc-update add syslog-ng default
+# rc-update add vixie-cron default
+# rc-update add dhcpcd default
+```
 
 Проверяем наши устройства:
 
-    :::console
-    # nano -w /ets/fstab
+```console
+# nano -w /ets/fstab
+```
 
 Должно получится примерно так:
 
@@ -332,42 +370,48 @@ USE-флаги. Можно пока ничего не дописывать, за
 
 Имя хоста:
 
-    :::console
-    # nano -w /etc/conf.d/hostname
+```console
+# nano -w /etc/conf.d/hostname
+```
 
 Укажите здесь имя своего ПК
 
 Сеть:
 
-    :::console
-    # nano -w /etc/conf.d/net
+```console
+# nano -w /etc/conf.d/net
+```
 
 дописываем:
 
-    :::sh
-    # /etc/conf.d/net
-    #
-    config_eth0="dhcp" - для получения динамического IP-адреса
-    если адрес статичен,то впишите вместо dhcp свою информацию. Например:
-    config_eth0="192.168.0.2 netmask 255.255.255.0" - IP-адрес и адрес сети
-    routes_eth0="default via 192.168.0.1" - роутер
-    dns_servers_eth0="192.168.0.1 8.8.8.8" - DNS-адреса
+```sh
+# /etc/conf.d/net
+#
+config_eth0="dhcp" # для получения динамического IP-адреса
+# если адрес статичен,то впишите вместо dhcp свою информацию. Например:
+config_eth0="192.168.0.2 netmask 255.255.255.0" # IP-адрес и адрес сети
+routes_eth0="default via 192.168.0.1" # роутер
+dns_servers_eth0="192.168.0.1 8.8.8.8" # DNS-адреса
+```
 
 Теперь следует указать gentoo на существующий интерфейс. Для этого создайте символьную ссылку на `net.eth0`:
 
-    :::console
-    # cd /etc/init.d
-    # ln -s net.lo net.eth0
+```console
+# cd /etc/init.d
+# ln -s net.lo net.eth0
+```
 
 Добавление сетевого интерфейса в автозагрузку:
 
-    :::console
-    # rc-update add net.eth0 default
+```console
+# rc-update add net.eth0 default
+```
 
 Создание пароля для суперпользователя:
 
-    :::console
-    # passwd
+```console
+# passwd
+```
 
 впишите пароль для учётной записи root
 
@@ -375,16 +419,18 @@ USE-флаги. Можно пока ничего не дописывать, за
 
 Настройка раскладки клавиатуры:
 
-    :::sh
-    # /etc/conf.d/keymaps
-    KEYMAP="ru"
+```sh
+# /etc/conf.d/keymaps
+KEYMAP="ru"
+```
 
 Настройка часов:
 
-    :::sh
-    # /etc/conf.d/clock
-    CLOCK="local"
-    TIMEZONE="Europe/Moscow"
+```sh
+# /etc/conf.d/clock
+CLOCK="local"
+TIMEZONE="Europe/Moscow"
+```
 
 Загрузчик:
 
@@ -398,60 +444,70 @@ USE-флаги. Можно пока ничего не дописывать, за
 
 Для тех у кого параллельно установлена Windows (на `/dev/sda1`):
 
-    title=Windows XP
-    rootnoverify (hd0,0)
-    makeactive
-    chainloader +1
+```
+title=Windows XP
+rootnoverify (hd0,0)
+makeactive
+chainloader +1
+```
 
 Примечание: на практике информация про Windows не проверена
 
 Установка загрузчика:
 
-    :::console
-    # grep -v rootfs /proc/mounts > /etc/mtab
-    # grub install /dev/sda - где `sda` - ваш диск
+```console
+# grep -v rootfs /proc/mounts > /etc/mtab
+# grub install /dev/sda - где `sda` - ваш диск
+```
 
-##Финиш
+## Финиш
 
-    :::console
-    # exit
-    # cd
-    # umount /mnt/gentoo/boot /mnt/gentoo/proc /mnt/gentoo/dev /mnt/gentoo (в общем последовательно отмонтируйте всё, что смонтировали в `/mnt`)
-    # reboot
+```console
+# exit
+# cd
+# umount /mnt/gentoo/boot /mnt/gentoo/proc /mnt/gentoo/dev /mnt/gentoo (в общем последовательно отмонтируйте всё, что смонтировали в `/mnt`)
+# reboot
+```
 
 ![gentoo grub](http://3.bp.blogspot.com/-z9UHd-dlQzU/ToWMYc2twdI/AAAAAAAAAM8/BHhdNkDdTVg/s1600/gentoo_grub4.png)
 
 Перезагрузка, загрузка ПК с винчестера и вас встречают приглашением входа в систему.
 Поздравляю, вы победили!
 
-##Локализация системы
+## Локализация системы
 
 Перезагрузившись, мы обнаружим прескверную вещь: кириллица отображается квадратиками. Что ж, в `locale.gen` нужные настройки внесены, продолжим квест по русификации системы.
 
-    :::console
-    # emerge terminus-font intlfonts freefonts cronyx-fonts corefonts kbd
+```console
+# emerge terminus-font intlfonts freefonts cronyx-fonts corefonts kbd
+```
 
 В файле `/etc/env.d/02locale`:
 
-    LC_ALL=""
-    LANG="ru_RU.UTF-8"
+```sh
+LC_ALL=""
+LANG="ru_RU.UTF-8"
+```
 
 В `/etc/conf.d/keymaps`:
 
-    keymap="ruwin_alt_sh-UTF-8"
-    windowkeys="NO"
-    extended_keymaps=""
-    dumpkeys_charset=""
-    fix_euro="NO"
+```sh
+keymap="ruwin_alt_sh-UTF-8"
+windowkeys="NO"
+extended_keymaps=""
+dumpkeys_charset=""
+fix_euro="NO"
+```
 
 В `/etc/conf.d/consolefont`:
 
-    consolefont="cyr-sun16"
-    consoletranslation=""
-
+```sh
+consolefont="cyr-sun16"
+consoletranslation=""
+```
 
 Можно также установить различные шрифты и поэкспериментировать с ними. После пересборки/установки шрифтов желательно выполнить:
 
-    :::console
-    # fc-cache -fv
-
+```console
+# fc-cache -fv
+```

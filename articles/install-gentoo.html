@@ -18,14 +18,17 @@
     <div class="small">блог об операционных системах, open source и программировании</div>
 <div class="nav">
     <ul>
-      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
-      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
-      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+      <li><a href="http://www.unix-lab.org/archives/">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about/">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors/">Автор</a></li>
     </ul>
 </div>
 </div><div id="main">
 <h2><a href="http://www.unix-lab.org/articles/install-gentoo.html">Установка Gentoo. По-русски</a></h2>
-<h5><i class="icon-feather"></i> 30 Сентябрь 2011  &nbsp; <i class="icon-spin4"></i> 2 Январь 2013 </h5>
+<h5><i class="icon-feather"></i> 30 Сентябрь 2011
+ &nbsp; <i class="icon-spin4"></i> 2 Январь 2013 <i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/gentoo/">Gentoo</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
+</h5>
 <p>Сегодня будем развенчивать миф о сложности установки Gentoo. Почему установка "по-русски"? Потому что настраивать станем русскую локаль, раскладку и временную зону. Статья получилась довольно объёмной, для тех, кто не знает, как скоротать долгий вечер).</p>
 <h3>Загрузитесь с СD-диска.</h3>
 <p>Грузимся с параметрами по умолчанию.</p>
@@ -325,11 +328,11 @@ USE-флаги. Можно пока ничего не дописывать, за
 <p>дописываем:</p>
 <div class="highlight"><pre><span class="c"># /etc/conf.d/net</span>
 <span class="c">#</span>
-<span class="nv">config_eth0</span><span class="o">=</span><span class="s2">&quot;dhcp&quot;</span> - для получения динамического IP-адреса
-если адрес статичен,то впишите вместо dhcp свою информацию. Например:
-<span class="nv">config_eth0</span><span class="o">=</span><span class="s2">&quot;192.168.0.2 netmask 255.255.255.0&quot;</span> - IP-адрес и адрес сети
-<span class="nv">routes_eth0</span><span class="o">=</span><span class="s2">&quot;default via 192.168.0.1&quot;</span> - роутер
-<span class="nv">dns_servers_eth0</span><span class="o">=</span><span class="s2">&quot;192.168.0.1 8.8.8.8&quot;</span> - DNS-адреса
+<span class="nv">config_eth0</span><span class="o">=</span><span class="s2">&quot;dhcp&quot;</span> <span class="c"># для получения динамического IP-адреса</span>
+<span class="c"># если адрес статичен,то впишите вместо dhcp свою информацию. Например:</span>
+<span class="nv">config_eth0</span><span class="o">=</span><span class="s2">&quot;192.168.0.2 netmask 255.255.255.0&quot;</span> <span class="c"># IP-адрес и адрес сети</span>
+<span class="nv">routes_eth0</span><span class="o">=</span><span class="s2">&quot;default via 192.168.0.1&quot;</span> <span class="c"># роутер</span>
+<span class="nv">dns_servers_eth0</span><span class="o">=</span><span class="s2">&quot;192.168.0.1 8.8.8.8&quot;</span> <span class="c"># DNS-адреса</span>
 </pre></div>
 
 
@@ -406,60 +409,55 @@ USE-флаги. Можно пока ничего не дописывать, за
 
 
 <p>В файле <code>/etc/env.d/02locale</code>:</p>
-<div class="highlight"><pre><span class="n">LC_ALL</span><span class="o">=</span><span class="s">&quot;&quot;</span>
-<span class="n">LANG</span><span class="o">=</span><span class="s">&quot;ru_RU.UTF-8&quot;</span>
+<div class="highlight"><pre><span class="nv">LC_ALL</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+<span class="nv">LANG</span><span class="o">=</span><span class="s2">&quot;ru_RU.UTF-8&quot;</span>
 </pre></div>
 
 
 <p>В <code>/etc/conf.d/keymaps</code>:</p>
-<div class="highlight"><pre><span class="n">keymap</span><span class="o">=</span><span class="s">&quot;ruwin_alt_sh-UTF-8&quot;</span>
-<span class="n">windowkeys</span><span class="o">=</span><span class="s">&quot;NO&quot;</span>
-<span class="n">extended_keymaps</span><span class="o">=</span><span class="s">&quot;&quot;</span>
-<span class="n">dumpkeys_charset</span><span class="o">=</span><span class="s">&quot;&quot;</span>
-<span class="n">fix_euro</span><span class="o">=</span><span class="s">&quot;NO&quot;</span>
+<div class="highlight"><pre><span class="nv">keymap</span><span class="o">=</span><span class="s2">&quot;ruwin_alt_sh-UTF-8&quot;</span>
+<span class="nv">windowkeys</span><span class="o">=</span><span class="s2">&quot;NO&quot;</span>
+<span class="nv">extended_keymaps</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+<span class="nv">dumpkeys_charset</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+<span class="nv">fix_euro</span><span class="o">=</span><span class="s2">&quot;NO&quot;</span>
 </pre></div>
 
 
 <p>В <code>/etc/conf.d/consolefont</code>:</p>
-<div class="highlight"><pre><span class="n">consolefont</span><span class="o">=</span><span class="s">&quot;cyr-sun16&quot;</span>
-<span class="n">consoletranslation</span><span class="o">=</span><span class="s">&quot;&quot;</span>
+<div class="highlight"><pre><span class="nv">consolefont</span><span class="o">=</span><span class="s2">&quot;cyr-sun16&quot;</span>
+<span class="nv">consoletranslation</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
 </pre></div>
 
 
 <p>Можно также установить различные шрифты и поэкспериментировать с ними. После пересборки/установки шрифтов желательно выполнить:</p>
 <div class="highlight"><pre><span class="gp">#</span> <span class="nb">fc</span>-cache -fv
 </pre></div>
-<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi.html">redVi</a>,
-<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/gentoo/">Gentoo</a> /
-<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
-</h5>
+
+<br />
 <p align="center"><a href="#">наверх</a></p>
 </div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
 </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
-    <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>
-    <li class="footer"><a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+    <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
 </ul>
 </div><script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

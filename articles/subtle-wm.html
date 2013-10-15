@@ -18,20 +18,23 @@
     <div class="small">блог об операционных системах, open source и программировании</div>
 <div class="nav">
     <ul>
-      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
-      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
-      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+      <li><a href="http://www.unix-lab.org/archives/">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about/">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors/">Автор</a></li>
     </ul>
 </div>
 </div><div id="main">
 <h2><a href="http://www.unix-lab.org/articles/subtle-wm.html">Subtle WM: свобода, ограниченная лишь фантазией</a></h2>
-<h5><i class="icon-feather"></i> 11 Июль 2013 </h5>
+<h5><i class="icon-feather"></i> 11 Июль 2013
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/decorations/">Decorations</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
+</h5>
 <p>Что такое subtle wm? Subtle &mdash; тайловый оконный менеджер с достаточно необычным подходом к расположению плитки окон. Subtle написан на популярном языке ruby, имеет простой конфигурационный файл, который к тому же очень недурно документирован. При правке конфигурации не требует перекомпиляции: достаточно перезагрузить wm и внесённые изменения тут же вступят в силу.</p>
 <p>Пост предположительно разбит на две части, выделяющие функциональные возможности wm и его внешний вид. Установка упоминается, хотя тут и говорить нечего: она проста до безобразия.</p>
 <p>Итак, как уже утверждалось выше, установить обсуждаемый wm очень легко: subtle доступен в репозиториях любого дистрибутива. Применительно к gentoo это будет выглядеть следующим образом:</p>
 <div class="highlight"><pre><span class="gp">#</span> emerge -av subtle
 <span class="go">Calculating dependencies... done!</span>
-<span class="go">[ebuild   N   ~] x11-wm/subtle-0.11.3224  USE=&quot;xft xrandr xtest -debug -doc {-test} -xinerama -xpm&quot;</span>
+<span class="go">[ebuild N ~] x11-wm/subtle-0.11.3224  USE=&quot;xft xrandr xtest -debug -doc {-test} -xinerama -xpm&quot;</span>
 </pre></div>
 
 
@@ -42,7 +45,7 @@
 
 
 <p>После чего займёмся настройками.</p>
-<h2>I. Функциональность</h2>
+<h2>Функциональность</h2>
 <p>Как и у любого другого wm у subtle имеются специальные клавиши-модификаторы. Наиболее используемые из них:</p>
 <p><code>[*A*]</code> = левый Alt (Mod1)</p>
 <p><code>[*C*]</code> = Control</p>
@@ -144,8 +147,8 @@
 <p>Способ первый — <code>.xinitrc</code></p>
 <p>Если вы входите в систему через <code>startx</code>, файл <code>.xinitrc</code> читается, если же используете графический менеджер входа, его нужно немного настроить либо вписывать заветные команды в <code>Xsession</code>. Пример со slim:</p>
 <div class="highlight"><pre><span class="c"># /etc/slim.conf</span>
-login_cmd           <span class="nb">exec</span> /bin/sh - ~/.xinitrc %session <span class="c"># будет читать .xinitrc</span>
-<span class="c">#login_cmd           exec /bin/bash -login /usr/share/slim/Xsession %session | будет читать файл Xsession</span>
+login_cmd    <span class="nb">exec</span> /bin/sh - ~/.xinitrc %session <span class="c"># будет читать .xinitrc</span>
+<span class="c">#login_cmd   exec /bin/bash -login /usr/share/slim/Xsession %session | будет читать файл Xsession</span>
 </pre></div>
 
 
@@ -166,11 +169,11 @@ login_cmd           <span class="nb">exec</span> /bin/sh - ~/.xinitrc %session <
 <span class="gp">$</span> sur install clock <span class="c"># установит sublet часов</span>
 <span class="gp">$</span> sur list <span class="c"># отобразит установленные скрипты</span>
 <span class="go">1 battery (0.9) [0.9 installed]</span>
-<span class="go">   Show the battery state</span>
-<span class="go">   #Sys #Icon #Config — тут есть файл конфигурации и xbm-иконка</span>
+<span class="go">    Show the battery state</span>
+<span class="go">    #Sys #Icon #Config — тут есть файл конфигурации и xbm-иконка</span>
 <span class="go">2 clock (0.33) [0.33 installed]</span>
-<span class="go">   Show the clock and date</span>
-<span class="go">   #Icon #Config — и здесь xbm-иконка и конфиг</span>
+<span class="go">    Show the clock and date</span>
+<span class="go">    #Icon #Config — и здесь xbm-иконка и конфиг</span>
 </pre></div>
 
 
@@ -258,7 +261,7 @@ login_cmd           <span class="nb">exec</span> /bin/sh - ~/.xinitrc %session <
 </pre></div>
 
 
-<h2>II. Настройка внешнего вида</h2>
+<h2>Настройка внешнего вида</h2>
 <p>В целом, рассмотрение subtle wm можно считать оконченным. Приведённой информации хватит для того, чтобы вы могли настроить его под себя. Разумеется, знание языка ruby даст вам дополнительные возможности. Осталось то немногое, чего мы ещё не коснулись. Во-первых, что отображать на верхней или нижней панели? Нам доступны несколько вариантов, способных разнообразить внешний вид оконного менеджера:</p>
 <table border="1" cellpadding="0" cellspacing="0">
 <tbody>
@@ -317,6 +320,7 @@ login_cmd           <span class="nb">exec</span> /bin/sh - ~/.xinitrc %session <
   <span class="n">style</span> <span class="ss">:focus</span> <span class="k">do</span>
     <span class="n">foreground</span>  <span class="s2">&quot;#9accff&quot;</span>
   <span class="k">end</span>
+<span class="k">end</span>
 
 <span class="c1"># Стиль отображения саблетов</span>
 <span class="n">style</span> <span class="ss">:sublets</span> <span class="k">do</span>
@@ -331,37 +335,32 @@ login_cmd           <span class="nb">exec</span> /bin/sh - ~/.xinitrc %session <
 
 
 <p>Subtle WM — очень неплохой оконный менеджер, и если вам наскучило ваше прежнее рабочее окружение, обязательно попробуйте его. Полный конфигурационный файл автора можно забрать из <a href="https://gist.github.com/redVi/5685939">gist.github</a>.</p>
-<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi.html">redVi</a>,
-<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/decorations/">Decorations</a> /
-<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
-</h5>
+
+<br />
 <p align="center"><a href="#">наверх</a></p>
 </div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
 </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
-    <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>
-    <li class="footer"><a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+    <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
 </ul>
 </div><script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

@@ -11,20 +11,22 @@ Summary: Что такое subtle wm? Subtle &mdash; тайловый оконн
 
 Итак, как уже утверждалось выше, установить обсуждаемый wm очень легко: subtle доступен в репозиториях любого дистрибутива. Применительно к gentoo это будет выглядеть следующим образом:
 
-    :::console
-    # emerge -av subtle
-    Calculating dependencies... done!
-    [ebuild   N   ~] x11-wm/subtle-0.11.3224  USE="xft xrandr xtest -debug -doc {-test} -xinerama -xpm"
+```console
+# emerge -av subtle
+Calculating dependencies... done!
+[ebuild N ~] x11-wm/subtle-0.11.3224  USE="xft xrandr xtest -debug -doc {-test} -xinerama -xpm"
+```
 
 Дальше следовало бы осмотреть дефолтный файл конфигурации и сразу же настроить его наиболее удобным для себя способом. Для этого скопируем его из директории `/etc/xdg` в домашний каталог:
 
-    :::console
-    $ mkdir .config/subtle
-    $ cp /etc/xdg/subtle/subtle.rb .config/subtle/
+```console
+$ mkdir .config/subtle
+$ cp /etc/xdg/subtle/subtle.rb .config/subtle/
+```
 
 После чего займёмся настройками.
 
-##I. Функциональность
+## Функциональность
 
 Как и у любого другого wm у subtle имеются специальные клавиши-модификаторы. Наиболее используемые из них:
 
@@ -40,73 +42,78 @@ Summary: Что такое subtle wm? Subtle &mdash; тайловый оконн
 
 `1.` Переключение между тегами ( теги — это что-то вроде специальных меток, куда можно прикрепить запуск определённых приложений. Как правило, тегам даются соответствующие имена: www для запуска браузеров, chat — jabber-клиента и skype, media — мультимедийных приложений):
 
-    :::ruby
-    # Switch current view
+```ruby
+# Switch current view
 
-    grab "W-1", :ViewSwitch1
-    grab "W-2", :ViewSwitch2
-    grab "W-3", :ViewSwitch3
+grab "W-1", :ViewSwitch1
+grab "W-2", :ViewSwitch2
+grab "W-3", :ViewSwitch3
+```
 
 `2.` Перейти на следующий/предыдущий тег:
 
-    :::ruby
-    # Select next and prev view */
+```ruby
+# Select next and prev view */
 
-    grab "C-Right", :ViewNext
-    grab "C-Left",  :ViewPrev
+grab "C-Right", :ViewNext
+grab "C-Left",  :ViewPrev
+```
 
 `3.` И, конечно же, настроить по своему вкусу горячие клавиши для запуска того или иного приложения. Но об это следует сказать чуть подробнее. Чтобы назначить горячие клавиши нужно изменить следующий блок:
 
-    :::ruby
-    # Exec programs
+```ruby
+# Exec programs
 
-    grab "W-Return", "sakura"
-    grab "W-h", "spacefm"
-    grab "W-p", "pidgin"
-    grab "W-w", "subl"
-    grab "W-r", "transmission-gtk|rtorrent"
-    grab "W-S-p", "gmrun"
+grab "W-Return", "sakura"
+grab "W-h", "spacefm"
+grab "W-p", "pidgin"
+grab "W-w", "subl"
+grab "W-r", "transmission-gtk|rtorrent"
+grab "W-S-p", "gmrun"
+```
 
 Так, по нажатию `W + Return` (клавиша с логотипом `win + Enter`) будет вызван эмулятор терминала, по `W + h` — файловый менеджер, `W + p` — jabber-клиент и так далее. Но не слишком-то удобно наблюдать как все открываемые приложения стартуют на первом теге, не правда ли? Дело в том, что по-умолчанию subtle поступает именно так: открывает окно в первом теге (что бывает несколько неудобно даже когда расположение окон настроено: например, при загрузке файла через браузер, запущенный на третьем теге, окно выбора файла может всё равно открыться в первом теге), поэтому следовало бы подумать какое приложение в каком теге вам хотелось бы видеть и внести соответствующие пожеланиям настройки в `subtle.rb`:
 
-    :::ruby
-    # Simple tags
+```ruby
+# Simple tags
 
-    tag "terms",   "xterm|sakura" do
-      gravity :bottom66
-    end
+tag "terms",   "xterm|sakura" do
+  gravity :bottom66
+end
 
-    tag "apps", "spacefm|nitrogen|lxappearance|gmrun" do
-      gravity :center80
-    end
+tag "apps", "spacefm|nitrogen|lxappearance|gmrun" do
+  gravity :center80
+end
 
-    tag "media", "mirage|mplayer?[2]|zathura|transmission-gtk" do
-      gravity :right66
-    end
+tag "media", "mirage|mplayer?[2]|zathura|transmission-gtk" do
+  gravity :right66
+end
 
-    tag "editor" do
-      match  "subl|[g]?vim|zim|abiword"
-      resize true
-    end
+tag "editor" do
+  match  "subl|[g]?vim|zim|abiword"
+  resize true
+end
 
-    tag "browser" do
-      match "firefox|chromium|midori|uzbl"
-      resize true
-    end
+tag "browser" do
+  match "firefox|chromium|midori|uzbl"
+  resize true
+end
+```
 
 Таким образом, в теге terms будут открываться xterm или же sakura. Дополнительные настройки рассмотрим чуть ниже.
 
 Как и другие оконные менеджеры subtle имеет несколько вариантов расположения окон, среди которых:
 
-    :::ruby
-    # Toggle floating mode of window | плавающий режим
-    grab "W-f", :WindowFloat
+```ruby
+# Toggle floating mode of window | плавающий режим
+grab "W-f", :WindowFloat
 
-    # Toggle fullscreen mode of window | полноэкранный режим
-    grab "W-space", :WindowFull
+# Toggle fullscreen mode of window | полноэкранный режим
+grab "W-space", :WindowFull
 
-    # Toggle sticky mode of window | отображение окна на всех тегах
-    grab "W-s", :WindowStick
+# Toggle sticky mode of window | отображение окна на всех тегах
+grab "W-s", :WindowStick
+```
 
 Для тегов можно отдельно настроить и различное расположение окон. За это отвечает параметр `gravity`. Читатель уже мог видеть пример подобной настройки, где указаны параметры `gravity :center` или `gravity :right66`. То есть, если вам угодно всегда запускать эмулятор терминала на первом теге в плавающем режиме по центру, указывайте значение `:center`.
 
@@ -116,21 +123,22 @@ Summary: Что такое subtle wm? Subtle &mdash; тайловый оконн
 
 Странно, но насколько лёгок subtle в настройке, настолько тяжело структурировать и описать его возможности. Чтобы понять, что происходит, нам всё же придётся вернуться назад и вспомнить, как до этого назначались имена тегов: `tag "browser"` и что они содержали: `do match "firefox|chromium|midori|uzbl"`. Автор надеется, что теперь особенности настройки subtle стали более ясными для возможных читателей.
 
-    :::ruby
-    view "terms" do
-      match "terms|default"
-      icon "~/.config/subtle/xbm/terminal.xbm"
-    end
+```ruby
+view "terms" do
+  match "terms|default"
+  icon "~/.config/subtle/xbm/terminal.xbm"
+end
 
-    view "www" do
-      match "browser"
-      icon "~/.config/subtle/xbm/world.xbm"
-    end
+view "www" do
+  match "browser"
+  icon "~/.config/subtle/xbm/world.xbm"
+end
 
-    view "home" do
-      match "apps"
-      icon "~/.config/subtle/xbm/house.xbm"
-    end
+view "home" do
+  match "apps"
+  icon "~/.config/subtle/xbm/house.xbm"
+end
+```
 
 <a href="http://fc08.deviantart.net/fs70/i/2013/151/a/7/subtle_by_redvi9-d67a1qe.png" data-lighter><img src="http://fc08.deviantart.net/fs70/i/2013/151/a/7/subtle_by_redvi9-d67a1qe.png"/></a>
 
@@ -140,21 +148,23 @@ Summary: Что такое subtle wm? Subtle &mdash; тайловый оконн
 
 Если вы входите в систему через `startx`, файл `.xinitrc` читается, если же используете графический менеджер входа, его нужно немного настроить либо вписывать заветные команды в `Xsession`. Пример со slim:
 
-    :::sh
-    # /etc/slim.conf
-    login_cmd           exec /bin/sh - ~/.xinitrc %session # будет читать .xinitrc
-    #login_cmd           exec /bin/bash -login /usr/share/slim/Xsession %session | будет читать файл Xsession
+```sh
+# /etc/slim.conf
+login_cmd    exec /bin/sh - ~/.xinitrc %session # будет читать .xinitrc
+#login_cmd   exec /bin/bash -login /usr/share/slim/Xsession %session | будет читать файл Xsession
+```
 
 Следует выбрать один из этих файлов и вписать туда программы автозапуска.
 
 Способ второй — встроенные возможности subtle. К счастью, subtle сам умеет добавлять приложения в автозапуск, делается это также крайне просто: добавлением хуков в `subtle.rb`:
 
-    :::ruby
-    # === Hooks
-    #
-    on :start do
-      Subtlext::Subtle.spawn "feh --bg-fill Images/World/famous.jpg &"
-    end
+```ruby
+# === Hooks
+#
+on :start do
+  Subtlext::Subtle.spawn "feh --bg-fill Images/World/famous.jpg &"
+end
+```
 
 Теперь после входа в систему, вместе с wm можно будет лицезреть и обои на рабочем столе.
 
@@ -162,34 +172,36 @@ Summary: Что такое subtle wm? Subtle &mdash; тайловый оконн
 
 Так называемые саблеты (`sublets`) являются ничем иным как небольшими скриптами на ruby и позволяют расширить функциональные возможности оконного менеджера. В частности, на данный момент имеются скрипты для отображения времени, даты, новых электронных сообщений. Чтобы воспользоваться ими, надо установить программу `sur`:
 
-    :::console
-    # emerge -av sur # установит программу
-    $ sur install clock # установит sublet часов
-    $ sur list # отобразит установленные скрипты
-    1 battery (0.9) [0.9 installed]
-       Show the battery state
-       #Sys #Icon #Config — тут есть файл конфигурации и xbm-иконка
-    2 clock (0.33) [0.33 installed]
-       Show the clock and date
-       #Icon #Config — и здесь xbm-иконка и конфиг
+```console
+# emerge -av sur # установит программу
+$ sur install clock # установит sublet часов
+$ sur list # отобразит установленные скрипты
+1 battery (0.9) [0.9 installed]
+    Show the battery state
+    #Sys #Icon #Config — тут есть файл конфигурации и xbm-иконка
+2 clock (0.33) [0.33 installed]
+    Show the clock and date
+    #Icon #Config — и здесь xbm-иконка и конфиг
+```
 
 Настройки конфигурации лежат в поддиректории `.local/share/subtle/`, но не рекомендуется менять стандартные значения: переопределяйте их в вашем `subtle.rb`, примерно так:
 
-    :::ruby
-    #
-    # == Sublets
-    #
-    # clock
-    sublet :clock do
-      format_string "%H:%M %d %A"
-      #format_string "%H:%M"
-    end
+```ruby
+#
+# == Sublets
+#
+# clock
+sublet :clock do
+  format_string "%H:%M %d %A"
+  #format_string "%H:%M"
+end
 
-    # battery
-    sublet :battery do
-      # interval      30
-      foreground    "#9FAFAF"
-    end
+# battery
+sublet :battery do
+  # interval      30
+  foreground    "#9FAFAF"
+end
+```
 
 Для того, чтобы изменения вступили в силу, просто перезапустите subtle. Ещё несколько важных команд:
 
@@ -201,64 +213,68 @@ Summary: Что такое subtle wm? Subtle &mdash; тайловый оконн
 
 Сначала пишутся возможные варианты расположения
 
-    :::ruby
-    # Top left
-    gravity :top_left,       [   0,   0,  50,  50 ]
-    gravity :top_left66,     [   0,   0,  50,  66 ]
-    gravity :top_left33,     [   0,   0,  50,  34 ]
+```ruby
+# Top left
+gravity :top_left,       [   0,   0,  50,  50 ]
+gravity :top_left66,     [   0,   0,  50,  66 ]
+gravity :top_left33,     [   0,   0,  50,  34 ]
 
-    # Top
-    gravity :top,            [   0,   0, 100,  50 ]
-    gravity :top66,          [   0,   0, 100,  66 ]
-    gravity :top33,          [   0,   0, 100,  34 ]
+# Top
+gravity :top,            [   0,   0, 100,  50 ]
+gravity :top66,          [   0,   0, 100,  66 ]
+gravity :top33,          [   0,   0, 100,  34 ]
+```
 
 Затем настраиваются горячие клавиши для перехода из одного расположения окна в другое:
 
-    :::ruby
-    # In case no numpad is available e.g. on notebooks | расположение окон
-    grab "W-S-q", [ :top_left,     :top_left66,     :top_left33     ]
-    grab "W-S-w", [ :top,          :top66,          :top33          ]
-    grab "W-S-e", [ :top_right,    :top_right66,    :top_right33    ]
-    grab "W-S-a", [ :left,         :left66,         :left33         ]
+```ruby
+# In case no numpad is available e.g. on notebooks | расположение окон
+grab "W-S-q", [ :top_left,     :top_left66,     :top_left33     ]
+grab "W-S-w", [ :top,          :top66,          :top33          ]
+grab "W-S-e", [ :top_right,    :top_right66,    :top_right33    ]
+grab "W-S-a", [ :left,         :left66,         :left33         ]
+```
 
 Наконец, геометрия определяется для какого-либо приложения или тега:
 
-    :::ruby
-    tag "terms" do
-      geometry [10, 10, 50, 50]
-      gravity :center66
-      resize true
-      stick true
-    end
+```ruby
+tag "terms" do
+  geometry [10, 10, 50, 50]
+  gravity :center66
+  resize true
+  stick true
+end
 
-    #Pidgin
-    tag "pidgin_contact" do
-      match :role => "buddy_list", :class => "Pidgin"
-      gravity :left33
-      fixed true
-      borderless true
-    end
+#Pidgin
+tag "pidgin_contact" do
+  match :role => "buddy_list", :class => "Pidgin"
+  gravity :left33
+  fixed true
+  borderless true
+end
 
-    tag "pidgin_conversation" do
-      match :role => "conversation", :class => "Pidgin"
-      gravity :right66
-      fixed true
-      borderless true
-    end
+tag "pidgin_conversation" do
+  match :role => "conversation", :class => "Pidgin"
+  gravity :right66
+  fixed true
+  borderless true
+end
+```
 
 Также следует иметь ввиду, что subtle поддерживает конфигурацию, в которой может быть несколько мониторов. На каждом мониторе могут быть отображены свои панели и то, что на них отображается:
 
-    :::ruby
-    screen 1 do
-      top [ :center, :views ]
-      bottom [ :center, :sublets, :separator, :tray]
-    end
+```ruby
+screen 1 do
+  top [ :center, :views ]
+  bottom [ :center, :sublets, :separator, :tray]
+end
 
-    screen 2 do
-      top [ :sublets, :spacer, :separator, :tray, :center, :views ]
-    end
+screen 2 do
+  top [ :sublets, :spacer, :separator, :tray, :center, :views ]
+end
+```
 
-##II. Настройка внешнего вида
+## Настройка внешнего вида
 
 В целом, рассмотрение subtle wm можно считать оконченным. Приведённой информации хватит для того, чтобы вы могли настроить его под себя. Разумеется, знание языка ruby даст вам дополнительные возможности. Осталось то немногое, чего мы ещё не коснулись. Во-первых, что отображать на верхней или нижней панели? Нам доступны несколько вариантов, способных разнообразить внешний вид оконного менеджера:
 
@@ -305,33 +321,35 @@ Summary: Что такое subtle wm? Subtle &mdash; тайловый оконн
 
 Пожалуй, стоило бы также обратить внимание на цветовое оформление wm. Разобраться с ним не составит большого труда, но всё же приведём несколько примеров:
 
-    :::ruby
-    # Стиль для всех элементов
-    style :all do
-      background  "#202020" — основной цвет
-      icon        "#88b588" — цвет иконок
-      border      "#202020", 0 — цвет рамки
-      padding     0, 3 — отступ
-      #font        "-*-dejavu sans-medium-r-*-*-11-*-*-*-*-*-*-ru"
-      font          "xft:monospace-10" — выбранный шрифт
-    end
+```ruby
+# Стиль для всех элементов
+style :all do
+  background  "#202020" — основной цвет
+  icon        "#88b588" — цвет иконок
+  border      "#202020", 0 — цвет рамки
+  padding     0, 3 — отступ
+  #font        "-*-dejavu sans-medium-r-*-*-11-*-*-*-*-*-*-ru"
+  font          "xft:monospace-10" — выбранный шрифт
+end
 
-    # Стиль отображаемых тегов
-    style :views do
-      foreground  "#f2f2f2"
-      # Цвет активного окна
-      style :focus do
-        foreground  "#9accff"
-      end
+# Стиль отображаемых тегов
+style :views do
+  foreground  "#f2f2f2"
+  # Цвет активного окна
+  style :focus do
+    foreground  "#9accff"
+  end
+end
 
-    # Стиль отображения саблетов
-    style :sublets do
-      foreground  "#f2f2f2"
-    end
-    # Стиль разделителя
-    style :separator do
-      foreground  "#f2f2f2"
-      separator   "|"
-    end
+# Стиль отображения саблетов
+style :sublets do
+  foreground  "#f2f2f2"
+end
+# Стиль разделителя
+style :separator do
+  foreground  "#f2f2f2"
+  separator   "|"
+end
+```
 
 Subtle WM — очень неплохой оконный менеджер, и если вам наскучило ваше прежнее рабочее окружение, обязательно попробуйте его. Полный конфигурационный файл автора можно забрать из [gist.github](https://gist.github.com/redVi/5685939).

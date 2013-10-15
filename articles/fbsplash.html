@@ -18,16 +18,19 @@
     <div class="small">блог об операционных системах, open source и программировании</div>
 <div class="nav">
     <ul>
-      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
-      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
-      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+      <li><a href="http://www.unix-lab.org/archives/">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about/">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors/">Автор</a></li>
     </ul>
 </div>
 </div><div id="main">
 <h2><a href="http://www.unix-lab.org/articles/fbsplash.html">Стартовые красоты с fbsplash</a></h2>
-<h5><i class="icon-feather"></i> 19 Март 2013 </h5>
+<h5><i class="icon-feather"></i> 19 Март 2013
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/gentoo/">Gentoo</a> /
+<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
+</h5>
 <p>Как правило, то, чем мы собираемся сегодня заняться, не приносит никакой пользы, кроме разве что эстетической. Но иногда хочется красоты. В том числе и при стартовой загрузке системы. Все user-friendly дистрибутивы балуют своих пользователей симпатичными графическими заставками и последним это, вроде бы, нравится. Что касается пользователей дистрибутивов типа "сделай сам", изначально заставка при загрузке считается лишней и не ставится по-умолчанию. Но мы можем это легко исправить. В течение десяти-пятнадцати минут. Тем, кто хотел бы настроить fbsplash, посвящается. Начнём.</p>
-<h2>I. Настройки ядра</h2>
+<h2>Настройки ядра</h2>
 <p>Входим в директорию с исходниками ядра, запускаем <code>menuconfig</code>:</p>
 <div class="highlight"><pre><span class="gp">#</span> <span class="nb">cd</span> /usr/src/linux-3.8.2-gentoo/
 <span class="gp">#</span> make menuconfig
@@ -36,15 +39,15 @@
 
 <p>Надо отметить, что рекомендуемое в большинстве источников включение initramfs совершенно необязательно для наших целей (не будет splash-картинки с начала загрузки), у автора этих строк работает и без него. Если читатель собирается поступить также, первые два блока — <code>General Setup</code> и <code>Device Drivers</code> — можно смело игнорировать:</p>
 <div class="highlight"><pre><span class="n">General</span> <span class="n">setup</span>  <span class="o">---&gt;</span>
- <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Initial</span> <span class="n">RAM</span> <span class="n">filesystem</span> <span class="n">and</span> <span class="n">RAM</span> <span class="n">disk</span> <span class="p">(</span><span class="n">initramfs</span><span class="o">/</span><span class="n">initrd</span><span class="p">)</span> <span class="n">support</span>
+    <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Initial</span> <span class="n">RAM</span> <span class="n">filesystem</span> <span class="n">and</span> <span class="n">RAM</span> <span class="n">disk</span> <span class="p">(</span><span class="n">initramfs</span><span class="o">/</span><span class="n">initrd</span><span class="p">)</span> <span class="n">support</span>
 <span class="n">Device</span> <span class="n">Drivers</span>  <span class="o">---&gt;</span>
-  <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Block</span> <span class="n">devices</span>  <span class="o">---&gt;</span>
-            <span class="o">&lt;*&gt;</span>   <span class="n">RAM</span> <span class="n">block</span> <span class="n">device</span> <span class="n">support</span>
+    <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Block</span> <span class="n">devices</span>  <span class="o">---&gt;</span>
+        <span class="o">&lt;*&gt;</span>   <span class="n">RAM</span> <span class="n">block</span> <span class="n">device</span> <span class="n">support</span>
 
- <span class="n">Device</span> <span class="n">Drivers</span>  <span class="o">---&gt;</span>
-   <span class="n">Graphics</span> <span class="n">support</span>  <span class="o">---&gt;</span>
-           <span class="p">{</span><span class="o">*</span><span class="p">}</span> <span class="n">Support</span> <span class="k">for</span> <span class="n">frame</span> <span class="n">buffer</span> <span class="n">devices</span>  <span class="o">---&gt;</span>
-                      <span class="o">***</span> <span class="n">Frame</span> <span class="n">buffer</span> <span class="n">hardware</span> <span class="n">drivers</span> <span class="o">***</span>
+<span class="n">Device</span> <span class="n">Drivers</span>  <span class="o">---&gt;</span>
+    <span class="n">Graphics</span> <span class="n">support</span>  <span class="o">---&gt;</span>
+        <span class="p">{</span><span class="o">*</span><span class="p">}</span> <span class="n">Support</span> <span class="k">for</span> <span class="n">frame</span> <span class="n">buffer</span> <span class="n">devices</span>  <span class="o">---&gt;</span>
+            <span class="o">***</span> <span class="n">Frame</span> <span class="n">buffer</span> <span class="n">hardware</span> <span class="n">drivers</span> <span class="o">***</span>
 </pre></div>
 
 
@@ -54,7 +57,7 @@
 
 
 <p>Пока на этом всё. Займёмся поиском и установкой нужного софта.</p>
-<h2>II. Настройки fbsplash</h2>
+<h2>Настройки fbsplash</h2>
 <p>Скачиваем нужные заставки. Можно найти стандартные из репозитария gentoo, можно поставить другие. Пойдём по второму пути.</p>
 <p>Скачайте <a href="http://www.mediafire.com/?0ga699ppbi41a2w">этот файл</a>. Имеющиеся там разрешения экрана:</p>
 <div class="highlight"><pre><span class="mi">1280</span><span class="err">×</span><span class="mi">800</span>
@@ -67,33 +70,33 @@
 
 
 <p>Не будет большой беды, если вашего разрешения нет. Это исправляется путём правки файла <code>.cfg</code> и переименованием его. Пример для экрана с разрешением 1366x768:</p>
-<div class="highlight"><pre><span class="cp"># 1440x900.cfg</span>
-<span class="cp">#</span>
-<span class="n">bgcolor</span><span class="o">=</span><span class="mi">0</span>
+<div class="highlight"><pre><span class="c"># 1440x900.cfg</span>
+<span class="c">#</span>
+<span class="nv">bgcolor</span><span class="o">=</span>0
 
-<span class="n">tx</span><span class="o">=</span><span class="mi">32</span>
-<span class="n">ty</span><span class="o">=</span><span class="mi">27</span>
-<span class="n">tw</span><span class="o">=</span><span class="mi">1305</span>
-<span class="n">th</span><span class="o">=</span><span class="mi">684</span>
+<span class="nv">tx</span><span class="o">=</span>32
+<span class="nv">ty</span><span class="o">=</span>27
+<span class="nv">tw</span><span class="o">=</span>1305
+<span class="nv">th</span><span class="o">=</span>684
 
-<span class="n">text_x</span><span class="o">=</span><span class="mi">7</span>
-<span class="n">text_y</span><span class="o">=</span><span class="mi">741</span>
-<span class="n">text_size</span><span class="o">=</span><span class="mi">13</span>
-<span class="n">text_color</span><span class="o">=</span><span class="mh">0xdedede</span>
+<span class="nv">text_x</span><span class="o">=</span>7
+<span class="nv">text_y</span><span class="o">=</span>741
+<span class="nv">text_size</span><span class="o">=</span>13
+<span class="nv">text_color</span><span class="o">=</span>0xdedede
 
-<span class="n">pic</span><span class="o">=/</span><span class="n">etc</span><span class="o">/</span><span class="n">splash</span><span class="o">/</span><span class="n">powered_by_gentoo</span><span class="o">/</span><span class="n">images</span><span class="o">/</span><span class="n">verbose_1366x768</span><span class="p">.</span><span class="n">jpg</span>
-<span class="n">silentpic</span><span class="o">=/</span><span class="n">etc</span><span class="o">/</span><span class="n">splash</span><span class="o">/</span><span class="n">powered_by_gentoo</span><span class="o">/</span><span class="n">images</span><span class="o">/</span><span class="n">silent_1366x768</span><span class="p">.</span><span class="n">jpg</span>
+<span class="nv">pic</span><span class="o">=</span>/etc/splash/powered_by_gentoo/images/verbose_1366x768.jpg
+<span class="nv">silentpic</span><span class="o">=</span>/etc/splash/powered_by_gentoo/images/silent_1366x768.jpg
 
-<span class="cp"># progress bar</span>
-<span class="n">box</span> <span class="n">silent</span> <span class="n">noover</span> <span class="mi">0</span> <span class="mi">761</span> <span class="mi">1305</span> <span class="mi">768</span> <span class="err">#</span><span class="mf">221f</span><span class="mi">29</span>
-<span class="n">box</span> <span class="n">silent</span> <span class="n">inter</span> <span class="mi">0</span> <span class="mi">762</span> <span class="mi">0</span> <span class="mi">767</span> <span class="err">#</span><span class="mf">221f</span><span class="mi">29</span>
-<span class="n">box</span> <span class="n">silent</span> <span class="mi">0</span> <span class="mi">761</span> <span class="mi">1305</span> <span class="mi">767</span> <span class="err">#</span><span class="n">ececec</span>
+<span class="c"># progress bar</span>
+box silent noover 0 761 1305 768 <span class="c">#221f29</span>
+box silent inter 0 762 0 767 <span class="c">#221f29</span>
+box silent 0 761 1305 767 <span class="c">#ececec</span>
 
-<span class="cp"># border of the progress bar</span>
-<span class="n">box</span> <span class="n">silent</span> <span class="mi">0</span> <span class="mi">761</span> <span class="mi">1305</span> <span class="mi">761</span> <span class="err">#</span><span class="mf">221f</span><span class="mi">29</span>
-<span class="n">box</span> <span class="n">silent</span> <span class="mi">0</span> <span class="mi">664</span> <span class="mi">1305</span> <span class="mi">664</span> <span class="err">#</span><span class="mf">221f</span><span class="mi">29</span>
-<span class="n">box</span> <span class="n">silent</span> <span class="mi">0</span> <span class="mi">664</span> <span class="mi">0</span> <span class="mi">664</span> <span class="err">#</span><span class="mf">221f</span><span class="mi">29</span>
-<span class="n">box</span> <span class="n">silent</span> <span class="mi">1305</span> <span class="mi">664</span> <span class="mi">1305</span> <span class="mi">664</span> <span class="err">#</span><span class="mf">221f</span><span class="mi">29</span>
+<span class="c"># border of the progress bar</span>
+box silent 0 761 1305 761 <span class="c">#221f29</span>
+box silent 0 664 1305 664 <span class="c">#221f29</span>
+box silent 0 664 0 664 <span class="c">#221f29</span>
+box silent 1305 664 1305 664 <span class="c">#221f29</span>
 </pre></div>
 
 
@@ -122,14 +125,14 @@
 
 
 <p>Дописываем к строке загрузчика в <code>/boot/grub/menu.lst</code> (справедливо для grub-legasy):</p>
-<div class="highlight"><pre><span class="cp"># menu.lst</span>
-<span class="cp">#</span>
-<span class="k">default</span> <span class="mi">0</span>
-<span class="n">timeout</span> <span class="mi">30</span>
-<span class="n">splashimage</span><span class="o">=</span><span class="p">(</span><span class="n">hd0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">boot</span><span class="o">/</span><span class="n">grub</span><span class="o">/</span><span class="n">splash</span><span class="p">.</span><span class="n">xpm</span><span class="p">.</span><span class="n">gz</span>
-<span class="n">title</span> <span class="n">Gentoo</span> <span class="n">Linux</span> <span class="mf">3.8.2</span><span class="o">-</span><span class="n">gentoo</span><span class="o">-</span><span class="n">iniram</span> <span class="n">root</span> <span class="p">(</span><span class="n">hd0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">kernel</span> <span class="o">/</span><span class="n">boot</span><span class="o">/</span><span class="n">vmlinuz</span><span class="o">-</span><span class="mf">3.8.2</span><span class="o">-</span><span class="n">gentoo</span> <span class="n">root</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">ram0</span> <span class="n">real_root</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">sda3</span> <span class="n">splash</span><span class="o">=</span><span class="n">silent</span><span class="p">,</span><span class="n">theme</span><span class="o">:</span><span class="n">powered_by_gentoo</span> <span class="n">console</span><span class="o">=</span><span class="n">tty1</span>
-<span class="n">initrd</span> <span class="o">/</span><span class="n">boot</span><span class="o">/</span><span class="n">initramfs</span><span class="o">-</span><span class="n">genkernel</span><span class="o">-</span><span class="n">x86_64</span><span class="o">-</span><span class="mf">3.8.2</span><span class="o">-</span><span class="n">gentoo</span>
+<div class="highlight"><pre><span class="c"># menu.lst</span>
+<span class="c">#</span>
+default 0
+timeout 30
+<span class="nv">splashimage</span><span class="o">=(</span>hd0,1<span class="o">)</span>/boot/grub/splash.xpm.gz
+title Gentoo Linux 3.8.2-gentoo-iniram root <span class="o">(</span>hd0,1<span class="o">)</span>
+kernel /boot/vmlinuz-3.8.2-gentoo <span class="nv">root</span><span class="o">=</span>/dev/ram0 <span class="nv">real_root</span><span class="o">=</span>/dev/sda3 <span class="nv">splash</span><span class="o">=</span>silent,theme:powered_by_gentoo <span class="nv">console</span><span class="o">=</span>tty1
+initrd /boot/initramfs-genkernel-x86_64-3.8.2-gentoo
 </pre></div>
 
 
@@ -141,21 +144,21 @@
 <p><a href="http://farm8.staticflickr.com/7404/9471972456_d222a8664a_b.jpg" data-lighter><img src="http://farm8.staticflickr.com/7404/9471972456_d222a8664a_b.jpg"/></a></p>
 <p>Готово! При нажатии клавиши <code>F2</code> вы сможете перейти в режим verbose.</p>
 <p>Кстати, вопреки утверждениям сторонников systemd, которые как мантру повторяют, что systemd загружает ОС намного быстрее, OpenRC не дал автору сего поста вдоволь налюбоваться содеянным. Gentoo загрузилась очень быстро.</p>
-<h2>III. Мы пойдём дальше. Заставка в tty</h2>
+<h2>Мы пойдём дальше. Заставка в tty</h2>
 <p>Да, все дистрибутивы, ориентированные на новичков, имеют splash-картинку. Но многие ли из них могут похвастаться красивым терминалом? Не эмулятором терминала, а самим терминалом. Мы же пойдём дальше и настроим эту фичу.</p>
 <p>Это уже не укладывается в указанные в начале поста 10-15 минут. Это дополнительное действо, вы можете от него отказаться.</p>
 <p>В ядре должно быть отключено!:</p>
 <div class="highlight"><pre><span class="n">Device</span> <span class="n">Drivers</span>  <span class="o">---&gt;</span>
-   <span class="n">Graphics</span> <span class="n">support</span>  <span class="o">---&gt;</span>
-         <span class="n">Support</span> <span class="k">for</span> <span class="n">frame</span> <span class="n">buffer</span> <span class="n">devices</span>
-           <span class="p">[</span> <span class="p">]</span> <span class="n">Enable</span> <span class="n">Tile</span> <span class="n">Blitting</span> <span class="n">Support</span>
+    <span class="n">Graphics</span> <span class="n">support</span>  <span class="o">---&gt;</span>
+        <span class="n">Support</span> <span class="k">for</span> <span class="n">frame</span> <span class="n">buffer</span> <span class="n">devices</span>
+            <span class="p">[</span> <span class="p">]</span> <span class="n">Enable</span> <span class="n">Tile</span> <span class="n">Blitting</span> <span class="n">Support</span>
 </pre></div>
 
 
 <p>И, наоборот, включена опция:</p>
 <div class="highlight"><pre><span class="n">Graphics</span> <span class="n">support</span>  <span class="o">---&gt;</span>
-         <span class="n">Console</span> <span class="n">display</span> <span class="n">driver</span> <span class="n">support</span>
-           <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Support</span> <span class="k">for</span> <span class="n">the</span> <span class="n">Framebuffer</span> <span class="n">Console</span> <span class="n">decorations</span>
+    <span class="n">Console</span> <span class="n">display</span> <span class="n">driver</span> <span class="n">support</span>
+        <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Support</span> <span class="k">for</span> <span class="n">the</span> <span class="n">Framebuffer</span> <span class="n">Console</span> <span class="n">decorations</span>
 </pre></div>
 
 
@@ -169,10 +172,10 @@
 
 <p>Следующие шаги достаточно просты:</p>
 <p>Прописать в <code>/etc/conf.d/fbcondecor</code>:</p>
-<div class="highlight"><pre><span class="cp">#fbcondecor</span>
-<span class="cp">#</span>
-<span class="n">FBCONDECOR_TTYS</span><span class="o">=</span><span class="s">&quot;1 2 3 4 5 6&quot;</span>
-<span class="n">FBCONDECOR_TTY_MAP</span><span class="o">=</span><span class="s">&quot;1:powered_by_gentoo 2:powered_by_gentoo 3:powered_by_gentoo 4:powered_by_gentoo 5:powered_by_gentoo 6:powered_by_gentoo&quot;</span>
+<div class="highlight"><pre><span class="c">#fbcondecor</span>
+<span class="c">#</span>
+<span class="nv">FBCONDECOR_TTYS</span><span class="o">=</span><span class="s2">&quot;1 2 3 4 5 6&quot;</span>
+<span class="nv">FBCONDECOR_TTY_MAP</span><span class="o">=</span><span class="s2">&quot;1:powered_by_gentoo 2:powered_by_gentoo 3:powered_by_gentoo 4:powered_by_gentoo 5:powered_by_gentoo 6:powered_by_gentoo&quot;</span>
 </pre></div>
 
 
@@ -191,11 +194,11 @@
 
 <p>где powered_by_gentoo — название темы, а --tty=2 — номер терминала, где будет запущена тема.</p>
 <p>И последний штрих: поправить загрузчик. На этот раз пример для ядра без initramfs:</p>
-<div class="highlight"><pre><span class="cp"># menu.lst</span>
-<span class="cp">#</span>
-<span class="n">title</span> <span class="n">Gentoo</span> <span class="n">Linux</span> <span class="mf">3.8.2</span><span class="o">-</span><span class="n">gentoo</span>
-<span class="n">root</span> <span class="p">(</span><span class="n">hd0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">kernel</span> <span class="o">/</span><span class="n">boot</span><span class="o">/</span><span class="n">vmlinuz</span><span class="o">-</span><span class="mf">3.8.2</span><span class="o">-</span><span class="n">gentoo</span> <span class="n">root</span><span class="o">=/</span><span class="n">dev</span><span class="o">/</span><span class="n">sda3</span> <span class="n">splash</span><span class="o">=</span><span class="n">silent</span><span class="p">,</span><span class="n">theme</span><span class="o">:</span><span class="n">powered_by_gentoo</span> <span class="n">console</span><span class="o">=</span><span class="n">tty1</span> <span class="n">video</span><span class="o">=</span><span class="n">vesafb</span><span class="o">:</span><span class="n">ywrap</span><span class="p">,</span><span class="n">mtrr</span><span class="o">:</span><span class="mi">3</span> <span class="n">vga</span><span class="o">=</span><span class="mh">0x0362</span>
+<div class="highlight"><pre><span class="c"># menu.lst</span>
+<span class="c">#</span>
+title Gentoo Linux 3.8.2-gentoo
+root <span class="o">(</span>hd0,1<span class="o">)</span>
+kernel /boot/vmlinuz-3.8.2-gentoo <span class="nv">root</span><span class="o">=</span>/dev/sda3 <span class="nv">splash</span><span class="o">=</span>silent,theme:powered_by_gentoo <span class="nv">console</span><span class="o">=</span>tty1 <span class="nv">video</span><span class="o">=</span>vesafb:ywrap,mtrr:3 <span class="nv">vga</span><span class="o">=</span>0x0362
 </pre></div>
 
 
@@ -203,37 +206,32 @@
 <p>Итог:</p>
 <p><a href="http://3.bp.blogspot.com/-D25-Isilvu4/UUCA5DsIhmI/AAAAAAAAEJU/4xAgMc_Hqks/s1600/powered_by_gentoo.jpg" data-lighter><img src="http://3.bp.blogspot.com/-D25-Isilvu4/UUCA5DsIhmI/AAAAAAAAEJU/4xAgMc_Hqks/s1600/powered_by_gentoo.jpg"/></a></p>
 <p>Теперь можно отказаться от мыши и иксов ;)</p>
-<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi.html">redVi</a>,
-<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/gentoo/">Gentoo</a> /
-<a href="http://www.unix-lab.org/tag/linux/">Linux</a> /
-</h5>
+
+<br />
 <p align="center"><a href="#">наверх</a></p>
 </div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
 </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
-    <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>
-    <li class="footer"><a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+    <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
 </ul>
 </div><script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

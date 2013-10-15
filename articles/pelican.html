@@ -18,18 +18,22 @@
     <div class="small">блог об операционных системах, open source и программировании</div>
 <div class="nav">
     <ul>
-      <li><a href="http://www.unix-lab.org/archives.html">Архив</a></li>
-      <li><a href="http://www.unix-lab.org/about.html">О блоге</a></li>
-      <li><a href="http://www.unix-lab.org/authors.html">Экипаж</a></li>
+      <li><a href="http://www.unix-lab.org/archives/">Архив</a></li>
+      <li><a href="http://www.unix-lab.org/about/">О блоге</a></li>
+      <li><a href="http://www.unix-lab.org/authors/">Автор</a></li>
     </ul>
 </div>
 </div><div id="main">
 <h2><a href="http://www.unix-lab.org/articles/pelican.html">Свой блог на GitHub или Как приручить пеликана</a></h2>
-<h5><i class="icon-feather"></i> 27 Июль 2013 </h5>
+<h5><i class="icon-feather"></i> 27 Июль 2013
+<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/python/">Python</a> /
+<a href="http://www.unix-lab.org/tag/blog/">Blog</a> /
+</h5>
 <h2>Введение</h2>
 <p>По ряду причин автором было решено перенести свои старые заметки на новый довольно таки любопытный движок. Как ясно из названия поста, имя ему Pelican. Нужно сразу отметить, что pelican представляет из себя генератор статических сайтов, а посему непохож на обычные блоговые движки а-ля blogger и wordpress и требует к себе особого подхода. Но обо всём по-порядку.</p>
 <h3>Что такое Pelican</h3>
 <p>Генератор статических сайтов. Не особенно удобно редактировать статику (html-страницы) вручную, и дабы сделать написание постов лёгким и приятным в техническом плане следует использовать какой-либо генератор этих самых html-страниц. Для того pelican нам и нужен.</p>
+<p>В умолчательном варианте на GitPages предлагается использовать Jekyll. Возможно, когда-нибудь поговорим и о нём.</p>
 <h3>Преимущества и недостатки</h3>
 <ul>
 <li>
@@ -48,7 +52,7 @@
 </ul>
 <p><img alt="pelican" src="http://farm4.staticflickr.com/3665/9344607012_a359e2831f_o.jpg" title="pelican" /></p>
 <h2>Установка</h2>
-<p>Поскольку в примере блог будет располагаться на <a href="https://github.com/">github</a> от читателя, желающего настроить pelican в связке с GitPages, потребуются минимальные знания <a href="github.html">работы с git</a>.</p>
+<p>Поскольку в примере блог будет располагаться на <a href="https://github.com/">github</a> от читателя, желающего настроить pelican в связке с GitPages, потребуются минимальные знания <a href="http://www.unix-lab.org/posts/github/">работы с git</a>.</p>
 <p>Создадим на github новый репозиторий вида <code>username.github.io</code> и склонируем его себе. Например:</p>
 <p><a href="http://farm3.staticflickr.com/2842/9349395644_761ab29d03_o.png" title="git repository"><img alt="git_repo" src="http://farm3.staticflickr.com/2842/9349395644_761ab29d03_o.png" title="git repository" /></a></p>
 <div class="highlight"><pre><span class="gp">$</span> git clone git@github.com:redVi/redvi.github.io.git
@@ -57,7 +61,7 @@
 </pre></div>
 
 
-<p>Далее следовало бы создать виртуальное окружение для нашего блога. Объяснять это нехитрое действо с нуля не имею причин, если читателю ровным счётом ничего не известно о виртуальных окружениях, милости прошу <a href="virtualenv.html">в быстрый старт</a>.</p>
+<p>Далее следовало бы создать виртуальное окружение для нашего блога. Объяснять это нехитрое действо с нуля не имею причин, если читателю ровным счётом ничего не известно о виртуальных окружениях, милости прошу <a href="http://www.unix-lab.org/posts/virtualenv/">в быстрый старт</a>.</p>
 <p>Вообще, pelican предлагает полную поддержку python2.x, а также экспериментальную &mdash; python3.2. Но с последним ещё возможны проблемы, поэтому подготовим наше окружение соответствующим образом. Запустим <code>virtualenv</code> с минимальными настройками и активируем окружение:</p>
 <div class="highlight"><pre><span class="gp">$</span> virtualenv -p /usr/bin/python2.7 --no-site-packages ~/redvi.github.io/.notes
 <span class="gp">$</span> <span class="nb">source</span> ~/redvi.github.io/.notes/bin/activate
@@ -197,20 +201,20 @@
 <div class="highlight"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;ru&quot;</span><span class="nt">&gt;</span>
 <span class="nt">&lt;head&gt;</span>
-  <span class="nt">&lt;title&gt;</span>{% block title %}{{ SITENAME }}{% endblock %}<span class="nt">&lt;/title&gt;</span>
-  <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;author&quot;</span> <span class="na">content=</span><span class="s">&quot;{{ AUTHOR }}&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">&quot;{{ SITEURL }}/theme/css/style.css&quot;</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;title&gt;</span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}{{</span> <span class="nv">SITENAME</span> <span class="cp">}}{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;author&quot;</span> <span class="na">content=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">AUTHOR</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">SITEURL</span> <span class="cp">}}</span><span class="s">/theme/css/style.css&quot;</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="nt">/&gt;</span>
 <span class="nt">&lt;/head&gt;</span>
 <span class="nt">&lt;body&gt;</span>
 <span class="nt">&lt;h3&gt;</span>Метки<span class="nt">&lt;/h3&gt;</span>
     <span class="nt">&lt;ul&gt;</span>
-    {% for tag, articles in tags %}
-        <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;{{ SITEURL }}/{{ tag.url }}&quot;</span><span class="nt">&gt;</span>{{ tag }}<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-    {% endfor %}
+    <span class="cp">{%</span> <span class="k">for</span> <span class="nv">tag</span><span class="o">,</span> <span class="nv">articles</span> <span class="k">in</span> <span class="nv">tags</span> <span class="cp">%}</span>
+        <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">SITEURL</span> <span class="cp">}}</span><span class="s">/</span><span class="cp">{{</span> <span class="nv">tag.url</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span> <span class="nv">tag</span> <span class="cp">}}</span><span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
     <span class="nt">&lt;/ul&gt;</span>
-{% block content %}
-{% endblock %}
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
 <span class="nt">&lt;/body&gt;</span>
 <span class="nt">&lt;/html&gt;</span>
 </pre></div>
@@ -218,12 +222,12 @@
 
 <p>Итак, общим для всех страниц будет подключенный нами css-стиль, имя автора и название сайта, список тегов на странице. Любой из этих элементов можно изменить в дочернем шаблоне или добавить свой элемент.</p>
 <p>Пример дочернего шаблона, страница одного поста:</p>
-<div class="highlight"><pre>{% extends &quot;base.html&quot; %} <span class="c">&lt;!--подключаем базовый шаблон--&gt;</span>
- <span class="c">&lt;!--обращаемся к названию поста, тому, что указали в Title при написании--&gt;</span>
-{% block title %}{{ article.title }}{% endblock %}
-{% block content %}
+<div class="highlight"><pre><span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;base.html&quot;</span> <span class="cp">%}</span> <span class="c">&lt;!--подключаем базовый шаблон--&gt;</span>
+<span class="c">&lt;!--обращаемся к названию поста, тому, что указали в Title при написании--&gt;</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}{{</span> <span class="nv">article.title</span> <span class="cp">}}{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span>
 <span class="c">&lt;!--выводим здеь тело нашего поста--&gt;</span>
-{% endblock %}
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
 </pre></div>
 
 
@@ -245,13 +249,13 @@
 
 <p>Идём править шаблон <code>base.html</code>:</p>
 <div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;header&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;h1&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;{{ SITEURL }}&quot;</span><span class="nt">&gt;</span>{{ SITENAME }}<span class="nt">&lt;/a&gt;&lt;/h1&gt;</span>
+    <span class="nt">&lt;h1&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">SITEURL</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span> <span class="nv">SITENAME</span> <span class="cp">}}</span><span class="nt">&lt;/a&gt;&lt;/h1&gt;</span>
     <span class="c">&lt;!--если переменная существует, вывети её значение--&gt;</span>
-    {% if MY_MESSAGE %}<span class="nt">&lt;h3&gt;</span>{{ MY_MESSAGE }}<span class="nt">&lt;/h3&gt;</span>{% endif %}
+    <span class="cp">{%</span> <span class="k">if</span> <span class="nv">MY_MESSAGE</span> <span class="cp">%}</span><span class="nt">&lt;h3&gt;</span><span class="cp">{{</span> <span class="nv">MY_MESSAGE</span> <span class="cp">}}</span><span class="nt">&lt;/h3&gt;</span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
 <span class="nt">&lt;/div&gt;</span>
 <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;footer&quot;</span><span class="nt">&gt;</span>
     <span class="c">&lt;!--год всегда будет равен текущему--&gt;</span>
-    <span class="nt">&lt;p&gt;</span><span class="ni">&amp;copy;</span> {{ CURRENT_YEAR }}<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span><span class="ni">&amp;copy;</span> <span class="cp">{{</span> <span class="nv">CURRENT_YEAR</span> <span class="cp">}}</span><span class="nt">&lt;/p&gt;</span>
 <span class="nt">&lt;/div&gt;</span>
 </pre></div>
 
@@ -278,19 +282,21 @@
 <h3>мета-теги</h3>
 <p>Целью ставится получение разных мета-тегов на разных страницах. Способов множество, возможно, приведённый автором далеко не самый элегантный.</p>
 <p>В данном случае будем бороться за мета-тег <code>description</code>. Можно вписать описание для сайта сразу в шаблоне, а можно внести в натройки соответствующую переменную, которой затем и манипулировать. Допустим, мы пошли вторым путём. Тогда вносим переменную METADATA в <code>local_settings.py</code> и в базовом шаблоне определяем:</p>
-<div class="highlight"><pre>{% block metadesk %}<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;description&quot;</span> <span class="na">content=</span><span class="s">&quot;{{ METADATA }}&quot;</span><span class="nt">&gt;</span>{% endblock %}
+<div class="highlight"><pre><span class="cp">{%</span> <span class="k">block</span> <span class="nv">metadesk</span> <span class="cp">%}</span><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;description&quot;</span> <span class="na">content=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">METADATA</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
 </pre></div>
 
 
 <p>В шаблоне для статей будет примерно следующее:</p>
-<div class="highlight"><pre>{% block metadesk %}<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;description&quot;</span> <span class="na">content=</span><span class="s">&quot;{{ article.summary|striptags }}&quot;</span><span class="nt">&gt;</span>{% endblock %}
+<div class="highlight"><pre><span class="cp">{%</span> <span class="k">block</span> <span class="nv">metadesk</span> <span class="cp">%}</span>
+<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;description&quot;</span> <span class="na">content=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">article.summary</span><span class="o">|</span><span class="nf">striptags</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
 </pre></div>
 
 
 <p>То есть в дочернем шаблоне мы просто переопределили блок <code>metadesk</code>, в качестве описания назначив ему строку <code>Summary</code> из исходного файла и применив фильтр <code>striptags</code>, который обрезает все теги HTML.</p>
 <h3>favicon</h3>
 <p>Зачастую на сайты ставится индивидуальная иконка &mdash; favicon в формате <code>.ico</code> или же <code>.png</code>. Это сделать ещё проще, следует лишь указать путь её расположения в базовом шаблоне:</p>
-<div class="highlight"><pre><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;icon&quot;</span> <span class="na">href=</span><span class="s">&quot;{{ SITEURL}}/favicon.png&quot;</span> <span class="na">type=</span><span class="s">&quot;image/x-icon&quot;</span><span class="nt">&gt;</span>
+<div class="highlight"><pre><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;icon&quot;</span> <span class="na">href=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">SITEURL</span><span class="cp">}}</span><span class="s">/favicon.png&quot;</span> <span class="na">type=</span><span class="s">&quot;image/x-icon&quot;</span><span class="nt">&gt;</span>
 </pre></div>
 
 
@@ -366,9 +372,9 @@
 <span class="c"># будем в корень проекта</span>
 <span class="n">OUTPUT_PATH</span> <span class="o">=</span> <span class="s">&#39;articles/&#39;</span>
 <span class="c"># как сохранять посты</span>
-<span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="s">&#39;articles/{slug}.html&#39;</span>
+<span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="s">&#39;articles/{slug}/&#39;</span>
 <span class="c"># куда сохранять посты</span>
-<span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="s">&#39;articles/{slug}.html&#39;</span>
+<span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="s">&#39;articles/{slug}/index.html&#39;</span>
 </pre></div>
 
 
@@ -431,7 +437,7 @@
 <span class="n">DEFAULT_PAGINATION</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">DEFAULT_DATE_FORMAT</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%d</span><span class="s"> %B %Y&#39;</span>
 <span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="s">&#39;articles/{slug}.html&#39;</span>
-<span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="s">&#39;articles/{slug}.html&#39;</span>
+<span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="s">&#39;articles/{slug}/index.html&#39;</span>
 <span class="n">NEWEST_FIRST_ARCHIVES</span> <span class="o">=</span> <span class="bp">True</span>
 <span class="n">METADATA</span> <span class="o">=</span> <span class="s">u&#39;Описание сайта&#39;</span>
 
@@ -452,42 +458,37 @@
 
 <span class="c"># Social Links</span>
 <span class="n">SOCIAL</span> <span class="o">=</span> <span class="p">((</span><span class="s">&#39;github&#39;</span><span class="p">,</span> <span class="s">&#39;http://github.com/user&#39;</span><span class="p">),</span>
-        <span class="p">(</span><span class="s">&#39;twitter&#39;</span><span class="p">,</span> <span class="s">&#39;http://twitter.com/user&#39;</span><span class="p">),)</span>
+            <span class="p">(</span><span class="s">&#39;twitter&#39;</span><span class="p">,</span> <span class="s">&#39;http://twitter.com/user&#39;</span><span class="p">),)</span>
 </pre></div>
 
 
 <p>Разумеется, все настройки и возможности не охвачены. Для получения подробных сведений обращайтесь напрямую <a href="http://docs.getpelican.com/en/3.2/">к документации</a>. За сим прощаюсь.</p>
-<h5><i class="icon-user"></i> <a href="http://www.unix-lab.org/author/redvi.html">redVi</a>,
-<i class="icon-bookmarks"></i> <a href="http://www.unix-lab.org/tag/python/">Python</a> /
-<a href="http://www.unix-lab.org/tag/blog/">Blog</a> /
-</h5>
+
+<br />
 <p align="center"><a href="#">наверх</a></p>
 </div>
 </div>
 <div id="footer-wrapper">
 <ul class="footer">
-     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/django/">Django&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/javascript/">JavaScript&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web&nbsp;&bull;</a></li>
-     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows&nbsp;&bull;</a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/android/">Android </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/arch/">Arch </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/blog/">Blog </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/debian/">Debian </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/decorations/">Decorations </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/editors/">Editors </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/gentoo/">Gentoo </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/git/">Git </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/kernel/">Kernel </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/latex/">LaTeX </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/linux/">Linux </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/python/">Python </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/server/">Server </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/web/">Web </a></li>
+     <li class="footer"><a href="http://www.unix-lab.org/tag/windows/">Windows </a></li>
 </ul><ul class="footer">
     <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
     <li class="footer"><a href="http://www.unix-lab.org">unix-lab.org </a>&nbsp;::</li>
-    <li class="footer">powered by <a href="https://github.com/getpelican">pelican</a>&nbsp;::</li>
-    <li class="footer"><a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+    <li class="footer">Licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
 </ul>
 </div><script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

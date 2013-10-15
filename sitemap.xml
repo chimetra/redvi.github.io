@@ -5,14 +5,14 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.unix-lab.org/index.html</loc>
-<lastmod>2013-10-15T00:32:52-00:00</lastmod>
+<lastmod>2013-10-15T12:29:45-00:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.unix-lab.org/archives.html</loc>
-<lastmod>2013-10-15T00:32:52-00:00</lastmod>
+<lastmod>2013-10-15T12:29:45-00:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -62,13 +62,6 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://www.unix-lab.org/articles/django-pagination.html</loc>
 <lastmod>2013-08-03T08:10:00-00:00</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>http://www.unix-lab.org/articles/i2p.html</loc>
-<lastmod>2013-07-31T21:10:00-00:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -293,13 +286,6 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://www.unix-lab.org/articles/clonezilla.html</loc>
 <lastmod>2012-10-16T08:15:00-00:00</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>http://www.unix-lab.org/articles/javascript.html</loc>
-<lastmod>2012-10-09T08:10:00-00:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -537,140 +523,119 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://www.unix-lab.org/category/misc.html</loc>
-<lastmod>2013-10-15T00:32:52-00:00</lastmod>
+<lastmod>2013-10-15T12:29:45-00:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.unix-lab.org/tag/kernel/</loc>
-<lastmod>2013-10-15T00:32:52-00:00</lastmod>
+<lastmod>2013-10-15T12:29:45-00:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.unix-lab.org/tag/git/</loc>
-<lastmod>2013-10-15T00:32:52-00:00</lastmod>
+<lastmod>2013-10-15T12:29:45-00:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.unix-lab.org/tag/gentoo/</loc>
-<lastmod>2013-10-15T00:32:52-00:00</lastmod>
+<lastmod>2013-10-15T12:29:45-00:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.unix-lab.org/tag/latex/</loc>
-<lastmod>2013-10-15T00:32:52-00:00</lastmod>
+<lastmod>2013-10-15T12:29:45-00:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.unix-lab.org/tag/windows/</loc>
-<lastmod>2013-10-15T00:32:52-00:00</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>http://www.unix-lab.org/tag/javascript/</loc>
-<lastmod>2013-10-15T00:32:52-00:00</lastmod>
+<lastmod>2013-10-15T12:29:45-00:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.unix-lab.org/tag/editors/</loc>
-<lastmod>2013-10-15T00:32:52-00:00</lastmod>
+<lastmod>2013-10-15T12:29:45-00:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.unix-lab.org/tag/server/</loc>
-<lastmod>2013-10-15T00:32:52-00:00</lastmod>
+<lastmod>2013-10-15T12:29:45-00:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.unix-lab.org/tag/blog/</loc>
-<lastmod>2013-10-15T00:32:52-00:00</lastmod>
+<lastmod>2013-10-15T12:29:45-00:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.unix-lab.org/tag/python/</loc>
-<lastmod>2013-10-15T00:32:52-00:00</lastmod>
+<lastmod>2013-10-15T12:29:45-00:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.unix-lab.org/tag/web/</loc>
-<lastmod>2013-10-15T00:32:52-00:00</lastmod>
+<lastmod>2013-10-15T12:29:45-00:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.unix-lab.org/tag/decorations/</loc>
-<lastmod>2013-10-15T00:32:52-00:00</lastmod>
+<lastmod>2013-10-15T12:29:45-00:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.unix-lab.org/tag/linux/</loc>
-<lastmod>2013-10-15T00:32:52-00:00</lastmod>
+<lastmod>2013-10-15T12:29:45-00:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.unix-lab.org/tag/android/</loc>
-<lastmod>2013-10-15T00:32:52-00:00</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>http://www.unix-lab.org/tag/django/</loc>
-<lastmod>2013-10-15T00:32:52-00:00</lastmod>
+<lastmod>2013-10-15T12:29:45-00:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.unix-lab.org/tag/arch/</loc>
-<lastmod>2013-10-15T00:32:52-00:00</lastmod>
+<lastmod>2013-10-15T12:29:45-00:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.unix-lab.org/tag/debian/</loc>
-<lastmod>2013-10-15T00:32:52-00:00</lastmod>
-<changefreq>weekly</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>http://www.unix-lab.org/author/anarchist.html</loc>
-<lastmod>2013-10-15T00:32:52-00:00</lastmod>
+<lastmod>2013-10-15T12:29:45-00:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://www.unix-lab.org/author/redvi.html</loc>
-<lastmod>2013-10-15T00:32:52-00:00</lastmod>
+<lastmod>2013-10-15T12:29:45-00:00</lastmod>
 <changefreq>weekly</changefreq>
 <priority>0.5</priority>
 </url>

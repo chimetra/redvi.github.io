@@ -1,5 +1,5 @@
 Title: Стартовые красоты с fbsplash
-Date: 2013-03-19 1:15
+Date: 2013-03-19 01:15
 Tags: Gentoo, Linux
 Slug: fbsplash
 Author: redVi
@@ -8,115 +8,126 @@ Summary: Иногда хочется красоты. В том числе и п�
 Как правило, то, чем мы собираемся сегодня заняться, не приносит никакой пользы, кроме разве что эстетической. Но иногда хочется красоты. В том числе и при стартовой загрузке системы. Все user-friendly дистрибутивы балуют своих пользователей симпатичными графическими заставками и последним это, вроде бы, нравится. Что касается пользователей дистрибутивов типа "сделай сам", изначально заставка при загрузке считается лишней и не ставится по-умолчанию. Но мы можем это легко исправить. В течение десяти-пятнадцати минут. Тем, кто хотел бы настроить fbsplash, посвящается. Начнём.
 
 
-##I. Настройки ядра
+## Настройки ядра
 
 Входим в директорию с исходниками ядра, запускаем `menuconfig`:
 
-    :::console
-    # cd /usr/src/linux-3.8.2-gentoo/
-    # make menuconfig
+```console
+# cd /usr/src/linux-3.8.2-gentoo/
+# make menuconfig
+```
 
 Надо отметить, что рекомендуемое в большинстве источников включение initramfs совершенно необязательно для наших целей (не будет splash-картинки с начала загрузки), у автора этих строк работает и без него. Если читатель собирается поступить также, первые два блока — `General Setup` и `Device Drivers` — можно смело игнорировать:
 
-    General setup  --->
-     [*] Initial RAM filesystem and RAM disk (initramfs/initrd) support
-    Device Drivers  --->
-      [*] Block devices  --->
-                <*>   RAM block device support
+```
+General setup  --->
+    [*] Initial RAM filesystem and RAM disk (initramfs/initrd) support
+Device Drivers  --->
+    [*] Block devices  --->
+        <*>   RAM block device support
 
-     Device Drivers  --->
-       Graphics support  --->
-               {*} Support for frame buffer devices  --->
-                          *** Frame buffer hardware drivers ***
+Device Drivers  --->
+    Graphics support  --->
+        {*} Support for frame buffer devices  --->
+            *** Frame buffer hardware drivers ***
+```
 
 Готово. Собираем ядро:
 
-    :::console
-    # make bzImage modules modules_install install
+```console
+# make bzImage modules modules_install install
+```
 
 Пока на этом всё. Займёмся поиском и установкой нужного софта.
 
-
-
-##II. Настройки fbsplash
+## Настройки fbsplash
 
 Скачиваем нужные заставки. Можно найти стандартные из репозитария gentoo, можно поставить другие. Пойдём по второму пути.
 
 Скачайте [этот файл](http://www.mediafire.com/?0ga699ppbi41a2w). Имеющиеся там разрешения экрана:
 
-    1280×800
-    1024×768
-    1280×1024
-    1600×1200
-    1680×1050
-    1440×900
+```
+1280×800
+1024×768
+1280×1024
+1600×1200
+1680×1050
+1440×900
+```
 
 Не будет большой беды, если вашего разрешения нет. Это исправляется путём правки файла `.cfg` и переименованием его. Пример для экрана с разрешением 1366x768:
 
-    # 1440x900.cfg
-    #
-    bgcolor=0
+```sh
+# 1440x900.cfg
+#
+bgcolor=0
 
-    tx=32
-    ty=27
-    tw=1305
-    th=684
+tx=32
+ty=27
+tw=1305
+th=684
 
-    text_x=7
-    text_y=741
-    text_size=13
-    text_color=0xdedede
+text_x=7
+text_y=741
+text_size=13
+text_color=0xdedede
 
-    pic=/etc/splash/powered_by_gentoo/images/verbose_1366x768.jpg
-    silentpic=/etc/splash/powered_by_gentoo/images/silent_1366x768.jpg
+pic=/etc/splash/powered_by_gentoo/images/verbose_1366x768.jpg
+silentpic=/etc/splash/powered_by_gentoo/images/silent_1366x768.jpg
 
-    # progress bar
-    box silent noover 0 761 1305 768 #221f29
-    box silent inter 0 762 0 767 #221f29
-    box silent 0 761 1305 767 #ececec
+# progress bar
+box silent noover 0 761 1305 768 #221f29
+box silent inter 0 762 0 767 #221f29
+box silent 0 761 1305 767 #ececec
 
-    # border of the progress bar
-    box silent 0 761 1305 761 #221f29
-    box silent 0 664 1305 664 #221f29
-    box silent 0 664 0 664 #221f29
-    box silent 1305 664 1305 664 #221f29
+# border of the progress bar
+box silent 0 761 1305 761 #221f29
+box silent 0 664 1305 664 #221f29
+box silent 0 664 0 664 #221f29
+box silent 1305 664 1305 664 #221f29
+```
 
 Переименовываем:
 
-    :::console
-    $ mv 1440x900.cfg 1366x768.cfg
+```console
+$ mv 1440x900.cfg 1366x768.cfg
+```
 
 Теперь следует изменить в графическом редакторе размер изображений `silent_1440x900.jpg` и `verbose_1440x900.jpg` на свои, и также переименовать их.
 
 Обеспечить красоту призван патч `bootsplash`. Для старых версий ядра его придётся качать отдельно, в новые ядра (3.x ?) он уже включен. Также устанавливаем `splashutils`, поправив флаги в случае, если того требует emerge:
 
-    :::console
-    $ emerge -va splashutils
-    # emerge splashutils
-
+```console
+$ emerge -va splashutils
+# emerge splashutils
+```
 
 Распаковываем наши изображения в директорию `/etc/splash/` (или копируем туда свои):
 
-    :::console
-    # tar xvzf powered_by_gentoo_v0.7.tar.gz -C /etc/splash
+```console
+# tar xvzf powered_by_gentoo_v0.7.tar.gz -C /etc/splash
+```
 
 Наиболее удобным способом для создания initial ram filesystem автор считает использование `genkernel`, поэтому решившим собрать ядро с поддержкой initramfs рекомендуется ставить его и делать всё в соответствии со своими настройками. Пример:
 
-    :::console
-    # emerge genkernel
-    # cd /usr/src/linux-3.8.2-gentoo/
-    # genkernel initramfs --splash=powered_by_gentoo --splash-res=1366x768`
+```console
+# emerge genkernel
+# cd /usr/src/linux-3.8.2-gentoo/
+# genkernel initramfs --splash=powered_by_gentoo --splash-res=1366x768`
+```
 
 Дописываем к строке загрузчика в `/boot/grub/menu.lst` (справедливо для grub-legasy):
 
-    # menu.lst
-    #
-    default 0
-    timeout 30
-    splashimage=(hd0,1)/boot/grub/splash.xpm.gz
-    title Gentoo Linux 3.8.2-gentoo-iniram root (hd0,1)
-    kernel /boot/vmlinuz-3.8.2-gentoo root=/dev/ram0 real_root=/dev/sda3 splash=silent,theme:powered_by_gentoo console=tty1
-    initrd /boot/initramfs-genkernel-x86_64-3.8.2-gentoo
+```sh
+# menu.lst
+#
+default 0
+timeout 30
+splashimage=(hd0,1)/boot/grub/splash.xpm.gz
+title Gentoo Linux 3.8.2-gentoo-iniram root (hd0,1)
+kernel /boot/vmlinuz-3.8.2-gentoo root=/dev/ram0 real_root=/dev/sda3 splash=silent,theme:powered_by_gentoo console=tty1
+initrd /boot/initramfs-genkernel-x86_64-3.8.2-gentoo
+```
 
 Если intramfs не используется, прописывать всё то же самое, но без `root=/dev/ram0 real_root=/dev/sda3` и без указания последней строки.
 
@@ -135,7 +146,7 @@ verbose mode
 Кстати, вопреки утверждениям сторонников systemd, которые как мантру повторяют, что systemd загружает ОС намного быстрее, OpenRC не дал автору сего поста вдоволь налюбоваться содеянным. Gentoo загрузилась очень быстро.
 
 
-##III. Мы пойдём дальше. Заставка в tty
+## Мы пойдём дальше. Заставка в tty
 
 Да, все дистрибутивы, ориентированные на новичков, имеют splash-картинку. Но многие ли из них могут похвастаться красивым терминалом? Не эмулятором терминала, а самим терминалом. Мы же пойдём дальше и настроим эту фичу.
 
@@ -143,19 +154,21 @@ verbose mode
 
 В ядре должно быть отключено!:
 
+```
+Device Drivers  --->
+    Graphics support  --->
+        Support for frame buffer devices
+            [ ] Enable Tile Blitting Support
 
-    Device Drivers  --->
-       Graphics support  --->
-             Support for frame buffer devices
-               [ ] Enable Tile Blitting Support
-
+```
 
 И, наоборот, включена опция:
 
-    Graphics support  --->
-             Console display driver support
-               [*] Support for the Framebuffer Console decorations
-
+```
+Graphics support  --->
+    Console display driver support
+        [*] Support for the Framebuffer Console decorations
+```
 
 Вот так:
 
@@ -166,17 +179,20 @@ verbose mode
 
 Теперь пересоберите `splashutils` с флагом `"fbcondecor"` или добавьте этот флаг в `make.conf` и скомандуйте:
 
-    :::console
-    # emerge --update --newuse --deep @world
+```console
+# emerge --update --newuse --deep @world
+```
 
 Следующие шаги достаточно просты:
 
 Прописать в `/etc/conf.d/fbcondecor`:
 
-    #fbcondecor
-    #
-    FBCONDECOR_TTYS="1 2 3 4 5 6"
-    FBCONDECOR_TTY_MAP="1:powered_by_gentoo 2:powered_by_gentoo 3:powered_by_gentoo 4:powered_by_gentoo 5:powered_by_gentoo 6:powered_by_gentoo"
+```sh
+#fbcondecor
+#
+FBCONDECOR_TTYS="1 2 3 4 5 6"
+FBCONDECOR_TTY_MAP="1:powered_by_gentoo 2:powered_by_gentoo 3:powered_by_gentoo 4:powered_by_gentoo 5:powered_by_gentoo 6:powered_by_gentoo"
+```
 
 где TTYS — терминалы, на которых будет запускаться изображение
 
@@ -186,23 +202,27 @@ TTY_MAP — отображение в формате "<номер tty>:<тема
 
 Стартовать fbcondecor при запуске системы:
 
-    :::console
-    # rc-update add fbcondecor default
+```console
+# rc-update add fbcondecor default
+```
 
 Менять тему можно так:
 
-    :::console
-    $ splash_manager -c set -t powered_by_gentoo --tty=2
+```console
+$ splash_manager -c set -t powered_by_gentoo --tty=2
+```
 
 где powered_by_gentoo — название темы, а --tty=2 — номер терминала, где будет запущена тема.
 
 И последний штрих: поправить загрузчик. На этот раз пример для ядра без initramfs:
 
-    # menu.lst
-    #
-    title Gentoo Linux 3.8.2-gentoo
-    root (hd0,1)
-    kernel /boot/vmlinuz-3.8.2-gentoo root=/dev/sda3 splash=silent,theme:powered_by_gentoo console=tty1 video=vesafb:ywrap,mtrr:3 vga=0x0362
+```sh
+# menu.lst
+#
+title Gentoo Linux 3.8.2-gentoo
+root (hd0,1)
+kernel /boot/vmlinuz-3.8.2-gentoo root=/dev/sda3 splash=silent,theme:powered_by_gentoo console=tty1 video=vesafb:ywrap,mtrr:3 vga=0x0362
+```
 
 Параметр `vga` должен быть указан для вашего разрешения экрана. В примере это 1366x678.
 
@@ -211,4 +231,3 @@ TTY_MAP — отображение в формате "<номер tty>:<тема
 <a href="http://3.bp.blogspot.com/-D25-Isilvu4/UUCA5DsIhmI/AAAAAAAAEJU/4xAgMc_Hqks/s1600/powered_by_gentoo.jpg" data-lighter><img src="http://3.bp.blogspot.com/-D25-Isilvu4/UUCA5DsIhmI/AAAAAAAAEJU/4xAgMc_Hqks/s1600/powered_by_gentoo.jpg"/></a>
 
 Теперь можно отказаться от мыши и иксов ;)
-

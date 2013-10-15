@@ -1,42 +1,46 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python
+# -*- coding: utf-8 -*- #
+from __future__ import unicode_literals
+
 from datetime import datetime
 
-AUTHOR = 'redVi'
-AUTHOR_URL = 'author/{slug}.html'
-AUTHOR_SAVE_AS = 'author/{slug}.html'
-ARCHIVES_SAVE_AS = 'archives.html'
-REVERSE_ARCHIVE_ORDER = True
-TAG_URL = 'tag/{slug}.html'
-TAG_SAVE_AS = 'tag/{slug}.html'
-CATEGORY_URL = 'category/{slug}.html'
-CATEGORY_SAVE_AS = 'category/{slug}.html'
-PAGE_URL = 'pages/{slug}.html'
-PAGE_SAVE_AS = 'pages/{slug}.html'
-ARTICLE_URL = 'articles/{slug}.html'
-ARTICLE_SAVE_AS = 'articles/{slug}.html'
 SITENAME = 'unix-lab.org'
 SITESUBTITLE = u'блог об операционных системах, open source и программировании'
 SITEURL = 'http://www.unix-lab.org'
+
+AUTHOR = 'redVi'
+AUTHOR_URL = 'author/{slug}/'
+AUTHOR_SAVE_AS = 'author/{slug}/index.html'
+AUTHORS_URL = 'authors/'
+AUTHORS_SAVE_AS = 'authors/index.html'
+ARCHIVES_URL = 'archives/'
+ARCHIVES_SAVE_AS = 'archives/index.html'
+ABOUT_URL = 'about/'
+ABOUT_SAVE_AS = 'about/index.html'
+TAG_URL = 'tag/{slug}/'
+TAG_SAVE_AS = 'tag/{slug}/index.html'
+CATEGORY_URL = 'category/{slug}/'
+CATEGORY_SAVE_AS = 'category/{slug}/index.html'
+PAGE_URL = 'pages/{slug}/'
+PAGE_SAVE_AS = 'pages/{slug}/index.html'
+ARTICLE_URL = 'posts/{slug}/'
+ARTICLE_SAVE_AS = 'posts/{slug}/index.html'
 
 TIMEZONE = 'Asia/Novosibirsk'
 
 LOCALE = 'ru_RU.UTF-8'
 DEFAULT_LANG = 'ru'
 
-RELATIVE_URLS = False
-GITHUB_URL = 'http://github.com/redVi'
-DISQUS_SITENAME = 'redvinotes'
+RELATIVE_URLS = True
 PDF_GENERATOR = False
 REVERSE_CATEGORY_ORDER = False
 THEME = 'storm'
 CSS_FILE = 'screen.css'
-OUTPUT_PATH = 'articles/'
+OUTPUT_PATH = 'public/'
 PATH = 'content'
 WITH_PAGINATION = True
-DEFAULT_PAGINATION = 8
+DEFAULT_PAGINATION = 6
 DEFAULT_DATE_FORMAT = '%d %B %Y'
-ARTICLE_URL = 'articles/{slug}.html'
-ARTICLE_SAVE_AS = 'articles/{slug}.html'
 NEWEST_FIRST_ARCHIVES = False
 METADATA = u'Блог об операционных системах, open source и программировании'
 
@@ -56,13 +60,6 @@ FEED_MAX_ITEMS = 3
 #Pages
 DISPLAY_PAGES_ON_MENU  = False
 DIRECT_TEMPLATES = ('about', 'archives', 'authors', '404', 'index')
-
-# Social Links
-SOCIAL = (('rss', 'http://www.unix-lab.org/feeds/rss.xml'),
-        ('github', 'http://github.com/redVi'),
-        ('twitter', 'http://twitter.com/_redVi'),
-        ('gplus', 'https://plus.google.com/105455094513485049642/about'),
-        ('read to email', 'http://feedburner.google.com/fb/a/mailverify?uri=unix-lab&loc=ru_RU'),)
 
 # Vars
 GET_YEAR = datetime.now()
