@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>UNIX-LAB.ORG</title>
-  <link href="www.unix-lab.org/feeds/atom.xml" rel="self" type="application/atom+xml"/>
-  <link href="www.unix-lab.org/"/>
-  <updated>2013-10-23T09:32:20+04:00</updated>
-  <id>www.unix-lab.org/</id>
+  <link href="http://jekyll-unixlab.rhcloud.com/feeds/atom.xml" rel="self" type="application/atom+xml"/>
+  <link href="http://jekyll-unixlab.rhcloud.com/"/>
+  <updated>2013-10-23T09:34:39+04:00</updated>
+  <id>http://jekyll-unixlab.rhcloud.com/</id>
   <author>
     <name>unix-lab.org</name>
-    <uri>www.unix-lab.org</uri>
+    <uri>http://jekyll-unixlab.rhcloud.com</uri>
   </author>
 
   
     <entry>
       <title>Создание уникальных URL в Ruby On Rails</title>
-      <link href="www.unix-lab.org/posts/rails-slug-url"/>
+      <link href="http://jekyll-unixlab.rhcloud.com/posts/rails-slug-url"/>
       <updated>2013-10-15T13:15:00+04:00</updated>
-      <id>www.unix-lab.org/posts/rails-slug-url</id>
+      <id>http://jekyll-unixlab.rhcloud.com/posts/rails-slug-url</id>
       <author>
         <name>unix-lab.org</name>
-        <uri>www.unix-lab.org</uri>
+        <uri>http://jekyll-unixlab.rhcloud.com</uri>
       </author>
       <content type="html">&lt;p&gt;В &lt;a href=&quot;http://www.unix-lab.org/posts/get-absolute-url/&quot;&gt;предыдущем посте&lt;/a&gt; к рассмотрению был предложен вопрос о назначении собственных уникальных URL-адресов страницы и получения их полного пути. Сегодня тема та же, но другой фреймворк: для сравнения посмотрим как того же самого результата можно добиться в Ruby On Rails.&lt;/p&gt;
 
@@ -85,12 +85,12 @@
   
     <entry>
       <title>Абсолютные пути URL в Django</title>
-      <link href="www.unix-lab.org/posts/get-absolute-url"/>
+      <link href="http://jekyll-unixlab.rhcloud.com/posts/get-absolute-url"/>
       <updated>2013-10-03T01:15:00+04:00</updated>
-      <id>www.unix-lab.org/posts/get-absolute-url</id>
+      <id>http://jekyll-unixlab.rhcloud.com/posts/get-absolute-url</id>
       <author>
         <name>unix-lab.org</name>
-        <uri>www.unix-lab.org</uri>
+        <uri>http://jekyll-unixlab.rhcloud.com</uri>
       </author>
       <content type="html">&lt;p&gt;В одной из &lt;a href=&quot;http://www.unix-lab.org/posts/django-first-steps/&quot;&gt;предыдущих заметок&lt;/a&gt;, нами был написан шаблон для вывода списка публикаций на главной странице. Ссылка на полный текст публикации имеет вид &lt;code&gt;{% url &amp;#39;articles:detail&amp;#39; post.id %}&lt;/code&gt;, что позволяет получить определённую страницу по её идентификатору (&lt;code&gt;id&lt;/code&gt;). За отображение страницы ответственность несёт представление &lt;code&gt;articles&lt;/code&gt; из пространства имён (&lt;code&gt;namespace&lt;/code&gt;) &lt;code&gt;detail&lt;/code&gt;. В данном ниже примере для разнообразия используем другую модель, а также для упрощения понимания материала откажемся от использования пространств имён: одно приложение &amp;mdash; одна модель &amp;mdash; один urls.py.&lt;/p&gt;
 
@@ -226,12 +226,12 @@ http://site.org/articles/my-article/my-next-article
   
     <entry>
       <title>Навигация по документу в LaTeX</title>
-      <link href="www.unix-lab.org/posts/hyperref"/>
+      <link href="http://jekyll-unixlab.rhcloud.com/posts/hyperref"/>
       <updated>2013-09-14T21:05:00+04:00</updated>
-      <id>www.unix-lab.org/posts/hyperref</id>
+      <id>http://jekyll-unixlab.rhcloud.com/posts/hyperref</id>
       <author>
         <name>unix-lab.org</name>
-        <uri>www.unix-lab.org</uri>
+        <uri>http://jekyll-unixlab.rhcloud.com</uri>
       </author>
       <content type="html">&lt;p&gt;Довольно часто бывает необходимо указать в тексте ссылку на источник или какой-либо полезный ресурс. А то и просто сделать оглавление &amp;laquo;кликабельным&amp;raquo;, дабы при его просмотре сразу можно было выбрать нужную главу и перейти к ней.&lt;/p&gt;
 
