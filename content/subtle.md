@@ -1,6 +1,6 @@
 Title: Subtle WM: свобода, ограниченная лишь фантазией
 Date: 2013-07-11 08:15
-Tags: Decorations, Linux
+Tags: Decorations, Linux, Ruby
 Slug: subtle-wm
 Author: redVi
 Summary: Что такое subtle wm? Subtle &mdash; тайловый оконный менеджер с достаточно необычным подходом к расположению плитки окон.

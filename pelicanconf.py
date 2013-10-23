@@ -30,6 +30,7 @@ TIMEZONE = 'Asia/Novosibirsk'
 
 LOCALE = 'ru_RU.UTF-8'
 DEFAULT_LANG = 'ru'
+DATE_FORMATS = {'ru': '%d %B %Y',}
 
 RELATIVE_URLS = True
 PDF_GENERATOR = False
