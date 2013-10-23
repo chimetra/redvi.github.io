@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Создание форума с phpBB | UNIX-LAB.ORG</title>
+  <meta name="description" content="Пример установки и настройки форумного движка phpBB">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://jekyll-unixlab.rhcloud.com/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://jekyll-unixlab.rhcloud.com/favicon.ico" type="image/x-icon">
+  <link href="http://jekyll-unixlab.rhcloud.com/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://jekyll-unixlab.rhcloud.com/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://jekyll-unixlab.rhcloud.com/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+    <li><a href="/author/">Автор</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Создание форума с phpBB</h2>
+<h5><i class="icon-feather"></i> 04 марта 2012
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/server.html">Server /</a>
+
+</h5>
+
+<p>Да, автор данной статьи, как и многие другие, считает phpBB  лучшим PHP-движком для форумов. Вот сейчас мы и посмотрим, как проходит его установка. Отмечу, что phpBB требует СУБД MySQL (те, кто не знает, что это - не пугайтесь, всё нормально), в начале речь пойдёт о настройке новой базы данных, а затем мы скачаем и установим наш замечательный движок. Обзора первоначальной настройки форума не будет, ибо просто там всё.</p>
+
+<h2 id="toc_0">Установка и настройка MySQL</h2>
+
+<p>Итак, приступим. Те, у кого  MySQL ещё не установлен, используем команду:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> pacman -S mysql
+</code></pre></div>
+<p>Для запуска MySQL-сервера введите следующую команду:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> /etc/rc.d/mysqld start
+</code></pre></div>
+<p>Для запуска MySQL при старте системы, редактируем строку <code>DAEMONS=</code> в файле <code>/etc/rc.conf</code> :</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">DAEMONS=(...  mysqld httpd)
+</code></pre></div>
+<p>После установки, запускаем в консоли <code>mysql_secure_installation</code>, отвечаем на вопросы, вам будет представлена возможность назначить или изменить пароль MySQL для root пользователя (по умолчанию он не установлен), удалить анонимные учетные записи пользователей и удалить тестовые базы данных.
+Теперь займёмся созданием базы данных и предоставим пользователям разрешения на их использование.</p>
+
+<p>Осуществляем в MySQL:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> mysql -u root -p
+</code></pre></div>
+<p>После того как вы введете пароль root пользователя MySQL, вы сможете начать взаимодействие с MySQL сервером.</p>
+
+<p>Создаём новую базу данных и пользователя:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">&gt;</span> create database имя_новой_базы_данных;
+</code></pre></div>
+<p><code>grant all on имя_новой_базы_данных.* to ’имя-пользователя_бд’ identified by ’пароль_бд’;
+flush privileges;</code></p>
+
+<p>Для выхода из администрирования MySQL введите:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">&gt;</span> quit
+</code></pre></div>
+<p><b>Прмечание</b>: в ранних постах была описана полная установка LAMP. вы можете прочесть об этом подробнее:</p>
+
+<p><a href="http://root-inform.blogspot.com/2011/09/apachewordpress.html">Установка Web-сервера в Ubuntu</a></p>
+
+<p><a href="http://www.unix-lab.org/posts/lamp/">Arch и LAMP</a></p>
+
+<p><a href="http://root-inform.blogspot.com/2011/09/denver-joomla.html">Windows and Denver</a></p>
+
+<p>Ну, а для интересующихся припасена у меня сладкая ссылка на русскоязычную документацию, <a href="http://www.mysql.ru/docs/mysql-man-4.0-ru/">ловите</a>.</p>
+
+<p>На этом первая часть нашей работы завершена, теперь непосредственно установка phpBB.</p>
+
+<h2 id="toc_1">PHPBB Install</h2>
+
+<p>Идём на сайт <a href="http://www.phpbbguru.net/">phpbbguru</a>; и скачиваем zip-архив с последней версией phpBB.
+Далее заходим на наш локальный сервер и распаковываем архив в директорию с сайтом:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> <span class="nb">cd</span> /srv/http/
+<span class="gp">$</span> sudo mkdir forum
+<span class="gp">$</span> sudo unzip phpbb-3.0.10-rus.zip /srv/http/forum
+<span class="gp">$</span> <span class="nb">cd </span>forum/phpBB3
+</code></pre></div>
+<p>Следуем по адресу <code>http://localhost/forum/phpBB3/</code> в директорию <code>install</code>. Кликаем на <code>index.php</code> и предстанет пред нами картина, подобная этой:</p>
+
+<p><img src="http://farm6.staticflickr.com/5493/9261865950_82e124d2e0_z.jpg" alt="welcome"></p>
+
+<p>Теперь начнём устаноку:</p>
+
+<p><img src="http://farm4.staticflickr.com/3735/9261865970_6cca56b5a8_z.jpg" alt="install"></p>
+
+<p>Установщик проверит соответствуют ли ваши настройки требованиям phpBB. У автора при этом директории <code>cache</code>, <code>files</code>, <code>store</code> на запись доступны не были. Идём по адресу, куда закинули свой будущий форум и исправляем ситуацию:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> <span class="nb">cd</span> /srv/http/forum/phpBB3
+<span class="gp">$</span> sudo chmod 777 cache/ files/ store/
+</code></pre></div>
+<p>или просто даём права на чтение/запись командой</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> chmod +rw
+</code></pre></div>
+<p><img src="http://2.bp.blogspot.com/-B6MkGt1-Jqg/Twl_1OFcI3I/AAAAAAAAAfw/lQuuleYS49A/s1600/phpbb3-3.png" alt="files"></p>
+
+<p>Вводим данные:</p>
+
+<ul>
+<li>Имя сервера БД или DNS --- localhost</li>
+<li>Порт сервера БД --- 80 или как вам угодно, или не пишите ничего</li>
+<li>Название базы данных --- то, что вы указали при настройке MySQL</li>
+<li>Имя пользователя и пароль БД --- см. опять же выше</li>
+<li>Префикс таблиц, как правило, менять не надо</li>
+</ul>
+
+<p>После чего нас попросят ввести имя и пароль админа сайта, а также его e-mail.</p>
+
+<p><img src="http://1.bp.blogspot.com/-wd-0EQ5f-Mw/TwmApXdDTUI/AAAAAAAAAf4/KG7FZEt6VpE/s1600/phpbb3_4.png" alt="bd"></p>
+
+<p>И здесь нас ждала неожиданность. Движок хотел было перезаписать свой файл, да прав ему не хватило, о чём он и посетовал. Что ж, просто кликаем <code>&quot;скачать&quot;</code> и заменяем этот файл.</p>
+
+<p>Следующую страницу настраивайте по своему усмотрению, не смею советовать:</p>
+
+<p><img src="http://farm8.staticflickr.com/7304/9261866014_607bcc3829_z.jpg" alt="mail"></p>
+
+<p>Вот и всё. Установка прошла как по маслу.</p>
+
+<p>И вид как админпанели, так и самого форума по умолчанию прекрасен. Лёгкий и приятный для глаз.
+Хотя стили вы можете поменять, скачав их  <a href="http://www.phpbb.com/styles/demo/3.0/index.php">здесь</a>.</p>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
+    <li class="footer"><a href="/">unix-lab.org</a>&nbsp;::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

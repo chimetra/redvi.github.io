@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Установка LAMP в archlinux | UNIX-LAB.ORG</title>
+  <meta name="description" content="Apache – это самый популярный веб-сервер. Его задача как и любого другого веб-сервера – отдавать контент на запросы клиентов.">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://jekyll-unixlab.rhcloud.com/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://jekyll-unixlab.rhcloud.com/favicon.ico" type="image/x-icon">
+  <link href="http://jekyll-unixlab.rhcloud.com/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://jekyll-unixlab.rhcloud.com/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://jekyll-unixlab.rhcloud.com/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+    <li><a href="/author/">Автор</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Установка LAMP в archlinux</h2>
+<h5><i class="icon-feather"></i> 21 января 2012
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/arch.html">Arch /</a>
+
+<a href="/tags/server.html">Server /</a>
+
+<a href="/tags/linux.html">Linux /</a>
+
+</h5>
+
+<p>Apache &mdash; это самый популярный веб-сервер. Его задача как и любого другого
+веб-сервера &mdash; отдавать контент на запросы клиентов. Apache обладает
+большим функционалом за счет подключаемых модулей.</p>
+
+<h2 id="toc_0">Установка</h2>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> sudo pacman -S apache php php-apache mysql
+</code></pre></div>
+<p>Это наиболее популярный вариант установки. Таким образом мы получим небезызвестный LAMP &mdash; Linux + Apache + MySQL + PHP</p>
+
+<p>Если вы не нуждаетесь в каком-либо из компонентов, не ставьте его.</p>
+
+<p>Не забудьте установить пароль для пользователя MySQL. Для этого необходимо запустить сервер командой <code>/etc/rc.d/httpd start</code>, а затем выполнить следующее:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> /usr/bin/mysqladmin -u root password новый_пароль
+<span class="gp">$</span> /usr/bin/mysqladmin -u root -h linux password новый_пароль
+</code></pre></div>
+<p>Теперь если вы попробуете зайти без пароля, у вас ничего не выйдет:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> sudo mysql -u root
+<span class="go">ERROR 1045 (28000): Access denied for user &#39;root&#39;@&#39;localhost&#39; (using password: NO)</span>
+</code></pre></div>
+<p>Входим с паролем:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span>sudo mysql -u root -p
+</code></pre></div>
+<p>В ответ на это вам предложат ввести заданный пароль.</p>
+
+<p>Можете воспользоваться альтернативным методом, запустив:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> /usr/bin/mysql_secure_installation
+</code></pre></div>
+<p>Теперь проверим, есть ли в <code>/etc/shadow</code> пользователь <code>http</code>:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> cat /etc/shadow :
+<span class="go">http:x:14871::::::</span>
+</code></pre></div>
+<p>Если такой строки вами найдено не было, добавляем пользователя вручную:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> useradd -d /srv/http -r -s /bin/false -U http
+</code></pre></div>
+<p>Смотрим содержание нашего <code>/etc/hosts</code>:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># /etc/hosts: static lookup table for host names</span>
+<span class="c">#</span>
+<span class="c">#&lt;ip-address&gt; &lt;hostname.domain.org&gt; &lt;hostname&gt;</span>
+127.0.0.1 localhost.localdomain localhost linux
+</code></pre></div>
+<p>Примечание: здесь и далее <code>linux</code> - имя хоста, т.е. вашей машины</p>
+
+<p>Так должен выглядеть <code>/etc/rc.conf</code>:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># --------------------------------------</span>
+<span class="c"># NETWORKING</span>
+<span class="c"># --------------------------------------</span>
+<span class="c">#</span>
+<span class="c"># HOSTNAME: Hostname of machine. Should also be put in /etc/hosts</span>
+<span class="c">#</span>
+<span class="nv">HOSTNAME</span><span class="o">=</span><span class="s2">&quot;linux&quot;</span>
+</code></pre></div>
+<p>Итак, если вы ещё не запустили Apache, пришло время сделать это:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> /etc/rc.d/httpd start
+</code></pre></div>
+<p>Проверим его работоспособность, пройдя по ссылке в браузере: <code>http://localhost/</code>
+Если всё нормально, вы увидите следующее изображение:</p>
+
+<p><img src="http://3.bp.blogspot.com/-wrcyniFvt0o/TwBDrvF4tfI/AAAAAAAAAeU/jQuqE1PbVbw/s1600/apache2.png" alt="localhost"></p>
+
+<p>Если веб-сервер не запустился, тестируем настройку:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> apachectl configtest
+</code></pre></div>
+<h2 id="toc_1">Что делать с PHP?</h2>
+
+<p>Добавьте  в <code>/etc/httpd/conf/httpd.conf</code>  в секцию <code>DefaultType text/plain</code>:</p>
+<div class="highlight"><pre><code class="apache language-apache" data-lang="apache"><span class="nb">LoadModule</span> php5_module modules/libphp5.so
+<span class="nb">Include</span> conf/extra/php5_module.conf
+</code></pre></div>
+<p>Для того чтобы обрабатывались <code>*.php</code> файлы:</p>
+<div class="highlight"><pre><code class="apache language-apache" data-lang="apache"><span class="nb">AddType</span> application/x-httpd-php .php
+<span class="nb">AddType</span> application/x-httpd-php-source .phps
+</code></pre></div>
+<p>Чтобы  php код обрабатывался в файлах <code>*.html</code>:</p>
+<div class="highlight"><pre><code class="apache language-apache" data-lang="apache"><span class="nb">AddType</span> application/x-httpd-php .html
+<span class="nb">AddType</span> application/x-httpd-php .htm
+</code></pre></div>
+<p>После чего понадобится перезапустить веб-сервер:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> /etc/rc.d/httpd restart
+</code></pre></div>
+<p>Посмотреть корневую директорию сервера можно в этом же файле. Выглядит так:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">DocumentRoot &quot;/srv/http&quot;
+</code></pre></div>
+<p>Здесь же можно затронуть файл <code>/etc/php/php.ini</code>:</p>
+
+<p>Нам важно знать путь к корневой директории. По умолчанию нужная строка выглядит так:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="nv">open_basedir</span> <span class="o">=</span> /srv/http/:/home/:/tmp/:/usr/share/pear/
+</code></pre></div>
+<p>Что ж, теперь проверим отображение php-файлов. Пишем простую страничку примерно такого содержания:</p>
+<div class="highlight"><pre><code class="html+php language-html+php" data-lang="html+php"><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;title&gt;</span>PHP<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+
+<span class="nt">&lt;body&gt;</span>
+My test page
+<span class="cp">&lt;?php</span>
+  <span class="nb">phpinfo</span><span class="p">();</span>
+<span class="cp">?&gt;</span>
+<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div>
+<p>Так, в заголовке должно быть отображено название документа - PHP, в теле текст &quot;My test page&quot; и, если работает php, при помощи функции <code>phpinfo()</code> будет выведена его служебная информация.</p>
+
+<p>Сохраните этот документ под именем <code>page.php</code> и сохраните в <code>/srv/http/</code> , то есть в корневую директорию сервера. Разумеется, у вас могут быть свои настройки. Чтобы протестировать следует зайти на страницу:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">http://localhost/page.php
+</code></pre></div>
+<p>Вот что вы должны увидеть:</p>
+
+<p><img src="http://3.bp.blogspot.com/-vHPxeFERVbY/TwGCCASgxxI/AAAAAAAAAeg/sGxJERM4BAo/s1600/apache_php.png" alt="php"></p>
+
+<h2 id="toc_2">MySQL</h2>
+
+<p>Для поддержки MySQL в  <code>/etc/php/php.ini</code>  раскомментируйте следующие строку:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">;extension=mysql.so
+</code></pre></div>
+<p>Для настройки вашей системы выполните <code>/etc/rc.d/mysqld start</code>.</p>
+
+<p>Убедитесь, что группа и пользователь <code>mysql</code> существуют. Если нет, добавьте их вручную:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> groupadd -g 89 mysql
+<span class="gp">#</span> useradd -u 89 -g mysql -d /var/lib/mysql -s /bin/false mysql
+</code></pre></div>
+<p>Измените владельца корневой директории MYSQL:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> chown -R mysql:mysql /var/lib/mysql
+</code></pre></div>
+<h3 id="toc_3">Установка базы данных</h3>
+
+<p>Если вы хотите запускать mysql от имени суперпользователя, можете не применять опцию <code>--user</code> и не изменять владельца</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> mysql_install_db --datadir<span class="o">=</span>/var/lib/mysql --user<span class="o">=</span>mysql
+<span class="gp">#</span> chown -R mysql:mysql /var/lib/mysql
+</code></pre></div>
+<p>Для запуска MySQL:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> /etc/rc.d/mysqld start
+</code></pre></div>
+<p>Тестируем mysql (как root):</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> mysql
+</code></pre></div>
+<p>Задать пароль для mysql :</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> mysqladmin -u root password <span class="s1">&#39;пароль_root&#39;</span>
+</code></pre></div>
+<p>Для входа в mysql:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> mysql -u root -h linux -p
+</code></pre></div>
+<p>где linux - не забывайте! - имя вашего хоста.</p>
+
+<h2 id="toc_4">Установка phpMyAdmin (не бязательно)</h2>
+
+<p>Следует установить нужные пакеты:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> sudo pacman -S php-mcrypt phpmyadmin
+</code></pre></div>
+<p>И исправить несколько файлов как указано ниже.</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> sudo rm -r /srv/http/phpMyAdmin <span class="c"># в случае, если phpmyadmin уже был установлен ранее</span>
+<span class="gp">#</span> скопируем <span class="s2">&quot;образцовый&quot;</span> файл настроек
+<span class="gp">$</span> sudo cp /etc/webapps/phpmyadmin/apache.example.conf /etc/httpd/conf/extra/httpd-phpmyadmin.conf
+</code></pre></div>
+<p>Отредактируем файлы <code>/etc/httpd/conf/httpd.conf</code> и <code>/etc/webapps/phpmyadmin/.htaccess</code></p>
+<div class="highlight"><pre><code class="apache language-apache" data-lang="apache"><span class="c"># httpd.conf</span>
+<span class="c">#</span>
+<span class="c"># phpMyAdmin configuration</span>
+<span class="nb">Include</span> conf/extra/httpd-phpmyadmin.conf
+
+<span class="c"># /etc/webapps/phpmyadmin/.htaccess</span>
+<span class="c"># deny from all</span>
+</code></pre></div>
+<p>Теперь, перезагрузив наш <code>httpd</code>, можно войти в <code>phpmyadmin</code> по адресу <code>http://localhost/phpmyadmin</code>:</p>
+
+<p><img src="http://4.bp.blogspot.com/-iWb_bAkGXQE/T0SrxOEJbFI/AAAAAAAAAik/N70gh7PPzhk/s1600/phpmyadmin.png" alt="phpmyadmin"></p>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
+    <li class="footer"><a href="/">unix-lab.org</a>&nbsp;::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

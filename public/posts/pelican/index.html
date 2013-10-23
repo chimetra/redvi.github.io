@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Свой блог на GitHub или Как приручить пеликана | UNIX-LAB.ORG</title>
+  <meta name="description" content="О том, как настроить свой блог для работы с генератором статических сайтов pelican.">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://jekyll-unixlab.rhcloud.com/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://jekyll-unixlab.rhcloud.com/favicon.ico" type="image/x-icon">
+  <link href="http://jekyll-unixlab.rhcloud.com/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://jekyll-unixlab.rhcloud.com/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://jekyll-unixlab.rhcloud.com/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+    <li><a href="/author/">Автор</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Свой блог на GitHub или Как приручить пеликана</h2>
+<h5><i class="icon-feather"></i> 27 июля 2013
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/python.html">Python /</a>
+
+<a href="/tags/blog.html">Blog /</a>
+
+</h5>
+
+<h2 id="toc_0">Введение</h2>
+
+<p>По ряду причин автором было решено перенести свои старые заметки на новый довольно таки любопытный движок. Как ясно из названия поста, имя ему Pelican. Нужно сразу отметить, что pelican представляет из себя генератор статических сайтов, а посему непохож на обычные блоговые движки а-ля blogger и wordpress и требует к себе особого подхода. Но обо всём по-порядку.</p>
+
+<h3 id="toc_1">Что такое Pelican</h3>
+
+<p>Генератор статических сайтов. Не особенно удобно редактировать статику (html-страницы) вручную, и дабы сделать написание постов лёгким и приятным в техническом плане следует использовать какой-либо генератор этих самых html-страниц. Для того pelican нам и нужен.</p>
+
+<p>В умолчательном варианте на GitPages предлагается использовать Jekyll. Возможно, когда-нибудь поговорим и о нём.</p>
+
+<h3 id="toc_2">Преимущества и недостатки</h3>
+
+<ul>
+<li><p>Хорошо</p>
+
+<ul>
+<li>Быстрая загрузка страниц по сравнению с динамическими сайтами</li>
+<li>Удобство в написании постов</li>
+</ul></li>
+<li><p>Плохо</p>
+
+<ul>
+<li>не имеет базы данных, следовательно заменить её функции должны всевозможные сторонние сервисы</li>
+</ul></li>
+</ul>
+
+<p><img src="http://farm4.staticflickr.com/3665/9344607012_a359e2831f_o.jpg" alt="pelican" title="pelican"></p>
+
+<h2 id="toc_3">Установка</h2>
+
+<p>Поскольку в примере блог будет располагаться на <a href="https://github.com/">github</a> от читателя, желающего настроить pelican в связке с GitPages, потребуются минимальные знания <a href="http://www.unix-lab.org/posts/github/">работы с git</a>.</p>
+
+<p>Создадим на github новый репозиторий вида <code>username.github.io</code> и склонируем его себе. Например:</p>
+
+<p><a href="http://farm3.staticflickr.com/2842/9349395644_761ab29d03_o.png" title="git repository"><img src="http://farm3.staticflickr.com/2842/9349395644_761ab29d03_o.png" alt="git_repo" title="git repository"></a></p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> git clone git@github.com:redVi/redvi.github.io.git
+<span class="gp">$</span> <span class="nb">cd </span>redvi.github.io
+<span class="gp">$</span> git init
+</code></pre></div>
+<p>Далее следовало бы создать виртуальное окружение для нашего блога. Объяснять это нехитрое действо с нуля не имею причин, если читателю ровным счётом ничего не известно о виртуальных окружениях, милости прошу <a href="http://www.unix-lab.org/posts/virtualenv/">в быстрый старт</a>.</p>
+
+<p>Вообще, pelican предлагает полную поддержку python2.x, а также экспериментальную &mdash; python3.2. Но с последним ещё возможны проблемы, поэтому подготовим наше окружение соответствующим образом. Запустим <code>virtualenv</code> с минимальными настройками и активируем окружение:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> virtualenv -p /usr/bin/python2.7 --no-site-packages ~/redvi.github.io/.notes
+<span class="gp">$</span> <span class="nb">source</span> ~/redvi.github.io/.notes/bin/activate
+<span class="gp">$</span> ls -alh
+<span class="go">итого 24K</span>
+<span class="go">drwxr-xr-x  4 redvi redvi 4,0K июля   9 13:29 ./</span>
+<span class="go">drwxr-xr-x  7 redvi redvi 4,0K июля   9 13:11 .git/</span>
+<span class="go">drwxr-xr-x  5 redvi redvi 4,0K июля   9 12:17 .notes/</span>
+</code></pre></div>
+<p>В итоге у нас должно получиться два каталога:</p>
+
+<ul>
+<li><code>notes</code> содержит все настройки данного виртуального окружения</li>
+<li><code>git</code> хранит историю коммитов</li>
+</ul>
+
+<h2 id="toc_4">Быстрый старт</h2>
+
+<p>Находясь в виртуальном окружении, установим pelican и markdown:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> pip install pelican
+<span class="gp">$</span> pip install markdown
+</code></pre></div>
+<p>При этом pelican &laquo;подтянет&raquo; все недостающие зависимости, к примеру такие как <code>pygments</code>, а вместо Markdown можно использовать reStructuredText. Но тут уже дело привычки.</p>
+
+<p>Из виртуального окружения в корне репозитория запустим команду <code>pelican-quickstart</code> для быстрой генерации наших первых настроек. Полностью это выглядит следующим образом:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="go">(notes)redvi@gentoo ~/redvi.github.io (git)-[master] $ pelican-quickstart</span>
+</code></pre></div>
+<p>Теперь осталось только отвечать на заданные дружелюбной птицей вопросы ;)</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">Welcome to pelican-quickstart v3.2.2.
+<span class="c"># расположение сайта в корне каталога</span>
+&gt; Where <span class="k">do </span>you want to create your new web site? <span class="o">[</span>.<span class="o">]</span>
+<span class="c"># как будет называться сайт</span>
+&gt; What will be the title of this web site? redvi@notes
+<span class="c"># кого считать автором</span>
+&gt; Who will be the author of this web site? redVi
+<span class="c"># язык по-умолчанию</span>
+&gt; What will be the default language of this web site? <span class="o">[</span>en<span class="o">]</span> ru
+<span class="c"># использовать префиксы в именах URL-ов</span>
+&gt; Do you want to specify a URL prefix? e.g., http://example.com <span class="o">(</span>Y/n<span class="o">)</span> y
+<span class="c"># в качестве префикса прямой слэш</span>
+&gt; What is your URL prefix? <span class="o">(</span>see above example; no trailing slash<span class="o">)</span> /
+<span class="c"># включить пагинацию (переход между страницами)</span>
+&gt; Do you want to <span class="nb">enable </span>article pagination? <span class="o">(</span>Y/n<span class="o">)</span> y
+<span class="c"># сколько постов будет вмещаться на одной странице</span>
+&gt; How many articles per page <span class="k">do </span>you want? <span class="o">[</span>10<span class="o">]</span>
+<span class="c"># нужен ли Makefile</span>
+&gt; Do you want to generate a Makefile to easily manage your website? <span class="o">(</span>Y/n<span class="o">)</span> y
+<span class="c"># использовать веб-сервер для разработки</span>
+&gt; Do you want an auto-reload &amp; simpleHTTP script... <span class="o">(</span>Y/n<span class="o">)</span> y
+<span class="c"># доступность сайта по FTP-протоколу</span>
+&gt; Do you want to upload your website using FTP? <span class="o">(</span>y/N<span class="o">)</span> n
+<span class="c"># доступность сайта по SSH</span>
+&gt; Do you want to upload your website using SSH? <span class="o">(</span>y/N<span class="o">)</span> y
+<span class="c"># имя хоста</span>
+&gt; What is the hostname of your SSH server? <span class="o">[</span>localhost<span class="o">]</span>
+<span class="c"># используемый порт</span>
+&gt; What is the port of your SSH server? <span class="o">[</span>22<span class="o">]</span>
+<span class="c"># имя суперпользователя</span>
+&gt; What is your username on that server? <span class="o">[</span>root<span class="o">]</span> user
+<span class="c"># где расположить сайт на сервере (в нашем случае это созданный репозиторий)</span>
+&gt; Where <span class="k">do </span>you want to put your web site on that server? <span class="o">[</span>/var/www<span class="o">]</span> ~/redvi.github.io
+<span class="c"># использовать ли Dropbox</span>
+&gt; Do you want to upload your website using Dropbox? <span class="o">(</span>y/N<span class="o">)</span> n
+<span class="c"># использовать ли S3</span>
+&gt; Do you want to upload your website using S3? <span class="o">(</span>y/N<span class="o">)</span> n
+</code></pre></div>
+<p>Вот и всё. Посмотрим, что у нас есть.</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> ls -a
+<span class="go">./</span>
+<span class="go">content/            #директория с исходниками</span>
+<span class="go">develop_server.sh*  #сервер для разработки</span>
+<span class="go">.git/               #директория git&#39;а</span>
+<span class="go">.notes/             #директория виртуального окружения</span>
+<span class="go">output/             #выходные файлы, мы изменим их расположение</span>
+<span class="go">pelicanconf.py</span>
+<span class="go">publishconf.py</span>
+</code></pre></div>
+<h2 id="toc_5">Настройка</h2>
+
+<h3 id="toc_6">файл конфигурации</h3>
+
+<p>В первую очередь нас интересует стандартный файл конфигурации pelican и то, что можно сделать с его помощью. Вообще, для настроек используется <code>pelicanconf.py</code>, но исходники нашего сайта на github будут открыты, а личные данные &laquo;светить&raquo; не особенно хочется, посему создадим файл <code>local_settings.py</code> и добавим его в <code>.gitignore</code>.</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="c">#local_settings.py</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="n">AUTHOR</span> <span class="o">=</span> <span class="s">&#39;Name&#39;</span>
+<span class="n">SITENAME</span> <span class="o">=</span> <span class="s">&#39;site_name&#39;</span>
+<span class="n">SITEURL</span> <span class="o">=</span> <span class="s">&#39;http://site.org&#39;</span>
+
+<span class="n">TIMEZONE</span> <span class="o">=</span> <span class="s">&#39;Europe/Moscow&#39;</span>
+
+<span class="n">LOCALE</span> <span class="o">=</span> <span class="s">&#39;ru_RU.UTF-8&#39;</span>
+<span class="n">DEFAULT_LANG</span> <span class="o">=</span> <span class="s">&#39;ru&#39;</span>
+</code></pre></div>
+<p>Пожалуй, в объяснениях этот минимальный фрагмент не нуждается, хотя к настройкам мы ещё обратимся. После написания поста можно собрать страницы командой:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> make html
+</code></pre></div>
+<h3 id="toc_7">markdown или rest</h3>
+
+<p>Как уже было упомянуто ранее, pelican позволяет использовать синтаксис <a href="http://daringfireball.net/projects/markdown/">Markdown</a> и <a href="http://docutils.sourceforge.net/docs/user/rst/quickref.html">reStructuredText</a> (ну и html, конечно). Давайте остановимся на этом и раскроем понятия чуть подробнее.</p>
+
+<p><b>Коротко о Markdown</b>:</p>
+
+<p>Markdown &mdash; облегчённый язык разметки. Первоначально создан Джоном Грубером и Аароном Шварцем, целью которых являлось создание максимально удобочитаемого и удобного в публикации языка разметки.</p>
+
+<p>При написании поста в директории <code>content/</code> создаётся файл с именем <code>your_post.md</code>, что туда можно включить:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">Title: Свой блог на GitHub или Как приручить пеликана
+Date: 2013-07-27 08:25
+Category: Web
+Tags: Python, Blog
+Slug: pelican
+Author: redVi
+Summary: О том, как настроить свой блог
+</code></pre></div>
+<p>Думается, здесь всё понятно без дополнительных объяснений. Это стандартные заголовки pelican&#39;а. Можно вносить и свои, подробнее обсудим, когда дойдём до шаблонов.</p>
+
+<p><b>Коротко о reStructuredText</b>:</p>
+
+<p>reStructuredText &mdash; облегчённый язык разметки. Хорошо применим для создания простых веб-страниц и других документов, а также в качестве вспомогательного языка при написании комментариев в программном коде.</p>
+
+<p>Тот же вид, но сбоку. Создаётся файл с именем <code>your_post.rst</code> и примерным содержимым:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">:title: Свой блог на GitHub или Как приручить пеликана
+:date: 2013-07-27 08:25
+:category: Web
+:tags: Python, Blog
+</code></pre></div>
+<h3 id="toc_8">шаблоны jinja</h3>
+
+<p>Pelican использует шаблоны Jinja. Это не страшно, но непривычно, если до сего момента вы не были знакомы с подобной структурой. Адептов Django следует предостеречь: шаблонизаторы очень похожи, но Jinja это не встроенный шаблонизатор Django, на первых парах можно налететь на неожиданности: будьте внимательны.</p>
+
+<p>Что представляет из себя шаблон Jinja?</p>
+
+<p>Это обычный html-шаблон с встроенными элементами языка python: переменными, циклами, фильтрами. Изначально создаётся базовый шаблон, который должен быть основным для всех существующих страниц. Его структура может содержать несколько блоков: мета-теги, шапку сайта, меню, сайдбар, блок под контент, подвал сайта. В базовый шаблон вносятся элементы, которые не должны меняться. На основе базового шаблона создаются все остальные шаблоны, включающие базовый и определяющие свои элементы.</p>
+
+<p>Пример:</p>
+<div class="highlight"><pre><code class="html+django language-html+django" data-lang="html+django"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;ru&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span><span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}{{</span> <span class="nv">SITENAME</span> <span class="cp">}}{%</span> <span class="k">endblock</span> <span class="cp">%}</span><span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;author&quot;</span> <span class="na">content=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">AUTHOR</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">SITEURL</span> <span class="cp">}}</span><span class="s">/theme/css/style.css&quot;</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;h3&gt;</span>Метки<span class="nt">&lt;/h3&gt;</span>
+    <span class="nt">&lt;ul&gt;</span>
+    <span class="cp">{%</span> <span class="k">for</span> <span class="nv">tag</span><span class="o">,</span> <span class="nv">articles</span> <span class="k">in</span> <span class="nv">tags</span> <span class="cp">%}</span>
+        <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">SITEURL</span> <span class="cp">}}</span><span class="s">/</span><span class="cp">{{</span> <span class="nv">tag.url</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span> <span class="nv">tag</span> <span class="cp">}}</span><span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+    <span class="nt">&lt;/ul&gt;</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div>
+<p>Итак, общим для всех страниц будет подключенный нами css-стиль, имя автора и название сайта, список тегов на странице. Любой из этих элементов можно изменить в дочернем шаблоне или добавить свой элемент.</p>
+
+<p>Пример дочернего шаблона, страница одного поста:</p>
+<div class="highlight"><pre><code class="html+django language-html+django" data-lang="html+django"><span class="cp">{%</span> <span class="k">extends</span> <span class="s2">&quot;base.html&quot;</span> <span class="cp">%}</span> <span class="c">&lt;!--подключаем базовый шаблон--&gt;</span>
+<span class="c">&lt;!--обращаемся к названию поста, тому, что указали в Title при написании--&gt;</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}{{</span> <span class="nv">article.title</span> <span class="cp">}}{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span>
+<span class="c">&lt;!--выводим здеь тело нашего поста--&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+</code></pre></div>
+<p>Оформление страницы и блок тегов останутся, поскольку они есть в базовом шаблоне, который мы подключили без изменений. Но что, ели нам захочетя внести свою переменную, которую можно использовать в любом месте сайта? Не проблема. Вспоминаем, что pelican написан на python и идём вносить свои правки в файл конфигурации, ибо его переменные глобальны.</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="c"># local_settings.py</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="c"># Vars</span>
+<span class="n">GET_DATE</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="c"># получаем текущую дату</span>
+<span class="n">CURRENT_YEAR</span> <span class="o">=</span> <span class="n">GET_DATE</span><span class="o">.</span><span class="n">year</span> <span class="c"># выбираем только год</span>
+<span class="c"># переменная для важных сообщений :)</span>
+<span class="c"># при использовании python2 не забываем ставить u&#39;&#39;</span>
+<span class="c"># при использовании python3 ни в коем случае её не ставим</span>
+<span class="c"># это указание на строку unicode</span>
+<span class="n">MY_MESSAGE</span> <span class="o">=</span> <span class="s">u&#39;Добро пожаловать!&#39;</span>
+</code></pre></div>
+<p>Идём править шаблон <code>base.html</code>:</p>
+<div class="highlight"><pre><code class="html+django language-html+django" data-lang="html+django"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;header&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h1&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">SITEURL</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span> <span class="nv">SITENAME</span> <span class="cp">}}</span><span class="nt">&lt;/a&gt;&lt;/h1&gt;</span>
+    <span class="c">&lt;!--если переменная существует, вывети её значение--&gt;</span>
+    <span class="cp">{%</span> <span class="k">if</span> <span class="nv">MY_MESSAGE</span> <span class="cp">%}</span><span class="nt">&lt;h3&gt;</span><span class="cp">{{</span> <span class="nv">MY_MESSAGE</span> <span class="cp">}}</span><span class="nt">&lt;/h3&gt;</span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;footer&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!--год всегда будет равен текущему--&gt;</span>
+    <span class="nt">&lt;p&gt;</span><span class="ni">&amp;copy;</span> <span class="cp">{{</span> <span class="nv">CURRENT_YEAR</span> <span class="cp">}}</span><span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</code></pre></div>
+<p>Иными словами, pelican очень гибко настраивается. А у Jinja есть неплохая <a href="http://jinja.pocoo.org/docs/">документация</a>.</p>
+
+<h3 id="toc_9">темы</h3>
+
+<p>У pelican&#39;а имеется несколько готовых шаблонов, которые можно скачать и посмотреть как они написаны, дабы написать свою тему или же просто изменить шаблон под вои нужды. Темы можно забрать <a href="https://github.com/getpelican/pelican-themes">отсюда</a>.</p>
+
+<h3 id="toc_10">плагины</h3>
+
+<p>Плагинов немного, зато полезные. К каждому плагину есть описание и инструкции по натройке/подключению. Брать <a href="https://github.com/getpelican/pelican-plugins">здесь</a>. Мы установим один для примера, но чуть позже.</p>
+
+<h3 id="toc_11">pygments</h3>
+
+<p>Подстветка синтаксиса осуществляется с помощью небезызвестного <code>pygments</code>, который установится вместе с pelican&#39;ом как зависимость последнего.</p>
+
+<p>Смотрим какие темы подсветки синтаксиса имеются, выбираем одну, генерируем из неё css-файл и перезаписываем существующий, дабы настройки вступили в силу:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> ls .notes/lib64/python2.7/site-packages/pygments/styles
+<span class="gp">$</span> pygmentize -S tango -f html &gt; ~/pygments.css
+<span class="gp">$</span> make html
+</code></pre></div>
+<p>Да, прежде нужно подключить этот css-файл к основному (например, к style.css) и закинуть в соответствующую директорию со статикой, у автора это <code>theme_name/static/css/</code>.</p>
+
+<p>Чтобы наверняка определить синтаксис, нужно добавить к блоку с кодом троеточие и нужный язык программирования, вот так: <code>:::python</code>.</p>
+
+<p>Просмотреть список поддерживаемых языков можно, перейдя на страницу <a href="http://pygments.org/languages/">http://pygments.org/languages/</a></p>
+
+<h2 id="toc_12">Публикация</h2>
+
+<p>Сразу оговорюсь: SEO-шничеством заниматься не будем, но к основным требованиям поисковых систем равнодушными не останемся. Рассмотрим настройки, которые могут пригодиться, если сайт открыт для поисковых роботов.</p>
+
+<h3 id="toc_13">мета-теги</h3>
+
+<p>Целью ставится получение разных мета-тегов на разных страницах. Способов множество, возможно, приведённый автором далеко не самый элегантный.</p>
+
+<p>В данном случае будем бороться за мета-тег <code>description</code>. Можно вписать описание для сайта сразу в шаблоне, а можно внести в натройки соответствующую переменную, которой затем и манипулировать. Допустим, мы пошли вторым путём. Тогда вносим переменную METADATA в <code>local_settings.py</code> и в базовом шаблоне определяем:</p>
+<div class="highlight"><pre><code class="html+django language-html+django" data-lang="html+django"><span class="cp">{%</span> <span class="k">block</span> <span class="nv">metadesk</span> <span class="cp">%}</span><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;description&quot;</span> <span class="na">content=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">METADATA</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span><span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+</code></pre></div>
+<p>В шаблоне для статей будет примерно следующее:</p>
+<div class="highlight"><pre><code class="html+django language-html+django" data-lang="html+django"><span class="cp">{%</span> <span class="k">block</span> <span class="nv">metadesk</span> <span class="cp">%}</span>
+<span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;description&quot;</span> <span class="na">content=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">article.summary</span><span class="o">|</span><span class="nf">striptags</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+</code></pre></div>
+<p>То есть в дочернем шаблоне мы просто переопределили блок <code>metadesk</code>, в качестве описания назначив ему строку <code>Summary</code> из исходного файла и применив фильтр <code>striptags</code>, который обрезает все теги HTML.</p>
+
+<h3 id="toc_14">favicon</h3>
+
+<p>Зачастую на сайты ставится индивидуальная иконка &mdash; favicon в формате <code>.ico</code> или же <code>.png</code>. Это сделать ещё проще, следует лишь указать путь её расположения в базовом шаблоне:</p>
+<div class="highlight"><pre><code class="html+django language-html+django" data-lang="html+django"><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;icon&quot;</span> <span class="na">href=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">SITEURL</span><span class="cp">}}</span><span class="s">/favicon.png&quot;</span> <span class="na">type=</span><span class="s">&quot;image/x-icon&quot;</span><span class="nt">&gt;</span>
+</code></pre></div>
+<p>В примере <code>favicon.png</code> располагается в корне сайта.</p>
+
+<h3 id="toc_15">robots.txt</h3>
+
+<p>Этот файл указывает поисковым системам какие каталоги доступны для просмотра. Имеет пару директив <code>Allow</code> и <code>Disallow</code>, соответственно разрешающих и запрещающих просморт каталогов/файлов. Не мудрствуя особо, разрешены на просмотр все каталоги, кроме <code>content/</code>, ибо текст в исходниках и на выходе одинаков.</p>
+
+<p>Получилось следующее:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">User-agent: Yandex
+Disallow: /content/
+
+User-agent: *
+Disallow: /content/
+Sitemap: http://site_name/sitemap.xml
+Host: site_name
+</code></pre></div>
+<h3 id="toc_16">карта сайта</h3>
+
+<p>Обеспечивается использованием стороннего плагина <code>sitemap</code>. Загрузите плагин и положите в какую-нибудь директорию, например, в <code>plugins/</code>. В настройках по-умолчанию прописывается следующее (в <code>local_settings</code>):</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="c"># Plugins</span>
+<span class="n">PLUGIN_PATH</span> <span class="o">=</span> <span class="s">&quot;plugins&quot;</span>
+<span class="n">PLUGINS</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;sitemap&quot;</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">SITEMAP</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;format&#39;</span><span class="p">:</span> <span class="s">&#39;xml&#39;</span><span class="p">,</span>
+    <span class="s">&#39;priorities&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;articles&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="s">&#39;indexes&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="s">&#39;pages&#39;</span><span class="p">:</span> <span class="mf">0.5</span>
+    <span class="p">},</span>
+    <span class="s">&#39;changefreqs&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;articles&#39;</span><span class="p">:</span> <span class="s">&#39;monthly&#39;</span><span class="p">,</span>
+        <span class="s">&#39;indexes&#39;</span><span class="p">:</span> <span class="s">&#39;daily&#39;</span><span class="p">,</span>
+        <span class="s">&#39;pages&#39;</span><span class="p">:</span> <span class="s">&#39;monthly&#39;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="toc_17">google analitycs</h3>
+
+<p>Если есть желание, можно подключить Google Analitycs &mdash; инструмент сбора информации о количестве посещений. Для этого снова потребуется обратиться к <code>local_settings.py</code>:</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="c"># Google analytics</span>
+<span class="n">GOOGLE_ANALYTICS</span> <span class="o">=</span> <span class="s">&#39;UA***&#39;</span> <span class="c"># ваш ID</span>
+<span class="n">GOOGLE_ANALYTICS_DOMAIN</span> <span class="o">=</span> <span class="s">&#39;site_url&#39;</span> <span class="c"># хост</span>
+</code></pre></div>
+<p>Создать шаблон со скриптом analitycs и подключить его к базовому шаблону, как мы рассматривали ранее.</p>
+
+<h3 id="toc_18">комментарии</h3>
+
+<p>Поскольку своей базы данных нет, нужно подключить какой-либо сторонний сервис. Disqus тяжеловат (и очень даже), но его поддержка есть в pelican изначально, потому подключение сводится к регистрации на disqus, получении ID и создании шаблона как и с Google Analitycs.</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="c">#local_settings.py</span>
+<span class="n">DISQUS_SITENAME</span> <span class="o">=</span> <span class="s">&#39;your_id&#39;</span>
+</code></pre></div>
+<p>Дабы импортировать комментарии из старого блога, если таковой имеется, следует воспользоваться инвентарём самого disqus:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">DISCUSSIONS -&gt; IMPORT -&gt; BLOGGER
+EXPORT -&gt; EXPORT COMMENTS
+TOOLS -&gt; START URL MAPPER
+</code></pre></div>
+<p><img src="http://farm3.staticflickr.com/2871/9341198229_4f5bc00153_o.png" alt="import-into-disqus" title="import-into-disqus"></p>
+
+<p>В примере проводится импорт комментариев из blogger, их последующий экспорт и правка. Правка заключается в сопоставлении комментариев и адреса страницы. Для этого скачиваем предложенный <code>.csv</code> файл и правим его:</p>
+
+<p><a href="http://farm6.staticflickr.com/5529/9343960806_5af19a430b_o.png"><img src="http://farm6.staticflickr.com/5529/9343960806_5af19a430b_o.png" alt="disqus-comments-csv" title="disqus-comments-csv"></a></p>
+
+<h3 id="toc_19">работа с github</h3>
+
+<p>Итак, пора решить как организовать структуру сайта для публикации на github. Дело в том, что html-страницы должны находиться в корне проекта, иначе они не будут найдены и обработаны. Поэтому показанный ранее подход предлагается изменить.</p>
+
+<p>Если подумать, сваливание всех страниц в корень также не является хорошей идеей: если у вас пять страниц, это не имеет значения, но если их 50-100? Согласитесь, репозиторий будет выглядеть не очень аккуратно. Поэтому мы ещё немного покрутим настройки, указав путь к исходникам и путь, где должны храниться html-страницы.</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="c"># путь к исходникам</span>
+<span class="n">PATH</span> <span class="o">=</span> <span class="s">&#39;content&#39;</span>
+<span class="c"># путь к выходным html-файлам</span>
+<span class="c"># в целом настройка не важна,</span>
+<span class="c"># ибо генерировать всё, кроме постов</span>
+<span class="c"># будем в корень проекта</span>
+<span class="n">OUTPUT_PATH</span> <span class="o">=</span> <span class="s">&#39;articles/&#39;</span>
+<span class="c"># как сохранять посты</span>
+<span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="s">&#39;articles/{slug}/&#39;</span>
+<span class="c"># куда сохранять посты</span>
+<span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="s">&#39;articles/{slug}/index.html&#39;</span>
+</code></pre></div>
+<p>Теперь укажем pelican, что настройки нужно брать из <code>local_settings.py</code>, а вывод помещать в корень репозитория:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> pelican -s local_settings.py -o ./
+</code></pre></div>
+<p>Сейчас структура каталогов должна выглядеть иначе:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> tree
+<span class="go">.</span>
+<span class="go">|-- archives.html   # архив</span>
+<span class="go">|-- articles/       # статьи в html</span>
+<span class="go">|-- author/         # авторы</span>
+<span class="go">|-- categories.html</span>
+<span class="go">|-- category/       # категории</span>
+<span class="go">|-- content/        # исходники постов</span>
+<span class="go">|   |-- post1.md</span>
+<span class="go">|-- favicon.png</span>
+<span class="go">|-- feeds/</span>
+<span class="go">|-- index.html</span>
+<span class="go">|-- local_settings.py</span>
+<span class="go">|-- plugins/        # плагины</span>
+<span class="go">|-- robots.txt</span>
+<span class="go">|-- sitemap.xml</span>
+<span class="go">|-- tag/            # теги</span>
+<span class="go">|-- tags.html</span>
+<span class="go">|-- theme/          # генерируемая тема</span>
+<span class="go">|   |-- css</span>
+<span class="go">|   `-- images</span>
+<span class="go">`-- my_theme/       # выбранная исходная тема</span>
+<span class="go">    |-- static</span>
+<span class="go">    |   |-- css</span>
+<span class="go">    |   `-- images</span>
+<span class="go">    `-- templates</span>
+</code></pre></div>
+<p>Сколько бы ни было постов, все они будут храниться в директории <code>articles/</code> дабы не мозолить глаза в корне. Каталоги тегов, категорий, страницы <code>index*.html</code>, наоборот, будут находиться в корне репозитория.</p>
+
+<h2 id="toc_20">Итого: примерный файл конфигурации</h2>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="n">AUTHOR</span> <span class="o">=</span> <span class="s">&#39;Name&#39;</span>
+<span class="n">SITENAME</span> <span class="o">=</span> <span class="s">&#39;site_name&#39;</span>
+<span class="n">SITEURL</span> <span class="o">=</span> <span class="s">&#39;http://site.org&#39;</span>
+
+<span class="n">TIMEZONE</span> <span class="o">=</span> <span class="s">&#39;Europe/Moscow&#39;</span>
+
+<span class="n">LOCALE</span> <span class="o">=</span> <span class="s">&#39;ru_RU.UTF-8&#39;</span>
+<span class="n">DEFAULT_LANG</span> <span class="o">=</span> <span class="s">&#39;ru&#39;</span>
+
+<span class="n">RELATIVE_URLS</span> <span class="o">=</span> <span class="bp">True</span> <span class="c"># включать во время разработки</span>
+<span class="n">DISQUS_SITENAME</span> <span class="o">=</span> <span class="s">&#39;sitename&#39;</span>
+<span class="n">PDF_GENERATOR</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">THEME</span> <span class="o">=</span> <span class="s">&#39;some_theme&#39;</span>
+<span class="n">CSS_FILE</span> <span class="o">=</span> <span class="s">&#39;style.css&#39;</span>
+<span class="n">OUTPUT_PATH</span> <span class="o">=</span> <span class="s">&#39;articles/&#39;</span>
+<span class="n">PATH</span> <span class="o">=</span> <span class="s">&#39;content&#39;</span>
+<span class="n">WITH_PAGINATION</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">DEFAULT_PAGINATION</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">DEFAULT_DATE_FORMAT</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%d</span><span class="s"> %B %Y&#39;</span>
+<span class="n">ARTICLE_URL</span> <span class="o">=</span> <span class="s">&#39;articles/{slug}/&#39;</span>
+<span class="n">ARTICLE_SAVE_AS</span> <span class="o">=</span> <span class="s">&#39;articles/{slug}/index.html&#39;</span>
+<span class="n">NEWEST_FIRST_ARCHIVES</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">METADATA</span> <span class="o">=</span> <span class="s">u&#39;Описание сайта&#39;</span>
+
+<span class="c"># Google analytics</span>
+<span class="n">GOOGLE_ANALYTICS</span> <span class="o">=</span> <span class="s">&#39;UA-****&#39;</span>
+<span class="n">GOOGLE_ANALYTICS_DOMAIN</span> <span class="o">=</span> <span class="s">&#39;your_site_domain&#39;</span>
+
+<span class="c"># Feeds</span>
+<span class="n">FEED_ALL_ATOM</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">FEED_ALL_RSS</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">FEED_DOMAIN</span> <span class="o">=</span> <span class="s">&#39;your_site_domain&#39;</span>
+<span class="n">FEED_RSS</span> <span class="o">=</span> <span class="s">&#39;feeds/rss.xml&#39;</span>
+<span class="n">FEED_ATOM</span> <span class="o">=</span> <span class="s">&#39;feeds/atom.xml&#39;</span>
+<span class="n">FEED_MAX_ITEMS</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="c">#Pages</span>
+<span class="n">DISPLAY_PAGES_ON_MENU</span>  <span class="o">=</span> <span class="bp">False</span>
+
+<span class="c"># Social Links</span>
+<span class="n">SOCIAL</span> <span class="o">=</span> <span class="p">((</span><span class="s">&#39;github&#39;</span><span class="p">,</span> <span class="s">&#39;http://github.com/user&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;twitter&#39;</span><span class="p">,</span> <span class="s">&#39;http://twitter.com/user&#39;</span><span class="p">),)</span>
+</code></pre></div>
+<p>Разумеется, все настройки и возможности не охвачены. Для получения подробных сведений обращайтесь напрямую <a href="http://docs.getpelican.com/en/3.2/">к документации</a>. За сим прощаюсь.</p>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
+    <li class="footer"><a href="/">unix-lab.org</a>&nbsp;::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

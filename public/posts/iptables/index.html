@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Firewall в Linux. Настройка iptables | UNIX-LAB.ORG</title>
+  <meta name="description" content="Iptables отвечает преимущественно за фильтрацию пакетов. Настройка Iptables вручную является довольно непростой задачей.">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://jekyll-unixlab.rhcloud.com/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://jekyll-unixlab.rhcloud.com/favicon.ico" type="image/x-icon">
+  <link href="http://jekyll-unixlab.rhcloud.com/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://jekyll-unixlab.rhcloud.com/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://jekyll-unixlab.rhcloud.com/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+    <li><a href="/author/">Автор</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Firewall в Linux. Настройка iptables</h2>
+<h5><i class="icon-feather"></i> 02 сентября 2011
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/linux.html">Linux /</a>
+
+</h5>
+
+<p>Iptables отвечает преимущественно за фильтрацию пакетов. Настройка Iptables вручную является довольно непростой задачей. Не надейтесь, что разберётесь в этом «снаскока». К счастью, есть много инструментов, которые могут оказать вам помощь в случае, если с iptables вы ещё не разобрались, а обезопасить систему нужно срочно: fwbuilder, firestarter, guarddog, arno firewall &mdash; по сути это GUI к iptables. Однозначного ответа что лучше нет. Выбирать вам. Однако, сегодняшняя статья посвящена именно iptables и делится на две части: теория и практика. Самые нетерпеливые могут сразу выполнить практическую часть, хотя подобный подход не рекомендуется.</p>
+
+<p><strong>Внимание!</strong> Все действия с iptables производятся от имени привелигированного пользователя!</p>
+
+<h2 id="toc_0">Теория</h2>
+
+<p>Формат записи iptables
+: iptables [-t таблица] [команда] [действие]</p>
+
+<p>Пример:
+: iptables -t filter -A INPUT ACCEPT</p>
+
+<p><strong>Действия</strong></p>
+
+<ul>
+<li>ACCEPT --- Принять пакет</li>
+<li>DROP --- Отбросить пакет</li>
+<li>DNAT --- Преобразовать адрес назначения</li>
+<li>SNAT --- Изменить исходящий IP-адрес в заголовке пакета</li>
+<li>LOG --- Журналирование пакетов и событий</li>
+<li>MARK --- Установить метку на пакет</li>
+<li>MASQUERADE  ---  Изменить исходящий IP-адрес в заголовке пакета (отличие от SNAT - работа с динамическими IP)</li>
+<li>QUEUE --- Поставить пакет в очередь на обработку</li>
+<li>REDIRECT --- Перенаправить пакет/поток на другой порт</li>
+<li>REJECT --- Отбросить пакет+уведомить удалённую систему о том. что её пакет отвергнут</li>
+<li>RETURN --- Прекратить движение пакета по текущей цепочке и возвратить в вызывающую цепочку</li>
+</ul>
+
+<p><strong>Команды</strong></p>
+
+<ul>
+<li>-A --- Добавить правило в цепочку</li>
+<li>-D --- Удалить правило из цепочки</li>
+<li>-R --- Заменить одно правило другим</li>
+<li>-I --- Вставить новое правило</li>
+<li>-L --- Вывести список существующих правил</li>
+<li>-F --- Сброс правил</li>
+<li>-Z --- Обнуление счётчиков в заданной цепочке</li>
+<li>-N --- Создание новой цепочки с заданным именем</li>
+<li>-X --- Удаление цепочки</li>
+<li>-P --- Задать политику по умолчанию для выбранной цепочки</li>
+<li>-E --- Переименовать пользовательскую цепочку</li>
+</ul>
+
+<p><strong>Критерии (общие)</strong></p>
+
+<ul>
+<li>-p --- Указать тип протокола</li>
+<li>-s --- IP-адрес источника пакета</li>
+<li>-d --- IP-адрес получателя пакета</li>
+<li>-j --- Указать действие для правила</li>
+<li>-i --- Интерфейс, с которого был принят пакет</li>
+<li>-o --- Указать имя выходного интерфейса</li>
+<li>-f --- Распространить правило на все фрагменты пакета</li>
+</ul>
+
+<p><strong>TCP критерии:</strong></p>
+
+<ul>
+<li>--sport --- Порт,с которого отправлен пакет</li>
+<li>--dport --- Порт,на который адресован пакет</li>
+<li>--tcp-flags --- Определить маску и флаги пакета</li>
+</ul>
+
+<p><strong>UDP критерии:</strong></p>
+
+<ul>
+<li>--sport --- Порт,с которого отправлен пакет</li>
+<li>--dport --- Порт,на который адресован пакет</li>
+</ul>
+
+<p>Подробнее в man iptables</p>
+
+<h2 id="toc_1">Практика</h2>
+
+<p><strong>Просмотр текущей конфигурации</strong></p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> iptables -L
+
+<span class="go">Chain INPUT (policy ACCEPT)</span>
+<span class="go">target prot opt source destination</span>
+
+<span class="go">Chain FORWARD (policy ACCEPT)</span>
+<span class="go">target prot opt source destination</span>
+
+<span class="go">Chain OUTPUT (policy ACCEPT)</span>
+<span class="go">target prot opt source destination</span>
+</code></pre></div>
+<p>Если вы узрели подобное, значит ваш файрволл ещё не настроен и разрешает всё. Исправим положение.</p>
+
+<p><strong>Настройка политики по умолчанию</strong></p>
+
+<ul>
+<li>iptables -P INPUT DROP --- блокирование входящих пакетов</li>
+<li>iptables -P OUTPUT ACCEPT --- разрешить исходящие пакеты</li>
+<li>iptables -P FORWARD DROP --- обработка пакетов, которые попали на сервер с другой машины и ожидают дальнейшего переброса. В примере блокируется. В таком случае вам придётся дописать правила для доверенных машин.</li>
+</ul>
+
+<p>Поскольку входящие пакеты INPUT блокированы, пропишем правило:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+</code></pre></div>
+<p>Это разрешит принимать пакеты от ранее установленного соединения и принимать новые пакеты,порождённые этим соединением.</p>
+
+<p>Либо с указанием типа протокола:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> iptables -A INPUT -p TCP -m state --state ESTABLISHED,RELATED -j ACCEPT
+<span class="gp">#</span> iptables -A INPUT -p UDP -m state --state ESTABLISHED,RELATED -j ACCEPT
+</code></pre></div>
+<p>Теперь локальный интерфейс:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> iptables -A INPUT -i lo -j ACCEPT
+</code></pre></div>
+<ul>
+<li>NEW --- данные, начинающие новое соединение.</li>
+<li>ESTABLISHED --- пакет, приходящий от уже установленного соединения.</li>
+<li>RELATED --- новый пакет данных, но порожденный старым установленным соединением</li>
+<li>INVALID --- итак понятно</li>
+</ul>
+
+<p>Сохранить настройки (можете прописывать настройки iptables непосредственно в созданный файл):</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> iptables-save &gt; /etc/iptables.up.rules
+</code></pre></div>
+<p>Включить эти правила:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> iptables-restore &lt; /etc/iptables.up.rules
+</code></pre></div>
+<p>И увидеть разницу:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> iptables-L
+</code></pre></div>
+<p>Запуск iptables при старте системы:</p>
+
+<p>В каталоге <code>/etc/init.d</code> создаем файл с именем iptables</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> touch /etc/init.d/iptables
+</code></pre></div>
+<p>Прописываем в нём следующее:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c">#!/bin/sh</span>
+/sbin/iptables-restore &lt; /etc/iptables.up.rules
+</code></pre></div>
+<p>Делаем файл iptables исполняемым:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> chmod +x /etc/init.d/iptables
+</code></pre></div>
+<p>Добавляем его в автозапуск</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> update-rc.d -n iptables defaults
+</code></pre></div>
+<p>Запуск iptables при подключении к сети:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> <span class="nb">echo</span> <span class="s2">&quot;#! /sbin/iptables-restore&quot;</span> &gt; /etc/network/if-up.d/iptables.up.rules
+<span class="gp">#</span> iptables-save &gt;&gt; /etc/network/if-up.d/iptables.up.rules
+<span class="gp">#</span> chmod +x /etc/network/if-up.d/iptables.up.rules
+</code></pre></div>
+<p><em>Примечание:</em> в любой момент вы можете проверить загружены ли ваши правила, просто введя от рута
+<code>iptables-save</code></p>
+
+<p>Для archlinux сохранение правил iptables осуществляется командой:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> rc.d save iptables
+</code></pre></div>
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
+    <li class="footer"><a href="/">unix-lab.org</a>&nbsp;::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

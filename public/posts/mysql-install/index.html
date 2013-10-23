@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Установка СУБД MySQL. Вручную | UNIX-LAB.ORG</title>
+  <meta name="description" content="Пост о настройке MySQL вручную для тех, у кого по каким-то причинам корректно не сработал инсталлятор.">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://jekyll-unixlab.rhcloud.com/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://jekyll-unixlab.rhcloud.com/favicon.ico" type="image/x-icon">
+  <link href="http://jekyll-unixlab.rhcloud.com/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://jekyll-unixlab.rhcloud.com/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://jekyll-unixlab.rhcloud.com/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+    <li><a href="/author/">Автор</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Установка СУБД MySQL. Вручную</h2>
+<h5><i class="icon-feather"></i> 03 июня 2012
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/server.html">Server /</a>
+
+<a href="/tags/windows.html">Windows /</a>
+
+</h5>
+
+<p>Как было обещано ранее в статье <a href="http://www.unix-lab.org/posts/apache-php-mysql/">о настройке веб-сервера</a>, выкладываю пост о настройке MySQL вручную для тех, у кого по каким-то причинам корректно не сработал инсталлятор.</p>
+
+<p>Как всегда начнём с того, что достанм необходимую программу. На этот раз будем качать архив вместо установщика: <a href="http://www.mysql.com/downloads/mysql/">http://www.mysql.com/downloads/mysql/</a></p>
+
+<p>Займёмся созданием необходимых папок. Как правило по пути <code>C:\Program Files\MySQL\MySQL Server 5.5</code>. То есть папку MySQL и вложенную MySQL Server 5.5. Распаковываем в нее содержимое архива.</p>
+
+<p><img src="http://3.bp.blogspot.com/-9pzii_egztA/T8EE8exZSrI/AAAAAAAAAps/uPmJ4PWHgaI/s1600/mysql-unzip.png" alt="mysql-unzip" title="MySQL unzip"></p>
+
+<p>Далее нам понадобится файл конфигурации. Что брать за образец, решать вам.</p>
+
+<p>· <code>my-small.ini</code> — MySQL используется нечасто, сервер БД не потребляет много ресурсов.</p>
+
+<p>· <code>my-medium.ini</code> — MySQL используется на постоянной основе, например, как в нашем случае, для работы с домашним веб-сервером</p>
+
+<p>· <code>my-large.ini</code> и <code>my-huge.ini</code> — для систем, использующихся как выделенный MySQL сервер. <code>My-large.ini</code> можно использовать и для домашнего сервера, если нужна дополнительная производительность.</p>
+
+<p>· <code>my-innodb-heavy-4G</code> — для выделенных серверов, имеющих от 4 Гб оперативной памяти и использующих только таблицы типа InnoDB.</p>
+
+<p>Берём какой-то из этих файлов конфигурации,  переименовываем его в <code>my.ini</code>.</p>
+
+<p>Открываем в текстовом редакторе и дописываем после <code>[mysqld]</code> строки:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">basedir=C:/Program Files/MySQL/MySQL Server 5.5
+datadir=C:/Program Files/MySQL/MySQL Server 5.5/data
+</code></pre></div>
+<p>Добавляем путь <code>C:\Program Files\MySQL\MySQL Server 5.5\bin</code> в переменную среды <code>PATH</code>.</p>
+
+<p>Для этого Правой кнопкой на Мой компьютер - Свойства - Дополнительные параметры системы - Переменные среды. Ищем <code>Path</code>, жмём изменить, дописываем в самый конец, не забыв поставить <code>;</code> в самом начале, то есть примерно так:</p>
+
+<p><code>C:\Program Files\WIDCOMM\Bluetooth Software\syswow64;C:\Program Files\MySQL\MySQL Server 5.5\bin</code></p>
+
+<p><img src="http://3.bp.blogspot.com/-6q49izdhLnU/T8EFU6p_aqI/AAAAAAAAAp0/25mbr4sHAXQ/s1600/path.png" alt="path" title="path"></p>
+
+<p><b>ВНИМАНИЕ!</b> Входящий порт TCP 3306 должен быть открыт. Либо разрешён в брандмауэре Windows, либо в используемой вами антивирусной программе (как правило эти полномочия сейчас берёт на себя именно такое ПО).</p>
+
+<p><img src="http://4.bp.blogspot.com/-syJI8ByzFhk/T8EFdAKjJjI/AAAAAAAAAp8/WFcQk3PbcZ8/s1600/mysqld-3306.png" alt="TCP" title="TCP"></p>
+
+<p>Открываем командную строку от имени администратора, пишем <code>mysqld --console</code></p>
+
+<p>При успешном запуске службы в конце вы увидите:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">Version: &#39;5.5.9-log&#39;  socket: &#39;&#39;  port: 3306  MySQL Community Server (GPL)
+</code></pre></div>
+<p><img src="http://2.bp.blogspot.com/-yqydVKOa1P8/T8EFmPYUAhI/AAAAAAAAAqE/iAUjw-4inyQ/s1600/mysqld-run.png" alt="run server" title="run server"></p>
+
+<p>Открываем ещё одну копию командной строки, не закрывая существующую, пишем:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">mysql -u root
+</code></pre></div>
+<p>Видим приглашение командной строки MySQL.</p>
+
+<p>Смотрим, какие имеются базы данных на текущий момент, пишем:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">show databases;
+</code></pre></div>
+<p><img src="http://4.bp.blogspot.com/-pD7Lw38A9PE/T8EFxH5yH1I/AAAAAAAAAqM/dEBS0ZYLQrU/s1600/mysqld-databases.png" alt="databases" title="databases"></p>
+
+<p>Теперь установим пароль root&#39;а для доступа к БД.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">use mysql
+UPDATE user SET password = PASSWORD(&#39;ваш_пароль&#39;) WHERE user = &#39;root&#39;;
+</code></pre></div>
+<p>Проверяем, всё ли в порядке:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">SELECT user, host, password FROM user;
+</code></pre></div>
+<p>Выходим:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">FLUSH PRIVILEGES;
+exit;
+</code></pre></div>
+<p>Мы добились того, что вход осуществляется только с паролем:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">mysql -u root -p
+</code></pre></div>
+<p>Отключим службу:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">mysqladmin -u root -p shutdown
+</code></pre></div>
+<p>И, наконец, сделаем так, чтобы MySQL была в службах Windows, в командной строке пишем:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&quot;C:\Program Files\MySQL\MySQL Server 5.5\bin\mysqld&quot; --install
+</code></pre></div>
+<p>Идём с лужбы: панель управления - Система и безопасность - Администрирование - Службы. Находим MySQL. Можно запускать, в службах всё появилось.</p>
+
+<p><img src="http://2.bp.blogspot.com/-Fvk1ZIMG2zs/T8EGPoveVtI/AAAAAAAAAqU/QCYGg2BY8vU/s1600/mysql-services.png" alt="MySQL services" title="MySQL services"></p>
+
+<p>Удобнее запускать и останавливать MySQL посредством командной строки:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">net start mysql - старт
+net stop mysql - останов
+</code></pre></div>
+<p>Для удаления службы, если это будет нужно:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&quot;C:\Program Files\MySQL\MySQL Server 5.5\bin\mysqld&quot; --remove
+</code></pre></div>
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
+    <li class="footer"><a href="/">unix-lab.org</a>&nbsp;::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

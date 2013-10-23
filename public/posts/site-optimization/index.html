@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Со скоростью света или Игра в оптимизаторы | UNIX-LAB.ORG</title>
+  <meta name="description" content="На этот раз предлагается поговорить об оптимизации. Это дело серьёзное и требует особого к себе внимания.">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://jekyll-unixlab.rhcloud.com/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://jekyll-unixlab.rhcloud.com/favicon.ico" type="image/x-icon">
+  <link href="http://jekyll-unixlab.rhcloud.com/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://jekyll-unixlab.rhcloud.com/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://jekyll-unixlab.rhcloud.com/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+    <li><a href="/author/">Автор</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Со скоростью света или Игра в оптимизаторы</h2>
+<h5><i class="icon-feather"></i> 17 августа 2013
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/web.html">Web /</a>
+
+</h5>
+
+<p>На этот раз предлагается поговорить об оптимизации. Это дело серьёзное и требует особого к себе внимания. Несмотря на распространение этих ваших интернетов в каждый дом и в каждую квартиру (автор помнит времена, когда для подключения к глобальной паутине приходилось брать карту СТК за 150 российских рублей: страницы загружались неимоверно медленно, а рубли расходовались неимоверно быстро) не у всех наших граждан имеется быстрый интернет-канал, а некоторые товарищи и вовсе пользуются исключительно &laquo;мобильным интернетом&raquo;.</p>
+
+<p>Не будем забывать о движках различной степени тяжести (Drupal, Wordpress, Joomla!, etc). Впротивовес <a href="http://www.unix-lab.org/posts/pelican/">статическим сайтам</a>, которые подойдут далеко не всем блоггерам/сайтостроителям, они достаточно тяжелы изначально и посему требуют непременной доработки в плане оптимизации самих себя.</p>
+
+<p>Что же, наверняка у нас имеется лучшее решение нежели просто ждать пока загрузится наша страница.</p>
+
+<p>Приступим к разбору полётов. Поскольку использовать указанные ниже сервисы приходится нечасто и по прошествии времени мозг начинает задействовать свою неповторимую функцию &mdash; способность забывать &mdash; здесь будут оставлены проверенные временем онлайн-сервисы, способствующие <s>повышению ЧСВ оптимизатора</s> ускорению загрузки страниц вашего сайта.</p>
+
+<h3 id="toc_0">Со скоростью света</h3>
+
+<p>Сначала сто&#x301;ит проанализировать какое количество времени занимает загрузка страниц и что мешает загружаться быстрее. Как правило, это неоптимизированные изображения, javascript, CSS. Что и почему расскажет <a href="http://developers.google.com/speed/pagespeed/insights/">Page Speed Online от Google</a>. Ели не нравится, вполне можно положиться на <a href="http://tools.pingdom.com/fpt/">Pingdom</a>.</p>
+
+<p><img src="http://www.unix-lab.org/source/page-speed.jpg" alt="page speed"></p>
+
+<p>После проверки можно обратиться к <u>PageSpeed Optimization Products</u> от того же Google:</p>
+
+<p><code>https://developers.google.com/speed/pagespeed/optimization</code>.</p>
+
+<h3 id="toc_1">Сервисы для оптимизации CSS-кода</h3>
+
+<p>Как правило, подобные сервисы делают свою работу очень неплохо и сокращают размер CSS-файла процентов на 30. Или больше, если в коде проставлено множество строк с копирайтами, пробелами, прочими радостями. Печаль одна: неудобоваримая каша, которая получается из кода. Весь код вставляется в одну лишь строку, поэтому яростно боритесь с желанием впоследствие изменить свойство какого-нибудь элемента: вы убьёте массу сил, пытаясь разргести этот сжатый бедлам.</p>
+
+<p>Можно поступить иначе: иметь под рукой код неоптимизированный, дабы при случае подправить что-то в нём, а затем снова прогнать через сервис. Или прогонять лишь те участки кода, которые менять вы ну никогда уже не станете.</p>
+
+<p><b>Robson CSS Compressor</b></p>
+
+<p>Вещь прекрасная, ставится на первое место в нашем маленьком рейтинге. Заоптимизирует CSS по самое не горюй, что и требуется. Адрес этой хорошей вещи:</p>
+
+<p><code>http://iceyboard.no-ip.org/projects/css_compressor</code></p>
+
+<p>Кандидат номер два <b>CleanCSS</b>.</p>
+
+<p>Склонен к балансу между оптимизацией и удобочитаемостью. Пригодится в случае, если сайт не ваш, а сделан для сдачи заказчику, например. Или ежели планируется, что после вас этот код будет сопровождать кто-то другой. Адрес:</p>
+
+<p><code>http://www.cleancss.com/</code></p>
+
+<p>Наиболее страшен <b>Tabifier</b> в силу своей всеядности: эта штука понимает также и HTML. Для товарищей особенно замороченных на оптимизации рекомендуется:</p>
+
+<p><code>http://tools.arantius.com/tabifier</code></p>
+
+<p>В целом, подобных сервисов имеется внушительное количество. Но нам хватит и этих трёх.</p>
+
+<h3 id="toc_2">Сжимаем JavaScript</h3>
+
+<p>Можно было бы включить YUI Compressor, но, раз уж мы говорим лишь об онлайн-сервисах, возьму на себя ответственность порекомендовать только один из них, так сказать самый-самый. Это снова Google со своим <b>Closure Compiler</b>:</p>
+
+<p><code>http://closure-compiler.appspot.com/home</code></p>
+
+<p>Конечно, наилучший метод оптимизации javascript &mdash; неиспользование javascript ;)</p>
+
+<h3 id="toc_3">Долой изображения! Да здравствуют шрифты!</h3>
+
+<p>Обычно изображения загружаются дольше, чем шрифты или стили. Много мелких изображений и вообще сейчас моветон. А не заменить ли их чем получше? Например, модными шрифтами. <b>Fontello</b> спешит на помощь.</p>
+
+<p>На странице проекта <code>http://fontello.com/</code> вам будет предложено выбрать несколько шрифтов-кнопок по вкусу. Также сразу нужно обратить внимание на настройки, они поистине замечательны. У вас есть возможность выбрать размер шрифта, при надобности указать CSS-префикс и даже кодировку. После того, как разберётесь с этими настройками, кликом начинайте выбирать нужные шрифты. Их упакуют в архив вместе с примером, разнообразными CSS-стилями, HOWTO и demo-страницей, призванной показать как оно будет выглядеть. А выглядит оно очень недурно. На буржуинских сайтах используется довольно часто в то время как на большинстве отечественных по какой-то неведомой автору причине предпочитают таки иметь дело с изображениями.</p>
+
+<h3 id="toc_4">Или оптимизируем изображения</h3>
+
+<p><b>Yahoo Smush.it</b> рулит и педалит. Позволяет сжимать изображения практически без потери качества. Картинки, которые планируется подвергнуть эксперименту, можно загружать как с жёсткого диска своей машины так и указывать к ним URL-путь. На выходе вам сообщат исходный размер и размер сжатого изображения, а также позволят загрузить архив, его содержащий. Действительно сто&#x301;ящий сервис, использую не первый год, нареканий нет.</p>
+
+<p><code>http://www.smushit.com/ysmush.it/</code></p>
+
+<p>Как правило, первыми кандидатами на сжатие становятся такие константы (в том смысле, что они неизменяемы) как всевозможные элементы самого веб-сайта: шапка, кнопки... Хотя если не лениться, можно прогонять и отдельные изображения для статей.</p>
+
+<p>Но в некоторых случаях требуется ещё более жёсткий подход. Если страница просто ломится от картинок (пример: объёмный пост со множеством изображений или галерея какая-нибудь), полная загрузка её может занимать достаточно продолжительное время. Дабы избежать этого неприятного момента, можно загружать картинки лишь тогда, когда взор читателя обратится к ним.</p>
+
+<p>В этом посильную помощь нам окажет один из скриптов с сайта jquery.com: <code>http://plugins.jquery.com/lazyload/</code>. Для его использования придётся подключить jquery:</p>
+<div class="highlight"><pre><code class="html language-html" data-lang="html"><span class="nt">&lt;head&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&#39;http://code.jquery.com/jquery-2.0.3.min.js&#39;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&#39;путь_к_скрипту.js&#39;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="c">&lt;!--вызов функции скрипта--&gt;</span>
+<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;img.lazy&quot;</span><span class="p">).</span><span class="nx">lazyload</span><span class="p">({</span>
+    <span class="nx">effect</span> <span class="o">:</span> <span class="s2">&quot;fadeIn&quot;</span>
+    <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+</code></pre></div>
+<p>Чтобы это сработало, изображению нужно присвоить класс <code>.lazy</code>:</p>
+<div class="highlight"><pre><code class="html language-html" data-lang="html"><span class="nt">&lt;img</span> <span class="na">class=</span><span class="s">&quot;lazy&quot;</span> <span class="na">src=</span><span class="s">&quot;img.gif&quot;</span> <span class="na">data-original=</span><span class="s">&quot;example.jpg&quot;</span><span class="nt">&gt;</span>
+</code></pre></div>
+<p>Вот и всё. До связи!</p>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
+    <li class="footer"><a href="/">unix-lab.org</a>&nbsp;::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

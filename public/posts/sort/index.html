@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Сортировка строк в файле | UNIX-LAB.ORG</title>
+  <meta name="description" content="Небольшой скрипт для автоматизации рутинных дел">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://jekyll-unixlab.rhcloud.com/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://jekyll-unixlab.rhcloud.com/favicon.ico" type="image/x-icon">
+  <link href="http://jekyll-unixlab.rhcloud.com/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://jekyll-unixlab.rhcloud.com/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://jekyll-unixlab.rhcloud.com/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+    <li><a href="/author/">Автор</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Сортировка строк в файле</h2>
+<h5><i class="icon-feather"></i> 27 мая 2013
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/python.html">Python /</a>
+
+<a href="/tags/gentoo.html">Gentoo /</a>
+
+</h5>
+
+<p>Ранее мы уже писали различные скрипты для примера использования возможностей языка <code>python</code>, но не сказать, чтобы они были нужны в повседневности и могли претендовать на какое-то практическое применение. Сегодня же будет рассмотрен один очень небольшой и очень нужный (автору) скрипт. На его написание натолкнуло использование gentoo linux поэтому считаю, что он может быть небезынтересен пользователям этой операционной системы и прикрепляю соответствующий тег к посту. В чём суть работы скрипта: он сортирует в алфавитном порядке записи в <code>/etc/portage/*</code>. При пополнении парка программ такие файлы как <code>package.use</code>, <code>package.keywords</code> и им подобные наполняются беспорядочными строками, в коих некоторое время спустя сложно найти что-то самому хозяину. Так расставим всё по местам!</p>
+
+<p>Сначала приводится полный пример кода, содержащий менее двадцати строк, затем построчный разбор с комментариями.</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="c"># sort.py</span>
+<span class="c">#</span>
+<span class="c">#! /usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="n">package</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">&#39;Choose file for sort: &#39;</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="nb">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">package</span><span class="p">,</span> <span class="s">&#39;r+&#39;</span><span class="p">)</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">line</span> <span class="o">=</span> <span class="nb">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="nb">file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+    <span class="n">sort_text</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">new_line</span> <span class="ow">in</span> <span class="n">sort_text</span><span class="p">:</span>
+        <span class="nb">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">new_line</span><span class="p">)</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="nb">file</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+    <span class="nb">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;No such file or directory. Repeat, please!&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Первая строка указывает на расположение интерпретатора <code>python</code>, вторая — на кодировку по-умолчанию.</p>
+
+<p>Далее вводится переменная package, которой будет присвоено значение указанное пользователем. Иными словами при запуске команды <code>sudo python sort.py</code> будет запрошен путь к текстовому файлу, который в дальнейшем и подвергнется правке.</p>
+
+<p>Весь следующий блок кода обёрнут инструкцией <code>try-except</code>, перехватывающей исключение <code>IOError</code>. Это нужно для проверки ввода пользовательских данных. Например, вы могли ошибиться при наборе пути к файлу или ввели число. В таком случае вам укажут на вашу ошибку.</p>
+
+<ul>
+<li>file = open(package, &#39;r+&#39;) — открыть выбранный пользователем файл для обновления.</li>
+<li>pos = 0 — установить позицию в начало</li>
+<li>line = file.readlines() — построчное чтение из файла и присваивание переменной line получившегося списка</li>
+<li>file.seek(pos) — перемещать позицию</li>
+<li>sort_text = sorted(line) — получение нового отсортированного по алфавиту списка</li>
+</ul>
+
+<p>В следующем блоке проводится обход списка, перезапись выбранного файла, возвращение текущей позиции, закрытие файла:</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="k">for</span> <span class="n">new_line</span> <span class="ow">in</span> <span class="n">sort_text</span><span class="p">:</span>
+    <span class="nb">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">new_line</span><span class="p">)</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="nb">file</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+    <span class="nb">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+<p>Кроме того, можно проводить сортировку по ключу. Для этого достаточно создать дополнительную функцию. Например:</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="k">def</span> <span class="nf">sortByLenght</span><span class="p">(</span><span class="n">inputSrt</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputSrt</span><span class="p">)</span>
+</code></pre></div>
+<p>Теперь можно вызывать функцию sorted с ключом:</p>
+<div class="highlight"><pre><code class="pycon language-pycon" data-lang="pycon"><span class="gp">&gt;&gt;&gt; </span><span class="n">new_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">old_list</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">sortByLenght</span><span class="p">)</span>
+</code></pre></div>
+<p><img src="http://2.bp.blogspot.com/-szlemSwj994/UUQQK53C1DI/AAAAAAAAEKI/bq7DnoGpvvU/s1600/sorted.png" alt="sort.py" title="sort.py"></p>
+
+<h2 id="toc_0">Ещё немного теории или справка:</h2>
+
+<p>Файл может быть открыт в режимах только для чтения, для записи, для обновления.</p>
+
+<ul>
+<li>f = open(&#39;file&#39;) — откроет файл только для чтения</li>
+<li>f = open(&#39;file&#39;, &#39;r&#39;) — то же самое</li>
+<li>&#39;w&#39; — открытие файла для записи</li>
+<li>&#39;a&#39; — для добавления в конец</li>
+<li>&#39;b&#39; — указание на двоичные данные: <code>&#39;wb&#39;</code>, <code>&#39;rb&#39;</code>.</li>
+<li>&#39;t&#39; — явное указание на то, что файл текстовый. Обычно не пишется</li>
+<li>&#39;w+&#39; — открытие файла в режиме для обновления, в момент открытия файла его длина усекается до нуля, возможны чтение и запись</li>
+<li>&#39;r+&#39; —  открытие файла в режиме для обновления, длина не усекается, возможны чтение и запись</li>
+<li>метод readline() — читает одну строку, возвращает строку</li>
+<li>метод readlines() — читает все строки из файла, возвращает список</li>
+<li>метод tell() — возвращает текущую позицию в файле</li>
+<li>метод seek() — перемещает текущую позицию в новое место</li>
+<li>метод write() — запишет в файл одну строку</li>
+<li>метод writelines() — запишет список строк</li>
+</ul>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
+    <li class="footer"><a href="/">unix-lab.org</a>&nbsp;::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

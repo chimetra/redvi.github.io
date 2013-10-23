@@ -1,0 +1,11 @@
+---
+layout: default
+title: Теги
+grouptype: tag
+---
+<h2>{{ page.tag | capitalize }}</h2>
+<dl>
+{% for post in page.posts %}
+<dd><a href="{{ post.url }}/">{{ post.title }}</a></dd>
+{% endfor %}
+</dl>

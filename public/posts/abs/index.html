@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Знакомимся с ABS | UNIX-LAB.ORG</title>
+  <meta name="description" content="Сегодня будем доказывать, что arch linux ничем не хуже gentoo">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://jekyll-unixlab.rhcloud.com/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://jekyll-unixlab.rhcloud.com/favicon.ico" type="image/x-icon">
+  <link href="http://jekyll-unixlab.rhcloud.com/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://jekyll-unixlab.rhcloud.com/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://jekyll-unixlab.rhcloud.com/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+    <li><a href="/author/">Автор</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Знакомимся с ABS</h2>
+<h5><i class="icon-feather"></i> 11 января 2012
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/arch.html">Arch /</a>
+
+<a href="/tags/kernel.html">Kernel /</a>
+
+<a href="/tags/linux.html">Linux /</a>
+
+</h5>
+
+<p>Сегодня будем доказывать, что arch linux ничем не хуже gentoo. Главная
+особенность gentoo что? Правильно, порты, система портежей (вроде бы сделанная по образу и подобию портов FreeBSD, если нет, поправьте меня). Что ж, и мы не обделены.</p>
+
+<p>Многие, вероятно, уже догадались, о чём пойдёт речь. Для тех же, кто этого ещё не понял &mdash; знакомьтесь &mdash; ABS.</p>
+
+<p>ABS &mdash; Arch Building System &mdash; система построения пакетов в Arch Linux. Цель &mdash; создание автономного пакета из исходников для последующей установки при помощи пакетного менеджера pacman.</p>
+
+<p>Создание пакета для Arch начинается с написания файла <code>PKGBUILD</code>. Это просто Bash-скрипт, содержащий:</p>
+
+<ul>
+<li>название пакета, номер версии и прочую информацию такого рода.</li>
+<li>инструкции для скачивания, компиляции и установки программного пакета.</li>
+</ul>
+
+<p>Готовый файл <code>PKGBUILD</code> используется программой <code>makepkg</code>, которая следует описанным в нем инструкциям для правильного создания установочного бинарного пакета, имеющего расширение <code>.pkg.tar.gz</code>.</p>
+
+<p>Получение ABS:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> pacman -S abs
+</code></pre></div>
+<p>Синхронизация дерева ABS:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> abs
+</code></pre></div>
+<p>Просто, не так ли? Дальше &mdash; интереснее.</p>
+
+<p>Просмотрим, что находится в появившемся каталоге <code>abs</code>:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> ls /var/abs/
+
+<span class="go">community</span>
+<span class="go">core</span>
+<span class="go">extra</span>
+<span class="go">local</span>
+<span class="go">multilib</span>
+<span class="go">multilib-staging</span>
+<span class="go">README</span>
+</code></pre></div>
+<p>Здесь лежат каталоги, соответствующие группам пакетов Arch Linux. Зайдя в нужный подкаталог, мы можем скомпилировать из исходников какой-либо пакет, но об этом позже.</p>
+
+<p>Что содержит конфигурационный файл abs:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># /etc/abs.conf</span>
+<span class="c">#</span>
+
+<span class="c"># the top-level directory of all your PKGBUILDs - корневая директория для abs</span>
+<span class="o">[</span> <span class="s2">&quot;$ABSROOT&quot;</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">ABSROOT</span><span class="o">=</span><span class="s2">&quot;/var/abs/&quot;</span>
+
+<span class="c">#</span>
+<span class="c"># Server to sync from - сервер синхронизации</span>
+<span class="c">#</span>
+<span class="nv">SYNCSERVER</span><span class="o">=</span><span class="s2">&quot;rsync.archlinux.org&quot;</span>
+
+<span class="c">#</span>
+<span class="c"># The architecture to fetch abs for - архитектура при сборке пакета</span>
+<span class="c"># Either i686 or x86_64</span>
+<span class="c">#</span>
+<span class="nv">ARCH</span><span class="o">=</span><span class="s2">&quot;x86_64&quot;</span>
+
+<span class="c">#</span>
+<span class="c"># Pacman mirror list used for syncing via tarball - список зеркал для</span>
+<span class="c"># синхронизации</span>
+<span class="c">#</span>
+<span class="nv">MIRRORLIST</span><span class="o">=</span><span class="s2">&quot;/etc/pacman.d/mirrorlist&quot;</span>
+<span class="c">#</span>
+<span class="c"># REPOS to be parsed by abs (in this order) - удалите ! чтобы включить</span>
+<span class="c">#   (prefix a repo with a ! to disable it)</span>
+<span class="c">#</span>
+<span class="c"># Note: If a repo is removed, it is still fetched!</span>
+<span class="c"># Repos must be preceded with a ! to prevent fetching</span>
+<span class="c">#</span>
+<span class="nv">REPOS</span><span class="o">=(</span>core extra community multilib !testing !community-testing
+!multilib-testing
+    !staging !community-staging !gnome-unstable !kde-unstable<span class="o">)</span>
+</code></pre></div>
+<p>После сборки пакета, можно очистить кеш pacman&#39;а. Для очистки кеша существует команда <code>pacman -Scc</code>. Лучше сначала просмотреть, от чего мы собираемся избавиться:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> ls /var/cache/pacman/pkg
+</code></pre></div>
+<p>Давайте уже приступим. Например, захотелось нам установить из исходников openbox. Посмотрим, есть ли он:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> ls /var/abs/community|grep openbox
+<span class="go">openbox</span>
+<span class="go">openbox-themes</span>
+<span class="gp">$</span> <span class="nb">cd</span> /var/abs/community/openbox
+<span class="gp">$</span> sudo makepkg --asroot
+</code></pre></div>
+<p>Openbox найден. Далее выполнен вход в соответствующую директорию и дана команда сборки пакета. Поскольку, работая от обычного пользователя, собирать пакеты в системных директориях мы не вправе, а сборку от рута нам провести не дадут, выдав устрашающее предупреждение о том, как это небезопасно... В общем, пишем то, что написали: <code>--asroot</code></p>
+
+<p>Что будет?</p>
+
+<p>Умная система проверит наличие исходников и при необходимости скачает их, проверит зависимости, соберёт пакет, да ещё и почистит за собой.</p>
+
+<p>После вышеописанных действий мы получим в той же директории установочный пакет, который, собственно, и установим командой:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> sudo pacman -U имя_пакета.pkg.tar.xz
+</code></pre></div>
+<p>В названии будет указано имя пакета, версия и наша архитектура, вот так:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">openbox-3.5.0-4-x86_64.pkg.tar.xz
+</code></pre></div>
+<p>А если мы хотим собрать ядро?</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> ls /var/abs/core/linux
+<span class="go">change-default-console-loglevel.patch  CVE-2012-0056.patch</span>
+<span class="go">linux.install</span>
+<span class="go">config                 i915-fix-ghost-tv-output.patch</span>
+<span class="go">linux.preset</span>
+<span class="go">config.x86_64          i915-gpu-finish.patch   PKGBUILD</span>
+</code></pre></div>
+<p>Вы можете открыть редактором файл <code>PKGBUILD</code> и, например, раскомментировать строку <code>&quot;make menuconfig&quot;</code>, что даст возможность внести изменения перед сборкой ядра.</p>
+
+<p>Что ж, принцип поиска и сборки пакетов, думаю, ясен.</p>
+
+<p>Что ещё можно использовать?</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> sudo vim /etc/makepkg.conf:
+<span class="go">CFLAGS=&quot;-march=x86-64 -mtune=generic -O2 -pipe -fstack-protector</span>
+<span class="go">--param=ssp-buffer-size=4 -D_FORTIF    Y_SOURCE=2&quot;</span>
+<span class="go">CXXFLAGS=&quot;-march=x86-64 -mtune=generic -O2 -pipe -fstack-protector</span>
+<span class="go">--param=ssp-buffer-size=4 -D_FORT    IFY_SOURCE=2&quot;</span>
+<span class="go">LDFLAGS=&quot;-Wl,-O1,--sort-common,--as-needed,-z,relro,--hash-style=gnu&quot;</span>
+<span class="gp">#</span>-- Make Flags: change this <span class="k">for </span>DistCC/SMP systems
+<span class="go">MAKEFLAGS=&quot;-j2</span>
+</code></pre></div>
+<p>Для более быстрой сборки раскомментируйте <code>MAKEFLAGS</code> и установите подходящее вам значение. Рекомендуемое значение = число ядер процессора+1. Но никто не мешает найти оптимальное значение опытным путём.</p>
+
+<p>Здесь можно заметить сходство с портежами gentoo, хотя нет главного &mdash; USE-флагов. Так что, если вам хочется настроить свои флаги, делать это придётся для каждого пакета отдельно при помощи правки build-файла пакета. Безусловно, это неудобно. Но если нужно просто собрать программу из исходников &mdash; самое оно.
+Кроме того, предусмотрено создание своего порта. Для этого выделена директория <code>/var/abs/local/</code> - свои эксперименты проводим там. Коротко о том, как это будет выглядеть. Нужно скопировать <code>PKGBUILD</code> желаемого пакета в нашу локальную директорию для экспериментов и... сделать как захочется.</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> cp /var/abs/community/nginx/PKGBUILD /var/abs/local/
+</code></pre></div>
+<p>Файл <code>PKGBUILD</code> в этом посте разбираться не будет, о нём вы можете найти подробную инструкцию в официальной документации. Хотя не исключаю, что данный материал когда-то будет дополнен. Когда времени будет больше. А пока у меня всё.</p>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
+    <li class="footer"><a href="/">unix-lab.org</a>&nbsp;::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

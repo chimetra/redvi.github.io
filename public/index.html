@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Заметки | UNIX-LAB.ORG</title>
+  <meta name="description" content="">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://jekyll-unixlab.rhcloud.com/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://jekyll-unixlab.rhcloud.com/favicon.ico" type="image/x-icon">
+  <link href="http://jekyll-unixlab.rhcloud.com/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://jekyll-unixlab.rhcloud.com/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://jekyll-unixlab.rhcloud.com/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+    <li><a href="/author/">Автор</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+
+<h2><a href="">Создание уникальных URL в Ruby On Rails</a></h2>
+<h5><i class="icon-feather"></i> 15 октября 2013
+
+<i class="icon-bookmarks"></i>
+
+  <a href="/tags/ruby.html">Ruby /</a>
+</h5>
+  <p>В <a href="http://www.unix-lab.org/posts/get-absolute-url/">предыдущем посте</a> к рассмотрению был предложен вопрос о назначении собственных уникальных URL-адресов страницы и получения их полного пути. Сегодня тема та же, но другой фреймворк: для сравнения посмотрим как того же самого результата можно добиться в Ruby On Rails.</p>
+
+<p>Собственно, почему вдруг Ruby? Нет, не будет утверждений будто он хуже или лучше Python&#39;а, просто случайно попался на пути и весьма заинтриговал автора. Этого достаточно, чтобы черкнуть о нём пару строк. Не исключено (если дружба наша с Ruby станет крепнуть), что время от времени здесь будут появляться небольшие заметки о Ruby или Ruby On Rails.</p>
+
+<p>Подробных объяснений базовых вещей сегодня не предвидится. Если читателю ранее не доводилось встречаться с Rails, есть <a href="http://ruby.railstutorial.org/ruby-on-rails-tutorial-book">добротное пошаговое руководство</a>, достаточное для быстрого старта и понимания приведённого ниже материала.</p>
+
+<p>Зададим маршрут в <code>app/config/routes.rb</code>:</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="c1"># routes.rb:</span>
+<span class="n">get</span> <span class="s1">&#39;articles/:slug&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;articles#show&#39;</span>
+</code></pre></div>
+<p>Это указание на то, что при обращении к странице будет вызван метод <code>show</code> из контроллёра <code>articles_controller.rb</code>, отвечающего за вывод публикаций.</p>
+
+<p>Перепроводим маршруты:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> rake routes
+</code></pre></div>
+<p>Далее обратимся к указанному выше контроллёру. Он содержит различные методы, оперирующие нашей моделью. В примере ниже находит публикацию по определённым параметрам.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="c1"># articles_controller.rb`</span>
+
+<span class="k">def</span> <span class="nf">show</span>
+  <span class="vi">@article</span><span class="o">=</span><span class="no">Article</span><span class="o">.</span><span class="n">find_by_slug!</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:id</span><span class="o">]</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="kp">private</span>
+  <span class="k">def</span> <span class="nf">article_params</span>
+    <span class="n">params</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="ss">:article</span><span class="p">)</span><span class="o">.</span><span class="n">permit</span><span class="p">(</span><span class="ss">:title</span><span class="p">,</span> <span class="ss">:content</span><span class="p">,</span> <span class="ss">:slug</span><span class="p">)</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>Собственно, модель. Здесь нас и поджидаем самое интересное. Перед тем, как публикация будет записана в БД, создаётся поле <code>slug</code>. Для указания этого действия мы определяем <code>before_create</code>, в который передаём название функции &mdash; <code>create_slug</code>.</p>
+
+<p>Можно каждый раз при создании статьи назначать её <code>slug</code> вручную. Или же создавать это поле автоматически, исходя из названия статьи.</p>
+
+<p>Если с английским языком всё более или менее понятно, то автоматический перевод с кириллицы на латиницу может совсем не радовать, поэтому в общем случае предлагается использовать первый вариант.</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="c1"># article.rb</span>
+
+<span class="k">class</span> <span class="nc">Article</span> <span class="o">&lt;</span> <span class="ss">ActiveRecord</span><span class="p">:</span><span class="ss">:Base</span>
+  <span class="n">before_create</span> <span class="ss">:create_slug</span>
+
+  <span class="n">default_scope</span> <span class="ss">order</span><span class="p">:</span> <span class="s1">&#39;articles.created_at DESC&#39;</span> <span class="c1"># сортировка статей</span>
+  <span class="n">validates</span> <span class="ss">:slug</span><span class="p">,</span> <span class="ss">presence</span><span class="p">:</span> <span class="kp">true</span><span class="p">,</span> <span class="ss">length</span><span class="p">:</span> <span class="p">{</span><span class="ss">maximum</span><span class="p">:</span><span class="mi">30</span><span class="p">}</span> <span class="c1"># валидация</span>
+
+  <span class="k">def</span> <span class="nf">to_param</span>
+    <span class="s2">&quot;</span><span class="si">#{</span><span class="n">slug</span><span class="si">}</span><span class="s2">/&quot;</span><span class="o">.</span><span class="n">downcase</span> <span class="c1"># как выводить в URL</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">create_slug</span>
+    <span class="c1"># если в модели определено поле slug, slug задаётся вручную</span>
+    <span class="nb">self</span><span class="o">.</span><span class="n">slug</span><span class="o">=</span><span class="nb">self</span><span class="o">.</span><span class="n">slug</span><span class="o">.</span><span class="n">parameterize</span>
+    <span class="c1"># если поле slug не определено, генерируется автоматически</span>
+    <span class="c1"># исходя из значения поля title (заголовок статьи)</span>
+    <span class="c1"># self.slug=self.title.parameterize</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Наконец, пример вывода страницы публикации.</p>
+<div class="highlight"><pre><code class="css+erb language-css+erb" data-lang="css+erb"><span class="o">&lt;!</span><span class="nt">--</span> <span class="nt">show</span><span class="nc">.html.erb</span> <span class="nt">--</span><span class="o">&gt;</span>
+
+<span class="cp">&lt;%</span> <span class="n">provide</span><span class="p">(</span><span class="ss">:title</span><span class="p">,</span> <span class="vi">@article</span><span class="o">.</span><span class="n">title</span><span class="p">)</span> <span class="cp">%&gt;</span>
+<span class="o">&lt;</span><span class="nt">h2</span><span class="o">&gt;</span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="vi">@article</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="n">article_path</span><span class="p">(</span><span class="vi">@article</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="o">&lt;/</span><span class="nt">h2</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nt">h5</span><span class="o">&gt;</span><span class="cp">&lt;%=</span> <span class="vi">@article</span><span class="o">.</span><span class="n">created_at</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%d %B&quot;</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="o">&lt;/</span><span class="nt">h5</span><span class="o">&gt;</span>
+<span class="cp">&lt;%=</span> <span class="vi">@article</span><span class="o">.</span><span class="n">content</span> <span class="cp">%&gt;</span>
+</code></pre></div>
+
+<p align="center"><a href="#">наверх</a></p>
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
+    <li class="footer"><a href="/">unix-lab.org</a>&nbsp;::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

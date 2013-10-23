@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>UNIX-LAB.ORG</title>
+  <link href="http://jekyll-unixlab.rhcloud.com/feeds/atom.xml" rel="self" type="application/atom+xml"/>
+  <link href="http://jekyll-unixlab.rhcloud.com/"/>
+  <updated>2013-10-23T08:44:36+04:00</updated>
+  <id>http://jekyll-unixlab.rhcloud.com/</id>
+  <author>
+    <name>unix-lab.org</name>
+    <uri>http://jekyll-unixlab.rhcloud.com</uri>
+  </author>
+
+  
+    <entry>
+      <title>Создание уникальных URL в Ruby On Rails</title>
+      <link href="http://jekyll-unixlab.rhcloud.com/posts/rails-slug-url"/>
+      <updated>2013-10-15T13:15:00+04:00</updated>
+      <id>http://jekyll-unixlab.rhcloud.com/posts/rails-slug-url</id>
+      <author>
+        <name>unix-lab.org</name>
+        <uri>http://jekyll-unixlab.rhcloud.com</uri>
+      </author>
+      <content type="html">&lt;p&gt;В &lt;a href=&quot;http://www.unix-lab.org/posts/get-absolute-url/&quot;&gt;предыдущем посте&lt;/a&gt; к рассмотрению был предложен вопрос о назначении собственных уникальных URL-адресов страницы и получения их полного пути. Сегодня тема та же, но другой фреймворк: для сравнения посмотрим как того же самого результата можно добиться в Ruby On Rails.&lt;/p&gt;
+
+&lt;p&gt;Собственно, почему вдруг Ruby? Нет, не будет утверждений будто он хуже или лучше Python&amp;#39;а, просто случайно попался на пути и весьма заинтриговал автора. Этого достаточно, чтобы черкнуть о нём пару строк. Не исключено (если дружба наша с Ruby станет крепнуть), что время от времени здесь будут появляться небольшие заметки о Ruby или Ruby On Rails.&lt;/p&gt;
+
+&lt;p&gt;Подробных объяснений базовых вещей сегодня не предвидится. Если читателю ранее не доводилось встречаться с Rails, есть &lt;a href=&quot;http://ruby.railstutorial.org/ruby-on-rails-tutorial-book&quot;&gt;добротное пошаговое руководство&lt;/a&gt;, достаточное для быстрого старта и понимания приведённого ниже материала.&lt;/p&gt;
+
+&lt;p&gt;Зададим маршрут в &lt;code&gt;app/config/routes.rb&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# routes.rb:&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;articles/:slug&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;articles#show&amp;#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Это указание на то, что при обращении к странице будет вызван метод &lt;code&gt;show&lt;/code&gt; из контроллёра &lt;code&gt;articles_controller.rb&lt;/code&gt;, отвечающего за вывод публикаций.&lt;/p&gt;
+
+&lt;p&gt;Перепроводим маршруты:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;console language-console&quot; data-lang=&quot;console&quot;&gt;&lt;span class=&quot;gp&quot;&gt;$&lt;/span&gt; rake routes
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Далее обратимся к указанному выше контроллёру. Он содержит различные методы, оперирующие нашей моделью. В примере ниже находит публикацию по определённым параметрам.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# articles_controller.rb`&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;show&lt;/span&gt;
+  &lt;span class=&quot;vi&quot;&gt;@article&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Article&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;find_by_slug!&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;kp&quot;&gt;private&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;article_params&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:article&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;permit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:slug&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Собственно, модель. Здесь нас и поджидаем самое интересное. Перед тем, как публикация будет записана в БД, создаётся поле &lt;code&gt;slug&lt;/code&gt;. Для указания этого действия мы определяем &lt;code&gt;before_create&lt;/code&gt;, в который передаём название функции &amp;mdash; &lt;code&gt;create_slug&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Можно каждый раз при создании статьи назначать её &lt;code&gt;slug&lt;/code&gt; вручную. Или же создавать это поле автоматически, исходя из названия статьи.&lt;/p&gt;
+
+&lt;p&gt;Если с английским языком всё более или менее понятно, то автоматический перевод с кириллицы на латиницу может совсем не радовать, поэтому в общем случае предлагается использовать первый вариант.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;ruby language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# article.rb&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Article&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:Base&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;before_create&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:create_slug&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;default_scope&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;order&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;articles.created_at DESC&amp;#39;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# сортировка статей&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;validates&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:slug&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;presence&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;maximum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# валидация&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;to_param&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;slug&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;downcase&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# как выводить в URL&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;create_slug&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# если в модели определено поле slug, slug задаётся вручную&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;slug&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;slug&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;parameterize&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# если поле slug не определено, генерируется автоматически&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# исходя из значения поля title (заголовок статьи)&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# self.slug=self.title.parameterize&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Наконец, пример вывода страницы публикации.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;css+erb language-css+erb&quot; data-lang=&quot;css+erb&quot;&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;!&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;show&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;.html.erb&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;cp&quot;&gt;&amp;lt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;provide&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@article&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;h2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;link_to&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@article&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;article_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@article&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;h2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;h5&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@article&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;created_at&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;strftime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;%d %B&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;h5&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@article&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;content&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
+    </entry>
+  
+    <entry>
+      <title>Абсолютные пути URL в Django</title>
+      <link href="http://jekyll-unixlab.rhcloud.com/posts/get-absolute-url"/>
+      <updated>2013-10-03T01:15:00+04:00</updated>
+      <id>http://jekyll-unixlab.rhcloud.com/posts/get-absolute-url</id>
+      <author>
+        <name>unix-lab.org</name>
+        <uri>http://jekyll-unixlab.rhcloud.com</uri>
+      </author>
+      <content type="html">&lt;p&gt;В одной из &lt;a href=&quot;http://www.unix-lab.org/posts/django-first-steps/&quot;&gt;предыдущих заметок&lt;/a&gt;, нами был написан шаблон для вывода списка публикаций на главной странице. Ссылка на полный текст публикации имеет вид &lt;code&gt;{% url &amp;#39;articles:detail&amp;#39; post.id %}&lt;/code&gt;, что позволяет получить определённую страницу по её идентификатору (&lt;code&gt;id&lt;/code&gt;). За отображение страницы ответственность несёт представление &lt;code&gt;articles&lt;/code&gt; из пространства имён (&lt;code&gt;namespace&lt;/code&gt;) &lt;code&gt;detail&lt;/code&gt;. В данном ниже примере для разнообразия используем другую модель, а также для упрощения понимания материала откажемся от использования пространств имён: одно приложение &amp;mdash; одна модель &amp;mdash; один urls.py.&lt;/p&gt;
+
+&lt;p&gt;И всё бы хорошо, но ссылки подобного вида иногда могут не подойти вам. Вот пара простых примеров, иллюстрирующих этот тезис:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Вам нужно получить статью по slug&lt;/li&gt;
+&lt;li&gt;Вам нужно отобразить ссылки на предыдущую и следующую статью&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Что же, разберём указанные примеры по-порядку.&lt;/p&gt;
+
+&lt;h3 id=&quot;toc_0&quot;&gt;Вид urls.py&lt;/h3&gt;
+
+&lt;p&gt;Создание файла &lt;code&gt;urls.py&lt;/code&gt;, отвечающего нашим запросам. Отображено использование обобщённых представлений, подробности о которых вы без труда найдёте в документации.&lt;/p&gt;
+
+&lt;p&gt;У нас имеется представление &lt;code&gt;IndexView&lt;/code&gt;, на которое возложен вывод индексной страницы со списком последних публикаций, а также &lt;code&gt;DetailView&lt;/code&gt;, которое выводит отдельную запись. В шаблоне к ним можно обращаться как к &lt;code&gt;latest_articles_list&lt;/code&gt; и &lt;code&gt;detail&lt;/code&gt; соответственно.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;c&quot;&gt;# urls.py&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;django.conf.urls&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;patterns&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;include&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;.views&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IndexView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DetailView&lt;/span&gt;
+
+
+&lt;span class=&quot;n&quot;&gt;urlpatterns&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;patterns&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;r&amp;#39;^$&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IndexView&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;as_view&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;latest_articles_list&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;r&amp;#39;^articles/(?P&amp;lt;slug&amp;gt;[-\w]+)/$&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DetailView&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;as_view&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;template_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;article.html&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;detail&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&quot;toc_1&quot;&gt;Обращение по первичному ключу&lt;/h3&gt;
+
+&lt;p&gt;В случае, когда нужно получить объект по &lt;code&gt;slug&lt;/code&gt;, нам важно знать, что любая модель имеет свой первичный ключ (&lt;code&gt;primary key&lt;/code&gt;) и его можно переопределить. По-умолчанию первичным ключом является поле &lt;code&gt;id&lt;/code&gt;, генерируемое автоматически. Таким образом, мы получаем URL вида:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;http://site.org/articles/1/
+http://site.org/articles/2/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;А хотим видеть такие адреса:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;http://site.org/articles/krasivyi-url/
+http://site.org/articles/po-poly-slug/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Самым простым решением является переопределение первичного ключа, но в этом случае вы больше не сможете обращаться к полю модели по &lt;code&gt;id&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;c&quot;&gt;# models.py&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;django.db&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;
+
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Article&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;sd&quot;&gt;&amp;#39;&amp;#39;&amp;#39; Create Post &amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;title&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CharField&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max_length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;150&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;verbose_name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;Title&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TextField&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;pub_date&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DateField&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;auto_now&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;verbose_name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;Create Date&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;update&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DateField&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;auto_now&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;blank&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;verbose_name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;Last Update&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;author&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ForeignKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;verbose_name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;Author&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;slug&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SlugField&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;primary_key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;max_length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;250&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unique&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;summary&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TextField&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;blank&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;max_length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;250&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;help_text&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;Meta Description&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Как мог заметить наблюдательный читатель, мы задали поле &lt;code&gt;slug&lt;/code&gt; со значением &lt;code&gt;primary_key=True&lt;/code&gt;. Предполагается, что в этом поле будет установлен устраивающий автора красивый URL. Теперь следует ссылаться на детальное представление публикации именно по этому полю. Конкретный пример будет приведён чуть ниже.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Примечание&lt;/strong&gt;: если при создании представления вы используете обобщённые представления, вернуть публикацию по полю &lt;code&gt;slug&lt;/code&gt;, не нагромождая ваше представление и не затрагивая &lt;code&gt;primary key&lt;/code&gt;, также может быть очень легко. В этом вам посодействуют &lt;code&gt;DetailView&lt;/code&gt; и &lt;code&gt;get_object_or_404&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;c&quot;&gt;# views.py&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;django.shortcuts&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_object_or_404&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;django.views.generic.detail&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DetailView&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;DetailView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DetailView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;sd&quot;&gt;&amp;quot;&amp;quot;&amp;quot; Return detail data &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Article&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;context_object_name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;article&amp;#39;&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;get_object_or_404&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Article&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;slug__iexact&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;kwargs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;slug&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Прежде, чем приступить к написанию шаблонов, решим второй вопрос: о получении абсолютных путей к объекту.&lt;/p&gt;
+
+&lt;h3 id=&quot;toc_2&quot;&gt;Абсолютные пути&lt;/h3&gt;
+
+&lt;p&gt;Итак, для примера мы решили, что будем выводить предыдущую и следующую статью при обращении к статье текущей. Если просто обращаться к статье по указанному ключу, можно поиметь некоторые проблемы. Наш URL имеет относительный путь, поэтому при наведении на любую ссылку внутри поста, которая сформирована также (то есть с указанием &lt;code&gt;{% url &amp;#39;view&amp;#39; object.slug %}&lt;/code&gt;), первичный ключ выбранной статьи просто будет добавлен к уже имеющемуся адресу. Вот так:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;имеем:
+http://site.org/articles/my-article
+при наведении на другую ссылку получим:
+http://site.org/articles/my-article/my-next-article
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Поэтому мы добавим к нужной модели спасательный круг в виде метода &lt;code&gt;get_absolute_url&lt;/code&gt; и сразу же выведем в шаблоне именно то, что нужно.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;python language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;c&quot;&gt;# models.py&lt;/span&gt;
+
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;django.db&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;django.core.urlresolvers&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reverse&lt;/span&gt;
+
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Article&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;title&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;CharField&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;max_length&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;150&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;verbose_name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;Title&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;content&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;models&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;TextField&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;get_absolute_url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reverse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;detail&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;slug&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)])&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3 id=&quot;toc_3&quot;&gt;Подготовка шаблонов&lt;/h3&gt;
+
+&lt;p&gt;Теперь в шаблонах мы можем ссылаться на статью по её абсолютному адресу, используя &lt;code&gt;get_absolute_url&lt;/code&gt;. Примеры:&lt;/p&gt;
+
+&lt;p&gt;подобным образом может выглядеть индексная страница со списком последних публикаций&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;html+django language-html+django&quot; data-lang=&quot;html+django&quot;&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!--index.html--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;{%&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;base.html&amp;quot;&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%}&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;{%&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;block&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;content&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%}&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;main&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;cp&quot;&gt;{%&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;article&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;latest_articles_list&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%}&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;{{&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;article.get_absolute_url&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;}}&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;{{&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;article.title&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;}}&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;cp&quot;&gt;{%&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;endfor&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%}&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;{%&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;endblock&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;content&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;а на странице детального представления можно добавить ссылки на предыдущий и следующий пост&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;html+django language-html+django&quot; data-lang=&quot;html+django&quot;&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!--article.html--&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;{%&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;base.html&amp;quot;&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%}&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;{%&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;block&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;content&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%}&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;main&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;h2&amp;gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;{{&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;article.get_absolute_url&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;}}&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;{{&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;article.title&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;}}&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&amp;lt;/h2&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;{{&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;article.content&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;}}&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;links&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;{{&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;article.get_next_by_pub_date.get_absolute_url&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;}}&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Next&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;#&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;on top&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;a&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;href=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;{{&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;article.get_previous_by_pub_date.get_absolute_url&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;}}&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Prev&lt;span class=&quot;nt&quot;&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;{%&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;endblock&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;Model.get_next_by_pub_date&lt;/code&gt; вернёт следующую публикацию, основываясь на дате её создания&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Model.get_previous_by_pub_date&lt;/code&gt; отобразит предыдущую публикацию.&lt;/p&gt;
+
+&lt;p&gt;Применив к ним метод &lt;code&gt;get_absolute_url&lt;/code&gt;, мы получим искомое решение.&lt;/p&gt;
+</content>
+    </entry>
+  
+    <entry>
+      <title>Навигация по документу в LaTeX</title>
+      <link href="http://jekyll-unixlab.rhcloud.com/posts/hyperref"/>
+      <updated>2013-09-14T21:05:00+04:00</updated>
+      <id>http://jekyll-unixlab.rhcloud.com/posts/hyperref</id>
+      <author>
+        <name>unix-lab.org</name>
+        <uri>http://jekyll-unixlab.rhcloud.com</uri>
+      </author>
+      <content type="html">&lt;p&gt;Довольно часто бывает необходимо указать в тексте ссылку на источник или какой-либо полезный ресурс. А то и просто сделать оглавление &amp;laquo;кликабельным&amp;raquo;, дабы при его просмотре сразу можно было выбрать нужную главу и перейти к ней.&lt;/p&gt;
+
+&lt;p&gt;Для этих нужд вполне можно задействовать пакет &lt;code&gt;hyperref&lt;/code&gt;, который входит в поставку с LaTeX в большинстве дистрибутивов. &lt;code&gt;Hyperref&lt;/code&gt; имеет достаточно большое количество опций, которые перечисляются через запятую при подключении пакета. Но следует иметь ввиду, что он переопределяет некоторые команды LaTeX&amp;#39;а, и подключать его последним. При подключении &lt;code&gt;hyperref&lt;/code&gt; все перекрёстные ссылки будут преобразованы в ссылки гипертекстовые: оглавление, сноски, цитаты...&lt;/p&gt;
+
+&lt;p&gt;Во многих источниках обращают внимание на опцию выбора драйвера. Честно сказать, при создании PDF-документа с &lt;code&gt;pdflatex&lt;/code&gt; &lt;u&gt;без указания&lt;/u&gt; драйвера всё собралось и сработало точно так же как и с включением нужной опции.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Возможные опции для hyperref
+
+&lt;ul&gt;
+&lt;li&gt;pdftex&lt;/li&gt;
+&lt;li&gt;dvips&lt;/li&gt;
+&lt;li&gt;latex2html&lt;/li&gt;
+&lt;li&gt;vtex&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;toc_0&quot;&gt;Ссылки внутри документа&lt;/h2&gt;
+
+&lt;p&gt;К примеру, появилась необходимость сослаться на какой-либо пункт в документе. В этом случае воспользуемся мишенью и сошлёмся на неё. Если вы привыкли работать с HTML, можете сравнить это с созданием якоря на странице. Команда для мишени задаётся так:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;tex language-tex&quot; data-lang=&quot;tex&quot;&gt;&lt;span class=&quot;k&quot;&gt;\hypertarget&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;{&lt;/span&gt;name&lt;span class=&quot;nb&quot;&gt;}{&lt;/span&gt;text&lt;span class=&quot;nb&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;где &lt;code&gt;name&lt;/code&gt; &amp;mdash; мишень, &lt;code&gt;text&lt;/code&gt; &amp;mdash; используемый текст (этот аргумент может быть пустым).&lt;/p&gt;
+
+&lt;p&gt;Теперь нужно просто сослаться на созданную мишень в тексте при помощи &lt;code&gt;hyperlink&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;tex language-tex&quot; data-lang=&quot;tex&quot;&gt;&lt;span class=&quot;k&quot;&gt;\documentclass&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;[a4paper,14pt,titlepage,final,oneside]&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;{&lt;/span&gt;report&lt;span class=&quot;nb&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;\usepackage&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;[english, russian]&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;{&lt;/span&gt;babel&lt;span class=&quot;nb&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;\usepackage&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;[utf8]&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;{&lt;/span&gt;inputenc&lt;span class=&quot;nb&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;\usepackage&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;[unicode, pdftex]&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;{&lt;/span&gt;hyperref&lt;span class=&quot;nb&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;% подключаем hyperref&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;\begin&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;{&lt;/span&gt;document&lt;span class=&quot;nb&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;% начало документа&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;\hypertarget&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;{&lt;/span&gt;p1&lt;span class=&quot;nb&quot;&gt;}{&lt;/span&gt;Пункт 1&lt;span class=&quot;nb&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;% создаём мишень p1&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;% ссылаемся на мишень p1&lt;/span&gt;
+Для просмотра подробных сведений обратитесь к пункту &lt;span class=&quot;k&quot;&gt;\hyperlink&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;{&lt;/span&gt;p1&lt;span class=&quot;nb&quot;&gt;}{&lt;/span&gt;1&lt;span class=&quot;nb&quot;&gt;}&lt;/span&gt;.
+
+&lt;span class=&quot;k&quot;&gt;\end&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;{&lt;/span&gt;document&lt;span class=&quot;nb&quot;&gt;}&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;% конец документа&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Если же нужно дать ссылку на внешний файл, в параметрах должнен наличествовать путь к нужному файлу. В примере документ, который будет открыт, лежит в том же каталоге, что и документ, ссылающийся на него:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;tex language-tex&quot; data-lang=&quot;tex&quot;&gt;&lt;span class=&quot;c&quot;&gt;% \href{URL}{text}&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;% ссылаемся на document.pdf&lt;/span&gt;
+Инструкция по эксплуатации &lt;span class=&quot;k&quot;&gt;\href&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;{&lt;/span&gt;document.pdf&lt;span class=&quot;nb&quot;&gt;}{&lt;/span&gt;прилагается&lt;span class=&quot;nb&quot;&gt;}&lt;/span&gt;.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&quot;toc_1&quot;&gt;Ссылки на сторонние ресурсы&lt;/h2&gt;
+
+&lt;p&gt;Для того, чтобы при двойном клике на ссылку открывалась нужная страница в браузере, следует оформить её (предполагаемую ссылку) при помощи того же &lt;code&gt;href&lt;/code&gt;. Эта конструкция в принципе ничем не отличается от предыдущей, где мы ссылались на внешний файл, только вместо указания пути к файлу используется адрес интернет-страницы:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;tex language-tex&quot; data-lang=&quot;tex&quot;&gt;&lt;span class=&quot;k&quot;&gt;\chapter&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;{&lt;/span&gt;Введение&lt;span class=&quot;nb&quot;&gt;}&lt;/span&gt;
+
+Есть много ресурсов, предназначенных для изучения Python и Django,
+так что эта книга не стремится обучить основам.
+Для новичков в Python я настоятельно рекомендую
+&lt;span class=&quot;k&quot;&gt;\href&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;{&lt;/span&gt;http://www.diveinto.org/python3/&lt;span class=&quot;nb&quot;&gt;}{&lt;/span&gt;Dive Into Python&lt;span class=&quot;nb&quot;&gt;}&lt;/span&gt; Марка Пилгрима.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&quot;toc_2&quot;&gt;Как выбрать цвет&lt;/h2&gt;
+
+&lt;p&gt;Таблица цветов, представленная вот таким незамысловатым рисунком (зафикисровано дабы постоянно не обращаться к вики, откуда и было унесено):&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://farm3.staticflickr.com/2854/9718512214_047abf1432_o.jpg&quot;&gt;&lt;img src=&quot;http://farm3.staticflickr.com/2854/9718512214_5737105b40_n.jpg&quot; alt=&quot;latex colors&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Более тонкую настройку цвета поможет осуществить ресурс &lt;a href=&quot;http://www.palettebuilder.com/rgb.aspx&quot;&gt;Palette Builder&lt;/a&gt;. На вкладке &lt;code&gt;RGB&lt;/code&gt; указываем или выбираем нужный цветовой вариант и вписываем нечто подобное:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;tex language-tex&quot; data-lang=&quot;tex&quot;&gt;&lt;span class=&quot;k&quot;&gt;\usepackage&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;{&lt;/span&gt;color&lt;span class=&quot;nb&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;% подключить пакет color&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;% выбрать цвета&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;\definecolor&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;{&lt;/span&gt;BlueGreen&lt;span class=&quot;nb&quot;&gt;}{&lt;/span&gt;RGB&lt;span class=&quot;nb&quot;&gt;}{&lt;/span&gt;49,152,255&lt;span class=&quot;nb&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;\definecolor&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;{&lt;/span&gt;Violet&lt;span class=&quot;nb&quot;&gt;}{&lt;/span&gt;RGB&lt;span class=&quot;nb&quot;&gt;}{&lt;/span&gt;120,80,120&lt;span class=&quot;nb&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;% назначить цвета при подключении hyperref&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;\usepackage&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;[unicode, colorlinks, urlcolor=BlueGreen, linkcolor=Violet, pagecolor=Violet]&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;{&lt;/span&gt;hyperref&lt;span class=&quot;nb&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Теперь цвет на другие страницы внутри документа и цвет гиперссылок опять же внутри документа будет филетовым, а вот ссылки на сторонние ресуры &amp;mdash; голубыми.&lt;/p&gt;
+
+&lt;p&gt;linkcolor
+: цвет гиперссылок внутри документа, по-умолчанию red&lt;/p&gt;
+
+&lt;p&gt;pagecolor
+: цвет гиперссылок на другие страницы внутри документа, по-умолчанию red&lt;/p&gt;
+
+&lt;p&gt;filecolor
+: цвет гиперссылок, открывающих локальные файлы, по-умолчанию cyan&lt;/p&gt;
+
+&lt;p&gt;anchorcolor
+: цвет текста мишени, по-умолчанию black&lt;/p&gt;
+
+&lt;p&gt;citecolor
+: цвет библиографических ссылок, по-умолчанию green&lt;/p&gt;
+
+&lt;p&gt;urlcolor
+: цвет гиперссылок на сетевые ресурсы, по-умолчанию magenta&lt;/p&gt;
+</content>
+    </entry>
+  
+</feed>

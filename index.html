@@ -1,0 +1,16 @@
+---
+layout: default
+title: Заметки
+grouptype: index
+---
+{% assign first_post = site.posts.first %}
+<h2><a href="{{ post.url }}">{{ first_post.title }}</a></h2>
+<h5><i class="icon-feather"></i> {{ first_post.date | localize: "%d %B %Y" }}
+
+<i class="icon-bookmarks"></i>
+{% for tag in first_post.tags %}
+  <a href="/tags/{{ tag }}.html">{{ tag | capitalize }} /</a>
+{% endfor %}</h5>
+  {{ first_post.content }}
+
+<p align="center"><a href="#">наверх</a></p>

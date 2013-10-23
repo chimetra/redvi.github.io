@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Установка PHPMyAdmin | UNIX-LAB.ORG</title>
+  <meta name="description" content="Установка PHPMyAdmin на Windows">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://jekyll-unixlab.rhcloud.com/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://jekyll-unixlab.rhcloud.com/favicon.ico" type="image/x-icon">
+  <link href="http://jekyll-unixlab.rhcloud.com/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://jekyll-unixlab.rhcloud.com/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://jekyll-unixlab.rhcloud.com/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+    <li><a href="/author/">Автор</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Установка PHPMyAdmin</h2>
+<h5><i class="icon-feather"></i> 16 июня 2012
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/server.html">Server /</a>
+
+<a href="/tags/windows.html">Windows /</a>
+
+</h5>
+
+<p>Что ж, <a href="http://www.unix-lab.org/posts/apache-php-mysql/">в предыдущем посте</a> мы благополучно установили веб-сервер Apache, php, MySQL... Но с базами данных намного удобнее работать при помощи <code>PHPMyAdmin</code>. Давайте его установим.</p>
+
+<p>Идём по адресу <a href="http://www.phpmyadmin.net/home_page/downloads.php">http://www.phpmyadmin.net/home_page/downloads.php</a>, скачиваем архив. Желательно выбирать мультиязычный, где уже имеется русский. На родном языке всегда лучше.</p>
+
+<p>Предварительно создаём папку pma и распаковываем архив по адресу, где живёт наш веб-сервер. В моём случае это <code>C:\Program Files (x86)\Apache Software Foundation\Apache2.2\htdocs</code>.</p>
+
+<p>Приглядимся внимательно и обнаружим файл с говорящим названием <code>config.sample.inc.php</code>. Копируем его и сохраняем как <code>config.inc.php</code>. Теперь, если возникнет такая нужда, мы сможем редактировать этот файл конфигурации как душе угодно, но... Не пугайтесь, сейчас делать этого нам даже не придётся.</p>
+
+<p>Хотя следует проверить настройки конфигурации PHP в <code>php.ini</code>:</p>
+<div class="highlight"><pre><code class="apache language-apache" data-lang="apache"><span class="err">extension=mysql</span>.<span class="nb">so</span>
+extension=mysqli.so
+</code></pre></div>
+<p>И, если вдруг возникнут проблемы, конфигурацию веб-сервера в <code>httpd.conf</code>:</p>
+
+<p>Добавить в блок начинающийся строкой:</p>
+<div class="highlight"><pre><code class="apache language-apache" data-lang="apache"><span class="nt">&lt;IfModule</span> <span class="s">alias_module</span><span class="nt">&gt;</span>
+</code></pre></div>
+<p>Следующее:</p>
+<div class="highlight"><pre><code class="apache language-apache" data-lang="apache"><span class="nb">Alias</span> <span class="sx">/phpmyadmin</span> <span class="s2">&quot;C:\Program Files (x86)\Apache Software Foundation\Apache2.2\htdocs\pma&quot;</span>
+</code></pre></div>
+<p>Всё. Заходим <a href="htttp://localhost/pma/index.php">htttp://localhost/pma/index.php</a></p>
+
+<p><img src="http://3.bp.blogspot.com/-DecanRKA5bQ/T8JMELatxAI/AAAAAAAAAq8/kgKDLHRk-NY/s1600/phpmyadmin.png" alt="phpmyadmin" title="phpmyadmin"></p>
+
+<p>Вспоминаем пароль пользователя root, входим под этой учётной записью. Можно создавать свои базы данных и заполнять их содержимым.</p>
+
+<p><img src="http://4.bp.blogspot.com/-wkDN-gylCgs/T8JMT_El6II/AAAAAAAAArE/fLHjXx9SvYY/s1600/bd.png" alt="bd" title="base"></p>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy;&nbsp;2011&mdash;2013&nbsp;::</li>
+    <li class="footer"><a href="/">unix-lab.org</a>&nbsp;::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>
