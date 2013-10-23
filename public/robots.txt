@@ -28,5 +28,5 @@ Disallow: /feeds/
 Disallow: /page*/
 Disallow: /tags/
 
-{# Sitemap: http://www.unix-lab.org/sitemap.xml #}
-{# Host: www.unix-lab.org #}
+Sitemap: http://www.unix-lab.org/sitemap.xml
+Host: www.unix-lab.org
