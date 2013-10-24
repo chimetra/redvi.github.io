@@ -17,6 +17,7 @@ permalink: /posts/:title
 tag_page_layout: tag_page
 tag_page_dir: tags
 
+future: false
 safe: false
 lsi: false
 excerpt_separator: "\n\n"

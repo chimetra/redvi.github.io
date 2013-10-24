@@ -1,3 +1,15 @@
+---
+layout: post
+title: Онлайн-консультант для сайта
+date: 2013-11-17 08:10
+tags: [web]
+slug: mibew
+author: redVi
+summary: Mibew является open source проектом, который можно использовать для вполне себе корыстных целей.
+---
+
+
+
 mysql> CREATE DATABASE mibew_db;
 Query OK, 1 row affected (0.00 sec)
 
