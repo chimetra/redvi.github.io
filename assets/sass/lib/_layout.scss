@@ -30,7 +30,7 @@ html, body {height: 100%; color: $text-color; background-color: $light-gray;}
 
 #header-wrapper {
   color: $white;
-  height: 9.375em;
+  min-height: 9.375em;
   vertical-align: middle;
   text-align: center;
   border-bottom: 1px solid $border;
@@ -68,7 +68,7 @@ html, body {height: 100%; color: $text-color; background-color: $light-gray;}
 }
 
 #main {
-  width: 60%;
+  width: 55%;
   max-width: 960px;
   margin: 0 auto; /* centering text */
   padding-bottom: 6.250em;
@@ -101,7 +101,7 @@ html, body {height: 100%; color: $text-color; background-color: $light-gray;}
 }
 
 .footer {
-  width: 60%;
+  width: 55%;
   max-width: 960px;
   padding: 0.313em 0;
   margin: auto; /* centering text */

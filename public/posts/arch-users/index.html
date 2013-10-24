@@ -117,6 +117,10 @@
 </code></pre></div>
 <p>Теперь проверьте <code>/etc/group</code>. Появился ли наш пользователь в группе <code>wheel</code>? Конечно, да.</p>
 
+<p>Если нужно наоборот удалить поьзователя из группы:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> sudo gpasswd -d user1 lighttpd
+<span class="go">Удаление пользователя user1 из группы lighttpd</span>
+</code></pre></div>
 <p>А что с группами?</p>
 
 <ul>
