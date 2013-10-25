@@ -1,9 +1,10 @@
 .input-form {
-  display: block;
+  display: inline-block;
+  height: 25px;
   vertical-align: middle;
   background-color: rgb(255, 255, 255);
   border: 1px solid rgb(204, 204, 204);
-  border-radius: 4px 4px 4px 4px;
+  border-radius: 4px;
   &:focus {
     border-color: #66afe9;
     outline: 0;
@@ -24,7 +25,7 @@
     margin-left: 84px;
     margin-bottom: 1em;
     padding: 8px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: $sans;
     background: $img-border bottom left repeat-x !important;
 
     .juvia-avatar {
@@ -128,9 +129,13 @@ input[type="submit"]:focus {
   .juvia-self-ad {
     margin: 1em 0;
     font: {
-      family: Arial, Helvetica, sans-serif;
+      family: $sans;
       size: 12px;
     }
     color: #888;
   }
+}
+
+input[type="text"] {
+  @extend .input-form;
 }
