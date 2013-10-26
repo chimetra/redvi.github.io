@@ -3,6 +3,15 @@
 
   
   <url>
+    <loc>http://www.unix-lab.org/posts/lighttpd</loc>
+    
+    <lastmod>2013-10-26</lastmod>
+    
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  
+  <url>
     <loc>http://www.unix-lab.org/posts/rails-slug-url</loc>
     
     <lastmod>2013-10-15</lastmod>
