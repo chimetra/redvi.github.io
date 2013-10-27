@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Установка Gentoo. По-русски | UNIX-LAB.ORG</title>
+  <meta name="description" content="Сегодня будем развенчивать миф о сложности установки Gentoo.">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Установка Gentoo. По-русски</h2>
+<h5><i class="icon-feather"></i> 30 сентября 2011
+
+ <i class="icon-spin4"></i> 2 января 2013
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/gentoo.html">Gentoo /</a>
+
+<a href="/tags/linux.html">Linux /</a>
+
+</h5>
+
+<p>Сегодня будем развенчивать миф о сложности установки Gentoo. Почему установка &quot;по-русски&quot;? Потому что настраивать станем русскую локаль, раскладку и временную зону. Статья получилась довольно объёмной, для тех, кто не знает, как скоротать долгий вечер).</p>
+
+<h3 id="toc_0">Загрузитесь с СD-диска.</h3>
+
+<p>Грузимся с параметрами по умолчанию.</p>
+
+<p><img src="http://1.bp.blogspot.com/-CNpKK24BMI0/ToWIXvl3XNI/AAAAAAAAAMQ/ucrOkjGKt5w/s1600/gentoo_boot.png" alt="gentoo boot"></p>
+
+<h3 id="toc_1">Настройка интернет-соединения:</h3>
+
+<p>автор использует модемное соединение, данные передаются автоматически при помощи DHCP.</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> /sbin/ifconfig
+</code></pre></div>
+<p>если кроме интерфейса lo больше ничего нет, значит делаем следующее:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> dhcpcd eth0 <span class="o">(</span>где ваш сетевой интерфейс - eth0<span class="o">)</span>
+</code></pre></div>
+<p>после чего повторяем команду <code>/sbin/ifconfig</code></p>
+
+<p>теперь у нас появились данные интерфейса <code>eth0</code>.</p>
+
+<p>Для настройки adsl-соединения:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> pppoe-setup
+<span class="gp">#</span> net-setup eth0 <span class="o">(</span>для обычных или беспроводных сетей<span class="o">)</span>
+<span class="gp">#</span> ping ya.ru - пингуем яндекс
+</code></pre></div>
+<p>чтобы прервать пинги:</p>
+
+<p><code>Ctrl+C</code></p>
+
+<p>Интернет настроили, идём дальше</p>
+
+<h2 id="toc_2">Создание разделов диска</h2>
+
+<p>Для этого воспользуемся <code>cfdisk</code>:</p>
+
+<p>перед тем,как создавать разделы,сядьте и подумайте какие,какого размера и с какой файловой системой.</p>
+
+<ul>
+<li><code>/</code> - корневой каталог</li>
+<li><code>/home</code> - директории пользователей</li>
+<li><code>/boot</code> - загрузочные файлы</li>
+<li><code>/usr</code> - пользовательские приложения.</li>
+<li><code>/var</code> - изменяемые приложения, лучше не жадничать хотя бы потому,что там будут компилироваться наши пакеты</li>
+<li><code>/opt</code> - большой размер нужен для игрового сервера</li>
+</ul>
+
+<p>Лучше записать то, что вы себе насочиняли. Для домашнего использования можно обойтись стандартными каталогами <code>/boot</code>, <code>/</code> , <code>swap</code>.</p>
+
+<h3 id="toc_3">Непосредственно создание разделов:</h3>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> cfdisk /dev/sda
+</code></pre></div>
+<p>где <code>sda</code> - SCSI-диск; <code>hda</code> - IDE-диск. Выбирайте что нужно вам.</p>
+
+<ul>
+<li><code>news</code> - создание нового раздела</li>
+<li><code>type</code> - выбор типа файловой системы (83 - Linux, 82 - <code>swap</code>)</li>
+<li><code>bootable</code> - отметить как загрузочный (укажите для раздела,в который хотите смонтировать <code>/boot</code>!)</li>
+<li><code>write</code> - записать изменения</li>
+<li><code>delete</code> - удалить</li>
+<li><code>quit</code> - выйти</li>
+</ul>
+
+<p><img src="http://4.bp.blogspot.com/-DO3Qly4-DxU/ToWKYWy_xdI/AAAAAAAAAMU/MjAae-_QKKA/s1600/gentoo_cfdisk.png" alt="cfdisk"></p>
+
+<h3 id="toc_4">Назначение файловой системы:</h3>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> mke2fs /dev/sda1 - создание <span class="sb">`</span>ext2<span class="sb">`</span> на разделе <span class="sb">`</span>/dev/sda1<span class="sb">`</span>
+<span class="gp">#</span> mke2fs -j /dev/sda3 - создание <span class="sb">`</span>ext3<span class="sb">`</span> на разделе <span class="sb">`</span>/dev/sda3<span class="sb">`</span>
+<span class="gp">#</span> mkswap /dev/sda2 - создание раздела подкачки на <span class="sb">`</span>/dev/sda2<span class="sb">`</span>
+<span class="gp">#</span> swapon /dev/sda2 - и его активация
+<span class="gp">#</span> mkfs.ext4 - создание <span class="sb">`</span>ext4<span class="sb">`</span>, если не желаете использовать <span class="sb">`</span>ext3<span class="sb">`</span>
+</code></pre></div>
+<h3 id="toc_5">Назначение точек монтирования:</h3>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> mount /dev/sda3 /mnt/gentoo - монтируем корень
+<span class="gp">#</span> mkdir /mnt/gentoo/boot - раздел под загрузчик
+<span class="gp">#</span> mount /dev/sda1 /mnt/gentoo/boot - монтирование раздела загрузчика
+</code></pre></div>
+<h2 id="toc_6">Архив стадии, дерево портежей</h2>
+
+<p>В качестве источника загрузки автором было использовано зеркало <code>mirror.yandex.ru</code>
+Внимательно следите за тем,чтобы загрузить подходящий скачанному вами образу архив. В примере использован amd64.</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> <span class="nb">cd</span> /mnt/gentoo
+<span class="gp">#</span> links http://mirror.yandex.ru/gentoo-distfiles/releases/amd64/current-stage3/
+</code></pre></div>
+<p>Выберите файл <code>stage*.tar.bz</code> и нажмите <code>enter</code>. Начнётся загрузка архива, это 161 Мб, так что пока можно попить кофейку.</p>
+
+<p><img src="http://2.bp.blogspot.com/-sQnGBlA-AFE/ToWKhbbfoMI/AAAAAAAAAMY/6G6peYvEpEo/s1600/gentoo2.png" alt="stage"></p>
+
+<p>Загрузили? Распаковываем:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> tar xvjpf stage3-*.tar.bz
+</code></pre></div>
+<p>Теперь сделаем снимок дерева портежей</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> links http://mirror.yandex.ru/gentoo-distfiles/snapshots/
+</code></pre></div>
+<p>выбираем внизу <code>portage-latest.tar.bz2</code></p>
+
+<p>Начнётся загрузка.</p>
+
+<p>распаковываем (из корневого каталога):</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> tar xvjf /mnt/gentoo/portage-latest.tar.bz2 -C /mnt/gentoo/usr
+</code></pre></div>
+<h2 id="toc_7">Настройка компиляции ядра</h2>
+
+<p>Настройки хранятся в файле <code>mnt/gentoo/etc/portage/make.conf</code>. Его и открываем любимым редактором (joe, nano, vi?)
+Здесь используются переменные и значения. Пример:</p>
+
+<p>переменная - <code>CHOST</code>, её значение - <code>x86_64-pc-linux-gnu</code> - указывает на архитектуру процессора
+<code>CFLAGS=&quot;-march=k8 -pipe -O2&quot;</code> - где</p>
+
+<p><code>&quot;-march=k8&quot;</code> - название целевой архитектуры, <code>k8</code> прописывается для amd64, <code>-О2</code> - классс оптимизации.</p>
+
+<p><b>Допустимые значения:</b></p>
+
+<ul>
+<li><code>-s</code> оптимизация по размеру</li>
+<li><code>-0</code> без оптимизации</li>
+<li><code>-1 -2 -3</code> - по скорости</li>
+<li><code>CXXFLAGS=&quot;${CFLAGS}&quot;</code> - не изменяйте её</li>
+<li><code>MAKEOPTS=&quot;-j2&quot;</code> - определяет сколько параллельных процессов компиляции можно запускать при установке пакета. Обычно ставят значение равное количеству ядер процессора +1. Если ваш процессор поддерживает технологию Hyper-threading, разумное значение будет: количество доступных ядер, умноженное на 2 +1.
+USE-флаги. Можно пока ничего не дописывать, займётесь этим позже.</li>
+</ul>
+
+<h3 id="toc_8">Выбор зеркал, DNS, chroot</h3>
+
+<p>Действия в примере производятся из каталога <code>/</code></p>
+
+<p>Выбор зеркала загрузки</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> mirrorselect -i -o &gt;&gt; /mnt/gentoo/etc/portage/make.conf
+</code></pre></div>
+<p>Выбор зеркала rsync:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> mirrorselect -i -r -o &gt;&gt; /mnt/gentoo/etc/portage/make.conf
+</code></pre></div>
+<p>Из предложенного списка выберите зеркала России.</p>
+
+<p><img src="http://4.bp.blogspot.com/-IyJCfdryYVE/ToWK0dEumOI/AAAAAAAAAMc/7etuZEOxiaQ/s1600/gentoo4_rsync.png" alt="rsync"></p>
+
+<p>Нелишним будет скопировать информацию о DNS</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> cp -L /etc/resolv.conf /mnt/gentoo/etc/resolv.conf
+</code></pre></div>
+<p>Монтируем <code>/proc</code> &amp; <code>/dev</code>:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> mount -t proc none /mnt/gentoo/proc
+<span class="gp">#</span> mount -o <span class="nb">bind</span> /dev /mnt/gentoo/dev
+</code></pre></div>
+<p>Переходим в новую среду с помощью <code>chroot</code>:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> chroot /mnt/gentoo /bin/bash
+<span class="gp">#</span> env-update
+<span class="gp">#</span> <span class="nb">source</span> /etc/profile
+<span class="gp">#</span> <span class="nb">export </span><span class="nv">PS1</span><span class="o">=</span><span class="s2">&quot;(chroot) $PS1&quot;</span>
+</code></pre></div>
+<p><img src="http://4.bp.blogspot.com/-CsPH_FFvXKY/ToWK85b1e-I/AAAAAAAAAMg/VUTZVPeXNck/s1600/gentoo3_chroot1.png" alt="chroot"></p>
+
+<h2 id="toc_9">Прочие премудрости</h2>
+
+<p>Обновите дерево портежей:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> mkdir /usr/portage
+<span class="gp">#</span> emerge --sync<span class="sb">`</span>
+</code></pre></div>
+<p>это может занять какое-то время, не пугайтесь</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> emerge portage - если выдаёт сообщение о новой версии портежей
+</code></pre></div>
+<p>Выбор профиля:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> eselect profile list
+<span class="go">Available profile symlink targets:</span>
+<span class="go">[1]   default/linux/amd64/10.0 *</span>
+<span class="go">[2]   default/linux/amd64/10.0/desktop</span>
+<span class="go">[3]   default/linux/amd64/10.0/server</span>
+<span class="gp">#</span> eselect profile <span class="nb">set </span>3
+</code></pre></div>
+<p>Думаю, приведённые действия не нуждаются в пояснении, всё ясно из названий профилей. Нужно лишь выбрать необходимый вам, исходя из ваших задач.</p>
+
+<h3 id="toc_10">USE-флаги</h3>
+
+<p>Служат для включения/отключения поддержки необязательных функций при компиляции программ.
+Вам не нужен X-сервер? Допишите значение <code>&quot;-X&quot;</code>. Не нужна поддержка qt? Значит <code>&quot;-qt&quot;</code>. И наоборот включите поддержку unicode: <code>&quot;unicode&quot;</code>.
+Посмотреть допустимые значения:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> less /usr/portage/profiles/use.desc
+</code></pre></div>
+<p>Значения дописываются в <code>/etc/portage/make.conf</code> в строку USE</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> nano -w /etc/portage/make.conf
+</code></pre></div>
+<p>Например:</p>
+
+<p><img src="http://4.bp.blogspot.com/-I-dahuzNfuY/ToWLIjklZvI/AAAAAAAAAMk/lrp-gm6MKbA/s1600/gentoo_use1.png" alt="gentoo use"></p>
+
+<h3 id="toc_11">Настройка кодировки:</h3>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> nano -w /etc/locale.gen
+</code></pre></div>
+<p>вы увидите список закомментированных строк с кодировками, вот сверху или же ниже его впишите:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">en_US.UTF-8 UTF-8
+ru_RU.UTF-8 UTF-8
+</code></pre></div>
+<p>сохраните изменения и выйдите: <code>Ctrl+O</code>, <code>Ctrl+Q</code></p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> locale-gen
+</code></pre></div>
+<h3 id="toc_12">Настройка времени:</h3>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+</code></pre></div>
+<p>Теперь наше локальное время идёт по Кремлёвским курантам))
+Можете скопировать любое место вашей дислокации из <code>/usr/share/zoneinfo</code></p>
+
+<h2 id="toc_13">Ядро</h2>
+
+<p>Скачаем исходники ядра</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> <span class="nv">USE</span><span class="o">=</span><span class="s2">&quot;-doc symlink&quot;</span> emerge gentoo-sources
+</code></pre></div>
+<h3 id="toc_14">Установка ядра</h3>
+
+<p>Способ 1 - всё и сразу</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> emerge genkernel
+<span class="gp">#</span> genkernel all
+</code></pre></div>
+<p>В результате получим ядро с поддержкой разного ненужного хлама. Плюс этого способа - простота.
+Примечание: можно подправить <code>/etc/genkernel.conf</code>, включив в нём параметры:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">OLDCONFIG=&quot;yes&quot;
+MENUCONFIG=&quot;yes&quot;
+CLEAN=&quot;no&quot;
+MRPROPER=&quot;no&quot;
+</code></pre></div>
+<p>В таком случае вы сможете собрать своё ядро, а genkernel сделает всё остальное.
+После сборки можете просто проверить название созданного ядра и initrd, а затем обратиться к дальнейшему пункту о сборке программ:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> ls /boot/kernel* /boot/initramfs*
+</code></pre></div>
+<p>Способ 2 - только то, что нужно</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> emerge pcutils <span class="o">(</span>с её помощью вы сможете посмотреть аппаратную часть своего ПК<span class="o">)</span>
+<span class="gp">#</span> <span class="nb">cd</span> /usr/src/linux <span class="o">(</span>переход в каталог с исходниками<span class="o">)</span>
+<span class="gp">#</span> make menuconfig <span class="o">(</span>вызов меню с настройками<span class="o">)</span>
+</code></pre></div>
+<p><img src="http://2.bp.blogspot.com/-Kp3waRhclrU/ToWLVz7j0xI/AAAAAAAAAMo/yjipyAJdiOw/s1600/gentoo_menuconfig.png" alt="menuconfig"></p>
+
+<p>Здесь всё строго индивидуально. Используете usb-мышь или клавиатуру? Проверьте включена ли их поддержка. Хотите, чтобы система понимала NTFS? Проверьте включена ли её поддержка. Настроек хватит на всё: тип процессора, видео, звук, поддержка файловых систем, девайсов устройств, поддерживаемых кодировок. Просто пройдитесь по пунктам меню и поразбирайтесь,что вам нужно,а что нет. Если вы испытываете затруднения с этим, можете ознакомиться со следующей заметкой, а затем продолжить.</p>
+
+<p>Настроили? Теперь ядро нужно скомпилировать и установить:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> make <span class="o">&amp;&amp;</span> make modules_install - для тех, кто занимался ручной сборкой
+</code></pre></div>
+<p>И скопировать ядро в <code>/boot</code>:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> cp arch/x86_64/boot/bzImage /boot/
+</code></pre></div>
+<p>Пример:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> cp arch/x86_64/boot/bzImage /boot/2.6.37-gentoo-r4
+</code></pre></div>
+<p>Если вы собрали ядро с initrg, следует всё же установить genkernel и скомандовать:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> genkernel --install initramfs
+</code></pre></div>
+<p>Сборка программ, конфигурирование модулей, настройка загрузчика</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> emerge udev <span class="o">(</span>автоматическое распознавание устройств<span class="o">)</span> syslog-ng <span class="o">(</span>служба журналирования<span class="o">)</span> vixie-cron <span class="o">(</span>что такое cron, думаю, знают все<span class="o">)</span> dhcpcd <span class="o">(</span>автоматическое получение IP-адреса, если у вас это дело статично, можете не ставить<span class="o">)</span>
+</code></pre></div>
+<p>Теперь добавляем эти вещи в автозагрузку:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> rc-update add udev boot
+<span class="gp">#</span> rc-update add syslog-ng default
+<span class="gp">#</span> rc-update add vixie-cron default
+<span class="gp">#</span> rc-update add dhcpcd default
+</code></pre></div>
+<p>Проверяем наши устройства:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> nano -w /ets/fstab
+</code></pre></div>
+<p>Должно получится примерно так:</p>
+
+<p><img src="http://3.bp.blogspot.com/-2gM1M875onw/ToWMPewcg4I/AAAAAAAAAM4/RRNI4XwkV_0/s1600/gentoo_fstabrt1.png" alt="fstab"></p>
+
+<p>Обратите внимание: нужно убрать параметр noauto напротив <code>/boot</code> (в данном примере <code>/boot</code> расположен на <code>/sda1</code>)</p>
+
+<p>Имя хоста:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> nano -w /etc/conf.d/hostname
+</code></pre></div>
+<p>Укажите здесь имя своего ПК</p>
+
+<p>Сеть:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> nano -w /etc/conf.d/net
+</code></pre></div>
+<p>дописываем:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># /etc/conf.d/net</span>
+<span class="c">#</span>
+<span class="nv">config_eth0</span><span class="o">=</span><span class="s2">&quot;dhcp&quot;</span> <span class="c"># для получения динамического IP-адреса</span>
+<span class="c"># если адрес статичен,то впишите вместо dhcp свою информацию. Например:</span>
+<span class="nv">config_eth0</span><span class="o">=</span><span class="s2">&quot;192.168.0.2 netmask 255.255.255.0&quot;</span> <span class="c"># IP-адрес и адрес сети</span>
+<span class="nv">routes_eth0</span><span class="o">=</span><span class="s2">&quot;default via 192.168.0.1&quot;</span> <span class="c"># роутер</span>
+<span class="nv">dns_servers_eth0</span><span class="o">=</span><span class="s2">&quot;192.168.0.1 8.8.8.8&quot;</span> <span class="c"># DNS-адреса</span>
+</code></pre></div>
+<p>Теперь следует указать gentoo на существующий интерфейс. Для этого создайте символьную ссылку на <code>net.eth0</code>:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> <span class="nb">cd</span> /etc/init.d
+<span class="gp">#</span> ln -s net.lo net.eth0
+</code></pre></div>
+<p>Добавление сетевого интерфейса в автозагрузку:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> rc-update add net.eth0 default
+</code></pre></div>
+<p>Создание пароля для суперпользователя:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> passwd
+</code></pre></div>
+<p>впишите пароль для учётной записи root</p>
+
+<p>Примечание: можете также ознакомиться с настройками файла <code>/etc/rc.conf</code> (редактор по умолчанию, графическая среда и прочее)</p>
+
+<p>Настройка раскладки клавиатуры:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># /etc/conf.d/keymaps</span>
+<span class="nv">KEYMAP</span><span class="o">=</span><span class="s2">&quot;ru&quot;</span>
+</code></pre></div>
+<p>Настройка часов:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># /etc/conf.d/clock</span>
+<span class="nv">CLOCK</span><span class="o">=</span><span class="s2">&quot;local&quot;</span>
+<span class="nv">TIMEZONE</span><span class="o">=</span><span class="s2">&quot;Europe/Moscow&quot;</span>
+</code></pre></div>
+<p>Загрузчик:</p>
+
+<ul>
+<li><code># emerge grub</code></li>
+<li><code># nano /boot/grub/menu.lst</code></li>
+<li><code>splashimage</code> - расскоментируете - будет картинка при загрузке</li>
+<li><code>timeout</code> - время, после истечения которого начнётся загрузка</li>
+<li><code>kernel</code> - можно дописать в конец этой строки разрешение экрана консоли, например, <code>vga=0x318</code>.</li>
+</ul>
+
+<p>Обязательно проверьте, чтобы указанная здесь версия ядра полностью совпадала с версией собранного вами. Если это не так, исправьте на верную, иначе загрузчик просто не найдёт ядро.</p>
+
+<p>Для тех у кого параллельно установлена Windows (на <code>/dev/sda1</code>):</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">title=Windows XP
+rootnoverify (hd0,0)
+makeactive
+chainloader +1
+</code></pre></div>
+<p>Примечание: на практике информация про Windows не проверена</p>
+
+<p>Установка загрузчика:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> grep -v rootfs /proc/mounts &gt; /etc/mtab
+<span class="gp">#</span> grub install /dev/sda - где <span class="sb">`</span>sda<span class="sb">`</span> - ваш диск
+</code></pre></div>
+<h2 id="toc_15">Финиш</h2>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> <span class="nb">exit</span>
+<span class="gp">#</span><span class="nb"> cd</span>
+<span class="gp">#</span><span class="nb"> </span>umount /mnt/gentoo/boot /mnt/gentoo/proc /mnt/gentoo/dev /mnt/gentoo <span class="o">(</span>в общем последовательно отмонтируйте всё, что смонтировали в <span class="sb">`</span>/mnt<span class="sb">`</span><span class="o">)</span>
+<span class="gp">#</span> reboot
+</code></pre></div>
+<p><img src="http://3.bp.blogspot.com/-z9UHd-dlQzU/ToWMYc2twdI/AAAAAAAAAM8/BHhdNkDdTVg/s1600/gentoo_grub4.png" alt="gentoo grub"></p>
+
+<p>Перезагрузка, загрузка ПК с винчестера и вас встречают приглашением входа в систему.
+Поздравляю, вы победили!</p>
+
+<h2 id="toc_16">Локализация системы</h2>
+
+<p>Перезагрузившись, мы обнаружим прескверную вещь: кириллица отображается квадратиками. Что ж, в <code>locale.gen</code> нужные настройки внесены, продолжим квест по русификации системы.</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> emerge terminus-font intlfonts freefonts cronyx-fonts corefonts kbd
+</code></pre></div>
+<p>В файле <code>/etc/env.d/02locale</code>:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="nv">LC_ALL</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+<span class="nv">LANG</span><span class="o">=</span><span class="s2">&quot;ru_RU.UTF-8&quot;</span>
+</code></pre></div>
+<p>В <code>/etc/conf.d/keymaps</code>:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="nv">keymap</span><span class="o">=</span><span class="s2">&quot;ruwin_alt_sh-UTF-8&quot;</span>
+<span class="nv">windowkeys</span><span class="o">=</span><span class="s2">&quot;NO&quot;</span>
+<span class="nv">extended_keymaps</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+<span class="nv">dumpkeys_charset</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+<span class="nv">fix_euro</span><span class="o">=</span><span class="s2">&quot;NO&quot;</span>
+</code></pre></div>
+<p>В <code>/etc/conf.d/consolefont</code>:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="nv">consolefont</span><span class="o">=</span><span class="s2">&quot;cyr-sun16&quot;</span>
+<span class="nv">consoletranslation</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+</code></pre></div>
+<p>Можно также установить различные шрифты и поэкспериментировать с ними. После пересборки/установки шрифтов желательно выполнить:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> <span class="nb">fc</span>-cache -fv
+</code></pre></div>
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+<br />
+<div id="comments"></div>
+<script type="text/javascript" class="juvia">
+(function() {
+    var options = {
+        container   : '#comments',
+        site_key    : 'gcquc3fefcn3kyoj7jstkb7ic8f90cw',
+        topic_key   : '/posts/install-gentoo',
+        topic_url   : 'http://www.unix-lab.org/posts/install-gentoo',
+        topic_title : 'Установка Gentoo. По-русски' || 'http://www.unix-lab.org/posts/install-gentoo',
+        include_base: !window.Juvia,
+        include_css : !window.Juvia
+    };
+
+    function makeQueryString(options) {
+        var key, params = [];
+        for (key in options) {
+            params.push(
+                encodeURIComponent(key) +
+                '=' +
+                encodeURIComponent(options[key]));
+        }
+        return params.join('&');
+    }
+
+    function makeApiUrl(options) {
+        // Makes sure that each call generates a unique URL, otherwise
+        // the browser may not actually perform the request.
+        if (!('_juviaRequestCounter' in window)) {
+            window._juviaRequestCounter = 0;
+        }
+
+        var result =
+            'http://juvia-unixlab.rhcloud.com/api/show_topic.js' +
+            '?_c=' + window._juviaRequestCounter +
+            '&' + makeQueryString(options);
+        window._juviaRequestCounter++;
+        return result;
+    }
+
+    var s       = document.createElement('script');
+    s.async     = true;
+    s.type      = 'text/javascript';
+    s.className = 'juvia';
+    s.src       = makeApiUrl(options);
+    (document.getElementsByTagName('head')[0] ||
+     document.getElementsByTagName('body')[0]).appendChild(s);
+})();
+</script>
+
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy; 2011&mdash;2013 ::</li>
+    <li class="footer"><a href="/">unix-lab.org</a> ::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

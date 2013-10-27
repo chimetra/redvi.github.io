@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Управление питанием и настройки acpi | UNIX-LAB.ORG</title>
+  <meta name="description" content="Трудно приходится линуксоидам, не имеющим DE, а сидящим исключительно на WM &mdash; всё, что в полноценном Desktop Environment ( окружении рабочего стола или как это лучше обозначить на великом и могучем? ) поставляется и работает "из коробки" в WM нужно подбирать и настраивать.">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Управление питанием и настройки acpi</h2>
+<h5><i class="icon-feather"></i> 02 февраля 2013
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/linux.html">Linux /</a>
+
+<a href="/tags/gentoo.html">Gentoo /</a>
+
+<a href="/tags/arch.html">Arch /</a>
+
+</h5>
+
+<p>Трудно приходится линуксоидам, не имеющим DE, а сидящим исключительно на WM &mdash; всё, что в полноценном Desktop Environment ( окружении рабочего стола или как это лучше обозначить на великом и могучем? ) поставляется и работает &quot;из коробки&quot; в WM нужно подбирать и настраивать. Вот и автором сего поста ранее были использованы элементы xfce для таких вещей как управление питанием, регулировка громкости звука и яркости экрана. Но вступило что-то в голову: ведь в моей системе всегда установлены acpi и laptop-mode-tools, так почему бы не обучить их выполнять их же непосредственные обязанности: делать всё то, для чего раньше нужны были xfce4-volumed и xfce4-power-manager?</p>
+
+<p>Внимание! Для обучения нам понадобятся пакеты <code>laptop-mode-tools</code>, <code>acpi</code>, <code>acpid</code>. Acpid должен быть запущен.</p>
+
+<h2 id="toc_0">Уровень яркости экрана</h2>
+
+<p>Дописать в <code>/etc/default/grub</code> строки:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="nv">GRUB_CMDLINE_LINUX_DEFAULT</span><span class="o">=</span><span class="s2">&quot;acpi_backlight=vendor resume=/dev/sda5&quot;</span>
+</code></pre></div>
+<p>Лезем в acpi</p>
+
+<p>Создайте файлы со следующим содержанием:</p>
+
+<p>Для увеличения яркости:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># /etc/acpi/actions/bl_up.sh</span>
+<span class="c">#</span>
+<span class="c">#!/bin/sh</span>
+<span class="nv">bl_device</span><span class="o">=</span>/sys/class/backlight/intel_backlight/brightness
+<span class="nb">echo</span> <span class="k">$(($(</span>cat <span class="nv">$bl_device</span><span class="k">)</span><span class="o">+</span><span class="m">200</span><span class="k">))</span> &gt;<span class="nv">$bl_device</span>
+</code></pre></div>
+<p>и для уменьшения яркости</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># /etc/acpi/actions/bl_down.sh:</span>
+<span class="c">#</span>
+<span class="c">#!/bin/sh</span>
+<span class="nv">bl_device</span><span class="o">=</span>/sys/class/backlight/intel_backlight/brightness
+<span class="nb">echo</span> <span class="k">$(($(</span>cat <span class="nv">$bl_device</span><span class="k">)</span><span class="o">-</span><span class="m">200</span><span class="k">))</span> &gt;<span class="nv">$bl_device</span>
+</code></pre></div>
+<p>В <code>bl_device</code> замените <code>inel_backlight</code> на своё значение в зависимости от используемой видеокарты. Также стоит выяснить устраивающее вас значение, на основе которого будет увеличиваться или уменьшаться яркость экрана. У автора это значение = 200.</p>
+
+<p>Как найти подходящее значение?
+Посмотрите какая цифра стоит сейчас. Если вы ничего ещё не настраивали, она должна отражать максимально допустимое значение:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> cat  /sys/class/backlight/intel_backlight/brightness
+<span class="go">4882</span>
+</code></pre></div>
+<p>Теперь поиграйте со значениями, чтобы выбрать нужный шаг:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> <span class="nb">echo </span>1000 &gt; /sys/class/backlight/intel_backlight/brightness
+<span class="gp">#</span> <span class="nb">echo </span>1010 &gt; /sys/class/backlight/intel_backlight/brightness
+<span class="gp">#</span> <span class="nb">echo </span>1100 &gt; /sys/class/backlight/intel_backlight/brightness
+</code></pre></div>
+<p>Посмотрите как будет изменяться яркость экрана при разных значениях, если при добавлении 10 единиц вы практически не чувствуете разницы, добавьте ещё 50-100 единиц. Какой шаг покажется оптимальным, тот и оставьте.</p>
+
+<p>Теперь укажем acpi использовать наши скрипты:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># /etc/acpi/events/bl_up</span>
+<span class="c">#</span>
+<span class="nv">event</span><span class="o">=</span>video<span class="o">[</span> /<span class="o">]</span>brightnessup
+<span class="nv">action</span><span class="o">=</span>/etc/acpi/actions/bl_up.sh
+
+
+<span class="c"># /etc/acpi/events/bl_down</span>
+<span class="c">#</span>
+<span class="nv">event</span><span class="o">=</span>video<span class="o">[</span> /<span class="o">]</span>brightnessdown
+<span class="nv">action</span><span class="o">=</span>/etc/acpi/actions/bl_down.sh
+</code></pre></div>
+<p>и сделаем эти скрипты исполняемыми:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> chmod +x /etc/acpi/actions/<span class="o">{</span>bl_up.sh,bl_down.sh<span class="o">}</span>
+</code></pre></div>
+<p>Чтобы автоматически подбирать яркость при работе от аккумулятора или же сети, установим laptop-mode-tools:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> pacman -S laptop-mode-tools
+</code></pre></div>
+<p>и немного изменим его настройки:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># /etc/laptop-mode/conf.d/lcd-brightness.conf</span>
+<span class="c">#</span>
+<span class="nv">CONTROL_BRIGHTNESS</span><span class="o">=</span>1
+<span class="c"># Commands to execute to set the brightness on your LCD</span>
+<span class="c">#</span>
+<span class="c">#BATT_BRIGHTNESS_COMMAND=&quot;echo [value]&quot;</span>
+<span class="nv">BATT_BRIGHTNESS_COMMAND</span><span class="o">=</span><span class="s2">&quot;echo 700&quot;</span>
+<span class="nv">LM_AC_BRIGHTNESS_COMMAND</span><span class="o">=</span><span class="s2">&quot;echo 2000&quot;</span>
+<span class="nv">NOLM_AC_BRIGHTNESS_COMMAND</span><span class="o">=</span><span class="s2">&quot;echo 3000&quot;</span>
+<span class="nv">BRIGHTNESS_OUTPUT</span><span class="o">=</span><span class="s2">&quot;/sys/class/backlight/intel_backlight/brightness&quot;</span>
+</code></pre></div>
+<p>Разумеется, значения <code>700/2000/3000</code> и путь <code>/sys/class/backlight/intel_backlight/brightness</code> должны быть заменены на ваши значения.</p>
+
+<h2 id="toc_1">Автогибернация при критическом уровне заряда батареи</h2>
+
+<p>Достаточно часто бывает такое, что при работе от батареи забываешь посматривать на уровень её заряда, в результате чего получаешь отключение машины при полной разрядке батареи. Внезапное - как хлопок - выключение и все несохранённые данные потеряны. Обидно, не правда ли? Поэтому неплохо было бы позаботиться о своевременных мерах предосторожности.</p>
+
+<p>Для этих целей также будем использовать функционал laptop-mode.</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># /etc/laptop-mode/conf.d/auto-hibernate.conf:</span>
+<span class="c">#</span>
+<span class="nv">ENABLE_AUTO_HIBERNATION</span><span class="o">=</span>1
+<span class="c">#</span>
+<span class="c"># The hibernation command that is to be executed when auto-hibernation</span>
+<span class="c"># is triggered.</span>
+<span class="c">#</span>
+<span class="nv">HIBERNATE_COMMAND</span><span class="o">=</span>/usr/share/laptop-mode-tools/module-helpers/pm-hibernate
+<span class="c">#</span>
+<span class="c"># Auto-hibernation battery level threshold, in percentage of the battery&#39;s</span>
+<span class="c"># total capacity.</span>
+<span class="c">#</span>
+<span class="nv">AUTO_HIBERNATION_BATTERY_CHARGE_PERCENT</span><span class="o">=</span>4
+<span class="c">#</span>
+<span class="c"># Enable this to auto-hibernate if the battery reports that its level is</span>
+<span class="c"># &quot;critical&quot;.</span>
+<span class="c">#</span>
+<span class="nv">AUTO_HIBERNATION_ON_CRITICAL_BATTERY_LEVEL</span><span class="o">=</span>1
+</code></pre></div>
+<p>Если вас не устраивают значения по умолчанию, вы также можете изменить их.
+В случае, если до этого момента у вас не был указан раздел swap, укажите его в grub2, эти настройки уже были даны выше:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># /etc/default/grub</span>
+<span class="c">#</span>
+<span class="nv">GRUB_CMDLINE_LINUX_DEFAULT</span><span class="o">=</span><span class="s2">&quot;acpi_backlight=vendor resume=/dev/sda5&quot;</span>
+</code></pre></div>
+<p>где <code>/dev/sda5</code> - ваш swap-раздел
+Кроме того, в случае с archlinux следует добавить хук suspend в  <code>/etc/mkinitcpio.conf</code>:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="nv">HOOKS</span><span class="o">=</span><span class="s2">&quot;base udev autodetect modconf block filesystems usbinput fsck resume&quot;</span>
+</code></pre></div>
+<p>и пересобрать initrd:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> mkinitcpio -p linux
+</code></pre></div>
+<h2 id="toc_2">Регулировка звука</h2>
+
+<p>Для этого снова обратимся к скриптам acpi, как и в случае с управлением яркостью дисплея.</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># /etc/acpi/actions/volume_up.sh</span>
+<span class="c">#</span>
+<span class="c">#!/bin/bash</span>
+/usr/bin/amixer <span class="nb">set </span>Master 5%+
+
+<span class="c"># /etc/acpi/actions/volume_down.sh</span>
+<span class="c">#</span>
+<span class="c">#!/bin/bash</span>
+/usr/bin/amixer <span class="nb">set </span>Master 5%-
+
+<span class="c"># /etc/acpi/events/volume_up</span>
+<span class="c">#</span>
+<span class="nv">event</span><span class="o">=</span>button<span class="o">[</span> /<span class="o">]</span>volumeup
+<span class="nv">action</span><span class="o">=</span>/etc/acpi/actions/volume_up.sh
+
+<span class="c"># /etc/acpi/events/volume_down</span>
+<span class="c">#</span>
+<span class="nv">event</span><span class="o">=</span>button<span class="o">[</span> /<span class="o">]</span>volumedown
+<span class="nv">action</span><span class="o">=</span>/etc/acpi/actions/volume_down.sh
+</code></pre></div>
+<p>Делаем скрипты в actions исполняемыми:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> chmod +x /etc/acpi/actions/<span class="o">{</span>volume_up.sh,volume_down.sh<span class="o">}</span>
+</code></pre></div>
+<p>Для корректного распознавания мультимедийных клавиш, лучше использовать утилиту <code>xmodmap</code>.</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> xmodmap -pke &gt; ~/.xmodmap
+<span class="gp">$</span> vim .xinitrc:
+<span class="go">xmodmap ~/.xmodmap</span>
+</code></pre></div>
+<h2 id="toc_3">Acpi и события клавиш</h2>
+
+<p>Честно говоря, меня устраивает поведение по-умолчанию, поэтому с пристрастием этот вопрос не рассматривался. При закрытии крышки ноутбука машина переходит в режим гибернации. При нажатии кнопки питания - корректно отключает систему. Оно и хорошо.</p>
+
+<p>Похоже, управление этими событиями тоже берёт на себя laptop-mode-tools ( только пока неясно, в каком модуле/скрипте лежат эти настройки), поскольку в <code>/etc/acpi/handler.sh</code> каких-либо действий на события не назначено.</p>
+
+<p>Но таки рассмотрим как настраивать то или иное событие.</p>
+
+<p>Ответственен за эти шаманские действа вышеупомянутый <code>handler.sh</code> (или <code>default.sh</code> в зависимости от используемого дистрибутива), где и прописываются настройки. В случае, если вам хочется использовать не команду, а скрипт, расположите его в отдельном файле, подобно тому, как выше настраивалось управление яркостью дисплея и уровнем громкости .</p>
+
+<p>Пример из дефолта:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">button/lid<span class="o">)</span>
+        <span class="k">case</span> <span class="s2">&quot;$3&quot;</span> in
+            close<span class="o">)</span>
+                logger <span class="s1">&#39;LID closed&#39;</span>
+                ;;
+            open<span class="o">)</span>
+                logger <span class="s1">&#39;LID opened&#39;</span>
+                ;;
+            *<span class="o">)</span>
+                logger <span class="s2">&quot;ACPI action undefined: $3&quot;</span>
+                ;;
+    <span class="k">esac</span>
+    ;;
+</code></pre></div>
+<p><code>button/lid</code> указывает на управление закрытием/открытием крышки ноутбука, пока здесь нет ничего интересного.</p>
+
+<p>Пример с воспроизведением звукового файла при закрытии/открытии крышки ноутбука:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">    button/lid<span class="o">)</span>
+        <span class="k">case</span> <span class="s2">&quot;$3&quot;</span> in
+            close<span class="o">)</span>
+                logger <span class="s1">&#39;LID closed&#39;</span>
+                aplay /home/redvi/.scripts/message.wav
+                ;;
+            open<span class="o">)</span>
+                logger <span class="s1">&#39;LID opened&#39;</span>
+                aplay /home/redvi/.scripts/message.wav
+                ;;
+            *<span class="o">)</span>
+                logger <span class="s2">&quot;ACPI action undefined: $3&quot;</span>
+                ;;
+    <span class="k">esac</span>
+    ;;
+</code></pre></div>
+<p>То есть для настройки события нужно добавить его команду в соответствующее поле ( здесь после <code>logger &#39;LID closed&#39;</code>). Так, действие при открытии крышки нужно будет вписать после <code>logger &#39;LID opened&#39;</code>.</p>
+
+<p><code>button/power</code> &mdash; события, связанные с кнопкой управления питанием</p>
+
+<p><code>logger &#39;PowerButton pressed&#39;</code> &mdash; когда клавиша нажата</p>
+
+<p><code>button/sleep</code> &mdash; сон, если подобная кнопка/клавиша имеется</p>
+
+<p><code>ac_adapter</code> &mdash; события, связанные с подключением/отключением адаптера питания</p>
+
+<p><code>logger &#39;AC unpluged&#39;</code> &mdash; когда адаптер отключен</p>
+
+<p><code>logger &#39;AC pluged&#39;</code> &mdash; когда адаптер подключен</p>
+
+<p><code>battery</code> &mdash; батарея ноутбука</p>
+
+<p><code>button/lid</code> &mdash; крышка ноутбука</p>
+
+<p>Для перевода в ждущий/спящий режимы можно использовать скрипты <code>laptop-mode-tools</code> из <code>/usr/share/laptop-mode-tools/module-helpers</code>:  <code>pm-hibernate</code> и  <code>pm-suspend</code>.</p>
+
+<p>Для выключения питания при закрытии крышки достаточно добавить в <code>/etc/acpi/actions/lm_lid.sh</code> строку:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="o">[</span> <span class="s2">&quot;$3&quot;</span> <span class="o">=</span> <span class="s2">&quot;close&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> poweroff
+</code></pre></div>
+<p>Помимо всего вышеописанного мы можем контролировать парковку головок жёсткого диска. Дабы отключить парковку совсем пропишите в <code>/etc/laptop-mode/laptop-mode.conf</code>:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="nv">BATT_HD_POWERMGMT</span><span class="o">=</span>254
+<span class="nv">LM_AC_HD_POWERMGMT</span><span class="o">=</span>254
+<span class="nv">NOLM_AC_HD_POWERMGMT</span><span class="o">=</span>254
+</code></pre></div>
+<p>Пожалуй, на этом стоит остановиться и дать читателю возможность самостоятельно поэкспериментировать с настройками энергосбережения и событий acpi.</p>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+<br />
+<div id="comments"></div>
+<script type="text/javascript" class="juvia">
+(function() {
+    var options = {
+        container   : '#comments',
+        site_key    : 'gcquc3fefcn3kyoj7jstkb7ic8f90cw',
+        topic_key   : '/posts/acpi',
+        topic_url   : 'http://www.unix-lab.org/posts/acpi',
+        topic_title : 'Управление питанием и настройки acpi' || 'http://www.unix-lab.org/posts/acpi',
+        include_base: !window.Juvia,
+        include_css : !window.Juvia
+    };
+
+    function makeQueryString(options) {
+        var key, params = [];
+        for (key in options) {
+            params.push(
+                encodeURIComponent(key) +
+                '=' +
+                encodeURIComponent(options[key]));
+        }
+        return params.join('&');
+    }
+
+    function makeApiUrl(options) {
+        // Makes sure that each call generates a unique URL, otherwise
+        // the browser may not actually perform the request.
+        if (!('_juviaRequestCounter' in window)) {
+            window._juviaRequestCounter = 0;
+        }
+
+        var result =
+            'http://juvia-unixlab.rhcloud.com/api/show_topic.js' +
+            '?_c=' + window._juviaRequestCounter +
+            '&' + makeQueryString(options);
+        window._juviaRequestCounter++;
+        return result;
+    }
+
+    var s       = document.createElement('script');
+    s.async     = true;
+    s.type      = 'text/javascript';
+    s.className = 'juvia';
+    s.src       = makeApiUrl(options);
+    (document.getElementsByTagName('head')[0] ||
+     document.getElementsByTagName('body')[0]).appendChild(s);
+})();
+</script>
+
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy; 2011&mdash;2013 ::</li>
+    <li class="footer"><a href="/">unix-lab.org</a> ::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

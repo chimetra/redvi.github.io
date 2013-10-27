@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Chroot на практике | UNIX-LAB.ORG</title>
+  <meta name="description" content="Изменение корня это процесс изменения видимой на диске корневой директории (и текущего запуска процессов) на другую корневую директорию.">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Chroot на практике</h2>
+<h5><i class="icon-feather"></i> 25 декабря 2011
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/arch.html">Arch /</a>
+
+<a href="/tags/linux.html">Linux /</a>
+
+</h5>
+
+<p>Изменение корня это процесс изменения видимой на диске корневой директории (и текущего запуска процессов) на другую корневую директорию. Когда вы изменили корневую директорию на другую, вы больше не имеете доступа к файлам и командам за пределами этой директории. Эта директория становится подобна заключению пользователя в клетку. Изменение корневой директории обычно нужно для таких задач как переустановка GRUB или сброс забытого пароля и чаще осуществляется при помощи LiveCD или LiveUSB в монтируемый раздел, содержащий установленную систему.</p>
+
+<p>Вы должны загрузиться с любой работающей среды Linux (например, с LiveCD или USB flash disk).
+Для работы с chroot потребуются привилегии суперпользователя.</p>
+
+<p>Убедитесь, что архитектура среды Linux, с которой вы загрузились соответствует архитектуре системы, с которой вы будете работать (т.e. i686, x86_64). Вы можете просмотреть архитектуру среды командой:
+<code>uname -m</code></p>
+
+<h2 id="toc_0">Монтирование каталогов</h2>
+
+<p>Чтобы просмотреть все имеющиеся дисковые разделы и их типы введите:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> fdisk -l
+</code></pre></div>
+<p>Создайте директорию, куда вы хотели бы подмонтировать устройство или раздел:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> mkdir /mnt/arch
+<span class="gp">#</span> mount /dev/sda3 /mnt/arch
+</code></pre></div>
+<h2 id="toc_1">Изменение корневой директории</h2>
+
+<p>Подмонтируйте временные файловые системы:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> mount -t proc none /mnt/arch/proc
+<span class="gp">#</span> mount -t sysfs sys /mnt/arch/sys
+<span class="gp">#</span> mount -o <span class="nb">bind</span> /dev /mnt/arch/dev
+</code></pre></div>
+<p>Монтируйте другие разделы, если нуждаетесь в них (такие как  <code>/boot, /var, /usr</code>). Например:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> mount /dev/sda1 /mnt/arch/boot
+</code></pre></div>
+<p>После выхода из изолированной среды, вы сможете отмонтировать все разделы одной командой. Это позволит безопасно отключить систему.</p>
+
+<p>Если при нахождении в среде chroot вам нужна будет работа в сети, скопируйте информацию о DNS в новый корневой каталог:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> cp -L /etc/resolv.conf etc/resolv.conf
+</code></pre></div>
+<p>Переходим в новую среду:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> chroot /mnt/arch /bin/bash
+</code></pre></div>
+<p>Если вы увидите ошибку <code>&quot;chroot: cannot run command &#39;/bin/bash&#39;: Exec format error&quot;</code> это может означать, что архитектуры не совпадают.</p>
+
+<p>При работе с GRUB в изолированной среде нужно быть уверенным, что каталог <code>/etc/mtab</code> содержит актуальную информацию:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> grep -v rootfs /proc/mounts &gt; /etc/mtab
+</code></pre></div>
+<p>Следующие шаги:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> <span class="nb">source</span> /etc/profile
+<span class="gp">#</span> <span class="nb">export </span><span class="nv">PS1</span><span class="o">=</span><span class="s2">&quot;(chroot) $PS1&quot;</span>
+</code></pre></div>
+<h2 id="toc_2">Обслуживание системы:</h2>
+
+<ul>
+<li>Вот то, что вы можете сделать в изолированной среде:
+
+<ul>
+<li>Обновить или откатить пакеты</li>
+<li>Пересобрать образ initcpio</li>
+<li>Сбросить забытый пароль</li>
+<li>Исправить /etc/fstab</li>
+<li>Переустановить GRUB</li>
+</ul></li>
+</ul>
+
+<h2 id="toc_3">Выход из chroot окружения:</h2>
+
+<p>Когда вы закончите работу, выйдите из chroot, введя команду <code>exit</code>.</p>
+
+<p>Теперь отмонтируйте устройства и каталоги, которые вам больше не нужны:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> umount <span class="o">{</span>proc,sys,dev,boot...<span class="o">}</span>
+</code></pre></div>
+<p>Наконец отмонтируйте ваш жёсткий диск:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> <span class="nb">cd</span> /
+<span class="gp">#</span> umount /mnt/arch
+</code></pre></div>
+<p>Если вы видите ошибку подобную этой: <code>&quot;/mnt (или другой каталог) is busy&quot;</code>, вы можете узнать причину (используя <code>lsof</code>) или принудительно отмонтировать каталог:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> umount -f /mnt
+</code></pre></div>
+<p>После этого вы сможете безопасно отключить систему.</p>
+
+<p><b>Примечание:</b> статья является вольным переводом с ArchWiki, на практике проверено неоднократно</p>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+<br />
+<div id="comments"></div>
+<script type="text/javascript" class="juvia">
+(function() {
+    var options = {
+        container   : '#comments',
+        site_key    : 'gcquc3fefcn3kyoj7jstkb7ic8f90cw',
+        topic_key   : '/posts/chroot',
+        topic_url   : 'http://www.unix-lab.org/posts/chroot',
+        topic_title : 'Chroot на практике' || 'http://www.unix-lab.org/posts/chroot',
+        include_base: !window.Juvia,
+        include_css : !window.Juvia
+    };
+
+    function makeQueryString(options) {
+        var key, params = [];
+        for (key in options) {
+            params.push(
+                encodeURIComponent(key) +
+                '=' +
+                encodeURIComponent(options[key]));
+        }
+        return params.join('&');
+    }
+
+    function makeApiUrl(options) {
+        // Makes sure that each call generates a unique URL, otherwise
+        // the browser may not actually perform the request.
+        if (!('_juviaRequestCounter' in window)) {
+            window._juviaRequestCounter = 0;
+        }
+
+        var result =
+            'http://juvia-unixlab.rhcloud.com/api/show_topic.js' +
+            '?_c=' + window._juviaRequestCounter +
+            '&' + makeQueryString(options);
+        window._juviaRequestCounter++;
+        return result;
+    }
+
+    var s       = document.createElement('script');
+    s.async     = true;
+    s.type      = 'text/javascript';
+    s.className = 'juvia';
+    s.src       = makeApiUrl(options);
+    (document.getElementsByTagName('head')[0] ||
+     document.getElementsByTagName('body')[0]).appendChild(s);
+})();
+</script>
+
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy; 2011&mdash;2013 ::</li>
+    <li class="footer"><a href="/">unix-lab.org</a> ::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

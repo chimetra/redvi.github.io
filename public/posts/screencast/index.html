@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Скринкасты в Linux | UNIX-LAB.ORG</title>
+  <meta name="description" content="В этом посте затронем тему записи скринкастов под linux. Будет рассмотрено несколько наиболее популярных утилит для захвата видео с монитора компьютера, также обратим внимание на их функционал, для одних детально, для других - поверхностно.">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Скринкасты в Linux</h2>
+<h5><i class="icon-feather"></i> 11 декабря 2012
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/arch.html">Arch /</a>
+
+<a href="/tags/linux.html">Linux /</a>
+
+</h5>
+
+<p>В этом посте затронем тему записи скринкастов под linux. Будет рассмотрено несколько наиболее популярных утилит для захвата видео с монитора компьютера, также обратим внимание на их функционал, для одних детально, для других &mdash; поверхностно.</p>
+
+<p>Вообще, в linux не так много кандидатов, которые могут устроить нас по всем показателям. Как оказалось, найти адекватную программу для указанных целей достаточно проблематично. Выбраны несколько: старый добрый ffmpeg, небезызвестные XVidCap и recordMyDesktop, а также подающий надежды новичок &mdash; eidete.</p>
+
+<h2 id="toc_0">Начнём с ffmpeg.</h2>
+
+<p>Что он умеет и как это использовать в посведневной жизни:</p>
+
+<p>&quot;Склеивание&quot; музыки и видео:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> ffmpeg -i son.wav -i video_origine.avi video_finale.avi
+</code></pre></div>
+<p>Замена одной звуковой дорожки на другую (например, более качественную):</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> ffmpeg -i new.wav -i video.avi out.avi
+</code></pre></div>
+<p>Запись скринкаста (запись с монитора компьютера):</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> ffmpeg -f x11grab -s 1366x768 -r 25 -b 1500 -bt 500 -aspect 1,3333 -sameq -i :0.0+0,0 -f alsa -async 1 -ac 2 -i hw:0,0 -acodec libmp3lame ~/MyVideo.avi
+</code></pre></div>
+<p>В этом примере будет записан также звук.</p>
+
+<p>Перекодирование из одного формата в другой:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> ffmpeg -i video.avi -f webm video.webm
+</code></pre></div>
+<p>Извлечение аудиодорожки из видеозаписи:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> ffmpeg -i video.avi -f mp3 audio.mp3
+</code></pre></div>
+<p>Запись звука с микрофона:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> ffmpeg -f alsa -async 1 -ac 2 -i hw:0,0 -acodec libmp3lame sound.mp3
+</code></pre></div>
+<p>Создание gif-анимации из видео:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> ffmpeg -i video.avi animation.gif
+</code></pre></div>
+<p>Получить сведения о видео:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> ffmpeg -i video.avi
+</code></pre></div>
+<ul>
+<li>Основные ключи:
+
+<ul>
+<li>i - входной файл</li>
+<li>s - разрешение экрана для нашей записи</li>
+<li>r - количество кадров в секунду</li>
+<li>ac - количество каналов (для аудио)</li>
+<li>qscale - регулировка уровня сжатия</li>
+<li>bt - битрейт</li>
+</ul></li>
+</ul>
+
+<p>Остальное можно найти в мануале - <code>man ffmpeg</code>. Там до вас даже постараются донести, как всё это работает:</p>
+
+<p><img src="http://2.bp.blogspot.com/-B-a-5VgHZ08/UJE_alZqgEI/AAAAAAAACOI/5eqGThoy38s/s1600/ffmpeg-man.jpg" alt="2"></p>
+
+<p><b>Кстати:</b></p>
+
+<p>Проверить поддерживаемые форматы файлов можно командой <code>ffmpeg -formats</code></p>
+
+<h2 id="toc_1">Следующий кандидат - XVidCap</h2>
+
+<p>Кодирует на лету и имеет множество разных форматов. Автору не подошёл. Это тот редкий случай, когда всё вроде нормально, но субъективно что-то не нравится.</p>
+
+<p><img src="http://4.bp.blogspot.com/-8nse0GdN634/UJEuVmbwfaI/AAAAAAAACMs/FAPlIKW0CUo/s1600/xvidcap.png" alt="1"></p>
+
+<h2 id="toc_2">recordMyDesktop</h2>
+
+<p>Используют многие. Автору он не подошёл по причине непонятных фризов при записи ролика. Возможно, так отвратно он работает на отнюдь не топовом ноутбуке - нужно больше мощности?</p>
+
+<p>Кроме того, recodrMyDesktop записывает файл в непотребном формате, который всё равно придётся перекодировать.</p>
+
+<p><img src="http://1.bp.blogspot.com/-cLB_VdCYUUs/UJEuy146rxI/AAAAAAAACM0/2Pjw2AglwMs/s1600/recordmydesktop.png" alt="3"></p>
+
+<h2 id="toc_3">eidete</h2>
+
+<p>Новая звезда. Запись сразу в формат <code>webm</code> - новый видеоформат для веба - весит мало, качество хорошее, взят под крыло компанией Google. Минималистичный, понятный интерфейс с достаточным количеством настроек. Увы, пока он находится в стадии глубокого альфа-тестирования и на archlinux автора корректно не заработал. Но пользователи ubuntu ликуют и разносят благую весть &quot;наконец-то есть нормальная программа для захвата видео&quot; по просторам Всемирной Паутины. Да, у eidete определённо есть будущее.</p>
+
+<p><img src="http://4.bp.blogspot.com/-VXfGn9I7ktQ/UJExFs4LdlI/AAAAAAAACM8/oM7R2HmzEMo/s1600/eidete.png" alt="4"></p>
+
+<h2 id="toc_4">Как создать анимированный gif</h2>
+
+<p>Для этого отлично подходит программка <code>byzanz</code>. В официальных репозиториях её может и не быть. Пользователи Archlinux могут найти обсуждаемую деву в AUR.</p>
+
+<p>Сам процесс записи выглядит примерно так:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> byzanz-record --duration<span class="o">=</span>5 --delay<span class="o">=</span>5 --x<span class="o">=</span>500 --y<span class="o">=</span>500 --width<span class="o">=</span>800 --height<span class="o">=</span>600 myGifFile.gif
+</code></pre></div>
+<p>где</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">--x/--y - точки координат
+--width/ --height - ширина и высота экрана соответственно
+--duration - задержка перед началом записи
+--delay - продолжительность
+</code></pre></div>
+<p><img src="http://2.bp.blogspot.com/-PbkorsaKIPo/UM7NoUF5-5I/AAAAAAAADF8/kihDan3tTns/s1600/output.gif" alt="5"></p>
+
+<h2 id="toc_5">Итог</h2>
+
+<p>Ну, что сказать, ffmpeg пока был и остаётся лучшим, хотя если вам нужно добавить звук в записанный ролик, лучше записать звуковую дорожку отдельно - в Audacity, а затем склеить с видео в другой программке - Avidemux. Не забывайте, Avidemux может многое.</p>
+
+<p>Пример скринкаста, снятого в ffmpeg, в формате <code>webm</code>. Замечу, что один и тот же ролик в <code>.avi</code> и <code>.webm</code> имеет абсолютно разный вес. Рекорд автора: <code>.avi</code> - 70 MB, <code>.webm</code> - 12 MB. Впечатляет, не правда ли?</p>
+
+<p>Увы, наш славный youtube тоже не любит больших файлов и кодирует их, но уже по-своему, их сжатие просто делает картинку размытой - никакой чёткости. Если вы знаете, как бороться с этой youtub&#39;овской чертой - напишите мне.</p>
+
+<div class="video"><iframe width="560" height="315" src="http://www.youtube.com/embed/gXPwFHKkncI" frameborder="0" allowfullscreen></iframe></div>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+<br />
+<div id="comments"></div>
+<script type="text/javascript" class="juvia">
+(function() {
+    var options = {
+        container   : '#comments',
+        site_key    : 'gcquc3fefcn3kyoj7jstkb7ic8f90cw',
+        topic_key   : '/posts/screencast',
+        topic_url   : 'http://www.unix-lab.org/posts/screencast',
+        topic_title : 'Скринкасты в Linux' || 'http://www.unix-lab.org/posts/screencast',
+        include_base: !window.Juvia,
+        include_css : !window.Juvia
+    };
+
+    function makeQueryString(options) {
+        var key, params = [];
+        for (key in options) {
+            params.push(
+                encodeURIComponent(key) +
+                '=' +
+                encodeURIComponent(options[key]));
+        }
+        return params.join('&');
+    }
+
+    function makeApiUrl(options) {
+        // Makes sure that each call generates a unique URL, otherwise
+        // the browser may not actually perform the request.
+        if (!('_juviaRequestCounter' in window)) {
+            window._juviaRequestCounter = 0;
+        }
+
+        var result =
+            'http://juvia-unixlab.rhcloud.com/api/show_topic.js' +
+            '?_c=' + window._juviaRequestCounter +
+            '&' + makeQueryString(options);
+        window._juviaRequestCounter++;
+        return result;
+    }
+
+    var s       = document.createElement('script');
+    s.async     = true;
+    s.type      = 'text/javascript';
+    s.className = 'juvia';
+    s.src       = makeApiUrl(options);
+    (document.getElementsByTagName('head')[0] ||
+     document.getElementsByTagName('body')[0]).appendChild(s);
+})();
+</script>
+
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy; 2011&mdash;2013 ::</li>
+    <li class="footer"><a href="/">unix-lab.org</a> ::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

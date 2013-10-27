@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Распаковка архива на сервере | UNIX-LAB.ORG</title>
+  <meta name="description" content="Зачастую перед web-мастером или администратором сайта встаёт задача работы с архивами. В случае, если вам необходимо залить на хостинг большой объём файлов или же целый сайт, временные затраты могут быть достаточно велики.">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Распаковка архива на сервере</h2>
+<h5><i class="icon-feather"></i> 05 января 2012
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/web.html">Web /</a>
+
+<a href="/tags/windows.html">Windows /</a>
+
+<a href="/tags/server.html">Server /</a>
+
+</h5>
+
+<p>Зачастую перед web-мастером или администратором сайта встаёт задача работы с архивами. В случае, если вам необходимо залить на хостинг большой объём файлов или же целый сайт, временные затраты могут быть достаточно велики. Архивы весят куда меньше, да и распаковка проходит быстро, но не каждый хостер предоставляет инструменты для работы с архивами. Поэтому мы воспользуемся двумя php-файлами, которые и будут этими инструментами.</p>
+
+<p>Что понадобится?</p>
+
+<p>ftp-доступ, блокнот и zip-архиватор.</p>
+
+<p><code>I.</code> Открываем блокнот (а лучше notepad ++) и создаём два файла, которые сохраним в формате <code>название_файла.php</code></p>
+
+<p>Файл первый, назовём его <code>unzip.php</code>:</p>
+<div class="highlight"><pre><code class="php language-php" data-lang="php"><span class="cp">&lt;?php</span>
+  <span class="k">require_once</span><span class="p">(</span><span class="s1">&#39;pclzip.lib.php&#39;</span><span class="p">);</span>
+  <span class="nv">$archive</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">PclZip</span><span class="p">(</span><span class="s1">&#39;archive.zip&#39;</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nv">$archive</span><span class="o">-&gt;</span><span class="na">extract</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">die</span><span class="p">(</span><span class="s2">&quot;Error : &quot;</span><span class="o">.</span><span class="nv">$archive</span><span class="o">-&gt;</span><span class="na">errorInfo</span><span class="p">(</span><span class="k">true</span><span class="p">));</span>
+  <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+      <span class="k">echo</span> <span class="s1">&#39;ok&#39;</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</code></pre></div>
+<p>Файл второй &mdash; <code>pclzip.lib.php</code> (слишком велик для помещения на страницы блога, ниже на него будет дана ссылка).</p>
+
+<p>Итак, код готов.</p>
+
+<p><code>II.</code> Упаковываем файлы, которые хотели закинуть на сервер хостера, в zip и даём название этому архиву &mdash; <code>archive.zip</code></p>
+
+<p><code>III.</code> Заливаем наши два php-файла вместе с архивом в папку, где хотим распаковать архив. В примере &mdash; корневая директория.</p>
+
+<p>И набираем в браузере адрес:</p>
+
+<p><code>http://ваш_сайт/uzip.php</code></p>
+
+<p>Так архив распакуется в корневую директорию сервера.</p>
+
+<p>Примечание: вы можете скачать эти файлы &mdash;  <a href="https://gist.github.com/redVi/5028352">pclzip.lib.php</a>, <a href="https://gist.github.com/redVi/5028347">unzip.php</a> &mdash; или воспользоваться программкой php unzipper, которая есть на просторах интернета вместе с инструкцией по применению.</p>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+<br />
+<div id="comments"></div>
+<script type="text/javascript" class="juvia">
+(function() {
+    var options = {
+        container   : '#comments',
+        site_key    : 'gcquc3fefcn3kyoj7jstkb7ic8f90cw',
+        topic_key   : '/posts/unpack-archive',
+        topic_url   : 'http://www.unix-lab.org/posts/unpack-archive',
+        topic_title : 'Распаковка архива на сервере' || 'http://www.unix-lab.org/posts/unpack-archive',
+        include_base: !window.Juvia,
+        include_css : !window.Juvia
+    };
+
+    function makeQueryString(options) {
+        var key, params = [];
+        for (key in options) {
+            params.push(
+                encodeURIComponent(key) +
+                '=' +
+                encodeURIComponent(options[key]));
+        }
+        return params.join('&');
+    }
+
+    function makeApiUrl(options) {
+        // Makes sure that each call generates a unique URL, otherwise
+        // the browser may not actually perform the request.
+        if (!('_juviaRequestCounter' in window)) {
+            window._juviaRequestCounter = 0;
+        }
+
+        var result =
+            'http://juvia-unixlab.rhcloud.com/api/show_topic.js' +
+            '?_c=' + window._juviaRequestCounter +
+            '&' + makeQueryString(options);
+        window._juviaRequestCounter++;
+        return result;
+    }
+
+    var s       = document.createElement('script');
+    s.async     = true;
+    s.type      = 'text/javascript';
+    s.className = 'juvia';
+    s.src       = makeApiUrl(options);
+    (document.getElementsByTagName('head')[0] ||
+     document.getElementsByTagName('body')[0]).appendChild(s);
+})();
+</script>
+
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy; 2011&mdash;2013 ::</li>
+    <li class="footer"><a href="/">unix-lab.org</a> ::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Стартовые красоты с fbsplash | UNIX-LAB.ORG</title>
+  <meta name="description" content="Иногда хочется красоты. В том числе и при стартовой загрузке системы.">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Стартовые красоты с fbsplash</h2>
+<h5><i class="icon-feather"></i> 19 марта 2013
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/gentoo.html">Gentoo /</a>
+
+<a href="/tags/linux.html">Linux /</a>
+
+<a href="/tags/decorations.html">Decorations /</a>
+
+</h5>
+
+<p>Как правило, то, чем мы собираемся сегодня заняться, не приносит никакой пользы, кроме разве что эстетической. Но иногда хочется красоты. В том числе и при стартовой загрузке системы. Все user-friendly дистрибутивы балуют своих пользователей симпатичными графическими заставками и последним это, вроде бы, нравится. Что касается пользователей дистрибутивов типа &quot;сделай сам&quot;, изначально заставка при загрузке считается лишней и не ставится по-умолчанию. Но мы можем это легко исправить. В течение десяти-пятнадцати минут. Тем, кто хотел бы настроить fbsplash, посвящается. Начнём.</p>
+
+<h2 id="toc_0">Настройки ядра</h2>
+
+<p>Входим в директорию с исходниками ядра, запускаем <code>menuconfig</code>:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> <span class="nb">cd</span> /usr/src/linux-3.8.2-gentoo/
+<span class="gp">#</span> make menuconfig
+</code></pre></div>
+<p>Надо отметить, что рекомендуемое в большинстве источников включение initramfs совершенно необязательно для наших целей (не будет splash-картинки с начала загрузки), у автора этих строк работает и без него. Если читатель собирается поступить также, первые два блока — <code>General Setup</code> и <code>Device Drivers</code> — можно смело игнорировать:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">General setup  ---&gt;
+    [*] Initial RAM filesystem and RAM disk (initramfs/initrd) support
+Device Drivers  ---&gt;
+    [*] Block devices  ---&gt;
+        &lt;*&gt;   RAM block device support
+
+Device Drivers  ---&gt;
+    Graphics support  ---&gt;
+        {*} Support for frame buffer devices  ---&gt;
+            *** Frame buffer hardware drivers ***
+</code></pre></div>
+<p>Готово. Собираем ядро:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> make bzImage modules modules_install install
+</code></pre></div>
+<p>Пока на этом всё. Займёмся поиском и установкой нужного софта.</p>
+
+<h2 id="toc_1">Настройки fbsplash</h2>
+
+<p>Скачиваем нужные заставки. Можно найти стандартные из репозитария gentoo, можно поставить другие. Пойдём по второму пути.</p>
+
+<p>Скачайте <a href="http://www.mediafire.com/?0ga699ppbi41a2w">этот файл</a>. Имеющиеся там разрешения экрана:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">1280×800
+1024×768
+1280×1024
+1600×1200
+1680×1050
+1440×900
+</code></pre></div>
+<p>Не будет большой беды, если вашего разрешения нет. Это исправляется путём правки файла <code>.cfg</code> и переименованием его. Пример для экрана с разрешением 1366x768:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># 1440x900.cfg</span>
+<span class="c">#</span>
+<span class="nv">bgcolor</span><span class="o">=</span>0
+
+<span class="nv">tx</span><span class="o">=</span>32
+<span class="nv">ty</span><span class="o">=</span>27
+<span class="nv">tw</span><span class="o">=</span>1305
+<span class="nv">th</span><span class="o">=</span>684
+
+<span class="nv">text_x</span><span class="o">=</span>7
+<span class="nv">text_y</span><span class="o">=</span>741
+<span class="nv">text_size</span><span class="o">=</span>13
+<span class="nv">text_color</span><span class="o">=</span>0xdedede
+
+<span class="nv">pic</span><span class="o">=</span>/etc/splash/powered_by_gentoo/images/verbose_1366x768.jpg
+<span class="nv">silentpic</span><span class="o">=</span>/etc/splash/powered_by_gentoo/images/silent_1366x768.jpg
+
+<span class="c"># progress bar</span>
+box silent noover 0 761 1305 768 <span class="c">#221f29</span>
+box silent inter 0 762 0 767 <span class="c">#221f29</span>
+box silent 0 761 1305 767 <span class="c">#ececec</span>
+
+<span class="c"># border of the progress bar</span>
+box silent 0 761 1305 761 <span class="c">#221f29</span>
+box silent 0 664 1305 664 <span class="c">#221f29</span>
+box silent 0 664 0 664 <span class="c">#221f29</span>
+box silent 1305 664 1305 664 <span class="c">#221f29</span>
+</code></pre></div>
+<p>Переименовываем:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> mv 1440x900.cfg 1366x768.cfg
+</code></pre></div>
+<p>Теперь следует изменить в графическом редакторе размер изображений <code>silent_1440x900.jpg</code> и <code>verbose_1440x900.jpg</code> на свои, и также переименовать их.</p>
+
+<p>Обеспечить красоту призван патч <code>bootsplash</code>. Для старых версий ядра его придётся качать отдельно, в новые ядра (3.x ?) он уже включен. Также устанавливаем <code>splashutils</code>, поправив флаги в случае, если того требует emerge:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> emerge -va splashutils
+<span class="gp">#</span> emerge splashutils
+</code></pre></div>
+<p>Распаковываем наши изображения в директорию <code>/etc/splash/</code> (или копируем туда свои):</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> tar xvzf powered_by_gentoo_v0.7.tar.gz -C /etc/splash
+</code></pre></div>
+<p>Наиболее удобным способом для создания initial ram filesystem автор считает использование <code>genkernel</code>, поэтому решившим собрать ядро с поддержкой initramfs рекомендуется ставить его и делать всё в соответствии со своими настройками. Пример:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> emerge genkernel
+<span class="gp">#</span> <span class="nb">cd</span> /usr/src/linux-3.8.2-gentoo/
+<span class="gp">#</span> genkernel initramfs --splash<span class="o">=</span>powered_by_gentoo --splash-res<span class="o">=</span>1366x768<span class="sb">`</span>
+</code></pre></div>
+<p>Дописываем к строке загрузчика в <code>/boot/grub/menu.lst</code> (справедливо для grub-legasy):</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># menu.lst</span>
+<span class="c">#</span>
+default 0
+timeout 30
+<span class="nv">splashimage</span><span class="o">=(</span>hd0,1<span class="o">)</span>/boot/grub/splash.xpm.gz
+title Gentoo Linux 3.8.2-gentoo-iniram root <span class="o">(</span>hd0,1<span class="o">)</span>
+kernel /boot/vmlinuz-3.8.2-gentoo <span class="nv">root</span><span class="o">=</span>/dev/ram0 <span class="nv">real_root</span><span class="o">=</span>/dev/sda3 <span class="nv">splash</span><span class="o">=</span>silent,theme:powered_by_gentoo <span class="nv">console</span><span class="o">=</span>tty1
+initrd /boot/initramfs-genkernel-x86_64-3.8.2-gentoo
+</code></pre></div>
+<p>Если intramfs не используется, прописывать всё то же самое, но без <code>root=/dev/ram0 real_root=/dev/sda3</code> и без указания последней строки.</p>
+
+<p>Перезагружаемся. Наслаждаемся стартовыми красотами.</p>
+
+<p>silent mode</p>
+
+<p><a href="http://farm8.staticflickr.com/7306/9471969732_82bb37ff71_b.jpg" data-lighter><img src="http://farm8.staticflickr.com/7306/9471969732_82bb37ff71_b.jpg"/></a></p>
+
+<p>verbose mode</p>
+
+<p><a href="http://farm8.staticflickr.com/7404/9471972456_d222a8664a_b.jpg" data-lighter><img src="http://farm8.staticflickr.com/7404/9471972456_d222a8664a_b.jpg"/></a></p>
+
+<p>Готово! При нажатии клавиши <code>F2</code> вы сможете перейти в режим verbose.</p>
+
+<p>Кстати, вопреки утверждениям сторонников systemd, которые как мантру повторяют, что systemd загружает ОС намного быстрее, OpenRC не дал автору сего поста вдоволь налюбоваться содеянным. Gentoo загрузилась очень быстро.</p>
+
+<h2 id="toc_2">Мы пойдём дальше. Заставка в tty</h2>
+
+<p>Да, все дистрибутивы, ориентированные на новичков, имеют splash-картинку. Но многие ли из них могут похвастаться красивым терминалом? Не эмулятором терминала, а самим терминалом. Мы же пойдём дальше и настроим эту фичу.</p>
+
+<p>Это уже не укладывается в указанные в начале поста 10-15 минут. Это дополнительное действо, вы можете от него отказаться.</p>
+
+<p>В ядре должно быть отключено!:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">Device Drivers  ---&gt;
+    Graphics support  ---&gt;
+        Support for frame buffer devices
+            [ ] Enable Tile Blitting Support
+</code></pre></div>
+<p>И, наоборот, включена опция:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">Graphics support  ---&gt;
+    Console display driver support
+        [*] Support for the Framebuffer Console decorations
+</code></pre></div>
+<p>Вот так:</p>
+
+<p><img src="http://3.bp.blogspot.com/-s5UNcGr8xN0/UTxQ6gfVMyI/AAAAAAAAEIg/J8IcLRA97SA/s1600/vesa_vga.png" alt="vesa vga" title="veas vga"></p>
+
+<p><img src="http://1.bp.blogspot.com/-Mmk4lxBv8EY/UTxQ6idVgjI/AAAAAAAAEIc/Pb99N4E4Alg/s1600/framebuffer.png" alt="framebuffer" title="framebuffer"></p>
+
+<p>Теперь пересоберите <code>splashutils</code> с флагом <code>&quot;fbcondecor&quot;</code> или добавьте этот флаг в <code>make.conf</code> и скомандуйте:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> emerge --update --newuse --deep @world
+</code></pre></div>
+<p>Следующие шаги достаточно просты:</p>
+
+<p>Прописать в <code>/etc/conf.d/fbcondecor</code>:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c">#fbcondecor</span>
+<span class="c">#</span>
+<span class="nv">FBCONDECOR_TTYS</span><span class="o">=</span><span class="s2">&quot;1 2 3 4 5 6&quot;</span>
+<span class="nv">FBCONDECOR_TTY_MAP</span><span class="o">=</span><span class="s2">&quot;1:powered_by_gentoo 2:powered_by_gentoo 3:powered_by_gentoo 4:powered_by_gentoo 5:powered_by_gentoo 6:powered_by_gentoo&quot;</span>
+</code></pre></div>
+<p>где TTYS — терминалы, на которых будет запускаться изображение</p>
+
+<p>TTY_MAP — отображение в формате &quot;&lt;номер tty&gt;:&lt;тема&gt;&quot;</p>
+
+<p>Как вы уже, вероятно, поняли на разных терминалах могут быть разные темы.</p>
+
+<p>Стартовать fbcondecor при запуске системы:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> rc-update add fbcondecor default
+</code></pre></div>
+<p>Менять тему можно так:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> splash_manager -c <span class="nb">set</span> -t powered_by_gentoo --tty<span class="o">=</span>2
+</code></pre></div>
+<p>где powered_by_gentoo — название темы, а --tty=2 — номер терминала, где будет запущена тема.</p>
+
+<p>И последний штрих: поправить загрузчик. На этот раз пример для ядра без initramfs:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># menu.lst</span>
+<span class="c">#</span>
+title Gentoo Linux 3.8.2-gentoo
+root <span class="o">(</span>hd0,1<span class="o">)</span>
+kernel /boot/vmlinuz-3.8.2-gentoo <span class="nv">root</span><span class="o">=</span>/dev/sda3 <span class="nv">splash</span><span class="o">=</span>silent,theme:powered_by_gentoo <span class="nv">console</span><span class="o">=</span>tty1 <span class="nv">video</span><span class="o">=</span>vesafb:ywrap,mtrr:3 <span class="nv">vga</span><span class="o">=</span>0x0362
+</code></pre></div>
+<p>Параметр <code>vga</code> должен быть указан для вашего разрешения экрана. В примере это 1366x678.</p>
+
+<p>Итог:</p>
+
+<p><a href="http://3.bp.blogspot.com/-D25-Isilvu4/UUCA5DsIhmI/AAAAAAAAEJU/4xAgMc_Hqks/s1600/powered_by_gentoo.jpg" data-lighter><img src="http://3.bp.blogspot.com/-D25-Isilvu4/UUCA5DsIhmI/AAAAAAAAEJU/4xAgMc_Hqks/s1600/powered_by_gentoo.jpg"/></a></p>
+
+<p>Теперь можно отказаться от мыши и иксов ;)</p>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+<br />
+<div id="comments"></div>
+<script type="text/javascript" class="juvia">
+(function() {
+    var options = {
+        container   : '#comments',
+        site_key    : 'gcquc3fefcn3kyoj7jstkb7ic8f90cw',
+        topic_key   : '/posts/fbsplash',
+        topic_url   : 'http://www.unix-lab.org/posts/fbsplash',
+        topic_title : 'Стартовые красоты с fbsplash' || 'http://www.unix-lab.org/posts/fbsplash',
+        include_base: !window.Juvia,
+        include_css : !window.Juvia
+    };
+
+    function makeQueryString(options) {
+        var key, params = [];
+        for (key in options) {
+            params.push(
+                encodeURIComponent(key) +
+                '=' +
+                encodeURIComponent(options[key]));
+        }
+        return params.join('&');
+    }
+
+    function makeApiUrl(options) {
+        // Makes sure that each call generates a unique URL, otherwise
+        // the browser may not actually perform the request.
+        if (!('_juviaRequestCounter' in window)) {
+            window._juviaRequestCounter = 0;
+        }
+
+        var result =
+            'http://juvia-unixlab.rhcloud.com/api/show_topic.js' +
+            '?_c=' + window._juviaRequestCounter +
+            '&' + makeQueryString(options);
+        window._juviaRequestCounter++;
+        return result;
+    }
+
+    var s       = document.createElement('script');
+    s.async     = true;
+    s.type      = 'text/javascript';
+    s.className = 'juvia';
+    s.src       = makeApiUrl(options);
+    (document.getElementsByTagName('head')[0] ||
+     document.getElementsByTagName('body')[0]).appendChild(s);
+})();
+</script>
+
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy; 2011&mdash;2013 ::</li>
+    <li class="footer"><a href="/">unix-lab.org</a> ::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

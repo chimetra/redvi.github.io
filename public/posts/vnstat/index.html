@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Считаем трафик с vnstat | UNIX-LAB.ORG</title>
+  <meta name="description" content="В сегодняшнем посте затронем тему учёта трафика сетевых интерфейсов.">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Считаем трафик с vnstat</h2>
+<h5><i class="icon-feather"></i> 20 ноября 2012
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/arch.html">Arch /</a>
+
+<a href="/tags/linux.html">Linux /</a>
+
+</h5>
+
+<p>В сегодняшнем посте затронем тему учёта трафика сетевых интерфейсов. Как правило, это нужно на предприятиях, но если у вас не безлимитный интернет, то и дома эта заметка может пригодиться.</p>
+
+<p>Установка проста и тривиальна, ничего кроме самого vnstat за собой не потянет.</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> pacman -S vnstat
+</code></pre></div>
+<p>Дальше следует создать базу данных для вашего сетевого интерфейса:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> vnstat -u -i eth0
+</code></pre></div>
+<p>и запустить демон <code>vnstat</code> (<code>systemctl</code> для тех, кто уже перешёл на <code>systemd</code>)</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> systemctl start vnstat
+</code></pre></div>
+<p>После запуска демона обновим нашу базу данных:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> vnstat -u -i eth0
+</code></pre></div>
+<p>Теперь можно просмотреть статистику.</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> vnstat -i eth0
+</code></pre></div>
+<p>команда выдаст всю информацию о интерфейсе <code>eth0</code></p>
+
+<p><img src="http://3.bp.blogspot.com/-ZsFPWeHFiGk/UIgXNyt6m5I/AAAAAAAACCY/Ap-66-yES4I/s1600/vnstat.png" alt="vnstat"></p>
+
+<p>Кроме этого, можно просматривать записи за час, день, неделю и месяц, запуская vnstat с ключами <code>-h, -d, -w, -m</code> соответственно. Также имеется возможность мониторинга в реальном времени. Здесь нам поможет ключ <code>-l</code></p>
+
+<p><b>Пример:</b></p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> vnstat -i eth0 -d
+<span class="go">eth0  /  daily</span>
+
+<span class="go">     day         rx      |     tx      |    total    |   avg. rate</span>
+<span class="go"> ------------------------+-------------+-------------+---------------</span>
+<span class="go">  10/22/12         0 KiB |       0 KiB |       0 KiB |    0.00 kbit/s</span>
+<span class="go">  10/24/12      4.20 MiB |    1.45 MiB |    5.65 MiB |    0.55 kbit/s</span>
+<span class="go"> ------------------------+-------------+-------------+---------------</span>
+<span class="go">  estimated         4 MiB |       1 MiB |       5 MiB</span>
+</code></pre></div>
+<p>Также можно ознакомиться и при необходимости отредактировать конфигурационный файл, располагающийся по адресу <code>/etc/vnstat.conf</code></p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># vnStat 1.11 config file</span>
+<span class="c">#</span>
+<span class="c"># default interface</span>
+Interface <span class="s2">&quot;eth0&quot;</span>
+<span class="c"># location of the database directory</span>
+DatabaseDir <span class="s2">&quot;/var/lib/vnstat&quot;</span>
+<span class="c"># locale (LC_ALL) (&quot;-&quot; = use system locale)</span>
+Locale <span class="s2">&quot;-&quot;</span>
+</code></pre></div>
+<p>В большинстве случаев настройки по умолчанию менять не придётся. В выделенном блоке (конечно, это не весь конфигурационный файл, но выкладывать его полностью вряд ли нужно) указан интерфейс по умолчанию, директория с созданной базой данных, а также выбрана системная локаль.</p>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+<br />
+<div id="comments"></div>
+<script type="text/javascript" class="juvia">
+(function() {
+    var options = {
+        container   : '#comments',
+        site_key    : 'gcquc3fefcn3kyoj7jstkb7ic8f90cw',
+        topic_key   : '/posts/vnstat',
+        topic_url   : 'http://www.unix-lab.org/posts/vnstat',
+        topic_title : 'Считаем трафик с vnstat' || 'http://www.unix-lab.org/posts/vnstat',
+        include_base: !window.Juvia,
+        include_css : !window.Juvia
+    };
+
+    function makeQueryString(options) {
+        var key, params = [];
+        for (key in options) {
+            params.push(
+                encodeURIComponent(key) +
+                '=' +
+                encodeURIComponent(options[key]));
+        }
+        return params.join('&');
+    }
+
+    function makeApiUrl(options) {
+        // Makes sure that each call generates a unique URL, otherwise
+        // the browser may not actually perform the request.
+        if (!('_juviaRequestCounter' in window)) {
+            window._juviaRequestCounter = 0;
+        }
+
+        var result =
+            'http://juvia-unixlab.rhcloud.com/api/show_topic.js' +
+            '?_c=' + window._juviaRequestCounter +
+            '&' + makeQueryString(options);
+        window._juviaRequestCounter++;
+        return result;
+    }
+
+    var s       = document.createElement('script');
+    s.async     = true;
+    s.type      = 'text/javascript';
+    s.className = 'juvia';
+    s.src       = makeApiUrl(options);
+    (document.getElementsByTagName('head')[0] ||
+     document.getElementsByTagName('body')[0]).appendChild(s);
+})();
+</script>
+
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy; 2011&mdash;2013 ::</li>
+    <li class="footer"><a href="/">unix-lab.org</a> ::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

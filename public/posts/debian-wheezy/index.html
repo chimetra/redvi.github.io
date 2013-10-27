@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Debian 7 или Какого лешего | UNIX-LAB.ORG</title>
+  <meta name="description" content="Debian — первый серьёзный дистрибутив автора, тёплая и нежная дружба с которым длилась достаточно долго, до перехода на archlinux.">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Debian 7 или Какого лешего</h2>
+<h5><i class="icon-feather"></i> 22 июня 2013
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/debian.html">Debian /</a>
+
+<a href="/tags/linux.html">Linux /</a>
+
+</h5>
+
+<p>Debian — первый серьёзный дистрибутив автора, тёплая и нежная дружба с которым длилась достаточно долго, до перехода на archlinux. Помнится, просидев на Ubuntu пару месяцев и смекнув, что с этим дистрибутивом ничему толком не научишься (ибо не способствует он получению новых знаний в освоении linux — слишком дружелюбен и услужлив, с ним даже не приходится знать, что такое консоль), зимой 2009 года на домашний компьютер было решено поставить Debian. Много воды утекло с тех пор, много дистрибутивов было испробовано и теперь, после выхода Debian Wheezy, захотелось снова взглянуть на старого друга... да не тут-то было. Впечатления он оставил, прямо-таки скажем, неоднозначные.</p>
+
+<p>Действия <a href="http://www.root-inform.blogspot.ru/2011/09/linux_6591.html">по загрузке и установке дистрибутива</a> уже были описаны ранее также, как и <a href="http://www.unix-lab.org/posts/acpi/">настройка энергопотребления</a>. Ничего кардинально нового замечено не было, поэтому начнём с экрана приветствия. По ходу установки из трёх возможных графических сред был выбран xfce, который и встретил своим нерусифицированным хмурым лицом. Вбив логин и пароль, оставалось только войти в систему и воскликнуть: «Какого лешего?». Отсутствие русификации, отвратительные шрифты, невозможность установить некоторые полюбившиеся уже приложения и предложение довольствоваться их устаревшими аналогами... много любопытного поджидает путешественников в мир Debian. Упёртость не позволила бросить дистрибутив. Оставить же его в виде «как есть» не позволила совесть.</p>
+
+<h2 id="toc_0">Шаг первый: замена ядра</h2>
+
+<p>Прежде всего следовало разобраться с ядром, в котором мало того, что не была использована возможность переключения между видеокартами, так она вообще ещё не поддерживалась: версия ядра 3.2. Выйти из положения можно двумя способами: либо установить свежее дистрибутивное ядро (с патчами от разработчиков самого debian), либо собрать ванильное.</p>
+
+<p>Сначала приводистя пример установки ядра из backports (хотя нет, и там тухло) или лучше из  experimental — единственной ветки, где имеется софт без бороды.
+Подключаем один из последних двух репозиториев:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># /etc/apt/source.list</span>
+
+deb http://debian.nsu.ru/debian/ wheezy main non-free contrib
+deb-src http://debian.nsu.ru/debian/ wheezy main non-free contrib
+deb http://security.debian.org/ wheezy/updates main contrib non-free
+deb-src http://security.debian.org/ wheezy/updates main contrib non-free
+deb http://debian.org/debian/ wheezy-backports main
+deb http://ftp.debian.org/debian experimental main
+</code></pre></div>
+<p>Даём debian&#39;у сигнал о том, что список репозиториев обновился</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> aptitude update
+</code></pre></div>
+<p>Ставим свежее ядро. В примере из ветки experimental:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> aptitude search linux-image
+<span class="gp">#</span> apt-get -t experimental install linux-image-3.8
+</code></pre></div>
+<p>Следующий метод предназначен для тех, кто как и автор поста, плюнув на ядра дистрибутива, захочет отправится в путь за ванильным ядром на kernel.org. Как это оговаривалось уже не раз в других заметках, нужно скачать последнюю стабильную версию ядра и распаковать её в <code>/usr/src</code>:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> wget -c http://kernel.org/pub/linux/kernel/v3.x/linux-3.8.11.tar.xz
+<span class="gp">#</span> mv linux-3.8.11.tar.xz /usr/src
+<span class="gp">#</span> tar xvf linux-3.8.11.tar.xz
+</code></pre></div>
+<p>После чего собрать ядро с нужными параметрами и дать команду на сборку и установку самого ядра, а также всех его модулей:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> make menuconfig
+<span class="gp">#</span> make bzImage modules modules_install install
+</code></pre></div>
+<p>В результате в <code>/boot</code> разделе должно появиться ядро с указанной версией и его загрузочный образ (initrd). Дебиан даже потрудился перконфигурировать настройки загрузчика grub2, найдя и включив новое ядро в список. Впрочем, вышеуказанные действия легко выполнить и вручную, сгенерировать образ и обновить настройки загрузчика можно двумя соответствующими командами:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> mkinitramfs -o /boot/initrd-3.8.11
+<span class="gp">#</span> grub-mkconfig -o /boot/grub/grub.cfg
+</code></pre></div>
+<p><img src="http://1.bp.blogspot.com/-93majm8ZPWs/UYjjkIN9gII/AAAAAAAAEuY/surD6dR9_m4/s1600/mkconfig.png" alt="grub-mkconfig"></p>
+
+<p>Чтобы добиться искомого результата (отключить дискретное видео), нужно сделать ещё несколько телодвижений:</p>
+
+<p><code>1.</code> Убедиться, что установлен драйвер видеокарты, применительно к intel выглядит так:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> aptitude search intel
+<span class="go">i A libdrm-intel i A xserver-xorg-video-intel</span>
+</code></pre></div>
+<p>Если установленных пакетов не найдено, доустановить их.</p>
+
+<p><code>2.</code> Установить <code>linux-firmware-nonfree</code></p>
+
+<p><code>3.</code> Добавить debugfs в <code>/ets/fstab</code></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">none  /sys/kernel/debug debugfs defaults 0 0
+</code></pre></div>
+<p><code>4.</code> Добавить скрипт в <code>/etc/rc.local</code>, вот так:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># By default this script does nothing</span>
+<span class="nb">echo </span>OFF &gt; /sys/kernel/debug/vgaswitcheroo/switch
+<span class="nb">exit </span>0
+</code></pre></div>
+<h2 id="toc_1">Шаг второй: русификация интерфейса, настройки ввода</h2>
+
+<p>Русификация всего и вся проходит быстро и безболезненно внесением одной лишь записи в <code>/etc/default/locale</code>:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="nv">LANG</span><span class="o">=</span><span class="s2">&quot;ru_RU.UTF-8&quot;</span>
+</code></pre></div>
+<p>Следуя какой-то своей особой логике, Debian предлагает выбор русского языка при установке, но это никоим образом не отражается на практике: что ж, русифицируем самостоятельно.</p>
+
+<p>Раскладки клавиатуры также не предлагают того, что хочется — не беда. Сделаем переключение через <code>Alt + Shift</code> , да чтобы раскладку было видно по индикатору <code>Caps Lock</code>.</p>
+
+<p><img src="http://1.bp.blogspot.com/-qJBM-kr1uO4/UYjzLXk8TCI/AAAAAAAAEuo/7P2-PyXhqus/s1600/layout.jpg" alt="layout"></p>
+
+<p>Настройка раскладки клавиатуры, поведения тачпада... мелочи жизни:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># /etc/X11/xorg.conf.d/10-evdev.conf</span>
+<span class="c">#</span>
+Section <span class="s2">&quot;InputClass&quot;</span>
+    Identifier <span class="s2">&quot;evdev keyboard catchall&quot;</span>
+    MatchIsKeyboard <span class="s2">&quot;on&quot;</span>
+    MatchDevicePath <span class="s2">&quot;/dev/input/event*&quot;</span>
+Driver <span class="s2">&quot;evdev&quot;</span> EndSection
+
+
+<span class="c"># /etc/X11/xorg.conf.d/20-keyboard-layout.conf</span>
+<span class="c">#</span>
+Section <span class="s2">&quot;InputClass&quot;</span>
+    Identifier <span class="s2">&quot;Keyboard Defaults&quot;</span>
+    MatchIsKeyboard <span class="s2">&quot;yes&quot;</span>
+    Option <span class="s2">&quot;XkbLayout&quot;</span> <span class="s2">&quot;us,ru&quot;</span>
+    Option <span class="s2">&quot;XkbOptions&quot;</span> <span class="s2">&quot;grp:alt_shift_toggle, grp_led:caps&quot;</span>
+EndSection
+
+<span class="c"># /etc/X11/xorg.conf.d/50-synaptics.conf</span>
+<span class="c">#</span>
+Section <span class="s2">&quot;InputClass&quot;</span>
+    Identifier <span class="s2">&quot;touchpad catchall&quot;</span>
+    Driver <span class="s2">&quot;synaptics&quot;</span>
+    MatchIsTouchpad <span class="s2">&quot;on&quot;</span>
+    Option <span class="s2">&quot;TapButton1&quot;</span> <span class="s2">&quot;1&quot;</span>
+    Option <span class="s2">&quot;TapButton2&quot;</span> <span class="s2">&quot;2&quot;</span>
+    Option <span class="s2">&quot;TapButton3&quot;</span> <span class="s2">&quot;3&quot;</span>
+    Option <span class="s2">&quot;VertEdgeScroll&quot;</span> <span class="s2">&quot;on&quot;</span>
+    Option <span class="s2">&quot;VertTwoFingerScroll&quot;</span> <span class="s2">&quot;on&quot;</span>
+    Option <span class="s2">&quot;HorizEdgeScroll&quot;</span> <span class="s2">&quot;on&quot;</span>
+    Option <span class="s2">&quot;HorizTwoFingerScroll&quot;</span> <span class="s2">&quot;on&quot;</span>
+    Option <span class="s2">&quot;CircularScrolling&quot;</span> <span class="s2">&quot;on&quot;</span>
+    Option <span class="s2">&quot;CircScrollTrigger&quot;</span> <span class="s2">&quot;2&quot;</span>
+    Option <span class="s2">&quot;EmulateTwoFingerMinZ&quot;</span> <span class="s2">&quot;40&quot;</span>
+    Option <span class="s2">&quot;EmulateTwoFingerMinW&quot;</span> <span class="s2">&quot;8&quot;</span>
+    Option <span class="s2">&quot;CoastingSpeed&quot;</span> <span class="s2">&quot;0&quot;</span>
+    MatchDevicePath <span class="s2">&quot;/dev/input/event*&quot;</span>
+EndSection
+    Section <span class="s2">&quot;InputClass&quot;</span>
+    Identifier <span class="s2">&quot;touchpad ignore duplicates&quot;</span>
+    MatchIsTouchpad <span class="s2">&quot;on&quot;</span>
+    MatchOS <span class="s2">&quot;Linux&quot;</span>
+    MatchDevicePath <span class="s2">&quot;/dev/input/mouse*&quot;</span>
+    Option <span class="s2">&quot;Ignore&quot;</span> <span class="s2">&quot;on&quot;</span>
+EndSection
+    Section <span class="s2">&quot;InputClass&quot;</span>
+    Identifier <span class="s2">&quot;Default clickpad buttons&quot;</span>
+    MatchDriver <span class="s2">&quot;synaptics&quot;</span>
+    Option <span class="s2">&quot;SoftButtonAreas&quot;</span> <span class="s2">&quot;50% 0 82% 0 0 0 0 0&quot;</span>
+EndSection
+</code></pre></div>
+<h2 id="toc_2">Шаг третий: настройка шрифтов</h2>
+
+<p>Ни в одной другой ОС не доведётся неискушённому пользователю видеть такое ужасающее отображение шрифта как в Debian. Вообще, надо сказать, что шрифты были и во многом остаются главной проблемой всех linux-дистрибутивов. В последнее время исправить это досадное недоразумение призван патч infinality, который действительно может невозможное.</p>
+
+<p>В debian имеется «куцая» утилита для настройки отображения шрифта. Возможности её довольно скудны. Для сравнения в gentoo при помощи eselect можно сделать намного-намного больше.</p>
+
+<p><u>gentoo</u></p>
+
+<p><img src="http://2.bp.blogspot.com/-vQ7G40in2A4/UYh0BHtdgBI/AAAAAAAAEtY/vhovYm_HVWo/s1600/eselect_infinality.png" alt="gentoo"></p>
+
+<p><u>debian</u></p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> sudo dpkg-reconfigure fontconfig-config
+</code></pre></div>
+<p><img src="http://1.bp.blogspot.com/-Aa5vY-sY4JY/UYh0hvFh65I/AAAAAAAAEtk/YUk3mNX_SY4/s1600/fontconfig.png" alt="autohinter"></p>
+
+<p><img src="http://1.bp.blogspot.com/-Mnl9-oUrGNg/UYh0h358-2I/AAAAAAAAEtg/FDDHDcE9Fmk/s1600/fontconfig2.png" alt="fontconfig"></p>
+
+<p><img src="http://1.bp.blogspot.com/-yIOu7FSmpPs/UYh0h1LI3MI/AAAAAAAAEto/E14Lxyd67Yg/s1600/fontconfig3.png" alt="font-zoom"></p>
+
+<p>Сразу нужно сказать, что вопрос со шрифтами решён не был, хотя сил приложено было немало. Ни установка <code>freefont2</code>, который в дебиане проходит с пометкой &#39;demo&#39;, ни попытка наложить готовый патч от <code>infinality</code> для Debian плодов не дали.
+Для примера два скриншота одной и той же страницы, сделанных в Gentoo(firefox, снизу) и Debian(iceweasel, сверху). Шрифт в Debian не имеет сглаживания и выглядит разряженным. Дабы сравнение было правильно воспринято, рекомендуется сохранить оба скриншота и просмотреть их в размере 1:1.</p>
+
+<ul>
+<li>debian
+<a href="http://2.bp.blogspot.com/-EwFAXDu4AdM/UYiXHd6fXJI/AAAAAAAAEuA/PaxXM7ucdns/s1600/debian-font-shot.png">смотреть в полном размере</a></li>
+<li>gentoo
+<a href="http://4.bp.blogspot.com/-iXYAds2KJRY/UYiXIjgkxhI/AAAAAAAAEuE/o3GOcVoEvd8/s1600/gentoo_fonts_screen.png">смотреть в полном размере</a></li>
+</ul>
+
+<p>Может быть, знающие линуксоиды наставят автора на путь истинный и укажут наиболее простое и красивое решение указанной проблемы. Всех, у кого есть здравые мысли на этот счёт, прошу выразить свою критику и негодование вместе с примерами настройки в комментариях. Но, сдаётся мне, без наложения патчей от Убунты здесь не обойтись.</p>
+
+<h2 id="toc_3">Шаг четвёртый: автозапуск</h2>
+
+<p>Автор придерживается убеждения, что хороший дистрибутив не тот, который думает за пользователя, но тот, что даёт пользователю право выбора и право быть самодержцем в своей операционной системе. Такой дистибутив по определению должен быть прозрачен как слеза младенца и делать только то, что ему указано — ничего сверх этого. Наш друг Дебиан мало того, что славится своей устрашающей системой инициализации, так ещё и, с позволения сказать, шкодничает. При установке какого-либо демона он автоматически помещает его в автозапуск, чего хороший дистрибутив делать не станет. В итоге при инициализации системы происходит и запуск всех демонов, большинство из которых совершенно не нужны в повседневной работе. Таким образом, дабы система загружалась быстрее и поглощала меньше ресурсов, надобно всё лишнее поотключать.</p>
+
+<p>Для этого нужно просмотреть список автозагрузки и выдернуть из него лишний хлам. Первое можно сделать, просмотрев содержимое каталога <code>/etc/init.d</code> либо используя утилиту <code>chkconfig</code>:</p>
+
+<p><img src="http://1.bp.blogspot.com/-UKkc4G74OgA/UYkS0sIU8HI/AAAAAAAAEvg/tD0qIz1V9mA/s1600/chkconfig-debian.png" alt="chkconfig"></p>
+
+<p>Удалить из автозапуска: <code># update-rc.d -f cups remove</code> или <code># insserv -r cups (≥ debian 6)</code>, где <code>cups</code> — искомый демон.</p>
+
+<p>Команда добавления в автозапуск, которая вряд ли когда-либо понадобится ввиду излишней интеллектуальности Дебиана:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> update-rc.d cups defaults <span class="c"># или insserv cups defaults (≥ debian 6)</span>
+</code></pre></div>
+<h2 id="toc_4">Прочее</h2>
+
+<p>Также были отмечены некоторые странности как то: в процессе установки была выбрана возможность входа от суперпользователя. Тем не менее, Debian не предложил создать для него пароль и при входе в систему рут оказался беспарольным. Разумеется, это тоже не представляет большой проблемы и исправляется командой <code>passwd</code>.</p>
+
+<p>К странностям новой версии можно отнести добродушное пожелание ОС напоминать о выходе новой версии... Ubuntu. Но, скажите, какого лешего?</p>
+
+<p><img src="http://2.bp.blogspot.com/-q-kLwrUVxik/UYkCZPE1rLI/AAAAAAAAEvI/vukqqbqupME/s1600/ubuntu_in_debian.png" alt="ubuntu in debian"></p>
+
+<p>С xfce сдружиться не получилось. В конечном варианте остался openbox, благодяря которому рабочий стол приобрёл приятный и в то же время минималистичный вид.</p>
+
+<p><a href="http://farm6.staticflickr.com/5443/9503298406_5e31c888f3_o.png" data-lighter><img src="http://farm6.staticflickr.com/5443/9503298406_5e31c888f3_o.png"/></a></p>
+
+<p>«Умолчательные» приложения не вдохновляют на совершение трудовых подвигов. Из нужного автору в огромном стандартном репозитории Debian&#39;a не нашлось места для <code>spacefm, compton, sublime text 2</code>. Так на кой чёрт мне репозиторий в 37.000 пакетов, если в нём нет нескольких горячо любимых программ?</p>
+
+<h2 id="toc_5">Подведение итогов</h2>
+
+<p>Собственно, зачем это всё затевалось? Во-первых, появилось желание одним глазком посмотреть на любимый когда-то дистрибутив. Во-вторых, возникла надобность поставить на внешний диск надёжную рабочую лошадку, не требующую ухода (таково моё мнение о Debain в целом). Надо также отметить, что данный пост, скорее всего, будет последним касающимся установки/настройки дистрибутива, если только автору не взбредёт в голову поставить Slackware Linux. Оставшиеся самобытные ОС — Gentoo, Archlinux — уже были рассмотрены ранее, иные же являются лишь их потомками, зачастую имеют простой графический установщик и мало чем отличаются в настройке.</p>
+
+<p>Претензии к Wheezy:</p>
+
+<ul>
+<li>удручающе <code>старый софт</code> (прежде всего версия ядра)</li>
+<li>невозможно без слёз смотреть на <code>шрифт</code></li>
+<li>на то, что пользователи «красноглазых» дистрибутивов настраивают с пол-оборота, в дебиане приходится потратить <code>изрядное количество времени</code></li>
+<li>нет <code>привычных проверенных программ</code>, которые широко используются в подавляющем большинстве дистрибутивов</li>
+<li>система считает себя <code>умнее хозяина</code> (одна из причин, почему так много дружелюбных к пользователю дистрибутивов основано на Дебиане)</li>
+</ul>
+
+<p>Итог: ностальгия быстро улетучилась, Дебиан остался на внешнем жёстком диске в качестве запасной рабочей лошадки и бэкап-хранилища для <code>/home</code> каталога.</p>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+<br />
+<div id="comments"></div>
+<script type="text/javascript" class="juvia">
+(function() {
+    var options = {
+        container   : '#comments',
+        site_key    : 'gcquc3fefcn3kyoj7jstkb7ic8f90cw',
+        topic_key   : '/posts/debian-wheezy',
+        topic_url   : 'http://www.unix-lab.org/posts/debian-wheezy',
+        topic_title : 'Debian 7 или Какого лешего' || 'http://www.unix-lab.org/posts/debian-wheezy',
+        include_base: !window.Juvia,
+        include_css : !window.Juvia
+    };
+
+    function makeQueryString(options) {
+        var key, params = [];
+        for (key in options) {
+            params.push(
+                encodeURIComponent(key) +
+                '=' +
+                encodeURIComponent(options[key]));
+        }
+        return params.join('&');
+    }
+
+    function makeApiUrl(options) {
+        // Makes sure that each call generates a unique URL, otherwise
+        // the browser may not actually perform the request.
+        if (!('_juviaRequestCounter' in window)) {
+            window._juviaRequestCounter = 0;
+        }
+
+        var result =
+            'http://juvia-unixlab.rhcloud.com/api/show_topic.js' +
+            '?_c=' + window._juviaRequestCounter +
+            '&' + makeQueryString(options);
+        window._juviaRequestCounter++;
+        return result;
+    }
+
+    var s       = document.createElement('script');
+    s.async     = true;
+    s.type      = 'text/javascript';
+    s.className = 'juvia';
+    s.src       = makeApiUrl(options);
+    (document.getElementsByTagName('head')[0] ||
+     document.getElementsByTagName('body')[0]).appendChild(s);
+})();
+</script>
+
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy; 2011&mdash;2013 ::</li>
+    <li class="footer"><a href="/">unix-lab.org</a> ::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

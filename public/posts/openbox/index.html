@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Поваренная книга openbox | UNIX-LAB.ORG</title>
+  <meta name="description" content="Тем, кто неравнодушен к openbox посвящается.">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Поваренная книга openbox</h2>
+<h5><i class="icon-feather"></i> 02 августа 2012
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/decorations.html">Decorations /</a>
+
+<a href="/tags/arch.html">Arch /</a>
+
+<a href="/tags/linux.html">Linux /</a>
+
+</h5>
+
+<p>В мире open source имеется великое множество различных оконных менеджеров. Как растворяющийся в роскошном одеянии KDE, так и более скромные и лёгкие Gnome, XFCE. Но сегодня мы будем учиться готовить нечто ещё более легковесное. Тем, кто неравнодушен к openbox посвящается.</p>
+
+<p><b>Задача:</b> привести openbox к подобному виду:</p>
+
+<p><a href="http://farm4.staticflickr.com/3689/9263779986_67819076be_b.jpg" data-lighter><img src="http://farm4.staticflickr.com/3689/9263779986_67819076be_b.jpg"/></a></p>
+
+<p>Полный боевой комплект:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> sudo pacman -S openbox openbox-themes conky nitrogen tint2 setxkbmap wbar gmrun xxkb
+<span class="gp">$</span> yaourt -S xev xcompmgr-dana
+</code></pre></div>
+<h2 id="toc_0">Сразу займёмся делами насущными</h2>
+
+<p>А именно настроим раскладку клавиатуры и заодно пропишем всё, что должно быть в автозапуске  и запуск самого openbox, дабы нас не встречал голый экран. Копируем примеры для редактирования:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> mkdir -p ~/.config/openbox
+<span class="gp">$</span> cp /etc/xdg/openbox/<span class="o">{</span>rc.xml,menu.xml,autostart,environment<span class="o">}</span> ~/.config/openbox
+</code></pre></div>
+<p>Openbox может быть выбран в качестве сессии, если у вас уже установлен slim, kdm, gdm или ещё что-то. Если же нет и это вам не нужно, идём потрошить <code>.xinitrc</code>:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># .xinitrc</span>
+<span class="c">#</span>
+<span class="c">#! /bin/bash</span>
+<span class="nb">exec </span>openbox-session
+
+<span class="c"># ~/.config/openbox/autostart</span>
+conky &amp;
+nitrogen --restore &amp;
+tint2 &amp;
+<span class="c"># раскладка клавиатуры</span>
+setxkbmap -layout us,ru -variant -option grp:alt_shift_toggle,terminate:ctrl_alt_bksp &amp;
+wbar -above-desk -pos top &amp;
+<span class="c"># композитный менеджер</span>
+xcompmgr -с -C -t5 -l8.28.2 -r8.2 -o.55 &amp;
+<span class="c"># networkmanager applet ( при надобности )</span>
+nm-applet --sm-disable &amp;
+</code></pre></div>
+<p>Таким образом раскладка настроена на переключение по <code>Shift+Alt</code>, вверху запускается wbar, о котором сказано будет чуть ниже, выбранная обоина на рабочем столе восстанавливается при старте системы, стартует conky. Причём фон у conky прозрачный. Если это не так, устанавливаем композитный менеджер. Коротко о его свойствах ниже, он отвечает за различные графические эффекты: тени, прозрачность и тому подобное.</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> sudo yaourt xcompmgr-dana
+</code></pre></div>
+<p><b>P.S.</b> Чтобы на панели tint2 отображалась используемая раскладка, нам понадобится установить xxkb и создать его конфигурационный файл в домашней директории:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># ~.xxkbrc:</span>
+<span class="c">#</span>
+XXkb.image.path: /usr/share/xxkb/
+XXkb.mainwindow.type:  tray
+XXkb.group.base: 1
+XXkb.group.alt: 2
+XXkb.mainwindow.enable:  yes
+XXkb.mainwindow.image.1: en15.xpm
+XXkb.mainwindow.image.2: ru15.xpm
+XXkb.mainwindow.image.3:
+XXkb.mainwindow.image.4:
+XXkb.mainwindow.appicon:  yes
+XXkb.mainwindow.geometry:  20x20+2+2
+XXkb.mainwindow.in_tray:  GNOME2
+XXkb.button.enable:  no
+XXkb.app_list.wm_class_name.start_alt: skype
+XXkb.controls.add_when_start: yes
+XXkb.controls.add_when_create: yes
+XXkb.controls.add_when_change: no
+XXkb.controls.focusout: no
+XXkb.mainwindow.xpm.1: en15.xpm
+XXkb.mainwindow.xpm.2: ru15.xpm
+XXkb.mainwindow.label.enable: no
+</code></pre></div>
+<h2 id="toc_1">Меню и внешний вид openbox</h2>
+
+<p>Проверьте, что файл кофигурации располагается в домашней директории пользователя, дабы можно было редактировать его, не опасаясь последствий. Если его нет, копируем:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> mkdir ~/.config/openbox <span class="o">&amp;&amp;</span> cp /etc/xdg/openbox/menu.xml ~/.config/openbox/menu.xml
+</code></pre></div>
+<p>Можно редактировать данный файл вручную, поскольку синтаксис достаточно тривиален. Но хочу предложить вам второй вариант &mdash; obmenu.</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> sudo pacman -S obmenu
+<span class="gp">$</span> obmenu
+</code></pre></div>
+<ul>
+<li>Можно добавить своё меню - New Menu</li>
+<li>Добавить в него подпункты - New item</li>
+<li>После чего удалить всё ненужное.</li>
+</ul>
+
+<p><code>Obmenu</code> требует, чтобы вы ввели название нового приложения в меню, действие &mdash; Execute и путь к нему.
+Так, для добавления редактора eclipse, введём его наименование и пропишем путь <code>/usr/bin/eclipse</code>.</p>
+
+<p>Для остальных приложений аналогично.</p>
+
+<p><img src="http://3.bp.blogspot.com/-9QMD4AfZiz4/T983kqIyT9I/AAAAAAAAA50/18M-S5vU_Tw/s1600/obmenu.png" alt="obmenu"></p>
+
+<p>Впрочем, можете воспользоваться программой menumaker, которая генерирует меню самостоятельно.</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> sudo pacman -S menumaker
+<span class="gp">$</span> mmaker -v openbox    <span class="c">#  Не перезаписывать существующий файл меню.</span>
+<span class="gp">$</span> mmaker -vf openbox   <span class="c">#  Принудительно перезаписать файл меню.</span>
+</code></pre></div>
+<p>Теперь кликаем правой клавишей мыши по рабочему столу, выбираем из меню &quot;System&quot; - &quot;Openbox configuration Manager&quot;.</p>
+
+<p>Так-то лучше. И здесь нам не придётся вручную редактировать файл конфигурации.
+Настройки как правило уже русифицированы и в них нет ничего, с чем было бы сложно разобраться.</p>
+
+<h2 id="toc_2">Смена обоев на рабочем столе</h2>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> sudo pacman -S nitrogen
+<span class="gp">$</span> nitrogen
+</code></pre></div>
+<p>Здесь всё просто. Укажите путь к вашим изображениям, и они появятся в <code>nitrogen</code> &mdash; выбирайте любое. Можно добавить nitrogen в меню с помощью obmenu. Подобную операцию мы уже проделывали.</p>
+
+<p><img src="http://4.bp.blogspot.com/-1POgF6mIfpg/T9877g5KvrI/AAAAAAAAA6I/js_PTGXhziQ/s1600/nitrogen.png" alt="notrigen"></p>
+
+<h2 id="toc_3">Иконки и шрифты</h2>
+
+<p>Кто-то предпочитает настраивать ручками, но мы опять сэкономим своё время, установив <code>lxappearance</code>:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> sudo pacman -S lxappearance
+</code></pre></div>
+<p>Запускаем и выбираем, что больше нравится.</p>
+
+<p><img src="http://1.bp.blogspot.com/-u8QtWjlNH80/T-WyPrHJkWI/AAAAAAAAA70/Gyliajlkpqc/s1600/lxappearance.png" alt="lxappearance"></p>
+
+<p>Если есть желание отображать иконки на рабочем столе, idesk к вашим услугам. Автор сего поста не пользуется этой программой, поэтому долго не обсуждает.</p>
+
+<p>Вообще, процедура сводится к созданию файла <code>название_программы.lnk</code> в директории <code>.idesktop/</code> , где прописыватся примерно такое:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">table Icon
+Caption: firefox
+Command: firefox
+Icon: /home/arch/.idesktop/firefox.png
+Width: 48
+Height: 48
+X: 40
+Y: 40
+end
+</code></pre></div>
+<p>Думаю, в объяснении не нуждается.</p>
+
+<p>Файл конфигурации лежит по пути <code>/usr/share/idesk/dot.ideskrc</code></p>
+
+<p>Отображать иконку уровня звука призван obmixer, который также надо просто добавить в автозагрузку.</p>
+
+<h2 id="toc_4">Горячие клавиши</h2>
+
+<p>Сочетания горячих клавиш настраиваются в <code>~/.config/openbox/rc.xml</code>.
+Ищем эти настройки в соответствующих секциях.</p>
+
+<p>Перемещение между рабочими столами:</p>
+<div class="highlight"><pre><code class="xml language-xml" data-lang="xml"><span class="c">&lt;!-- Keybindings for desktop switching --&gt;</span>
+</code></pre></div>
+<p>За управление окнами отвечает секция:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;!-- Keybindings for windows --&gt;
+</code></pre></div>
+<p>Переключение окон:</p>
+<div class="highlight"><pre><code class="xml language-xml" data-lang="xml"><span class="c">&lt;!-- Keybindings for window switching --&gt;</span>
+</code></pre></div>
+<p>Запуск приложений:</p>
+<div class="highlight"><pre><code class="xml language-xml" data-lang="xml"><span class="c">&lt;!-- Keybindings for running applications --&gt;</span>
+</code></pre></div>
+<p>И так далее.
+Например, если нужно подцепить горячую клавишу для firefox, создаём такой блок:</p>
+<div class="highlight"><pre><code class="xml language-xml" data-lang="xml"><span class="nt">&lt;keybind</span> <span class="na">key=</span><span class="s">&quot;W-w&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;action</span> <span class="na">name=</span><span class="s">&quot;Execute&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;command&gt;</span>firefox<span class="nt">&lt;/command&gt;</span>
+    <span class="nt">&lt;startupnotify&gt;</span>
+        <span class="nt">&lt;enabled&gt;</span>yes<span class="nt">&lt;/enabled&gt;</span>
+        <span class="nt">&lt;name&gt;</span>Minefield Web Browser<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;/startupnotify&gt;</span>
+    <span class="nt">&lt;/action&gt;</span>
+<span class="nt">&lt;/keybind&gt;</span>
+</code></pre></div>
+<ul>
+<li>keybind key - привязка определённой клавиши</li>
+<li>action name - execute значит, что это приложение запуска</li>
+<li>command - либо вводим путь вроде <code>/usr/bin/firefox</code>, либо просто указываем, какое приложение надо запустить</li>
+<li>enabled - включено</li>
+<li>name - имя для программы</li>
+</ul>
+
+<p>Для примера назначим горячую клавишу самому меню openbox:</p>
+<div class="highlight"><pre><code class="xml language-xml" data-lang="xml"><span class="nt">&lt;keybind</span> <span class="na">key=</span><span class="s">&quot;W-space&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;action</span> <span class="na">name=</span><span class="s">&quot;ShowMenu&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;menu&gt;</span>root-menu<span class="nt">&lt;/menu&gt;</span>
+      <span class="nt">&lt;/action&gt;</span>
+<span class="nt">&lt;/keybind&gt;</span>
+</code></pre></div>
+<p>Теперь нажатием клавиш <code>super</code> (win) + <code>пробел</code> мы сможем вызвать главное меню со списком наших приложений.</p>
+
+<p>Сокращения клавиш:</p>
+
+<ul>
+<li><code>A</code> - Alt</li>
+<li><code>W</code> - win</li>
+<li><code>C</code> - ctrl</li>
+</ul>
+
+<p>И так далее по смыслу</p>
+
+<h3 id="toc_5">Настраиваем клавиши для перемещения окон с клавиатуры</h3>
+
+<p>Возможные действия над окнами:</p>
+
+<ul>
+<li><code>SendToDesktop</code> (отправить окно на указанный аргументом опции рабочий стол; опция <to>, её значение – номер стола);</li>
+<li><code>Focus</code> (передать окну фокус);</li>
+<li><code>Raise</code> (поднять окно на передний план);</li>
+<li><code>Lower</code> (переместить окно на задний план);</li>
+<li><code>Iconify</code> (свернуть окно на панель);</li>
+<li><code>Close</code> (закрыть окно);</li>
+<li><code>ToggleShade</code> (свернуть в заголовок/развернуть из заголовка);</li>
+<li><code>ToggleMaximize</code> (включить/отключить режим полного развёртывания);</li>
+<li><code>ToggleFullscreen</code> (включить/отключить полноэкранный режим);</li>
+<li><code>ToggleDecorations</code> (включить/отключить заголовок);</li>
+<li><code>Move</code> (переместить);</li>
+<li><code>Resize</code> (изменить размер).</li>
+</ul>
+
+<p>Пример:</p>
+
+<p>В секции <code><!-- Keybindings for window switching with the arrow keys --></code></p>
+<div class="highlight"><pre><code class="xml language-xml" data-lang="xml"><span class="nt">&lt;keybind</span> <span class="na">key=</span><span class="s">&quot;W-k&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;action</span> <span class="na">name=</span><span class="s">&quot;ToggleShade&quot;</span><span class="nt">&gt;&lt;/action&gt;</span>
+<span class="nt">&lt;/keybind&gt;</span>
+<span class="nt">&lt;keybind</span> <span class="na">key=</span><span class="s">&quot;W-f&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;action</span> <span class="na">name=</span><span class="s">&quot;ToggleFullscreen&quot;</span><span class="nt">&gt;&lt;/action&gt;</span>
+<span class="nt">&lt;/keybind&gt;</span>
+<span class="nt">&lt;keybind</span> <span class="na">key=</span><span class="s">&quot;W-Left&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;action</span> <span class="na">name=</span><span class="s">&quot;Move&quot;</span><span class="nt">&gt;&lt;/action&gt;</span>
+<span class="nt">&lt;/keybind&gt;</span>
+<span class="nt">&lt;keybind</span> <span class="na">key=</span><span class="s">&quot;W-Right&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;action</span> <span class="na">name=</span><span class="s">&quot;Resize&quot;</span><span class="nt">&gt;&lt;/action&gt;</span>
+<span class="nt">&lt;/keybind&gt;</span>
+</code></pre></div>
+<p>Так, по <code>Win+k</code> окно сворачиается, остаётся лишь заголовок</p>
+
+<ul>
+<li><code>Win+f</code> - развернуть/свернуть</li>
+<li><code>Win+Left</code> - перемещение окна</li>
+<li><code>Win+Right</code> - изменение размера окна</li>
+</ul>
+
+<h2 id="toc_6">Мультимедийные клавиши</h2>
+
+<p>Универсальный способ. Код клавиш нужно перевести в 16-ричную систему счисления.
+Например, вы хотите прикрутить какую-то клавишу на увеличение громкости звука. Запустите в терминале утилиту xev, нажмите нужную клавишу и посмотрите ее keycode.</p>
+
+<p>Например:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">KeyRelease event, serial 39, synthetic NO, window 0x1e00001,
+root 0x15a, subw 0x0, time 1613305, (627,558), root:(655,831),
+state 0x0, keycode 122 (keysym 0x1008ff11, XF86AudioLowerVolume)
+</code></pre></div>
+<p>Теперь это число (122) нужно перевести в шестнадцатеричное. Вот так:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> <span class="nb">printf</span> <span class="s2">&quot;%X\n&quot;</span> 122
+<span class="go">7A</span>
+</code></pre></div>
+<p>К этому числу добавить <code>&quot;0x&quot;</code>, т.е.  <code>&quot;0x7A&quot;</code>. Пример конфига, где <code>Fn-10</code> (0x122) увеличивает уровень звука, а <code>Fn-9</code> (0x123) уменьшает:</p>
+<div class="highlight"><pre><code class="xml language-xml" data-lang="xml"><span class="nt">&lt;keybind</span> <span class="na">key=</span><span class="s">&quot;0x7A&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;action</span> <span class="na">name=</span><span class="s">&quot;Execute&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;command&gt;</span>amixer sset Front 1+<span class="nt">&lt;/command&gt;</span>
+    <span class="nt">&lt;startupnotify&gt;</span>
+        <span class="nt">&lt;enabled&gt;</span>yes<span class="nt">&lt;/enabled&gt;</span>
+        <span class="nt">&lt;name&gt;</span>Folume +<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;/startupnotify&gt;</span>
+    <span class="nt">&lt;/action&gt;</span>
+<span class="nt">&lt;/keybind&gt;</span>
+
+<span class="nt">&lt;keybind</span> <span class="na">key=</span><span class="s">&quot;0x7B&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;action</span> <span class="na">name=</span><span class="s">&quot;Execute&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;command&gt;</span>amixer sset Front 1-<span class="nt">&lt;/command&gt;</span>
+    <span class="nt">&lt;startupnotify&gt;</span>
+        <span class="nt">&lt;enabled&gt;</span>yes<span class="nt">&lt;/enabled&gt;</span>
+        <span class="nt">&lt;name&gt;</span>Folume -<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;/startupnotify&gt;</span>
+    <span class="nt">&lt;/action&gt;</span>
+<span class="nt">&lt;/keybind&gt;</span>
+</code></pre></div>
+<p>Хотя, наилучший способ настроить мультимедийную клавиатуру - <code>xmodmap</code></p>
+
+<p>Пример: настраиваем регулировку яркости экрана</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> xmodmap -pke
+<span class="go">keycode 231 = Cancel NoSymbol Cancel</span>
+<span class="go">keycode 232 = XF86MonBrightnessDown NoSymbol XF86MonBrightnessDown</span>
+<span class="go">keycode 233 = XF86MonBrightnessUp NoSymbol XF86MonBrightnessUp</span>
+<span class="go">keycode 234 = XF86AudioMedia NoSymbol XF86AudioMedia и прочее...</span>
+
+<span class="gp">$</span> vim .xmodmaprc
+<span class="go">keycode 232 = XF86MonBrightnessDown keycode 233 = XF86MonBrightnessUp</span>
+</code></pre></div>
+<p>После чего следует добавить в файл автозапуска (в нашем случае <code>.config/openbox/autostart</code>):</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> xmodmap ~/.xmodmaprc
+</code></pre></div>
+<h2 id="toc_7">Wbar</h2>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> sudo pacman -S wbar
+</code></pre></div>
+<p>Редактировать эту утилиту очень просто. И очень долго, поскольку ваши темы иконок кушать она не станет. К каждой иконке прописывается свой путь. Впрочем, возможно автор просто не знает удобных утилит для автоматизации этого процесса.</p>
+
+<p>Если хотите, чтобы кроме иконок приложений в баре отображались и открытые на данный момент окна, не забудьте выставить флаг <code>&quot;Enable Taskbar&quot;</code> в настройках.</p>
+
+<p><img src="http://1.bp.blogspot.com/-pKsGXbWUjSE/T980607U8-I/AAAAAAAAA5o/dXFml5vAROw/s1600/wbar.png" alt="wbar"></p>
+
+<h2 id="toc_8">Xcompmgr и различные эффекты</h2>
+
+<p>Управление xcompmgr осуществляется при помощи его запуска с разными опциями.</p>
+
+<ul>
+<li><code>-c</code> - добавить мягкие тени к окнам</li>
+<li><code>-С</code> - убрать отрисовку теней у баров (wbar, например)</li>
+<li><code>f</code> - плавные эффекты затухания при сворачивании окон</li>
+</ul>
+
+<p>полный перечень в <code>man xcpomgr</code></p>
+
+<p>Для просмотра полных возможностей можно обратиться к странице man&#39;а.
+Чтобы окна были прозрачными понадобится пакет <code>transset</code>.
+Можно использовать альтернативу: <code>cairo-compmgr</code></p>
+
+<h2 id="toc_9">Tint2</h2>
+
+<p>А вот это приберегите для бессонных ночей.</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> sudo pacman -S tint2
+</code></pre></div>
+<p>После запуска в директории <code>~/.config/tint2/</code> появится конфигурационный файл <code>tint2rc</code>, со стандартными настройками.</p>
+
+<p>Фон и рамки. При минимальном знании английского или даже интуитивно настраивается легко. Все опции просты и понятны. Можно, например, настроить ширину и цвет рамки.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#———————————————
+# BACKGROUND AND BORDER
+#———————————————
+
+rounded -  закругление углов (в пикселях)
+border_width – ширина границы (в пикселях)
+background_color – цвет фона
+border_color – цвет границы
+</code></pre></div>
+<p>Секция настройки панели</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#———————————————
+# PANEL
+#———————————————
+
+
+panel_monitor = определяет как отображать панель (all – на всех мониторах, 1..2 – на выбранных)
+panel_position = расположение панели
+panel_margin = отступ от краев экрана
+panel_padding = отступ индикатора окна от левого края панели,  от верхнего края панели и отступ между индикаторами соответственно
+font_shadow = Тень фона
+panel_background_id = фон панели и толщина границы
+wm_menu = 0 или 1 – не показывать или показывать меню WM при клике на панели
+panel_dock =  0 или 1 – использовать интеграцию с WM
+panel_layer = bottom,normal,top – определяет слой панели, используется для улучшения отображения прозрачности
+</code></pre></div>
+<p>Секция Taskbar</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#———————————————
+# TASKBAR
+#———————————————
+
+
+taskbar_mode = single_desktop или multi_desktop – на каждом рабочем столе своя панель, либо одна для всех соответственно
+taskbar_paddin = 3 переменные, 1  – расстояние между значками и краем панели, расстояние между значками и вертикальными границами панели, расстояние между значками.
+taskbar_background_id = фон и границы области открытого окна
+taskbar_active_background_id = фон и границы области активного открытого окна
+</code></pre></div>
+<p>Секция TASKS</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#———————————————
+# TASKS
+#———————————————
+
+
+task_icon = 1 или 0 – показывать иконку приложения или нет
+task_text  = 1 или 0 – показывать текст на кнопке или нет
+task_maximum_size = максимальный размер кнопки по горизонтали (для вертикальной панели) и по вертикали (для вертикальной панели)
+task_centered = 1 или 0  – центрировать кнопку
+task_padding = расстояние текста (иконки) от краев кнопки (первая цифра – по горизонтали, вторая – по вертикали)
+task_font = Шрифт
+task_font_color  = Цвет шрифта
+task_background_id = 3 = фон и границы области кнопки панели задач
+task_icon_asb = (saturation-brightness) настройка отображения иконки приложения
+task_active_background_id = 2 = настройка для активного окна
+task_active_font_color = настройка шрифта для активного окна
+task_active_icon_asb = настройка отображения иконки для активного окнам
+urgent_nb_of_blink = количество “миганий”
+</code></pre></div>
+<p>Секция Systraybar</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#———————————————
+# SYSTRAYBAR
+#———————————————
+
+systray = 1 или 0 – включить или отключить систем трей
+systray_padding = 3 параметра – расстояние между краем панели и значком приложения, расстояние между значком и вертикальными краями панели, расстояние между значками
+systray_background_id = фон и границы области панели задач
+systray_sort = left2right = способ расположения приложений на панели задач
+systray_icon_size = размер иконки
+systray_icon_asb = настройка отображения иконки приложения
+</code></pre></div>
+<p>Секция Clock</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#———————————————
+# CLOCK
+#———————————————
+
+time1_format = %H:%M  – Формат отображения времени в первой строке
+time1_font = sans 8  – шрифт отображения времени в первой строке
+time2_format = %A %d %B – формат отображения времени во второй строке (здесь  – дата)
+time2_font = sans 6 – шрифт отображения во второй строке
+clock_font_color = #ffffff 76 – цвет шрифта и прозрачность
+clock_padding = 1 0 -  два параметра – расстояние между краем панели и временем, расстояние между временем и вертикальными краями панели
+clock_background_id = фон и границы области панели задач
+clock_lclick_command = text – запуск команды (text) при нажатии на часах левой кнопкой мыши
+clock_rclick_command = text – запуск команды (text) при нажатии на часах правой кнопкой мыши
+clock_tooltip = %A %d %B – формат и вывод подсказки при наведении мышки на область часов
+time1_timezone = часовой пояс первой строки
+time2_timezone = часовой пояс второй строки
+clock_tooltip_timezone = часовой пояс подсказки при наведении мышки на область часов
+</code></pre></div>
+<p>Секция Battery</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#———————————————
+# BATTERY
+#———————————————
+
+battery = 1 или 0 – показывать или нет заряд батареи на панели
+battery_hide = (от 0 до 100) – показывать на панели, когда заряд батареи опуститься до заданного значения
+battery_low_status = (от 0 до 100) – показывает низкий заряд батареи, когда он опускается до заданного значения
+battery_low_cmd = notify-send “battery low” – что делать если заряд батареи достиг минимального значения
+bat1_font  – шрифт отображения первой строки
+bat2_font – шрифт отображения второй строки
+battery_font_color = #ffffff 76 – цвет шрифта и прозрачность
+battery_padding = 1 0 – два параметра – расстояние между краем панели и индикатором батареи, расстояние между индикатором и вертикальными краями панели
+battery_background_id – фон и границы области панели задач
+</code></pre></div>
+<p>Секция Tooltip</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#———————————————
+# TOOLTIP
+#———————————————
+
+tooltip  – 1 или 0 – показывать или нет подсказки
+tooltip_padding – размер подсказок (по вертикали и горизонтали)
+tooltip_show_timeout – через какое время показывать, после наведения мыши на элемент панели
+tooltip_hide_timeout – как долго отображать подсказки
+tooltip_background_id – фон и границы области подсказок
+tooltip_font_color – цвет шрифта и прозрачность
+tooltip_font – шрифт подсказок и размер
+</code></pre></div>
+<p>Секция Mouse Action and task</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#———————————————
+# MOUSE ACTION ON TASK
+#———————————————
+
+mouse_middle – Средняя кнопка мыши
+mouse_right – правая кнопка мыши
+mouse_scroll_up – прокрутка колесика мыши вверх
+mouse_scroll_down – прокрутка колесика мыши вниз
+</code></pre></div>
+<p>Каждый из этих параметров может принимать следующие значения – none, close, toggle, iconify, shade, toggle_iconify, maximize_restore, desktop_left, desktop_right, next_task, prev_task.</p>
+
+<p>Если параметр задан как  <code>none</code> и <code>wm_menu = 1</code> установлен, то события возвращаются приложению отвечающему за окна (WM)</p>
+
+<p>Секция Autohide</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#———————————————
+# AUTOHIDE OPTIONS
+#———————————————
+autohide – 1 или 0 – включить или выключить автоскрытие панели
+autohide_show_timeout – чарез какое время показывать панель, после подвода мыши к краю экрана
+autohide_hide_timeout – через какое время скрыть панель
+autohide_height – высота скрытой панели
+</code></pre></div>
+<p>Что из этого может получиться</p>
+
+<p>Пример первый:</p>
+
+<p><a href="http://fc04.deviantart.net/fs70/i/2013/053/9/4/openbox_blue_by_redvi9-d5vt3yx.jpg" data-lighter><img src="http://fc04.deviantart.net/fs70/i/2013/053/9/4/openbox_blue_by_redvi9-d5vt3yx.jpg"/></a></p>
+
+<p>Пример второй:</p>
+
+<p><a href="http://fc02.deviantart.net/fs71/i/2013/072/2/c/gentoo_openbox_by_redvi9-d5xz7ii.png" data-lighter><img src="http://fc02.deviantart.net/fs71/i/2013/072/2/c/gentoo_openbox_by_redvi9-d5xz7ii.png"/></a></p>
+
+<p>Итак, openbox у нас настроен. Быстрый и симпатичный оконный менеджер. Если же по каким-то причинам он вам не подходит, а громоздкие DE вы ставить не желаете, обратите внимание на xmonad. Возможно, он сумеет вас порадовать.</p>
+
+<p><b>P.S.</b> в качестве легковесного файлового менеджера рекомендую <code>pcmanfm</code></p>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+<br />
+<div id="comments"></div>
+<script type="text/javascript" class="juvia">
+(function() {
+    var options = {
+        container   : '#comments',
+        site_key    : 'gcquc3fefcn3kyoj7jstkb7ic8f90cw',
+        topic_key   : '/posts/openbox',
+        topic_url   : 'http://www.unix-lab.org/posts/openbox',
+        topic_title : 'Поваренная книга openbox' || 'http://www.unix-lab.org/posts/openbox',
+        include_base: !window.Juvia,
+        include_css : !window.Juvia
+    };
+
+    function makeQueryString(options) {
+        var key, params = [];
+        for (key in options) {
+            params.push(
+                encodeURIComponent(key) +
+                '=' +
+                encodeURIComponent(options[key]));
+        }
+        return params.join('&');
+    }
+
+    function makeApiUrl(options) {
+        // Makes sure that each call generates a unique URL, otherwise
+        // the browser may not actually perform the request.
+        if (!('_juviaRequestCounter' in window)) {
+            window._juviaRequestCounter = 0;
+        }
+
+        var result =
+            'http://juvia-unixlab.rhcloud.com/api/show_topic.js' +
+            '?_c=' + window._juviaRequestCounter +
+            '&' + makeQueryString(options);
+        window._juviaRequestCounter++;
+        return result;
+    }
+
+    var s       = document.createElement('script');
+    s.async     = true;
+    s.type      = 'text/javascript';
+    s.className = 'juvia';
+    s.src       = makeApiUrl(options);
+    (document.getElementsByTagName('head')[0] ||
+     document.getElementsByTagName('body')[0]).appendChild(s);
+})();
+</script>
+
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy; 2011&mdash;2013 ::</li>
+    <li class="footer"><a href="/">unix-lab.org</a> ::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

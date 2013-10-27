@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Настройка DSL в Debian/Ubuntu Linux | UNIX-LAB.ORG</title>
+  <meta name="description" content="После установки linux первое, что обычно делает счастливый пользователь - настройка интернет-соединения.">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Настройка DSL в Debian/Ubuntu Linux</h2>
+<h5><i class="icon-feather"></i> 30 октября 2011
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/debian.html">Debian /</a>
+
+<a href="/tags/linux.html">Linux /</a>
+
+</h5>
+
+<p>После установки linux первое, что обычно делает счастливый пользователь - настройка интернет-соединения. Но не у всех получается произвести её корректно. Поэтому сегодня рассмотрим простейший способ настройки ADSL под Debian Squeeze. Итак, поехали.</p>
+
+<h2 id="toc_0">I. Используем конфигуратор</h2>
+
+<h3 id="toc_1">Введите в терминале:</h3>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> ifconfig -a
+</code></pre></div>
+<p>Это позволит просмотреть список найденных сетевых интерфейсов</p>
+
+<p>Примечание: <code>lo</code> – интерфейс вашего локального хоста, на нём внимание не заостряем. Нас интересует <code>eth0</code> или же <code>ppp0</code>. В случае, если у вас одна сетевая карта, обычно так оно и есть.</p>
+
+<h3 id="toc_2">Установим и запустим pppoeconf:</h3>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> apt-get install pppoeconf
+<span class="gp">#</span> pppoeconf
+</code></pre></div>
+<p>На DVD-диске debian pppoeconf точно есть, ставим с диска.</p>
+
+<p>Перед вами появится окно настройки интернет-соединения. Тут всё просто: следуйте подсказкам. В большинстве случаев просто соглашайтесь со всем, что вам будет предложено. Здесь введите свой логин:</p>
+
+<p><img src="http://1.bp.blogspot.com/-uzF5nkVaaz4/Tp-ixjdmy2I/AAAAAAAAAUI/zfZ5J02YQA0/s1600/username.jpg" alt="login"></p>
+
+<p>и пароль:</p>
+
+<p><img src="http://1.bp.blogspot.com/-6RLRqSWPU48/Tp-i5WlaqJI/AAAAAAAAAUQ/PNFE1s4aVmA/s1600/passwd.jpg" alt="password"></p>
+
+<p>После сканирования сети вы получите готовый к употреблению, рабочий интернет.</p>
+
+<p><img src="http://3.bp.blogspot.com/-24QD9Nof_ng/Tp-i_vEPGzI/AAAAAAAAAUY/SdZ0fOC9foE/s1600/ok.jpg" alt="pppoe"></p>
+
+<p>Для того, чтобы убедиться в его работоспособности, попингуем гугл, например:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> ping google.com
+</code></pre></div>
+<p><b>Примечание:</b></p>
+
+<p><code>$ pon dsl-provider</code> – подключаемся</p>
+
+<p><code>$ poff dsl-provider</code> - отключаемся</p>
+
+<p><code>$ plog</code> – отобразит текущее стостояние подключения</p>
+
+<p><code>$ ifconfig ppp0</code> – отобразит сетевой интерфейс <code>ppp0</code></p>
+
+<h2 id="toc_3">II. Network Manager</h2>
+
+<p>Легче всего настроить подключение при помощи стандартного Network Manager (как в Windows). Проблема в том, что он не всегда корректно работает. Её рассматривать не будем - всё легко, сами разберётесь.</p>
+
+<h2 id="toc_4">Ручная конфигурация ( рекомендую )</h2>
+
+<p>Создаём конфигурационный файл <code>/etc/ppp/peers/pppoe</code>:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># /etc/ppp/peers/pppoe</span>
+
+plugin rp-pppoe.so
+<span class="c"># rp_pppoe_ac &#39;your ac name&#39;</span>
+<span class="c"># rp_pppoe_service &#39;your service name&#39;</span>
+
+<span class="c"># network interface</span>
+eth0
+<span class="c"># login name</span>
+name <span class="s2">&quot;someloginname&quot;</span>
+usepeerdns
+persist
+<span class="c"># Uncomment this if you want to enable dial on demand</span>
+<span class="c">#demand</span>
+<span class="c">#idle 180</span>
+defaultroute
+hide-password
+noauth
+</code></pre></div>
+<p>Вы используете тип аутентификации PAP или CHAP. В зависимости от типа правим конфиги <code>/etc/ppp/pap-secrets</code> или же <code>/etc/ppp/chap-secrets</code>. Там нужно прописать ваш логин и пароль.</p>
+
+<p>Формат:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&quot;login&quot; * &quot;password&quot;
+</code></pre></div>
+<p>Соединяемся:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> sudo pon pppoe
+</code></pre></div>
+<p>Отключаемся:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> sudo poff pppoe
+</code></pre></div>
+<p>Можете сделать это соединение используемым по умолчанию. Для этого создайте ссылку вида:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> ln -s pppoe /etc/ppp/peers/provider
+</code></pre></div>
+<p>И можете управлять соединением командами pon и poff.
+Можете также ознакомиться с настройками файла <code>/etc/ppp/options</code>, если знаете, что делаете.</p>
+
+<p>Настройка Ethernet со статическим IP-адресом</p>
+
+<p>Предположим, что Вы хотите назначить IP-адрес 192.168.0.2 на устройство <code>eth1</code>, с маской 255.255.255.0.
+Ваш IP- адрес шлюза по умолчанию 192.168.0.1.
+Введите в файл <code>/etc/network/interfaces</code>:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">iface eth1 inet static
+address 192.168.0.2
+netmask 255.255.255.0
+gateway 192.168.0.1
+В этом случае, нужно будет вписать DNS-серверы в файл /etc/resolv.conf
+search domain.example
+nameserver 192.168.0.1
+nameserver 4.2.2.2
+</code></pre></div>
+<p>Директива <code>search</code> добавит строку <code>domain.example</code> к имени хоста, и попытается найти название в вашей сети. Например, домен сети - <code>domain.example</code>, и вы пытаетесь вызвать хост <code>“myhost”</code>, запрос доменной системы имен будет изменен на <code>“myhost.domain.example”</code> для возможности поиска в домене.
+Если Вы используете свой собственный сервер имен, пропишите его в данном файле. В ином случае информацию вам должен предоставить Провайдер.</p>
+
+<p>Теперь немного о конфигурационных файлах.</p>
+
+<p><code>/etc/ppp/resolv.conf</code> - здесь прописываются DNS-адреса</p>
+
+<p>В <code>/etc/network/interfaces</code>  хранится большинство сетевых настроек</p>
+
+<p><code>/etc/iftab</code> - содержит таблицу интерфейсов (соответствие имён и интерфейсов их MAC-адресов)</p>
+
+<p><code>/etc/servises</code> - база данных сервисов, задающая соответствие имени сервиса и номера порта.
+<code>/etc/hosts.deny</code> - содержит IP-адреса узлов, которым запрещён доступ к сервисам данного узла.
+<code>/etc/hosts.allow</code> - содержит IP-адреса узлов, доступ которым разрешён.</p>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+<br />
+<div id="comments"></div>
+<script type="text/javascript" class="juvia">
+(function() {
+    var options = {
+        container   : '#comments',
+        site_key    : 'gcquc3fefcn3kyoj7jstkb7ic8f90cw',
+        topic_key   : '/posts/debian-dsl',
+        topic_url   : 'http://www.unix-lab.org/posts/debian-dsl',
+        topic_title : 'Настройка DSL в Debian/Ubuntu Linux' || 'http://www.unix-lab.org/posts/debian-dsl',
+        include_base: !window.Juvia,
+        include_css : !window.Juvia
+    };
+
+    function makeQueryString(options) {
+        var key, params = [];
+        for (key in options) {
+            params.push(
+                encodeURIComponent(key) +
+                '=' +
+                encodeURIComponent(options[key]));
+        }
+        return params.join('&');
+    }
+
+    function makeApiUrl(options) {
+        // Makes sure that each call generates a unique URL, otherwise
+        // the browser may not actually perform the request.
+        if (!('_juviaRequestCounter' in window)) {
+            window._juviaRequestCounter = 0;
+        }
+
+        var result =
+            'http://juvia-unixlab.rhcloud.com/api/show_topic.js' +
+            '?_c=' + window._juviaRequestCounter +
+            '&' + makeQueryString(options);
+        window._juviaRequestCounter++;
+        return result;
+    }
+
+    var s       = document.createElement('script');
+    s.async     = true;
+    s.type      = 'text/javascript';
+    s.className = 'juvia';
+    s.src       = makeApiUrl(options);
+    (document.getElementsByTagName('head')[0] ||
+     document.getElementsByTagName('body')[0]).appendChild(s);
+})();
+</script>
+
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy; 2011&mdash;2013 ::</li>
+    <li class="footer"><a href="/">unix-lab.org</a> ::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

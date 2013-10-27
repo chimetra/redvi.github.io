@@ -1,0 +1,21 @@
+---
+layout: default
+---
+<h2>{{ page.title }}</h2>
+<h5><i class="icon-feather"></i> {{ page.date | localize: "%d %B %Y" }}
+{% if page.update %}
+ <i class="icon-spin4"></i> {{ page.update }}
+{% endif %}
+ <i class="icon-bookmarks"></i>
+{% for tag in page.tags %}
+<a href="/tags/{{ tag }}.html">{{ tag | capitalize }} /</a>
+{% endfor %}
+</h5>
+
+{{ content }}
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+<br />
+{% include juvia-comments.html %}
+

@@ -1,9 +1,0 @@
-User-agent: Yandex
-Disallow: /content/
-
-User-agent: Googlebot
-Disallow: /content/
-
-User-agent: *
-Disallow: /content/
-Host: http://redvi.github.io

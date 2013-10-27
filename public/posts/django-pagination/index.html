@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Django: постраничный вывод статей | UNIX-LAB.ORG</title>
+  <meta name="description" content="О том, как сделать постраничный вывод новостей в django.">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Django: постраничный вывод статей</h2>
+<h5><i class="icon-feather"></i> 03 августа 2013
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/python.html">Python /</a>
+
+</h5>
+
+<p>Ни один сайт не состоит только лишь из одной страницы. Будь то блог, новостной портал или даже домашняя страничка Васи Пупочкина. Материала много, страницы нужно как-то выводить. Вывод всех публикаций на одной странице является по сути своей идеей порочной: бесконечно прокручивать список статей неудобно для пользователя, а про нагрузку на сервер лучше даже не вспоминать.</p>
+
+<p>Для решения этой задачи в Django есть несколько способов и сегодня предлагается рассмотреть один из них: стандартный пагинатор. Рассмотрим пример, где нужно получить список всех публикаций и затем вывести их постранично.</p>
+
+<p>В примере используются всё те же модели, что и <a href="http://www.unix-lab.org/posts/django-first-steps/">в предыдущем посте</a>. В класс <code>Paginator</code> следует передать список объектов и количество элементов, которые нужно отображать на одной странице. Далее используются методы класса для доступа к этим элементам.</p>
+
+<h3 id="toc_0">Модель публикации</h3>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="c"># models.py</span>
+
+<span class="k">class</span> <span class="nc">Post</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">()</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+    <span class="n">meta_keywords</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">meta_description</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">250</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="toc_1">«Вьюха»</h3>
+
+<p><code>post_lists</code> &mdash; получаем список всех публикаций, отсортированных по времени создания.</p>
+
+<p><code>paginator</code> &mdash; передаём классу <code>Paginator</code> наш список, указываем количество элементов на одну страницу</p>
+
+<p><code>paginator.page(1)</code> &mdash; возвращает объект <code>Page</code> по переданному индексу (начинается с единицы). Вызывает исключение <code>InvalidPage</code>, если указанная страница не существует.</p>
+
+<p><code>paginator.page(paginator.num_pages)</code> &mdash; отобразить общее количество страниц</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="c"># views.py</span>
+
+<span class="kn">from</span> <span class="nn">django.core.paginator</span> <span class="kn">import</span> <span class="n">Paginator</span><span class="p">,</span> <span class="n">PageNotAnInteger</span><span class="p">,</span> <span class="n">EmptyPage</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render_to_response</span>
+<span class="kn">from</span> <span class="nn">django.template</span> <span class="kn">import</span> <span class="n">RequestContext</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Post</span>
+
+<span class="k">def</span> <span class="nf">news</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Show all news&#39;&#39;&#39;</span>
+    <span class="n">posts_list</span> <span class="o">=</span> <span class="n">Post</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;-timestamp&#39;</span><span class="p">)</span>
+    <span class="n">paginator</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="n">posts_list</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;page&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">posts</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">PageNotAnInteger</span><span class="p">:</span>
+        <span class="n">posts</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">EmptyPage</span><span class="p">:</span>
+        <span class="n">posts</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="n">paginator</span><span class="o">.</span><span class="n">num_pages</span><span class="p">)</span>
+    <span class="nb">vars</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">posts</span><span class="o">=</span><span class="n">posts</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&#39;news.html&#39;</span><span class="p">,</span> <span class="nb">vars</span><span class="p">,</span> <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
+</code></pre></div>
+<h3 id="toc_2">Шаблон</h3>
+
+<p><code>for post in posts</code> &mdash; итерация по элементам</p>
+
+<p><code>post.has_previous</code> &mdash; возвращает <code>True</code> в случае, если предыдущая страница существует</p>
+
+<p><code>post.has_next</code> &mdash; возвращает <code>True</code> в случае, если следующая страница существует</p>
+
+<p><code>post.number</code> &mdash; выведет номер страницы</p>
+
+<p><code>post.previous_page_number</code> &mdash; вернуть предыдущую страницу</p>
+
+<p><code>post.next_page_number</code> &mdash; вернуть следующую страницу</p>
+<div class="highlight"><pre><code class="html+django language-html+django" data-lang="html+django"># news.html
+
+<span class="cp">{%</span> <span class="k">extends</span> <span class="s1">&#39;base.html&#39;</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">title</span> <span class="cp">%}</span>News<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+<span class="cp">{%</span> <span class="k">block</span> <span class="nv">content</span> <span class="cp">%}</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;post&quot;</span><span class="nt">&gt;</span>
+        <span class="cp">{%</span> <span class="k">for</span> <span class="nv">post</span> <span class="k">in</span> <span class="nv">posts</span> <span class="cp">%}</span>
+        <span class="nt">&lt;ul&gt;</span>
+        <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;</span><span class="cp">{%</span> <span class="k">url</span> <span class="s1">&#39;news:one_new&#39;</span> <span class="nv">post.id</span> <span class="cp">%}</span><span class="s">&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span> <span class="nv">post.title</span><span class="cp">}}</span><span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+        <span class="nt">&lt;/ul&gt;</span>
+        <span class="cp">{{</span> <span class="nv">post.timestamp</span> <span class="cp">}}</span>
+        <span class="cp">{{</span> <span class="nv">post.author</span> <span class="cp">}}</span><span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+        <span class="cp">{{</span> <span class="nv">post.body</span><span class="o">|</span><span class="nf">truncatewords</span><span class="o">:</span><span class="m">80</span><span class="o">|</span><span class="nf">safe</span> <span class="cp">}}</span><span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+         <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;</span><span class="cp">{%</span> <span class="k">url</span> <span class="s1">&#39;news:one_new&#39;</span> <span class="nv">post.id</span> <span class="cp">%}</span><span class="s">&quot;</span><span class="nt">&gt;</span>Читать полностью<span class="nt">&lt;/a&gt;</span>
+        <span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;pages&quot;</span> <span class="na">align=</span><span class="s">&quot;center&quot;</span><span class="nt">&gt;</span>
+        <span class="cp">{%</span> <span class="k">if</span> <span class="nv">posts.has_previous</span> <span class="cp">%}</span>
+            <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;?page=</span><span class="cp">{{</span> <span class="nv">posts.previous_page_number</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span>Previous<span class="nt">&lt;/a&gt;</span>
+        <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;current&quot;</span><span class="nt">&gt;</span>
+        Page <span class="cp">{{</span> <span class="nv">posts.number</span> <span class="cp">}}</span> of <span class="cp">{{</span> <span class="nv">posts.paginator.num_pages</span> <span class="cp">}}</span>.
+    <span class="nt">&lt;/span&gt;</span>
+        <span class="cp">{%</span> <span class="k">if</span> <span class="nv">posts.has_next</span> <span class="cp">%}</span>
+            <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;?page=</span><span class="cp">{{</span> <span class="nv">posts.next_page_number</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span>Next<span class="nt">&lt;/a&gt;</span>
+        <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="cp">{%</span> <span class="k">endblock</span> <span class="cp">%}</span>
+</code></pre></div>
+<p>Страница документации: <a href="https://docs.djangoproject.com/en/dev/topics/pagination/">Pagination</a></p>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+<br />
+<div id="comments"></div>
+<script type="text/javascript" class="juvia">
+(function() {
+    var options = {
+        container   : '#comments',
+        site_key    : 'gcquc3fefcn3kyoj7jstkb7ic8f90cw',
+        topic_key   : '/posts/django-pagination',
+        topic_url   : 'http://www.unix-lab.org/posts/django-pagination',
+        topic_title : 'Django: постраничный вывод статей' || 'http://www.unix-lab.org/posts/django-pagination',
+        include_base: !window.Juvia,
+        include_css : !window.Juvia
+    };
+
+    function makeQueryString(options) {
+        var key, params = [];
+        for (key in options) {
+            params.push(
+                encodeURIComponent(key) +
+                '=' +
+                encodeURIComponent(options[key]));
+        }
+        return params.join('&');
+    }
+
+    function makeApiUrl(options) {
+        // Makes sure that each call generates a unique URL, otherwise
+        // the browser may not actually perform the request.
+        if (!('_juviaRequestCounter' in window)) {
+            window._juviaRequestCounter = 0;
+        }
+
+        var result =
+            'http://juvia-unixlab.rhcloud.com/api/show_topic.js' +
+            '?_c=' + window._juviaRequestCounter +
+            '&' + makeQueryString(options);
+        window._juviaRequestCounter++;
+        return result;
+    }
+
+    var s       = document.createElement('script');
+    s.async     = true;
+    s.type      = 'text/javascript';
+    s.className = 'juvia';
+    s.src       = makeApiUrl(options);
+    (document.getElementsByTagName('head')[0] ||
+     document.getElementsByTagName('body')[0]).appendChild(s);
+})();
+</script>
+
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy; 2011&mdash;2013 ::</li>
+    <li class="footer"><a href="/">unix-lab.org</a> ::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

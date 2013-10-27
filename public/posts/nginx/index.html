@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Nginx как самостоятельный веб-сервер | UNIX-LAB.ORG</title>
+  <meta name="description" content="В этот раз будет затронут вопрос установки и настройки сервера nginx не как дополнение к apache, а абсолютно отдельно от последнего.">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Nginx как самостоятельный веб-сервер</h2>
+<h5><i class="icon-feather"></i> 06 ноября 2012
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/arch.html">Arch /</a>
+
+<a href="/tags/server.html">Server /</a>
+
+<a href="/tags/linux.html">Linux /</a>
+
+</h5>
+
+<p>Пост в продолжение цикла о веб-серверах. В этот раз будет затронут вопрос установки и настройки сервера nginx не как дополнение к apache, а абсолютно отдельно от последнего.
+Если вас также интересует настройка apache под различными операционными системами, возможно, вам пригодятся данные ниже ссылки:</p>
+
+<ul>
+<li><a href="http://www.unix-lab.org/posts/lamp/">Apache + Archlinux</a></li>
+<li><a href="http://www.unix-lab.org/posts/apache-php-mysql/">Apache + Windows</a></li>
+</ul>
+
+<p><b>Немного предыстории:</b></p>
+
+<p>Nginx (энджин-экс) был разработан нашим соотечественником Игорем Сысоевым, первый релиз увидел свет осенью 2004 года. Nginx - это HTTP-сервер и обратный прокси-сервер, а также почтовый прокси-сервер. Чаще всего используется в дополнение к apache для снижения нагрузки на веб-серверах. Хотя вполне может использоваться и без &quot;индейца&quot; в случаях с высоконагруженными либо ресурсодефицитными серверами, куда поставить Apache не является возможным.</p>
+
+<p><b>Начнём:</b></p>
+
+<h2 id="toc_0">Установка необходимых компонентов</h2>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> sudo pacman -S php mysql nginx php-fpm
+</code></pre></div>
+<p>Управление запуском веб-сервера производится следующими командами:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> rc.d start nginx
+<span class="gp">#</span> rc.d stop nginx
+<span class="gp">#</span> rc.d restart nginx
+</code></pre></div>
+<p>Старт, останов и перезапуск соответственно.</p>
+
+<p>Директория по умолчанию для файлов сайта - <code>/usr/share/nginx/http/</code></p>
+
+<p>Мы же будем использовать стандартную директорию archlinux - <code>/srv/http</code>.</p>
+
+<p><b>Примечание:</b> в других дистрибутивах пути к файлам и директориям могут отличаться. Например в Debian/ubuntu стандартный каталог веб-сервера - <code>/var/www</code>.</p>
+
+<p>Для запуска при загрузке системы следует добавить nginx как демон в <code>rc.conf</code>:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">DAEMONS=( ... nginx...)
+</code></pre></div>
+<p><img src="http://1.bp.blogspot.com/-S7bhIrt0__E/UGbNvUV81fI/AAAAAAAABpI/mbbjE8xg9ZE/s1600/nginx.png" alt="welcome"></p>
+
+<h2 id="toc_1">Главный конфигурационный файл</h2>
+
+<p>Находится по пути <code>/etc/nginx/nginx.conf</code></p>
+
+<p>Открываем любимым текстовым редактором и правим в соответствии с нуждами:</p>
+<div class="highlight"><pre><code class="nginx language-nginx" data-lang="nginx">    <span class="c1">#user html;</span>
+    <span class="c1"># количество запускаемых рабочих процессов Nginx:</span>
+    <span class="k">worker_processes</span>  <span class="mi">1</span><span class="p">;</span>
+
+    <span class="c1"># местоположение файла протокола ошибок работы сервера и уровень их важности</span>
+    <span class="c1"># уровень серьёзности в порядке увеличения:</span>
+    <span class="c1"># debug, info, notice, warn, error, crit</span>
+    <span class="c1">#error_log  logs/error.log;</span>
+    <span class="c1">#error_log  logs/error.log  notice;</span>
+    <span class="c1">#error_log  logs/error.log  info;</span>
+
+    <span class="c1"># местоположение файла, содержащего идентификатор процесса запущенного</span>
+    <span class="c1"># сервера</span>
+    <span class="c1">#pid        logs/nginx.pid;</span>
+
+
+    <span class="c1"># подведение Nginx относительно сетевых соединений</span>
+    <span class="c1"># значение worker_connections, помноженное на значение worker_processes,</span>
+    <span class="c1"># определяет максимально возможное количество одновременных соединений к</span>
+    <span class="c1"># серверу</span>
+    <span class="k">events</span> <span class="p">{</span>
+        <span class="kn">worker_connections</span>  <span class="mi">1024</span><span class="p">;</span>
+    <span class="p">}</span>
+
+
+    <span class="c1"># default_type - MIME-тип по умолчанию, коорый будет передавать сервер клиенту,</span>
+    <span class="c1"># если этот тип не удалось определить</span>
+    <span class="k">http</span> <span class="p">{</span>
+        <span class="kn">include</span>       <span class="s">mime.types</span><span class="p">;</span>
+        <span class="kn">default_type</span>  <span class="s">application/octet-stream</span><span class="p">;</span>
+
+        <span class="c1">#log_format  main  &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;</span>
+        <span class="c1">#                  &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;</span>
+        <span class="c1">#                  &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;</span>
+
+    <span class="c1"># accsess_log определяет местоположение и формат лог-файла</span>
+        <span class="c1">#access_log  logs/access.log  main;</span>
+
+    <span class="c1"># включает или отключает использование сервером sendfile,</span>
+    <span class="c1"># увеличивает производительность</span>
+        <span class="kn">sendfile</span>        <span class="no">on</span><span class="p">;</span>
+        <span class="c1">#tcp_nopush     on;</span>
+
+    <span class="c1"># время, в течение которого Nginx будет держать открытым постоянное соединение</span>
+        <span class="c1">#keepalive_timeout  0;</span>
+        <span class="kn">keepalive_timeout</span>  <span class="mi">65</span><span class="p">;</span>
+
+    <span class="c1"># управление gzip-сжатием</span>
+        <span class="c1">#gzip  on;</span>
+
+    <span class="c1"># Начало блока SERVER!</span>
+    <span class="c1"># слушать 80 порт, имя сервера - localhost</span>
+        <span class="kn">server</span> <span class="p">{</span>
+            <span class="kn">listen</span>       <span class="mi">80</span><span class="p">;</span>
+            <span class="kn">server_name</span>  <span class="s">localhost</span><span class="p">;</span>
+            <span class="kn">root</span>    <span class="s">/srv/http</span><span class="p">;</span>
+
+    <span class="c1"># управление кодировкой</span>
+            <span class="c1"># charset koi8-r;</span>
+
+    <span class="c1"># логи доступа, скажем так</span>
+            <span class="c1">#access_log  logs/host.access.log  main;</span>
+
+    <span class="c1"># определение формата файлов</span>
+    <span class="c1"># определение корня сайта</span>
+            <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+                <span class="kn">root</span>   <span class="s">/srv/http</span><span class="p">;</span>
+                <span class="kn">index</span> <span class="s">index.php</span> <span class="s">index.html</span> <span class="s">index.htm</span> <span class="p">;</span>
+            <span class="p">}</span>
+
+    <span class="c1"># расположение 404 страницы (not found)</span>
+    <span class="c1"># создать её придётся самим</span>
+            <span class="kn">error_page</span>  <span class="mi">404</span>              <span class="s">/404.html</span><span class="p">;</span>
+
+    <span class="c1"># настройка сраниц ошибок 50x (ошибки сервера)</span>
+    <span class="c1"># в примере они лежат в директории errors</span>
+            <span class="c1"># redirect server error pages to the static page /50x.html</span>
+            <span class="c1">#</span>
+            <span class="kn">error_page</span>   <span class="mi">500</span> <span class="mi">502</span> <span class="mi">503</span> <span class="mi">504</span>  <span class="s">/50x.html</span><span class="p">;</span>
+            <span class="kn">location</span> <span class="p">=</span> <span class="s">/50x.html</span> <span class="p">{</span>
+                <span class="kn">root</span>   <span class="s">/srv/http/errors</span><span class="p">;</span>
+            <span class="p">}</span>
+
+            <span class="c1"># proxy the PHP scripts to Apache listening on 127.0.0.1:80</span>
+            <span class="c1">#</span>
+            <span class="c1">#location ~ \.php$ {</span>
+            <span class="c1">#    proxy_pass   http://127.0.0.1;</span>
+            <span class="c1">#}</span>
+
+    <span class="c1"># Для обработки php-файлов посредством FastCGI</span>
+            <span class="c1"># pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span>
+            <span class="c1">#</span>
+            <span class="kn">location</span> <span class="p">~</span> <span class="sr">\.(php|html)$</span> <span class="p">{</span>
+                <span class="kn">root</span>           <span class="s">/srv/http</span><span class="p">;</span>
+                <span class="c1">#fastcgi_pass   127.0.0.1:9000;</span>
+                <span class="kn">fastcgi_index</span>  <span class="s">index.php</span><span class="p">;</span>
+                <span class="kn">fastcgi_param</span>  <span class="s">SCRIPT_FILENAME</span>  <span class="nv">$document_root$fastcgi_script_name</span><span class="p">;</span>
+                <span class="kn">include</span>        <span class="s">fastcgi_params</span><span class="p">;</span> <span class="kn">fastcgi_param</span> <span class="s">QUERY_STRING</span> <span class="nv">$query_string</span><span class="p">;</span>
+
+            <span class="p">}</span>
+
+    <span class="c1"># настройка доступа к файлу .htaccess</span>
+            <span class="c1"># deny access to .htaccess files, if Apache&#39;s document root</span>
+            <span class="c1"># concurs with nginx&#39;s one</span>
+            <span class="c1">#</span>
+            <span class="c1">#location ~ /\.ht {</span>
+            <span class="c1">#    deny  all;</span>
+            <span class="c1">#}</span>
+        <span class="p">}</span>
+
+
+    <span class="c1"># Настройка виртуального сервера</span>
+        <span class="c1"># another virtual host using mix of IP-, name-, and port-based configuration</span>
+        <span class="c1">#</span>
+        <span class="c1">#server {</span>
+        <span class="c1">#    listen       8000;</span>
+        <span class="c1">#    listen       somename:8080;</span>
+        <span class="c1">#    server_name  somename  alias  another.alias;</span>
+
+        <span class="c1">#    location / {</span>
+        <span class="c1">#        root   html;</span>
+        <span class="c1">#        index  index.html index.htm;</span>
+        <span class="c1">#    }</span>
+        <span class="c1">#}</span>
+
+
+        <span class="c1"># HTTPS server</span>
+        <span class="c1">#</span>
+        <span class="c1">#server {</span>
+        <span class="c1">#    listen       443;</span>
+        <span class="c1">#    server_name  localhost;</span>
+
+        <span class="c1">#    ssl                  on;</span>
+        <span class="c1">#    ssl_certificate      cert.pem;</span>
+        <span class="c1">#    ssl_certificate_key  cert.key;</span>
+
+        <span class="c1">#    ssl_session_timeout  5m;</span>
+
+        <span class="c1">#    ssl_protocols  SSLv2 SSLv3 TLSv1;</span>
+        <span class="c1">#    ssl_ciphers  HIGH:!aNULL:!MD5;</span>
+        <span class="c1">#    ssl_prefer_server_ciphers   on;</span>
+
+        <span class="c1">#    location / {</span>
+        <span class="c1">#        root   html;</span>
+        <span class="c1">#        index  index.html index.htm;</span>
+        <span class="c1">#    }</span>
+        <span class="c1">#}</span>
+
+    <span class="p">}</span>
+</code></pre></div>
+<h2 id="toc_2">Что ещё?</h2>
+
+<p>Для корректной обработки php-файлов также может понадобиться внести изменения в <code>php.ini</code>:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text"># /etc/php/php.ini
+cgi.fix_pathinfo = 1
+</code></pre></div>
+<p>И обязательно в конфигурационный файл <code>/etc/php/php-fpm.conf</code> добавить строку:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">security.limit_extensions = .php .html
+</code></pre></div>
+<p>Это для того, чтобы .php-код обрабатывался в файлах <code>*.html</code></p>
+
+<p>После внесённых изменений перезапустить <code>nginx</code> и <code>php-fpm</code> и проверить на работоспособность, закинув в корневую директорию сайта файл <code>phpinfo.php</code> подобного содержания:</p>
+<div class="highlight"><pre><code class="php language-php" data-lang="php"><span class="cp">&lt;?php</span>
+    <span class="nb">phpinfo</span><span class="p">();</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</code></pre></div>
+<p>Смотрим:</p>
+
+<p><img src="http://2.bp.blogspot.com/-Q9s7HKDkWn8/UGZ5ByJXZSI/AAAAAAAABmY/8dVYqTfzu4s/s1600/php-fpm.png" alt="cgi"></p>
+
+<p>Возможно, в следующих постах будет рассмотрена настройка django в nginx, а также настройка виртуальных хостов. Но это позже, а пока прощаюсь.</p>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+<br />
+<div id="comments"></div>
+<script type="text/javascript" class="juvia">
+(function() {
+    var options = {
+        container   : '#comments',
+        site_key    : 'gcquc3fefcn3kyoj7jstkb7ic8f90cw',
+        topic_key   : '/posts/nginx',
+        topic_url   : 'http://www.unix-lab.org/posts/nginx',
+        topic_title : 'Nginx как самостоятельный веб-сервер' || 'http://www.unix-lab.org/posts/nginx',
+        include_base: !window.Juvia,
+        include_css : !window.Juvia
+    };
+
+    function makeQueryString(options) {
+        var key, params = [];
+        for (key in options) {
+            params.push(
+                encodeURIComponent(key) +
+                '=' +
+                encodeURIComponent(options[key]));
+        }
+        return params.join('&');
+    }
+
+    function makeApiUrl(options) {
+        // Makes sure that each call generates a unique URL, otherwise
+        // the browser may not actually perform the request.
+        if (!('_juviaRequestCounter' in window)) {
+            window._juviaRequestCounter = 0;
+        }
+
+        var result =
+            'http://juvia-unixlab.rhcloud.com/api/show_topic.js' +
+            '?_c=' + window._juviaRequestCounter +
+            '&' + makeQueryString(options);
+        window._juviaRequestCounter++;
+        return result;
+    }
+
+    var s       = document.createElement('script');
+    s.async     = true;
+    s.type      = 'text/javascript';
+    s.className = 'juvia';
+    s.src       = makeApiUrl(options);
+    (document.getElementsByTagName('head')[0] ||
+     document.getElementsByTagName('body')[0]).appendChild(s);
+})();
+</script>
+
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy; 2011&mdash;2013 ::</li>
+    <li class="footer"><a href="/">unix-lab.org</a> ::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

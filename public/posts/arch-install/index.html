@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Arch Linux. Быстрая установка | UNIX-LAB.ORG</title>
+  <meta name="description" content="Статья написана по большей части как быстрый старт для тех, кто уже ознакомился с официальной страничкой вики, и устанавливает систему не в первый раз.">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Arch Linux. Быстрая установка</h2>
+<h5><i class="icon-feather"></i> 17 октября 2011
+
+ <i class="icon-spin4"></i> 7 июля 2012
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/arch.html">Arch /</a>
+
+<a href="/tags/linux.html">Linux /</a>
+
+</h5>
+
+<p>Статья написана по большей части как быстрый старт для тех, кто уже ознакомился с официальной страничкой вики, и устанавливает систему не в первый раз. В случае, если вы никогда ранее не сталкивались с ArchLinux, рекомендуется обратиться <a href="https://wiki.archlinux.org/index.php/Installation_Guide">к официальной документации</a> по этому вопросу. Арч &mdash; стремительно меняющийся дистрибутив, буквально за два-три месяца (лето-осень 2012) процесс установки претерпел кардинальные изменения, от замены любимого bsd-подобного AIF до gentoo-подобной системы установки, от <code>rc.conf</code> и <code>rc.local</code> до <code>netcfg</code> и <code>systemd</code>. Тем не менее: внесены поправки от июля 2012 года, добавлена небольшая видеоинструкция.</p>
+
+<p><code>1.</code> Скачиваем <a href="http://mirror.yandex.ru/archlinux/iso/">нужный вам образ</a> дистрибутива, прожигаем его на болванку или же делаем загрузочную флешку (например, при помощи <code>unetbootin</code> для windows или стандартного <code>dd</code> для линукс:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> dd <span class="k">if</span><span class="o">=</span>имя_образа.iso <span class="nv">of</span><span class="o">=</span>куда_записать
+</code></pre></div>
+<p>Загружаемся с диска/флешки. Если с загрузкой непорядок, например, чёрный экран при загрузке, пробуем грузиться снова и при появлении главного меню жмём TAB, дописываем параметр nomodeset или же указываем с каким разрешением экрана стартовать системе (для разрешения 1366х768 впишите <code>vga=0x362</code>).</p>
+
+<p><code>2.</code> Выбор раскладки, отличной от us</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> loadkeys ru
+</code></pre></div>
+<p><code>3.</code> Конфигурирование сетевого интерфейса (подробно <a href="https://wiki.archlinux.org/index.php/Configuring_network">в вики</a>):</p>
+
+<p>Для DSL-соединения:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> pppoe-setup
+</code></pre></div>
+<p>Выполняем настройку по инструкции и стартуем соединение</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> pppoe-start
+</code></pre></div>
+<p>Для wi-fi-соединения:</p>
+
+<p><code>-</code> поднимем сеть</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> ip link <span class="nb">set </span>wlan0 up
+</code></pre></div>
+<p><code>-</code> просканируем доступные точки доступа</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> iwlist wlan0 scan
+</code></pre></div>
+<p><code>-</code> получим DNS и IP-адреса через DHCP</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> iwconfig wlan0
+<span class="gp">#</span> dhcpcd wlan0
+</code></pre></div>
+<p><code>-</code> есть ли подключение к интернету:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> ping ya.ru
+</code></pre></div>
+<p>Если пинги идут, значит всё отлично и можно двигаться дальше.</p>
+
+<p><code>4.</code> Разметка жёсткого диска</p>
+
+<p><code>-</code> просмотр всех имеющихся дисков</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> fdisk -l
+</code></pre></div>
+<p><code>-</code> теперь нужно создать разделы, отформатировать их в нужную вам файловую систему и назначить точки монтирования для будущих разделов. То есть с 2012 года archlinux ровным счётом ничем не уступает в установке <a href="http://www.unix-lab.org/posts/install-gentoo/">великой и ужасной Gentoo</a>, так что можете смело читать о нижеописанных действиях немного более подробно в приведённой по ссылке заметке. Впрочем, нелишним будет повториться:</p>
+
+<p><code>-</code> Создание разделов диска:
+Для этого воспользуемся <code>cfdisk</code></p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> cfdisk /dev/sda - где sda ваш-диск
+</code></pre></div>
+<ul>
+<li>news - создание нового раздела</li>
+<li>type - выбор типа файловой системы (83 - Linux, 82 - swap)</li>
+<li>bootable - отметить как загрузочный (укажите для раздела,в который хотите смонтировать /boot!)</li>
+<li>write - записать изменения</li>
+<li>delete - удалить</li>
+<li>quit - выйти</li>
+</ul>
+
+<p><code>-</code> Назначение файловой системы:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> mkfs.ext4 /dev/sda1 - создание ext4 на разделе /dev/sda1 под /root
+<span class="gp">#</span> mkfs.ext4  /dev/sda3 - создание ext4 на разделе /dev/sda3 под /home
+<span class="gp">#</span> mkswap /dev/sda2 - создание раздела подкачки на /dev/sda2
+<span class="gp">#</span> swapon /dev/sda2 - и его активация
+</code></pre></div>
+<p><code>-</code> Назначение точек монтирования:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> mount /dev/sda1 /mnt - монтируем корень
+<span class="gp">#</span> mkdir /mnt/home <span class="o">&amp;&amp;</span> mount /dev/sda3 /mnt/home - монтирование домашней директории пользователя
+</code></pre></div>
+<p><code>5.</code> Установка базовой системы:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> pacstrap /mnt base base-devel
+</code></pre></div>
+<p><b>Примечанние:</b> <code>base-devel</code> нужен в случае, если вы в будущем собираетесь использовать AUR</p>
+
+<p><code>6.</code> Установка загрузчика (в примере это GRUB2):</p>
+
+<p>Для обычного BIOS:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> pacstrap /mnt grub-bios
+</code></pre></div>
+<p>Для UEFI:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> pacstrap /mnt grub-efi-x86_64
+</code></pre></div>
+<p>И разного рода необходимые мелочи:</p>
+
+<p><code>-</code> Генерация файла <code>fstab</code>:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> genfstab -p /mnt &gt;&gt; /mnt/etc/fstab
+</code></pre></div>
+<p><code>-</code> Чрутимся в новую систему:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> arch-chroot /mnt
+</code></pre></div>
+<p><code>7.</code> Конфигурация системы:</p>
+
+<p>В <code>/etc/hostname</code> &mdash; пишем имя вашего хоста (машины):</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text"># /etc/hostname
+myhost
+</code></pre></div>
+<p>Вносим соответствующие правки в <code>/etc/hosts</code>:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">127.0.0.1   myhost localhost ::1   myhost localhost
+</code></pre></div>
+<p>Или так:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> hostnamectl <span class="nb">set</span>-hostname myhost
+</code></pre></div>
+<p>Настройка раскладки клавиатуры и шрифтов в <code>/etc/vconsole.conf</code>:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">KEYMAP=ru
+FONT=cyr-sun16
+FONT_MAP=
+</code></pre></div>
+<p>Временная зона:
+В <code>/etc/timezone</code>:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">Europe/Moskow
+</code></pre></div>
+<p>Выполняем:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> ln -s /usr/share/zoneinfo/Europe/Moskow /etc/localtime
+</code></pre></div>
+<p>Для корректной установки системного времени необходимо сгенерировать файл /<code>etc/adjtime</code>:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> hwclock --systohc --utc
+</code></pre></div>
+<p>Русский язык:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> nano /etc/locale.gen:
+<span class="go">en_US.UTF-8 UTF-8 ru_RU.UTF-8 UTF-8</span>
+</code></pre></div>
+<p>Создаём файл <code>/etc/locale.conf</code>:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">LANG=&quot;ru_RU.UTF-8&quot;
+</code></pre></div>
+<p>Или так:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> localectl <span class="nb">set</span>-locale <span class="nv">LANG</span><span class="o">=</span><span class="s2">&quot;ru_RU.UTF-8&quot;</span>
+</code></pre></div>
+<p>После чего:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> locale-gen
+<span class="go">Generating locales...</span>
+<span class="go">en_US.UTF-8... done</span>
+<span class="go">ru_RU.UTF-8... done</span>
+<span class="go">Generation complete.</span>
+</code></pre></div>
+<p>Настройте <code>/etc/mkinitcpio.conf</code>,  если это нужно,  и создайте ramdisk:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> mkinitcpio -p linux
+</code></pre></div>
+<p><code>8.</code> Установка загрузчика GRUB2</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> grub-install /dev/sda
+<span class="gp">#</span> grub-mkconfig -o /boot/grub/grub.cfg
+</code></pre></div>
+<p><code>9.</code> Зададим пароль суперпользователя, размонтируем разделы и выйдем из системы:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> passwd
+<span class="gp">#</span> umount /mnt/home
+<span class="gp">#</span> umount /mnt
+</code></pre></div>
+<p><code>10.</code> После установки. Из уже новой системы:</p>
+
+<p>Понадобится разобраться с подписями ключей, дабы нормально устанавливать программы:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> pacman-key --init
+<span class="gp">$</span> pacman-key --populate archlinux
+</code></pre></div>
+<p>Ну и настроить интернет заново</p>
+
+<p>И то единственное, что осталось от старого поста об установке (насколько проще было, а?)</p>
+
+<p>Добавление нового пользователя</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> adduser
+</code></pre></div>
+<p>Теперь введите его имя пароль и прочее, не забыв прописать в дополнительных группах принадлежность к <code>wheel</code> &mdash; группе администраторов. Это чтобы мы могли воспользоваться преимуществами <code>sudo</code>.</p>
+
+<p><b>Примечание:</b> в новых установочных образах команда <code>adduser</code> была удалена. Используйте <code>useradd</code>:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="go">useradd [параметры] LOGIN</span>
+<span class="gp">#</span> useradd -g users -G wheel,video -m newbie
+</code></pre></div>
+<p>создаст пользователя с именем <code>newbie</code>, с начальной группой <code>users</code>, с дополнительными группами <code>wheel</code> и <code>video</code>, ключ <code>-m</code> позволит создать домашний каталог для нового пользователя. Подробнее <code>man useradd</code>.</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> visudo
+</code></pre></div>
+<p>после ввода этой команды найдите в файле строки</p>
+
+<p><code>root ALL=(ALL)ALL</code> и допишите внизу имя вновь созданного пользователя-админа</p>
+
+<p><code>username ALL=(ALL)ALL</code> выйдите из файла, нажав <code>Esc</code> и затем введя <code>:wq</code></p>
+
+<p>Поднимаем сеть (для DSL-соединений) /неактуально, если вы используете <code>systemd</code></p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> sudo pppoe-setup
+</code></pre></div>
+<p>теперь вам предстоит ответить на несколько несложных вопросов, перезапустить сеть или же сделать перезагрузку. И можно бороздить просторы глобальной паутины.</p>
+
+<p>Как только подключились к сети, сразу же синхронизируем репозитории:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> pacman -Syy
+</code></pre></div>
+<p>и обновляем систему:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> pacman -Syu
+</code></pre></div>
+<p>Или используем <a href="http://www.unix-lab.org/posts/debian-dsl/">способ №3 из поста о debian</a>.</p>
+
+<p><b>Примечание:</b></p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> pacman -Rnsc gnome - удаление всех пакетов группы gnome
+<span class="gp">#</span> pacman -Qdtc - удаление пакетов, от которых не зависит ни одна программа
+<span class="gp">#</span> pacman -Scc - чистка кеша
+</code></pre></div>
+<p>Как? Вы наивно полагали, что на этом работа наша кончается? Э-э, батенька, впереди нас ждёт увлекательное путешествие, самое главное: <a href="http://www.unix-lab.org/posts/arch-settings/">настройка arch.</a></p>
+
+<div class="video"><iframe width="400" height="300" src="http://www.youtube.com/embed/D2N__iEWveo?rel=0" frameborder="0" allowfullscreen></iframe></div>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+<br />
+<div id="comments"></div>
+<script type="text/javascript" class="juvia">
+(function() {
+    var options = {
+        container   : '#comments',
+        site_key    : 'gcquc3fefcn3kyoj7jstkb7ic8f90cw',
+        topic_key   : '/posts/arch-install',
+        topic_url   : 'http://www.unix-lab.org/posts/arch-install',
+        topic_title : 'Arch Linux. Быстрая установка' || 'http://www.unix-lab.org/posts/arch-install',
+        include_base: !window.Juvia,
+        include_css : !window.Juvia
+    };
+
+    function makeQueryString(options) {
+        var key, params = [];
+        for (key in options) {
+            params.push(
+                encodeURIComponent(key) +
+                '=' +
+                encodeURIComponent(options[key]));
+        }
+        return params.join('&');
+    }
+
+    function makeApiUrl(options) {
+        // Makes sure that each call generates a unique URL, otherwise
+        // the browser may not actually perform the request.
+        if (!('_juviaRequestCounter' in window)) {
+            window._juviaRequestCounter = 0;
+        }
+
+        var result =
+            'http://juvia-unixlab.rhcloud.com/api/show_topic.js' +
+            '?_c=' + window._juviaRequestCounter +
+            '&' + makeQueryString(options);
+        window._juviaRequestCounter++;
+        return result;
+    }
+
+    var s       = document.createElement('script');
+    s.async     = true;
+    s.type      = 'text/javascript';
+    s.className = 'juvia';
+    s.src       = makeApiUrl(options);
+    (document.getElementsByTagName('head')[0] ||
+     document.getElementsByTagName('body')[0]).appendChild(s);
+})();
+</script>
+
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy; 2011&mdash;2013 ::</li>
+    <li class="footer"><a href="/">unix-lab.org</a> ::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

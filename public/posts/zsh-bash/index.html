@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>zsh и bash: что выбрать | UNIX-LAB.ORG</title>
+  <meta name="description" content="Для тех, кто ещё не знаком с Z Shell, а так же тем, кто находится на распутье в выборе шелла для повседневных задач, посвящается.">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>zsh и bash: что выбрать</h2>
+<h5><i class="icon-feather"></i> 05 января 2013
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/linux.html">Linux /</a>
+
+</h5>
+
+<p>Для тех, кто ещё не знаком с Z Shell, а так же тем, кто находится на распутье в выборе шелла для повседневных задач, посвящается эта заметка, впервые опубликованная мной <a href="http://habrahabr.ru/post/162339/">на хабре</a>.</p>
+
+<p>Надо сказать, о преимуществах zsh написано уже достаточно много материалов. Прежде всего, автором рекомендована к прочтению развёрнутая статья Алексея Федорчука <a href="http://citkit.ru/articles/1083/">о шеллах</a> вообще и о zsh в частности. Что касается этой скромной заметки, она призвана показать читателю возможности обеих оболочек на конкретных примерах конфигурационных файлов. Упор сделан таки на zsh, ибо в понимании автора bash, как правило, пригоден к использованию изначально, zsh без собственных настроек лучше не использовать вовсе.</p>
+
+<p>Полные конфигурационные файлы как обычно можно <a href="https://github.com/redVi/dotfiles/tree/master/shell">забрать с github</a>.</p>
+
+<h2 id="toc_0">Лучшее в shell - автодополнение</h2>
+
+<p>Автодополнение есть и в bash, этим в наше время никого не удивишь. Особенно хорош в этом смысле <code>bash-completion</code>, который позволяет дополнять не только пути к каталогам, но и эффективно искать пакеты для установки. Если вы ранее не использовали его, мой вам совет: обязательно установите. Дополнительных настроек для работы этого пакета не требуется.</p>
+
+<p>Zsh может удивить вас, это действительно так. Пожалуй, автодополнение &mdash; одна из его сильнейших сторон. Сразу же нужно отметить тот факт, что zsh является модульным и для расширения его возможностей необходимо подключить или в некоторых случаях установить нужные модули. Кроме того, без индивидуальной настройки в zsh не обойтись: модули нужно будет включить в ваш <code>.zshrc</code>. Обратимся к практическим примерам:</p>
+
+<p>для ArchLinux лучше сразу установить  пакеты, подобные <code>bash-completion</code>, что позволит использовать автодополнение в поиске пакетов с pacman и AUR: это <code>zsh-yaourt</code> и <code>zsh-packer</code>. Найти их можно в том же AUR. Подключим наше автодополнение:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c">#Включить автодополнение</span>
+autoload -U compinit promptinit
+compinit
+promptinit
+<span class="c"># Для pacman</span>
+<span class="o">[[</span> -a <span class="k">$(</span>whence -p pacman-color<span class="k">)</span> <span class="o">]]</span> <span class="o">&amp;&amp;</span> compdef _pacman pacman-color<span class="o">=</span>pacman
+<span class="c"># Корректировка ввода</span>
+setopt CORRECT_ALL
+<span class="c"># Если в слове есть ошибка, предложить исправить её</span>
+<span class="nv">SPROMPT</span><span class="o">=</span><span class="s2">&quot;Ошибка! ввести %r вместо %R? ([Y]es/[N]o/[E]dit/[A]bort) &quot;</span>
+<span class="c"># Не нужно всегда вводить cd</span>
+<span class="c"># просто наберите нужный каталог и окажитесь в нём</span>
+setopt autocd
+<span class="c"># При совпадении первых букв слова вывести меню выбора</span>
+zstyle <span class="s1">&#39;:completion:*&#39;</span> menu <span class="k">select</span><span class="o">=</span>long-list <span class="k">select</span><span class="o">=</span>0
+zstyle <span class="s1">&#39;:completion:*:default&#39;</span> list-colors <span class="k">${</span><span class="p">(s.:.)LS_COLORS</span><span class="k">}</span>
+</code></pre></div>
+<p>Уже неплохо, верно? Честно сказать, меня не прельщала перспектива перехода на zsh, поскольку в целом устраивал и bash. Но эксперимент показал: zsh &mdash; это очень удобно.</p>
+
+<h2 id="toc_1">Горячие клавиши</h2>
+
+<p>Насколько мне известно, в bash горячие клавиши изменению не подлежат. Впрочем, не исключено, что я ошибаюсь. Это известные всем линуксоидам клавиши редактора <code>emacs</code>. Они взяты за основу и будут работать на любой машине, где установлен bash. Конечно, никто не запретит вам использовать стрелки для перемещения между символами или клавишу <code>delete</code> для удаления символа &mdash; это тоже есть в bash, и это тоже не нужно настраивать.</p>
+
+<p>Обратимся к zsh. Да, как вы уже, наверное, догадались: в zsh всё нужно настроить под себя. Разумеется, было бы жутко, если бы нам пришлось настраивать каждую клавишу &mdash; вовсе нет! Можно выбрать один из двух стилей, ориентируясь на более привычный вам: режим vi или режим emacs.
+Рекомендация: выбирайте emacs, чтобы уверенно пользоваться горячими клавишами на любой машине с любым shell&#39;ом, кроме того, наиболее популярен всё таки bash &mdash; ориентируйтесь на него.
+Разумеется, можно настроить отдельные сочетания клавиш так, как вам нравится.
+Пример:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">bindkey <span class="s1">&#39;\e[3~&#39;</span> delete-char <span class="c"># del</span>
+bindkey <span class="s1">&#39;;5D&#39;</span> backward-word <span class="c"># ctrl+left</span>
+bindkey <span class="s1">&#39;;5C&#39;</span> forward-word <span class="c">#ctrl+right</span>
+</code></pre></div>
+<p>Стандартные клавиши редактора emacs:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">Ctrl+a     в начало строки
+Ctrl+e     в конец строки
+Ctrl+b     на символ назад
+Ctrl+c     завершить
+Ctrl+f     на символ вперед
+Ctrl+k     удалить до конца строки
+Ctrl+u     удалить все символы слева от курсора до начала строки
+Сtrl+w     удалить символы слева от курсора до начала слова
+Ctrl+t     меняет символ под курсором на предыдущий
+Ctrl+Shift+- отмена
+ALt+l      привести к нижнему регистру
+Alt+u      привести к верхнему регистру
+Alt+C      первая буква заглавная
+Ctrl+l     clear
+Ctrl+p     previous
+Ctrl+n     next
+</code></pre></div>
+<h2 id="toc_2">Псевдонимы</h2>
+
+<p>Очень удобно бывает использовать псевдонимы различных команд. Алиасы замечательно настраиваются как в bash, так и в zsh. Отличие в том, что в zsh можно использовать не только команды, но и назначить расширения типов файлов для отдельных приложений. Чем это полезно? Благодаря этой возможности zsh может заменить вам даже файловый менеджер. Смотрите сами:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># Aliases</span>
+<span class="nb">alias </span><span class="nv">ls</span><span class="o">=</span><span class="s1">&#39;ls --color=auto&#39;</span>
+<span class="nb">alias </span><span class="nv">grep</span><span class="o">=</span><span class="s1">&#39;grep --colour=auto&#39;</span>
+<span class="nb">alias </span><span class="nv">sudo</span><span class="o">=</span><span class="s1">&#39;A=`alias` sudo &#39;</span>
+<span class="nb">alias </span><span class="nv">pacman</span><span class="o">=</span><span class="s1">&#39;sudo pacman-color&#39;</span>
+<span class="nb">alias </span><span class="nv">sc</span><span class="o">=</span><span class="s1">&#39;sudo systemctl&#39;</span>
+<span class="nb">alias </span><span class="nv">nc</span><span class="o">=</span><span class="s1">&#39;sudo netcfg&#39;</span>
+<span class="nb">alias</span> -s <span class="o">{</span>avi,mpeg,mpg,mov,m2v<span class="o">}=</span>mplayer
+<span class="nb">alias</span> -s <span class="o">{</span>odt,doc,sxw,rtf<span class="o">}=</span>openoffice.org
+<span class="nb">alias</span> -s <span class="o">{</span>ogg,mp3,wav,wma<span class="o">}=</span>cmus
+autoload -U pick-web-browser
+<span class="nb">alias</span> -s <span class="o">{</span>html,htm<span class="o">}=</span>chromium
+</code></pre></div>
+<p>Обратите внимание на строки, начинающиеся с <code>alias -s</code>. Теперь представьте: вы находитесь в директории с документами и среди них есть один или несколько с расширением <code>.html</code>. Что мы делаем обычно? Запускаем браузер, жмём <code>Ctrl+O</code>, выбираем файл и просматриваем его. Что позволяют сделать псевдонимы в zsh? Просто напишите название документа и он тут же будет открыт в браузере.
+Для этого сначала подгружается отдельный модуль <code>pick-web-browser</code></p>
+
+<h2 id="toc_3">История команд</h2>
+
+<p>И уж, конечно, ни один пользователь не оспорит удобство использования истории команд. Здесь zsh ничем особенным не отличается от bash. Настроим его:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c">#  History</span>
+<span class="c"># хранить историю в указанном файле</span>
+<span class="nb">export </span><span class="nv">HISTFILE</span><span class="o">=</span>~/.zsh_history
+<span class="c"># максимальное число команд, хранимых в сеансе</span>
+<span class="nb">export </span><span class="nv">HISTSIZE</span><span class="o">=</span>1000
+<span class="nb">export </span><span class="nv">SAVEHIST</span><span class="o">=</span><span class="nv">$HISTSIZE</span>
+<span class="c"># включить историю команд</span>
+setopt APPEND_HISTORY
+<span class="c"># убрать повторяющиеся команды, пустые строки и пр.</span>
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_REDUCE_BLANKS
+</code></pre></div>
+<h2 id="toc_4">Прочие удобства</h2>
+
+<p>Для zsh есть одна прелюбопытнейшая вещь: плагин <code>zsh-syntax-highlighting</code>. Пользователи ArchLinux могут установить его из AUR, остальные &mdash; скачать из одноимённого проекта на github. Поставьте его, и ваш эмулятор терминала заиграет новыми красками.
+Изначально он ориентирован на любые терминалы &mdash; не только поддерживающие 256 цветов, поэтому некоторые цвета могут выглядеть не так, как нам нравится, но это можно настроить. Главный файл с настройками цветов располагается по пути:
+<code>/usr/share/zsh/plugins/zsh-syntax-highlight/highlighters/main/main-highlighter.zsh</code>. Но править непосредственно его нет нужды. Просто посмотрите, что хотели бы там исправить и измените цвета так, как вам нравится, используя таблицу поддерживаемых цветов.</p>
+
+<p>Пример:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># zsh-syntax-highlighting from AUR</span>
+<span class="nb">typeset</span> -A ZSH_HIGHLIGHT_STYLES
+<span class="nv">ZSH_HIGHLIGHT_STYLES</span><span class="o">=(</span>
+        <span class="s1">&#39;alias&#39;</span>           <span class="s1">&#39;fg=153,bold&#39;</span>
+        <span class="s1">&#39;builtin&#39;</span>         <span class="s1">&#39;fg=153&#39;</span>
+        <span class="s1">&#39;function&#39;</span>        <span class="s1">&#39;fg=166&#39;</span>
+        <span class="s1">&#39;command&#39;</span>         <span class="s1">&#39;fg=153&#39;</span>
+        <span class="s1">&#39;precommand&#39;</span>      <span class="s1">&#39;fg=153, underline&#39;</span>
+        <span class="s1">&#39;hashed-commands&#39;</span> <span class="s1">&#39;fg=153&#39;</span>
+        <span class="s1">&#39;path&#39;</span>            <span class="s1">&#39;underline&#39;</span>
+        <span class="s1">&#39;globbing&#39;</span>        <span class="s1">&#39;fg=166&#39;</span>
+<span class="o">)</span>
+<span class="nb">source</span> /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+</code></pre></div>
+<p>Также в zsh имеется очень популярный способ запаковки/распаковки архивов. Введите команду <code>extract myfile.tar</code>  - распакуете архив, введите команду <code>pk tar myfile</code> - запакуете файл в архив указанного формата. Выходит, zsh может заменить архиватор?</p>
+
+<p>Для распаковки впишем в <code>.zhsrc</code>:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># Распаковка архивов</span>
+<span class="c"># example: extract file</span>
+extract <span class="o">()</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">[</span> -f <span class="nv">$1</span> <span class="o">]</span> ; <span class="k">then</span>
+<span class="k">     case</span> <span class="nv">$1</span> in
+     *.tar.bz2<span class="o">)</span>   tar xjf <span class="nv">$1</span>        ;;
+     *.tar.gz<span class="o">)</span>    tar xzf <span class="nv">$1</span>     ;;
+     *.bz2<span class="o">)</span>       bunzip2 <span class="nv">$1</span>       ;;
+     *.rar<span class="o">)</span>       unrar x <span class="nv">$1</span>     ;;
+     *.gz<span class="o">)</span>        gunzip <span class="nv">$1</span>     ;;
+     *.tar<span class="o">)</span>       tar xf <span class="nv">$1</span>        ;;
+     *.tbz2<span class="o">)</span>      tar xjf <span class="nv">$1</span>      ;;
+     *.tbz<span class="o">)</span>       tar -xjvf <span class="nv">$1</span>    ;;
+     *.tgz<span class="o">)</span>       tar xzf <span class="nv">$1</span>       ;;
+     *.zip<span class="o">)</span>       unzip <span class="nv">$1</span>     ;;
+     *.Z<span class="o">)</span>         uncompress <span class="nv">$1</span>  ;;
+     *.7z<span class="o">)</span>        7z x <span class="nv">$1</span>    ;;
+     *<span class="o">)</span>           <span class="nb">echo</span> <span class="s2">&quot;I don&#39;t know how to extract &#39;$1&#39;...&quot;</span> ;;
+     <span class="k">esac</span>
+<span class="k">     else</span>
+<span class="k">     </span><span class="nb">echo</span> <span class="s2">&quot;&#39;$1&#39; is not a valid file&quot;</span>
+     <span class="k">fi</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>Для создания архивов:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="c"># Запаковать архив</span>
+<span class="c"># example: pk tar file</span>
+pk <span class="o">()</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="nv">$1</span> <span class="o">]</span> ; <span class="k">then</span>
+<span class="k">    case</span> <span class="nv">$1</span> in
+    tbz<span class="o">)</span> tar cjvf <span class="nv">$2</span>.tar.bz2 <span class="nv">$2</span> ;;
+    tgz<span class="o">)</span> tar czvf <span class="nv">$2</span>.tar.gz  <span class="nv">$2</span> ;;
+    tar<span class="o">)</span> tar cpvf <span class="nv">$2</span>.tar  <span class="nv">$2</span> ;;
+    bz2<span class="o">)</span> bzip <span class="nv">$2</span> ;;
+    gz<span class="o">)</span> gzip -c -9 -n <span class="nv">$2</span> &gt; <span class="nv">$2</span>.gz ;;
+    zip<span class="o">)</span> zip -r <span class="nv">$2</span>.zip <span class="nv">$2</span> ;;
+    7z<span class="o">)</span> 7z a <span class="nv">$2</span>.7z <span class="nv">$2</span> ;;
+    *<span class="o">)</span> <span class="nb">echo</span> <span class="s2">&quot;&#39;$1&#39; cannot be packed via pk()&quot;</span> ;;
+    <span class="k">esac</span>
+<span class="k">    else</span>
+<span class="k">    </span><span class="nb">echo</span> <span class="s2">&quot;&#39;$1&#39; is not a valid file&quot;</span>
+    <span class="k">fi</span>
+<span class="o">}</span>
+</code></pre></div>
+<h2 id="toc_5">Итоги</h2>
+
+<p>Zsh очень удобен для повседневной работы и делает добрую половину рутины за вас. Но стоит обратить внимание на различия между этими двумя оболочками. Например, в zsh после <code>for</code> обязательно вставлять пробел, нумерация массивов в zsh начинается с 1, чего совершенно невозможно понять.
+Так, если вы используете shell для повседневной работы, исключающей написание скриптов, используйте zsh. Если вам часто приходится писать свои скрипты, только bash! Впрочем, можно комбинировать.
+Как установить zsh в качестве оболочки по-умолчанию для отдельного пользователя:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> chsh -s /bin/zsh your_user
+</code></pre></div>
+<p>P.S. Те арчеводы, которым при установке дистрибутива понравился <code>.zshrc</code> арча, могут установить готовый пакет из AUR: <code>grml-zsh-config</code>.
+Кроме того, вы можете заметить, что zsh работает медленнее в сравнении с bash. Чтобы ускорить некоторые команды, например, поиск по базе пакетов, следует включить кэш. Для этого создайте директорию <code>.zsh/cache</code> и укажите в <code>.zshrc</code>:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh">zstyle <span class="s1">&#39;:completion:*&#39;</span> use-cache on
+zstyle <span class="s1">&#39;:completion:*&#39;</span> cache-path ~/.zsh/cache
+</code></pre></div>
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+<br />
+<div id="comments"></div>
+<script type="text/javascript" class="juvia">
+(function() {
+    var options = {
+        container   : '#comments',
+        site_key    : 'gcquc3fefcn3kyoj7jstkb7ic8f90cw',
+        topic_key   : '/posts/zsh-bash',
+        topic_url   : 'http://www.unix-lab.org/posts/zsh-bash',
+        topic_title : 'zsh и bash: что выбрать' || 'http://www.unix-lab.org/posts/zsh-bash',
+        include_base: !window.Juvia,
+        include_css : !window.Juvia
+    };
+
+    function makeQueryString(options) {
+        var key, params = [];
+        for (key in options) {
+            params.push(
+                encodeURIComponent(key) +
+                '=' +
+                encodeURIComponent(options[key]));
+        }
+        return params.join('&');
+    }
+
+    function makeApiUrl(options) {
+        // Makes sure that each call generates a unique URL, otherwise
+        // the browser may not actually perform the request.
+        if (!('_juviaRequestCounter' in window)) {
+            window._juviaRequestCounter = 0;
+        }
+
+        var result =
+            'http://juvia-unixlab.rhcloud.com/api/show_topic.js' +
+            '?_c=' + window._juviaRequestCounter +
+            '&' + makeQueryString(options);
+        window._juviaRequestCounter++;
+        return result;
+    }
+
+    var s       = document.createElement('script');
+    s.async     = true;
+    s.type      = 'text/javascript';
+    s.className = 'juvia';
+    s.src       = makeApiUrl(options);
+    (document.getElementsByTagName('head')[0] ||
+     document.getElementsByTagName('body')[0]).appendChild(s);
+})();
+</script>
+
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy; 2011&mdash;2013 ::</li>
+    <li class="footer"><a href="/">unix-lab.org</a> ::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

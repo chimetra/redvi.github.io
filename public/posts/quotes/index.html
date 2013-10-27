@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Квоты или Как наказать нерадивого пользователя | UNIX-LAB.ORG</title>
+  <meta name="description" content="Что делать, если дисковое пространство одно, а пользователей много и каждый из них занимает столько места, сколько ему нравится?">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Квоты или Как наказать нерадивого пользователя</h2>
+<h5><i class="icon-feather"></i> 13 ноября 2011
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/arch.html">Arch /</a>
+
+<a href="/tags/linux.html">Linux /</a>
+
+</h5>
+
+<p>Сегодня редко приходится задумываться об экономии места на HDD. Но что делать, если дисковое пространство одно, а пользователей много и каждый из них занимает столько места, сколько ему нравится? Ограничим их вольготный образ жизни квотами.</p>
+
+<p>Для использования данной возможности в ядре должна быть включена поддержка квот. Проверить это можно так:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> gzip -cd /proc/config.gz | grep QUOTA
+</code></pre></div>
+<p>В ответ вы должны получить небольшой список параметров конфигурации ядра и среди них:</p>
+
+<p><code>CONFIG_QUOTA=y</code></p>
+
+<p>теперь посмотрим, установлен ли необходимый нам пакет:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> pacman -Ss quota
+</code></pre></div>
+<p>Если нет, устанавливаем:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> pacman -S quota-tools
+</code></pre></div>
+<h3 id="toc_0">Теперь нужно сделать несколько нехитрых действий.</h3>
+
+<p>Добавить в <code>/etc/fstab</code> запись о поддержке квот на необходимую точку монтирования. В примере это <code>/home</code>.</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">/dev/sda3 /home ext4 deafults, usrquota, grpquota 0 1
+</code></pre></div>
+<p>Для того, чтобы изменения вступили в силу:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> mount -o remount /home
+</code></pre></div>
+<h3 id="toc_1">Проверка файловой системы и анализ использования диска:</h3>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> quotacheck -cug /home
+</code></pre></div>
+<ul>
+<li>c - создать файлы квот для всех файловых систем, где они включены</li>
+<li>u - проверка квот пользователей</li>
+<li>g - проверка квот групп</li>
+</ul>
+
+<p>После этого будут созданы файлы <code>quota.user</code> и <code>quota.group</code>, где будет храниться информация о квотах.</p>
+
+<h3 id="toc_2">Создание таблицы использования диска:</h3>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> quotacheck -avug
+</code></pre></div>
+<ul>
+<li>a - проверка всех смонтированных систем, где включены квоты</li>
+<li>v - подробный вывод информации</li>
+<li>u - проверка квот пользователей</li>
+<li>g - проверка квот групп</li>
+</ul>
+
+<h3 id="toc_3">Назначение квот пользователям и/или группам</h3>
+
+<p>Ограничим личное пространство пользователя <code>user1</code>:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> edquota user1
+</code></pre></div>
+<p>В открывшемся файле мы можем лицезреть несколько строк, которые следует отредактировать в зависимости от потребностей:</p>
+
+<ul>
+<li>blocks - количество блоков, используемых пользователем в данный момент</li>
+<li>soft - мягкое ограничение на количество блоков</li>
+<li>hard - жёсткое ограничение</li>
+<li>inodes - количество индексных дескрипторов, используемых пользователем, далее мягкое и жёсткое ограничение на них.</li>
+</ul>
+
+<p>Отдадим пользователю, например, 100 MB. Тогда в строке hard нужно задать цифру 100000.</p>
+
+<p>Для сохранения изменений:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> quotaoff /home
+<span class="gp">#</span> quotacheck -avug
+<span class="gp">#</span> quotaon -a
+</code></pre></div>
+<p>Для указания квоты какой-либо группе:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> edquota -g users
+</code></pre></div>
+<p>Далее по аналогии. Вы можете не задавать квоты каждому пользователю, а просто задать той группе, в которую он входит. Эффект будет одинаковым.</p>
+
+<p>Отключение и включение квот производится командами <code>quotaoff -vaug</code> и <code>quotaon -vaug</code> соответственно. Для просмотра статистики используйте команду <code>repquota -a</code>.</p>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+<br />
+<div id="comments"></div>
+<script type="text/javascript" class="juvia">
+(function() {
+    var options = {
+        container   : '#comments',
+        site_key    : 'gcquc3fefcn3kyoj7jstkb7ic8f90cw',
+        topic_key   : '/posts/quotes',
+        topic_url   : 'http://www.unix-lab.org/posts/quotes',
+        topic_title : 'Квоты или Как наказать нерадивого пользователя' || 'http://www.unix-lab.org/posts/quotes',
+        include_base: !window.Juvia,
+        include_css : !window.Juvia
+    };
+
+    function makeQueryString(options) {
+        var key, params = [];
+        for (key in options) {
+            params.push(
+                encodeURIComponent(key) +
+                '=' +
+                encodeURIComponent(options[key]));
+        }
+        return params.join('&');
+    }
+
+    function makeApiUrl(options) {
+        // Makes sure that each call generates a unique URL, otherwise
+        // the browser may not actually perform the request.
+        if (!('_juviaRequestCounter' in window)) {
+            window._juviaRequestCounter = 0;
+        }
+
+        var result =
+            'http://juvia-unixlab.rhcloud.com/api/show_topic.js' +
+            '?_c=' + window._juviaRequestCounter +
+            '&' + makeQueryString(options);
+        window._juviaRequestCounter++;
+        return result;
+    }
+
+    var s       = document.createElement('script');
+    s.async     = true;
+    s.type      = 'text/javascript';
+    s.className = 'juvia';
+    s.src       = makeApiUrl(options);
+    (document.getElementsByTagName('head')[0] ||
+     document.getElementsByTagName('body')[0]).appendChild(s);
+})();
+</script>
+
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy; 2011&mdash;2013 ::</li>
+    <li class="footer"><a href="/">unix-lab.org</a> ::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

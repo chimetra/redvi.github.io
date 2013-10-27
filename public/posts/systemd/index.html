@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Systemd: загрузись по-новому | UNIX-LAB.ORG</title>
+  <meta name="description" content="Systemd и как с ним управляться">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Systemd: загрузись по-новому</h2>
+<h5><i class="icon-feather"></i> 22 сентября 2012
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/arch.html">Arch /</a>
+
+<a href="/tags/linux.html">Linux /</a>
+
+</h5>
+
+<h2 id="toc_0">Предыстория</h2>
+
+<p>Поскольку всех арчеводов облетела благая весть о переходе на более современную систему инициализации, на которую, собственно, переходить немногие торопились, случилось и автору сего поста опробовать её в действии. Надо заметить, в archlinux имеется интеграция этой весёлой вещи со стандартными конфигурационными файлами системы. Но мы, конечно, не стали пользоваться такими благами цивилизации и решили опробовать &quot;чистый&quot; systemd в действии. После этого благого намерения был установлен systemd, перезагружена система и... началось! Интернет, конечно, работать отказался. Любимый <code>rc.local</code> не загрузил своё содержимое, а запускающиеся раньше из <code>rc.d/</code> сервисы вроде <code>network, httpd</code> и им подобных вываливались с ошибками. Так что сегодня на повестке обзор systemd и правила его использования.</p>
+
+<p>Решение проблем с сетью и <code>rc.local</code> - <a href="http://www.unix-lab.org/posts/arch-settings/">archlinux systemd</a></p>
+
+<h2 id="toc_1">Основная часть</h2>
+
+<p>Systemd предлагает ряд удобств по сравнению с прошлой системой инициализации. займёмся рассмотрением основных возможностей и команд.</p>
+
+<p>Просмотр информации о запуске служб, в том числе и тех, что стартовали при загрузке системы. То есть необязательно смотреть логи системы, можно увидеть неудачный запуск того или иного демона прямо в выводе командной строки:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> systemctl
+</code></pre></div>
+<p><img src="http://4.bp.blogspot.com/-YnJckgoRAa8/UEd8zu46M0I/AAAAAAAABZk/jbVeiOBIQaM/s1600/systemctl.png" alt="systemctl"></p>
+
+<p>Также имеется возможность наблюдать за поведением сервиса при помощи команды <code>status</code>, например:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> systemctl status httpd.service
+<span class="go">httpd.service - Apache start</span>
+<span class="go">    Loaded: loaded (/etc/systemd/system/httpd.service; static)</span>
+<span class="go">    Active: activating (start) since Wed, 05 Sep 2012 22:32:12 +0700; 56min ago</span>
+<span class="go">    Main PID: 10366 ((httpd))</span>
+<span class="go">        CGroup: name=systemd:/system/httpd.service</span>
+<span class="go">        └ 10366 (httpd)</span>
+</code></pre></div>
+<p>Так мы узнаем, что искомый сервис был запущен  с PID процесса 10366 5 сентября 2012 года в 22:32, его uptime составляет 56 минут.</p>
+
+<p>Если сервис остановлен:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">httpd.service - Apache start
+    Loaded: loaded (/etc/systemd/system/httpd.service; static)
+    Active: inactive (dead) since Wed, 05 Sep 2012 23:54:24 +0700; 2s ago
+    Process: 10366 ExecStart=/etc/rc.d/httpd (code=killed, signal=TERM)
+    CGroup: name=systemd:/system/httpd.service
+</code></pre></div>
+<p>Нам доброжелательно укажут, что состояние его неактивно уже целых 2 секунды.</p>
+
+<p>При ошибке <code>systemd</code> должен выдать такое же детальное её описание. Кроме того, ходит слух, что в последующих версиях при ошибках разработчикам будет отправляться автоматический багрепорт. Что ж, это впечатляет.</p>
+
+<h2 id="toc_2">Запуск, останов, reload</h2>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="go">Для запуска сервиса:</span>
+<span class="gp">#</span> systemctl start your_service_name.service
+<span class="go">Останов:</span>
+<span class="gp">#</span> systemctl stop your_service_name.service
+<span class="go">Перезапуск:</span>
+<span class="gp">#</span> systemctl restart your_service_name.service
+<span class="go">Перезагрузка настроек:</span>
+<span class="gp">#</span> systemctl reload your_service_name.service
+
+<span class="go">Добавление в автозагрузку, удаление из автозагрузки:</span>
+<span class="gp">#</span> systemctl <span class="nb">enable </span>your_service_name.service
+<span class="gp">#</span> systemctl disable your_service_name.service
+
+<span class="go">Завершить процесс</span>
+<span class="gp">#</span> systemctl <span class="nb">kill </span>your_service_name.service
+
+<span class="go">Грубый останов (если ничто его больше не берёт)</span>
+<span class="gp">#</span> systemctl <span class="nb">kill</span> -s SIGKILL your_service_name.service
+</code></pre></div>
+<h2 id="toc_3">Разбор юнитов</h2>
+
+<p>Пример юнита для запуска KDM:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="o">[</span>Unit<span class="o">]</span>
+<span class="nv">Description</span><span class="o">=</span>K Display Manager
+<span class="nv">After</span><span class="o">=</span>systemd-user-sessions.service
+<span class="o">[</span>Service<span class="o">]</span>
+<span class="nv">ExecStart</span><span class="o">=</span>/usr/bin/kdm -nodaemon
+<span class="o">[</span>Install<span class="o">]</span>
+<span class="nv">Alias</span><span class="o">=</span>display-manager.service
+</code></pre></div>
+<ul>
+<li>Unit - общая информация</li>
+<li>Description - описание сервиса</li>
+<li>After - после какого события рекомендуется запуск. В данном случае после старта сессии пользователя. Иными словами мы задаём порядок загрузки</li>
+<li>Service - содержит информацию о службе</li>
+<li>ExecStart - что запускать. Иными словами указание расположения бинарного файла службы. Возможно вписать и аргументы, с которыми он должен быть запущен ( -noademon )</li>
+<li>Install - в каких ситуациях юнит должен быть активирован. Чаще всего при нормальной загрузке системы. Тогда необходимо вписать &quot;WantedBy=multi-user.target&quot;. В данном юните прописан алиас сервиса.</li>
+</ul>
+
+<p>Ещё пример. Запуск файрволла при активации сети:</p>
+<div class="highlight"><pre><code class="sh language-sh" data-lang="sh"><span class="o">[</span>Unit<span class="o">]</span>
+<span class="nv">Description</span><span class="o">=</span>Start iptables
+<span class="o">[</span>Service<span class="o">]</span>
+<span class="nv">ExecStart</span><span class="o">=</span>/usr/sbin/iptables
+<span class="o">[</span>Install<span class="o">]</span>
+<span class="nv">Before</span><span class="o">=</span>network.target
+</code></pre></div>
+<h2 id="toc_4">Уровни выключения</h2>
+
+<h3 id="toc_5">Останов</h3>
+
+<p>Возможность просто остановить службу. В последующем можно также легко запустить её</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> systemctl stop your_service_name.service
+</code></pre></div>
+<h3 id="toc_6">Полное выключение службы</h3>
+
+<p>В том числе убрать из автозапуска. Остаётся лишь возможность ручной загрузки</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> systemctl disable your_service_name.service
+</code></pre></div>
+<h3 id="toc_7">Замаскировать службу</h3>
+
+<p>Иначе - заблокировать. В этом случае служба не будет находиться в автозапуске, но и запустить вручную вы её больше не сможете. Для этого создаётся символьная ссылка на /dev.null с последующей командой:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> ln -s /dev/null /etc/systemd/system/your_service_name.service
+<span class="gp">#</span> systemctl daemon-reload
+</code></pre></div>
+<p>Ещё способ:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> systemctl mask your_service_name.service
+<span class="gp">#</span> systemctl unmask your_service_name.service
+</code></pre></div>
+<h2 id="toc_8">Вместо заключения</h2>
+
+<p>А что вы думаете по поводу перехода многих дистрибутивов на systemd, нравится ли новая система инициализации или она приносит лишь разочарование? Ведь на systemd, похоже, скоро переедет весь мир linux: arch, openSUSE, Fedora... за ними потянутся и остальные.</p>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+<br />
+<div id="comments"></div>
+<script type="text/javascript" class="juvia">
+(function() {
+    var options = {
+        container   : '#comments',
+        site_key    : 'gcquc3fefcn3kyoj7jstkb7ic8f90cw',
+        topic_key   : '/posts/systemd',
+        topic_url   : 'http://www.unix-lab.org/posts/systemd',
+        topic_title : 'Systemd: загрузись по-новому' || 'http://www.unix-lab.org/posts/systemd',
+        include_base: !window.Juvia,
+        include_css : !window.Juvia
+    };
+
+    function makeQueryString(options) {
+        var key, params = [];
+        for (key in options) {
+            params.push(
+                encodeURIComponent(key) +
+                '=' +
+                encodeURIComponent(options[key]));
+        }
+        return params.join('&');
+    }
+
+    function makeApiUrl(options) {
+        // Makes sure that each call generates a unique URL, otherwise
+        // the browser may not actually perform the request.
+        if (!('_juviaRequestCounter' in window)) {
+            window._juviaRequestCounter = 0;
+        }
+
+        var result =
+            'http://juvia-unixlab.rhcloud.com/api/show_topic.js' +
+            '?_c=' + window._juviaRequestCounter +
+            '&' + makeQueryString(options);
+        window._juviaRequestCounter++;
+        return result;
+    }
+
+    var s       = document.createElement('script');
+    s.async     = true;
+    s.type      = 'text/javascript';
+    s.className = 'juvia';
+    s.src       = makeApiUrl(options);
+    (document.getElementsByTagName('head')[0] ||
+     document.getElementsByTagName('body')[0]).appendChild(s);
+})();
+</script>
+
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy; 2011&mdash;2013 ::</li>
+    <li class="footer"><a href="/">unix-lab.org</a> ::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

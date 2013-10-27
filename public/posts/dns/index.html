@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>DNS-сервер не отвечает | UNIX-LAB.ORG</title>
+  <meta name="description" content="DNS-сервер не отвечает. Компьютер пытается использовать DNS-сервер, который работает неправильно или не существует. При это соединение с сетью установлено.">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>DNS-сервер не отвечает</h2>
+<h5><i class="icon-feather"></i> 09 августа 2011
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/windows.html">Windows /</a>
+
+</h5>
+
+<p>&quot;DNS-сервер не отвечает. Компьютер пытается использовать DNS-сервер, который работает неправильно или не существует.&quot; При это соединение с сетью установлено.</p>
+
+<p>Возможные варианты решения проблемы:</p>
+
+<p><b>1.</b> Перезагрузить модем</p>
+
+<p><b>2.</b> Проверить наличие и правильность DNS-адреса провайдера в настройках сетевой карты . Если их нет, посмотреть документацию, что выдал вам провайдер и вручную указать IP и DNS. Маска подсети обычно</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">255.255.255.255
+</code></pre></div>
+<p>Кликаем по иконке интернет-соединения -- Центр управления сетями и общим доступом -- Подключение по локальной сети -- Свойства -- Протокол Интернета версии 4. Следуя документации Провайдера, выставить необходимые настройки. Например:</p>
+
+<p><img src="http://1.bp.blogspot.com/-eHLB643jaUM/UDyZ5jYnYtI/AAAAAAAABMo/Z4jV_jglGqY/s1600/TCP-IP.png" alt="dns"></p>
+
+<p><b>3.</b> Посмотреть не запрещает ли ваш файрволл (файрволл - это аппаратное, программное или программно-аппаратное устройство или группа устройств, которое защищает от несанкционированного доступа или передачи информации в частную сеть или из частной сети. Например, стандартный брандмауэр Windows) выход в интернет по вашему IP. Если да, разрешить входящие/исходящие подвключения для IP роутера.</p>
+
+<p><b>4.</b> Переустановите драйвер сетевой карты. Возможно, проблема в заключается в его некорректной работе</p>
+
+<p><b>5.</b> Можно проверить работу DNS. Зажмите клавиши <code>Win</code> + <code>R</code> и впишите <code>cmd</code>, а затем <code>nslookup</code>. То есть последовательность такая:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">Win+R – cmd - nslookup
+</code></pre></div>
+<p>, где для каждого DNS-сервера последовательно введите команды:</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">SERVER X.X.X.X
+ya.ru
+</code></pre></div>
+<p>где <code>Х.Х.Х.Х</code> - IP-адрес DNS-сервера. Если после ввода <code>ya.ru</code> вы получаете нормальный адрес, значит, DNS-сервер доступен.</p>
+
+<p>А вот строка</p>
+
+<p><code>«DNS request timed out»</code></p>
+
+<p>свидетельствует о большом промежутке времени между первым обращением к DNS-серверу и ответом на этот запрос. Поэтому Windows диагностирует сбой работы с DNS.
+Причиной задержки может быть как перегрузка сервера, когда DNS не успевают быстро реагировать, так и проблемы в вашей операционной системе. В Windows 7 часто возникают проблемы с IPv6. Поэтому его лучше вовсе отключить, сделав ставку на IPv4.</p>
+
+<p><b>6.</b> Попробуйте поработать с другим модемом</p>
+
+<p><b>7.</b> Начните дёргать за нервные окончания своего провайдера. Это можно даже сделать первым пунктом нашей программы.</p>
+
+<p><b>Post Scriptum:</b> Зачастую подобная ошибка возникает за пределами дома: в офисе, на работе, где сотрудники пытаются попасть на сайты каких-либо социальных сетей. Там дело не в оборудовании, а в том, что системный администратор ограничил доступ к данным ресурсам. Проделывать подобное однажды приходилось и автору этой заметки. Обрезали доступ &mdash; значит так захотелось руководству.</p>
+
+<p>Хотя, если вам ну неимоверно необходимо попасть на заблокированный ресурс, можете установить браузер TOR или обратиться к одной из многочисленных инструкций по настройке i2p.</p>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+<br />
+<div id="comments"></div>
+<script type="text/javascript" class="juvia">
+(function() {
+    var options = {
+        container   : '#comments',
+        site_key    : 'gcquc3fefcn3kyoj7jstkb7ic8f90cw',
+        topic_key   : '/posts/dns',
+        topic_url   : 'http://www.unix-lab.org/posts/dns',
+        topic_title : 'DNS-сервер не отвечает' || 'http://www.unix-lab.org/posts/dns',
+        include_base: !window.Juvia,
+        include_css : !window.Juvia
+    };
+
+    function makeQueryString(options) {
+        var key, params = [];
+        for (key in options) {
+            params.push(
+                encodeURIComponent(key) +
+                '=' +
+                encodeURIComponent(options[key]));
+        }
+        return params.join('&');
+    }
+
+    function makeApiUrl(options) {
+        // Makes sure that each call generates a unique URL, otherwise
+        // the browser may not actually perform the request.
+        if (!('_juviaRequestCounter' in window)) {
+            window._juviaRequestCounter = 0;
+        }
+
+        var result =
+            'http://juvia-unixlab.rhcloud.com/api/show_topic.js' +
+            '?_c=' + window._juviaRequestCounter +
+            '&' + makeQueryString(options);
+        window._juviaRequestCounter++;
+        return result;
+    }
+
+    var s       = document.createElement('script');
+    s.async     = true;
+    s.type      = 'text/javascript';
+    s.className = 'juvia';
+    s.src       = makeApiUrl(options);
+    (document.getElementsByTagName('head')[0] ||
+     document.getElementsByTagName('body')[0]).appendChild(s);
+})();
+</script>
+
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy; 2011&mdash;2013 ::</li>
+    <li class="footer"><a href="/">unix-lab.org</a> ::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>

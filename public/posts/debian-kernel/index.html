@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+  <title>Сборка ядра Debian | UNIX-LAB.ORG</title>
+  <meta name="description" content="Что нужно знать для сборки своего ядра в Debian-based системах">
+
+  <meta charset="utf-8">
+  <meta name="author" content="redVi">
+  <meta name='yandex-verification' content='494a81ecb0e796d6' />
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+  <link rel="icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="http://www.unix-lab.org/favicon.ico" type="image/x-icon">
+  <link href="http://www.unix-lab.org/assets/stylesheets/screen.css" rel="stylesheet" type="text/css" />
+  <link rel="alternate" type="application/atom+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/atom.xml">
+  <link rel="alternate" type="application/rss+xml" title="UNIX-LAB.ORG" href="http://www.unix-lab.org/feeds/rss.xml">
+</head>
+<body>
+<div id="outer-wrapper">
+<div id="header-wrapper">
+    <a href="/"><div class="logo"></div></a>
+    <div class="small">блог об операционных системах, open source и программировании</div>
+<div class="nav">
+  <ul>
+    <li><a href="/archive/">Архив</a></li>
+    <li><a href="/about/">О блоге</a></li>
+  </ul>
+</div>
+</div>
+
+<div id="main">
+<h2>Сборка ядра Debian</h2>
+<h5><i class="icon-feather"></i> 02 августа 2011
+
+ <i class="icon-bookmarks"></i>
+
+<a href="/tags/debian.html">Debian /</a>
+
+<a href="/tags/kernel.html">Kernel /</a>
+
+<a href="/tags/linux.html">Linux /</a>
+
+</h5>
+
+<p>Цель данной статьи &mdash; показать пользователям, что такое страшное словосочетание как &laquo;компиляция ядра&raquo; вовсе не так уж и страшно, и даже довольно просто, если всё делать вдумчиво.</p>
+
+<p>Когда и зачем это нужно?</p>
+
+<ul>
+<li>если ваше оборудование специфично</li>
+<li>для поддержки нестандартных возможностей, не включенных в стандартное ядро</li>
+<li>для оптимизации</li>
+<li>если в силу каких-то причин вам необходима более новая версия ядра</li>
+</ul>
+
+<p>В примере будет разобрана не просто перекомпиляция уже имеющегося ядра, а как раз установка и последующая сборка более нового.</p>
+
+<p>Для подобного дела нужно сначала подготовиться. А именно заняться установкой следующих пакетов:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> sudo aptitude install  build-essential kernel-package fakeroot initrd-tools pkg-config libncurses5-dev <span class="o">(</span> и <span class="sb">`</span>linux-source<span class="sb">`</span> - для тех, кто перекомпилирует имеющееся ядро<span class="o">)</span>
+</code></pre></div>
+<p>Если вы решили ставить новое ядро, то идём на kernel.org  или зеркало yandex &mdash; <code>mirror.yandex.ru/kernel.org/linux/kernel/</code> &mdash; и скачиваем необходимую версию ядра. У нас это <code>linux-3.0.4.tar.bz2</code>.</p>
+
+<p>Смотрим есть ли пакет <code>linux-source</code> в каталоге <code>/usr/src</code>. В случае с перекомпиляцией он будет, если вы скачали новое ядро, то переместите его туда.</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> ls /usr/src/
+<span class="go">linux-source-3.0.4.tar.bz2</span>
+</code></pre></div>
+<p>Переходим в каталог и распаковываем архив:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> <span class="nb">cd</span> /usr/src
+<span class="gp">$</span> sudo tar xjf linux-source-3.0.4.tar.bz2
+</code></pre></div>
+<p>Идём в созданную после разархивирования директорию:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">$</span> <span class="nb">cd </span>linux-source-3.0.4/
+</code></pre></div>
+<p>Теперь можно заняться конфигурированием ядра. Автором это было сделано в консоли с остановленным X-Window. В таком случае пишем от рута:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> make menuconfig
+</code></pre></div>
+<p>Если желаете конфигурировать в графическом терминале, вам послужит команда</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> make xconfig
+</code></pre></div>
+<p>Но понадобится установить дополнительные пакеты/библиотеки, в общем ну её....</p>
+
+<p>С конфигурацией закончили?</p>
+
+<p>Тогда собираем наше новенькое ядрышко:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> fakeroot make-kpkg --initrd --revision<span class="o">=</span>debian.3.0.4 kernel_image
+</code></pre></div>
+<p>В <code>&#39;--revision&#39;</code> можете выставить свои названия/значения вместо приведённых здесь debian и 3.0.4</p>
+
+<p>===== Примечание =====</p>
+
+<p>Выше был приведён способ сборки ядра в стиле debian way. К сожалению, иногда это может не сработать. Поясню:</p>
+
+<p>&laquo;не сработать&raquo; &mdash; это когда сборка останавливается с ошибкой компиляции</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">    .....
+    make: *** Documentation/lguest: Нет такого файла или каталога. Останов.
+    make: *** [debian/stamp/build/kernel] Ошибка 2-------------------------
+</code></pre></div>
+<p>Довольно известный баг дебиана.</p>
+
+<p>Тогда собираем ядро как все люди:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> make mrproper
+<span class="gp">#</span> make menuconfig
+<span class="gp">#</span> make <span class="o">&amp;&amp;</span> make modules_install
+<span class="gp">#</span> cp arch/<span class="nv">$ARCH</span>/boot/bzImage /boot/linux-<span class="nv">$VERSION</span>
+</code></pre></div>
+<p>где <code>$VERSION</code> &mdash; версия вашего ядра.</p>
+
+<p>После долгого (или не очень) компилирования установим ядро как обычный пакет в debian (для тех, кто собирал по первому способу).</p>
+
+<p>Ядро будет располагаться в директории <code>/usr/src</code></p>
+
+<p>Мы уже там, так что даём команду:</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> dpkg -i ./linux-image-3.0.4_debian.3.0.4_amd64.deb
+</code></pre></div>
+<p>И перезагружаемся</p>
+<div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> reboot
+</code></pre></div>
+<p>В итоге при следующем старте системы получаем целых два ядра. Пробуем загрузиться с новым, если напортачили, имеем возможность выбрать из списка загрузки предыдущее ядро.</p>
+
+
+<br />
+<p align="center"><a href="#">наверх</a></p>
+<br />
+<div id="comments"></div>
+<script type="text/javascript" class="juvia">
+(function() {
+    var options = {
+        container   : '#comments',
+        site_key    : 'gcquc3fefcn3kyoj7jstkb7ic8f90cw',
+        topic_key   : '/posts/debian-kernel',
+        topic_url   : 'http://www.unix-lab.org/posts/debian-kernel',
+        topic_title : 'Сборка ядра Debian' || 'http://www.unix-lab.org/posts/debian-kernel',
+        include_base: !window.Juvia,
+        include_css : !window.Juvia
+    };
+
+    function makeQueryString(options) {
+        var key, params = [];
+        for (key in options) {
+            params.push(
+                encodeURIComponent(key) +
+                '=' +
+                encodeURIComponent(options[key]));
+        }
+        return params.join('&');
+    }
+
+    function makeApiUrl(options) {
+        // Makes sure that each call generates a unique URL, otherwise
+        // the browser may not actually perform the request.
+        if (!('_juviaRequestCounter' in window)) {
+            window._juviaRequestCounter = 0;
+        }
+
+        var result =
+            'http://juvia-unixlab.rhcloud.com/api/show_topic.js' +
+            '?_c=' + window._juviaRequestCounter +
+            '&' + makeQueryString(options);
+        window._juviaRequestCounter++;
+        return result;
+    }
+
+    var s       = document.createElement('script');
+    s.async     = true;
+    s.type      = 'text/javascript';
+    s.className = 'juvia';
+    s.src       = makeApiUrl(options);
+    (document.getElementsByTagName('head')[0] ||
+     document.getElementsByTagName('body')[0]).appendChild(s);
+})();
+</script>
+
+
+
+</div>
+</div>
+<div id="footer-wrapper">
+<ul class="footer">
+   <a href="/tags/android.html" class="set-1">android</a> <a href="/tags/arch.html" class="set-3">arch</a> <a href="/tags/blog.html" class="set-1">blog</a> <a href="/tags/debian.html" class="set-1">debian</a> <a href="/tags/decorations.html" class="set-1">decorations</a> <a href="/tags/editors.html" class="set-1">editors</a> <a href="/tags/gentoo.html" class="set-1">gentoo</a> <a href="/tags/git.html" class="set-1">git</a> <a href="/tags/kernel.html" class="set-1">kernel</a> <a href="/tags/latex.html" class="set-1">latex</a> <a href="/tags/linux.html" class="set-5">linux</a> <a href="/tags/python.html" class="set-2">python</a> <a href="/tags/ruby.html" class="set-1">ruby</a> <a href="/tags/server.html" class="set-2">server</a> <a href="/tags/web.html" class="set-1">web</a> <a href="/tags/windows.html" class="set-1">windows</a>
+</ul>
+<ul class="footer">
+    <li class="footer">&copy; 2011&mdash;2013 ::</li>
+    <li class="footer"><a href="/">unix-lab.org</a> ::</li>
+    <li class="footer">licensed under <a href="http://creativecommons.org/licenses/by-nc/3.0/deed.ru">CC BY-NC</a></li>
+</ul>
+</div>
+
+</body>
+</html>
