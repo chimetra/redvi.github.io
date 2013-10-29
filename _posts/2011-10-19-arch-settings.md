@@ -25,7 +25,7 @@ summary: В продолжение статьи об установке лёгк
 
 Примеры конфигураций можно посмотреть по адресу `/etc/network.d/examples/`
 
-![net](http://2.bp.blogspot.com/-TaIchwvehBE/UEWDUk5IDCI/AAAAAAAABXU/DdPLyq9ELCU/s1600/eth1.png)
+[![net](http://farm4.staticflickr.com/3718/10549379683_14bd417c23_n.jpg)](http://farm4.staticflickr.com/3718/10549379683_108ecedbf4_o.png)
 
  Достаточно выбрать своё подключение и скопировать соответствующий файл в `/etc/network.d/` наименование_вашего_профиля. Например:
 
@@ -35,7 +35,7 @@ summary: В продолжение статьи об установке лёгк
 
 Открыть скопированный файл в любимом текстовом редакторе и исправить значения на свои:
 
-![static](http://2.bp.blogspot.com/-TfEoJZbPRHs/UEWEM3A9k_I/AAAAAAAABXc/Mijq913elto/s1600/eth0.png)
+[![static](http://farm3.staticflickr.com/2816/10549393903_07c261b4b6_n.jpg)](http://farm3.staticflickr.com/2816/10549393903_31fa0a31f1_o.png)
 
 После чего запустить профиль командой:
 
@@ -201,7 +201,7 @@ WGASWITCHEROO=y
 # echo OFF > /sys/kernel/debug/vgaswitcheroo/switch
 ```
 
-![off](http://1.bp.blogspot.com/-z3wugAFhedo/UEWFsj5DhRI/AAAAAAAABXk/SOy5k-PNDts/s1600/echo_off.png)
+[![off](http://farm6.staticflickr.com/5547/10549166836_af0c02e973_n.jpg)](http://farm6.staticflickr.com/5547/10549166836_34d5e9c23f_o.png)
 
 ### <a id="powersave"></a>Энергосбережение
 
@@ -222,16 +222,16 @@ WGASWITCHEROO=y
 В KDE изначально не было возможности регулировать яркость экрана, что, впрочем, быстро пофиксилось добавлением лишь одной строки к загрузчику. Зато Gnome 3 приятно удивил, подхватив и кнопки управления яркостью дисплея, и кнопки увеличения громкости звука, и даже включение bluetooth, так что... хотите работу "из коробки" &mdash; добро пожаловать в Gnome.
 
 <u>KDE</u>
-<a href="http://farm3.staticflickr.com/2812/9471540916_d9ffb37430_b.jpg" data-lighter><img src="http://farm3.staticflickr.com/2812/9471540916_d9ffb37430_b.jpg"/></a>
+[![kde](http://farm3.staticflickr.com/2812/9471540916_d9ffb37430_n.jpg "KDE")](http://farm3.staticflickr.com/2812/9471540916_d9ffb37430_b.jpg)
 
 <u>Gnome</u>
-<a href="http://farm6.staticflickr.com/5322/9468762349_c9cfdfa125_b.jpg" data-lighter><img src="http://farm6.staticflickr.com/5322/9468762349_c9cfdfa125_b.jpg"/></a>
+[![gnome](http://farm6.staticflickr.com/5322/9468762349_c9cfdfa125_n.jpg "Gnome")](http://farm6.staticflickr.com/5322/9468762349_c9cfdfa125_b.jpg)
 
 Для любителей минимализма осмелюсь порекомендовать [openbox](http://www.unix-lab.org/posts/openbox/) или же [xmonad](http://www.unix-lab.org/posts/xmonad/).
 
 <b>ВНИМАНИЕ!</b> Поскольку с недавнего времени archlinux претерпел некоторые изменения, а именно осуществился переход к `systemd`, файл `/etc/rc.conf`, скорее всего, скоро перестанет поддерживаться, хотя на данный момент такая возможность есть. Вместо этого пишутся юниты для автозапуска тех или иных сервисов. Так, юнит запуска KDM выглядит следующим образом:
 
-![systemd](http://2.bp.blogspot.com/---9N3-j3xxw/UEWGh2MgKKI/AAAAAAAABXs/cUMEfN5QPN0/s1600/systemd_unit.png)
+[![systemd](http://farm6.staticflickr.com/5515/10549455943_d4df01c7b3_n.jpg)](http://farm6.staticflickr.com/5515/10549455943_827000a983_o.png)
 
 Для того, чтобы KDM стартовал при загрузке системы, выполните команду:
 

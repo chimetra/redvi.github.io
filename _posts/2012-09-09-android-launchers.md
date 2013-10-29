@@ -20,7 +20,7 @@ summary: Как известно, для Android-устройств имеетс
 
 Выглядит так:
 
-![nova](http://3.bp.blogspot.com/-HBgMD8XbV4U/UDzCEjkrxWI/AAAAAAAABOY/V9ngJLeopeA/s1600/nova.jpg)
+[![nova](http://farm4.staticflickr.com/3768/10539907534_ef6a1f1337_n.jpg)](http://farm4.staticflickr.com/3768/10539907534_45c95b80f5_o.jpg)
 
 <div class="video"><iframe width="400" height="225" src="http://www.youtube.com/embed/oogZ1wYYIlc?rel=0" frameborder="0" allowfullscreen></iframe></div>
 
@@ -29,34 +29,34 @@ summary: Как известно, для Android-устройств имеетс
 Лёгкий, шустрый, с количеством настроек, достаточным для того, чтобы подогнать интерфейс под себя и в то же время не столь огромным, чтобы успеть утомить вас.
 Nova и Apex на взгляд автора в плане поведения и функциональности (отличия в количестве настроек) похожи как близнецы-братья. Какой выбрать - решать вам.
 
-![apex](http://farm3.staticflickr.com/2830/9301850646_475279dc32_o.png)
+[![apex](http://farm3.staticflickr.com/2830/9301850646_be03b3dd94_n.jpg)](http://farm3.staticflickr.com/2830/9301850646_475279dc32_o.png)
 
 <div class="video"><iframe width="400" height="225" src="http://www.youtube.com/embed/P-PvHvu3P_I?rel=0" frameborder="0" allowfullscreen></iframe></div>
 
 И тот и другой позволяют создавать папки на рабочем столе, куда для быстрого доступа складируются любимые приложения.
 
-![directory](http://farm4.staticflickr.com/3666/9299095519_fd1468498e_o.png)
+[![directory](http://farm4.staticflickr.com/3666/9299095519_f9054df6ac_n.jpg)](http://farm4.staticflickr.com/3666/9299095519_fd1468498e_o.png)
 
 Стоит отметить приятную особенность Apex и Nova: автоповорот экрана. Не при просмотре видео или фотографий, просто корректный поворот самого рабочего стола, что достаточно удобно в использовании.
 
-<a href="http://4.bp.blogspot.com/-sFb9Z-CUTm4/UD8NwOqJEjI/AAAAAAAABS4/bDvG3W8xC0A/s1600/Screenshot_2012-08-29-16-12-32.png" data-lighter><img src="http://4.bp.blogspot.com/-sFb9Z-CUTm4/UD8NwOqJEjI/AAAAAAAABS4/bDvG3W8xC0A/s1600/Screenshot_2012-08-29-16-12-32.png" alt="win"/></a>
+[![android](http://farm6.staticflickr.com/5512/10540156873_c9ce9c48f5_n.jpg)](http://farm6.staticflickr.com/5512/10540156873_c9ce9c48f5_b.jpg)
 
 Настройки Apex, пожалуй, смогут удовлетворить потребности самого искушённого пользователя. Например, вы можете запросто отредактировать внешний вид самой папки (в стандартной оболочке Samsung папки имеют совершенно неприглядный вид), в Apex имеется три варианта, в Nova - четыре. Также настраивается и вид отображения значков в папках.
 
 <u>В Go Launcher нет этих возможностей.</u>
 
-<img class="many" src="http://farm3.staticflickr.com/2830/9301890474_4bb56e7327_o.png">
-<img class="many" src="http://farm6.staticflickr.com/5343/9299111303_16b588aac5_o.png">
+[![many](http://farm3.staticflickr.com/2830/9301890474_443dcc545c_n.jpg)](http://farm3.staticflickr.com/2830/9301890474_4bb56e7327_o.png)
+[![many](http://farm6.staticflickr.com/5343/9299111303_aebcc904ec_n.jpg)](http://farm6.staticflickr.com/5343/9299111303_16b588aac5_o.png)
 
 Но самое замечательное, конечно, скрыто в Pro версиях Apex и Nova. Интересны дополнительные эффекты главного меню и прокрутки рабочего стола,  возможность наблюдать счётчик непрочитанных сообщений, звонков, писем. Кстати, при желании можно легко изменить иконки док-бара на свои:
 
-<img class="many" src="http://farm8.staticflickr.com/7329/9299139663_1eef8109b7_o.png">
-<img class="many" src="http://farm4.staticflickr.com/3790/9301931562_b5d0d979d5_o.png">
+[![many](http://farm8.staticflickr.com/7329/9299139663_17ebaf304d_n.jpg)](http://farm8.staticflickr.com/7329/9299139663_1eef8109b7_o.png)
+[![many](http://farm4.staticflickr.com/3790/9301931562_cee63c28c0_n.jpg)](http://farm4.staticflickr.com/3790/9301931562_b5d0d979d5_o.png)
 
 ## Go Launcher
 Очень красивый лаунчер с огромным количеством виджетов, утилит и прочих плюшек вдовесок. Скринов к нему будет немного больше, чем к предыдущим двум кандидатам, дабы отобразить его дополнительные приложения.
 
-![go](http://farm8.staticflickr.com/7402/9301938428_2a949befc1_o.png)
+[![go](http://farm8.staticflickr.com/7402/9301938428_56f766d29a_n.jpg)](http://farm8.staticflickr.com/7402/9301938428_2a949befc1_o.png)
 
 <div class="video"><iframe width="400" height="225" src="http://www.youtube.com/embed/2Yk1jNsQoMA?rel=0" frameborder="0" allowfullscreen></iframe></div>
 
@@ -64,24 +64,24 @@ Nova и Apex на взгляд автора в плане поведения и 
 
 Go locker – великолепный блокировщик экрана с настраиваемыми темами
 
-<img class="many" src="http://farm4.staticflickr.com/3741/9301943742_9a468285f9_o.png">
-<img class="many" src="http://farm8.staticflickr.com/7281/9299164709_7156c92813_o.png">
+[![many](http://farm4.staticflickr.com/3741/9301943742_141c9db457_n.jpg)](http://farm4.staticflickr.com/3741/9301943742_9a468285f9_o.png)
+[![many](http://farm8.staticflickr.com/7281/9299164709_42769c638c_n.jpg)](http://farm8.staticflickr.com/7281/9299164709_7156c92813_o.png)
 
 Go Launcher EX Notification - приложение, позволяющее видеть количество неотвеченных вызовов, sms, писем в google. У других лаунчеров также имеется возможность просмотра пропущенных смс и звонков, но идёт она не отдельным приложением как в Go, а в Pro версии этих лаунчеров, то есть за отдельную символическую плату. На данный момент где-то 130-160 рублей, что совсем немного, не так ли?
 
-![not](http://farm6.staticflickr.com/5491/9301954686_45bb3cca80_o.png)
+[![not](http://farm6.staticflickr.com/5491/9301954686_7cf17ff6bb_n.jpg)](http://farm6.staticflickr.com/5491/9301954686_45bb3cca80_o.png)
 
 Go Power Master - отличная вещь. Позволяет динамически просматривать загруженность системы и оптимизировать её быстродействие, закрывая приложения, висящие в памяти устройства. Можно установить для любого лаунчера, хотя назойливо будет требовать Go.
 
-![power](http://farm8.staticflickr.com/7387/9299174897_18ae949e6b_o.png)
+[![power](http://farm8.staticflickr.com/7387/9299174897_044bc1ca07_n.jpg)](http://farm8.staticflickr.com/7387/9299174897_18ae949e6b_o.png)
 
 Go Keyboard - одна из лучших клавиатур для Android. Можно установить и не имея Go Launcher в качестве оболочки запуска. Установите, не пожалеете. Во-первых, крупные удобные клавиши, во-вторых, настраиваемый внешний вид; в-третьих, простые (но не бедные) настройки и удобство при вводе текста; в-четвёртых, умение расширять свой словарный запас запоминанием новых слов.  Можно установить для любого лаунчера
 
-![key](http://farm6.staticflickr.com/5465/9301965578_7e5255ecf8_o.png)
+[![key](http://farm6.staticflickr.com/5465/9301965578_69bc99805e_n.jpg)](http://farm6.staticflickr.com/5465/9301965578_7e5255ecf8_o.png)
 
 Ах, да, автоповорот здесь включен по умолчанию.
 
-<a href="http://3.bp.blogspot.com/-tVXVtct79Es/UDzNhEo1IBI/AAAAAAAABQI/CQfhAkXDCPY/s1600/GO.png" data-lighter><img src="http://3.bp.blogspot.com/-tVXVtct79Es/UDzNhEo1IBI/AAAAAAAABQI/CQfhAkXDCPY/s1600/GO.png" alt="auto"/></a>
+[![go](http://farm4.staticflickr.com/3686/10540282823_990c69f9e9_n.jpg)](http://farm4.staticflickr.com/3686/10540282823_990c69f9e9_b.jpg)
 
 Но и небольшие минусы также имеются.
 

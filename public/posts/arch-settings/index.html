@@ -58,14 +58,14 @@
 
 <p>Примеры конфигураций можно посмотреть по адресу <code>/etc/network.d/examples/</code></p>
 
-<p><img src="http://2.bp.blogspot.com/-TaIchwvehBE/UEWDUk5IDCI/AAAAAAAABXU/DdPLyq9ELCU/s1600/eth1.png" alt="net"></p>
+<p><a href="http://farm4.staticflickr.com/3718/10549379683_108ecedbf4_o.png"><img src="http://farm4.staticflickr.com/3718/10549379683_14bd417c23_n.jpg" alt="net"></a></p>
 
 <p>Достаточно выбрать своё подключение и скопировать соответствующий файл в <code>/etc/network.d/</code> наименование_вашего_профиля. Например:</p>
 <div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> cp /etc/network.d/examples/ethernet-static /etc/network.d/eth0
 </code></pre></div>
 <p>Открыть скопированный файл в любимом текстовом редакторе и исправить значения на свои:</p>
 
-<p><img src="http://2.bp.blogspot.com/-TfEoJZbPRHs/UEWEM3A9k_I/AAAAAAAABXc/Mijq913elto/s1600/eth0.png" alt="static"></p>
+<p><a href="http://farm3.staticflickr.com/2816/10549393903_31fa0a31f1_o.png"><img src="http://farm3.staticflickr.com/2816/10549393903_07c261b4b6_n.jpg" alt="static"></a></p>
 
 <p>После чего запустить профиль командой:</p>
 <div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> netcfg eth0 up
@@ -168,7 +168,7 @@ EndSection
 <span class="c"># где &quot;username&quot; имя вашего пользователя</span>
 <span class="c"># echo OFF &gt; /sys/kernel/debug/vgaswitcheroo/switch</span>
 </code></pre></div>
-<p><img src="http://1.bp.blogspot.com/-z3wugAFhedo/UEWFsj5DhRI/AAAAAAAABXk/SOy5k-PNDts/s1600/echo_off.png" alt="off"></p>
+<p><a href="http://farm6.staticflickr.com/5547/10549166836_34d5e9c23f_o.png"><img src="http://farm6.staticflickr.com/5547/10549166836_af0c02e973_n.jpg" alt="off"></a></p>
 
 <h3 id="toc_5"><a id="powersave"></a>Энергосбережение</h3>
 
@@ -188,16 +188,16 @@ EndSection
 <p>В KDE изначально не было возможности регулировать яркость экрана, что, впрочем, быстро пофиксилось добавлением лишь одной строки к загрузчику. Зато Gnome 3 приятно удивил, подхватив и кнопки управления яркостью дисплея, и кнопки увеличения громкости звука, и даже включение bluetooth, так что... хотите работу &quot;из коробки&quot; &mdash; добро пожаловать в Gnome.</p>
 
 <p><u>KDE</u>
-<a href="http://farm3.staticflickr.com/2812/9471540916_d9ffb37430_b.jpg" data-lighter><img src="http://farm3.staticflickr.com/2812/9471540916_d9ffb37430_b.jpg"/></a></p>
+<a href="http://farm3.staticflickr.com/2812/9471540916_d9ffb37430_b.jpg"><img src="http://farm3.staticflickr.com/2812/9471540916_d9ffb37430_n.jpg" alt="kde" title="KDE"></a></p>
 
 <p><u>Gnome</u>
-<a href="http://farm6.staticflickr.com/5322/9468762349_c9cfdfa125_b.jpg" data-lighter><img src="http://farm6.staticflickr.com/5322/9468762349_c9cfdfa125_b.jpg"/></a></p>
+<a href="http://farm6.staticflickr.com/5322/9468762349_c9cfdfa125_b.jpg"><img src="http://farm6.staticflickr.com/5322/9468762349_c9cfdfa125_n.jpg" alt="gnome" title="Gnome"></a></p>
 
 <p>Для любителей минимализма осмелюсь порекомендовать <a href="http://www.unix-lab.org/posts/openbox/">openbox</a> или же <a href="http://www.unix-lab.org/posts/xmonad/">xmonad</a>.</p>
 
 <p><b>ВНИМАНИЕ!</b> Поскольку с недавнего времени archlinux претерпел некоторые изменения, а именно осуществился переход к <code>systemd</code>, файл <code>/etc/rc.conf</code>, скорее всего, скоро перестанет поддерживаться, хотя на данный момент такая возможность есть. Вместо этого пишутся юниты для автозапуска тех или иных сервисов. Так, юнит запуска KDM выглядит следующим образом:</p>
 
-<p><img src="http://2.bp.blogspot.com/---9N3-j3xxw/UEWGh2MgKKI/AAAAAAAABXs/cUMEfN5QPN0/s1600/systemd_unit.png" alt="systemd"></p>
+<p><a href="http://farm6.staticflickr.com/5515/10549455943_827000a983_o.png"><img src="http://farm6.staticflickr.com/5515/10549455943_d4df01c7b3_n.jpg" alt="systemd"></a></p>
 
 <p>Для того, чтобы KDM стартовал при загрузке системы, выполните команду:</p>
 <div class="highlight"><pre><code class="console language-console" data-lang="console"><span class="gp">#</span> systemctl <span class="nb">enable </span>kdm.service

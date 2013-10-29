@@ -42,18 +42,18 @@
   ul, ol, li {
   margin-left: 1em;
   }
-  .many {
+  img[alt="many"] {
     display: inline;
     margin: 1em 0;
   }
-  .none {
+  img[alt="none"] {
       border: none;
     }
-  .left {
+  img[alt="left"] {
     float: left;
     margin: .5em 1em .25em 0;
   }
-  .right {
+  img[alt="right"] {
     float: right;
     margin: .5em 1em .25em 0;
   }
@@ -119,7 +119,6 @@ th {
     width: 100%;
     height: 100%;
 }
-
   code {
     display: inline-block;
     font-size: 100%;
