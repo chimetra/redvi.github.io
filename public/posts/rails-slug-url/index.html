@@ -92,7 +92,7 @@
 <span class="k">end</span>
 </code></pre></div>
 <p>Наконец, пример вывода страницы публикации.</p>
-<div class="highlight"><pre><code class="css+erb language-css+erb" data-lang="css+erb"><span class="o">&lt;!</span><span class="nt">--</span> <span class="nt">show</span><span class="nc">.html.erb</span> <span class="nt">--</span><span class="o">&gt;</span>
+<div class="highlight"><pre><code class="css+erb language-css+erb" data-lang="css+erb"><span class="cp">&lt;%#</span><span class="c"> show.html.erb </span><span class="cp">%&gt;</span>
 
 <span class="cp">&lt;%</span> <span class="n">provide</span><span class="p">(</span><span class="ss">:title</span><span class="p">,</span> <span class="vi">@article</span><span class="o">.</span><span class="n">title</span><span class="p">)</span> <span class="cp">%&gt;</span>
 <span class="o">&lt;</span><span class="nt">h2</span><span class="o">&gt;</span><span class="cp">&lt;%=</span> <span class="n">link_to</span> <span class="vi">@article</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="n">article_path</span><span class="p">(</span><span class="vi">@article</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="o">&lt;/</span><span class="nt">h2</span><span class="o">&gt;</span>

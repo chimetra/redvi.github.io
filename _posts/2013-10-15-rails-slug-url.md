@@ -76,7 +76,7 @@ end
 Наконец, пример вывода страницы публикации.
 
 ```css+erb
-<!-- show.html.erb -->
+<%# show.html.erb %>
 
 <% provide(:title, @article.title) %>
 <h2><%= link_to @article.title, article_path(@article) %></h2>

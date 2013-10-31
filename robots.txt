@@ -5,7 +5,6 @@ Disallow: /author/
 Disallow: /about/
 Disallow: /assets/
 Disallow: /feeds/
-Disallow: /page*/
 Disallow: /tags/
 
 User-agent: Googlebot
@@ -15,7 +14,6 @@ Disallow: /author/
 Disallow: /about/
 Disallow: /assets/
 Disallow: /feeds/
-Disallow: /page*/
 Disallow: /tags/
 
 User-agent: *
@@ -25,7 +23,6 @@ Disallow: /author/
 Disallow: /about/
 Disallow: /assets/
 Disallow: /feeds/
-Disallow: /page*/
 Disallow: /tags/
 
 Sitemap: http://www.unix-lab.org/sitemap.xml
