@@ -1,0 +1,29 @@
+User-agent: Yandex
+Allow: /posts/
+Allow: /index.html
+Disallow: /author/
+Disallow: /about/
+Disallow: /assets/
+Disallow: /feeds/
+Disallow: /tags/
+
+User-agent: Googlebot
+Allow: /posts/
+Allow: /index.html
+Disallow: /author/
+Disallow: /about/
+Disallow: /assets/
+Disallow: /feeds/
+Disallow: /tags/
+
+User-agent: *
+Allow: /posts/
+Allow: /index.html
+Disallow: /author/
+Disallow: /about/
+Disallow: /assets/
+Disallow: /feeds/
+Disallow: /tags/
+
+Sitemap: http://www.unix-lab.org/sitemap.xml
+Host: www.unix-lab.org

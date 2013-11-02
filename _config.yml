@@ -17,7 +17,7 @@ permalink: /posts/:title
 tag_page_layout: tag_page
 tag_page_dir: tags
 
-future: false
+# future: false
 safe: false
 lsi: false
 excerpt_separator: "\n\n"
@@ -27,14 +27,11 @@ destination: public
 title: UNIX-LAB.ORG
 description: Блог об операционных системах, open source и программировании
 url: http://www.unix-lab.org
-# url: http://jekyll-unixlab.rhcloud.com
 # url: http://localhost:4000
 
 # imgdir: /images
 
-# exclude: ['Gemfile*', 'README', 'vendor']
 exclude: ['Gemfile*', 'README']
-
 keep_files: ['.gitkeep']
 
 ## for openshift

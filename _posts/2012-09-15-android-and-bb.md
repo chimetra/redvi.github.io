@@ -40,13 +40,13 @@ summary: ББ - большой брат, то есть компьютер или
 - Настройки --> Дополнительно --> Модем и точка доступа --> USB-модем
 ```
 
-<a href="http://farm6.staticflickr.com/5533/9302009258_cc80988d3e_o.png" data-lighter><img src="http://farm6.staticflickr.com/5533/9302009258_cc80988d3e_o.png" alt="modem"/></a>
+[![modem](http://farm6.staticflickr.com/5533/9302009258_1486427612_n.jpg)](http://farm6.staticflickr.com/5533/9302009258_cc80988d3e_o.png)
 
 На компьютере определится новое сетевое соединение. Теперь нужно внести необходимые настройки ip-адреса и маски подсети, а также расшарить наше основное активное подключение. Иными словами открыть общий доступ.
 
 Настройки нового сетевого соединения. Вам нужно заменить адреса на свои:
 
-<a href="http://2.bp.blogspot.com/-qJdC-xGe2jQ/UD8oMi8NziI/AAAAAAAABVI/CQtGHtVv74Q/s1600/android-inet_modem.png" data-lighter><img src="http://2.bp.blogspot.com/-qJdC-xGe2jQ/UD8oMi8NziI/AAAAAAAABVI/CQtGHtVv74Q/s1600/android-inet_modem.png" alt="win"/></a>
+[![win](http://farm8.staticflickr.com/7391/10539693836_9e1c86a6ff_n.jpg)](http://farm8.staticflickr.com/7391/10539693836_9e1c86a6ff_b.jpg)
 
 Вместо адреса `192.168.42.1` вам следует прописать адрес вашего устройства. Для этого открываем `Android Terminal Emulator` и пишем:
 
@@ -59,15 +59,15 @@ $ su
 - название устройства (например, usb0 или rndis0 как у нас)
 - его IP, в нашем случае это 192.168.42.1
 
-<a href="http://farm8.staticflickr.com/7282/9302020640_386664f839_o.png" data-lighter><img src="http://farm8.staticflickr.com/7282/9302020640_386664f839_o.png" alt="ip"/></a>
+[![ip](http://farm8.staticflickr.com/7282/9302020640_25670e0dda_n.jpg)](http://farm8.staticflickr.com/7282/9302020640_386664f839_o.png)
 
 Открываем доступ к Большому Брату:
 
-<a href="http://2.bp.blogspot.com/-poWtVubc-7k/UD8ocNjPp3I/AAAAAAAABVY/ZwsbYISHoK4/s1600/DSL.png" data-lighter><img src="http://2.bp.blogspot.com/-poWtVubc-7k/UD8ocNjPp3I/AAAAAAAABVY/ZwsbYISHoK4/s1600/DSL.png" alt="bb"/></a>
+[![bb](http://farm8.staticflickr.com/7434/10539787814_be31fbae8c_n.jpg)](http://farm8.staticflickr.com/7434/10539787814_be31fbae8c_b.jpg)
 
 Также включим маршрутизацию:
 
-<a href="http://4.bp.blogspot.com/-a-EABjP0PfM/UD8qHXfUQFI/AAAAAAAABVw/85Ln0rDxUII/s1600/android-inet.png" data-lighter><img src="http://4.bp.blogspot.com/-a-EABjP0PfM/UD8qHXfUQFI/AAAAAAAABVw/85Ln0rDxUII/s1600/android-inet.png" alt="rr"/></a>
+[![rr](http://farm6.staticflickr.com/5543/10539826914_d134ee8bfa_n.jpg)](http://farm6.staticflickr.com/5543/10539826914_d134ee8bfa_b.jpg)
 
 Открываем `Gscript Lite` и рисуем код, снова подставив свои, а не автора значения.
 Код:
@@ -86,7 +86,7 @@ $ su
 
 Сохраните скрипт
 
-<a href="http://farm8.staticflickr.com/7350/9299248439_9542f5faf4_o.png" data-lighter><img src="http://farm8.staticflickr.com/7350/9299248439_9542f5faf4_o.png" alt="script"/></a>
+[![script](http://farm8.staticflickr.com/7350/9299248439_e65e31bfa1_n.jpg)](http://farm8.staticflickr.com/7350/9299248439_9542f5faf4_o.png)
 
 Ответственный момент - подключение:
 
@@ -94,7 +94,7 @@ $ su
 - Открыть Gscript Lite, запустить скрипт
 - Зажать Power - отключить передачу данных
 
-<a href="http://farm8.staticflickr.com/7459/9302043992_bd55c3a947_o.png" data-lighter><img src="http://farm8.staticflickr.com/7459/9302043992_bd55c3a947_o.png" alt="run"/></a>
+[![run](http://farm8.staticflickr.com/7459/9302043992_23256c88d7_n.jpg)](http://farm8.staticflickr.com/7459/9302043992_bd55c3a947_o.png)
 
 <b>Интерпретация:</b>
 

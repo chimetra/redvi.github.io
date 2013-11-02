@@ -49,7 +49,7 @@ summary: Если у вас не топовая модель телефона 20
 
 KIES вполне справляется с синхронизацией файлов и музыки
 
-<a href="http://3.bp.blogspot.com/-HMhBdlInad0/UAEpntf78RI/AAAAAAAABEc/0oMurn-MQMM/s1600/kies.png" data-lighter><img src="http://3.bp.blogspot.com/-HMhBdlInad0/UAEpntf78RI/AAAAAAAABEc/0oMurn-MQMM/s1600/kies.png"/></a>
+[![kies](http://farm4.staticflickr.com/3820/10540081055_e4bc17f06f_n.jpg "KIES")](http://farm4.staticflickr.com/3820/10540081055_e4bc17f06f_b.jpg)
 
 ### Способ второй, автором не проверенный
 
@@ -82,7 +82,7 @@ KIES вполне справляется с синхронизацией фай�
 
 Так выглядит Odin
 
-<a href="http://3.bp.blogspot.com/-bEe5DC8sdIo/UAEqKk9cgoI/AAAAAAAABEk/8kFruvLETMY/s1600/odin.png" data-lighter><img src="http://3.bp.blogspot.com/-bEe5DC8sdIo/UAEqKk9cgoI/AAAAAAAABEk/8kFruvLETMY/s1600/odin.png"/></a>
+[![pda](http://farm6.staticflickr.com/5486/10538410433_cfe47e90b8_n.jpg "pda")](http://farm6.staticflickr.com/5486/10538410433_cfe47e90b8_b.jpg)
 
 ## Как получить права рута?
 
