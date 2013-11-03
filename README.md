@@ -1,6 +1,6 @@
 ## What is it?
 
-It is a blog created with [jekyll](http://jekyllrb.com/) and [markdown](http://daringfireball.net/projects/markdown/) syntax.
+It is my single page website.
 
 The following directories and their contents are Copyright Irina Shefer:
 

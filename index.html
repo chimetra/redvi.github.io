@@ -1,23 +1,130 @@
----
-layout: default
-title: Последние записи
----
+<!DOCTYPE html>
 
-<h2>{{ page.title }}</h2>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
 
-{% include search.html %}
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 
-<br />
+<head>
+	<meta charset="UTF-8">
 
-<ul type="circle">
-{% for post in site.posts limit:10 %}
-  <li>
-  <a href="{{ post.url }}">{{ post.title }}</a>
-  <span class="archive-date">
-    {% for tag in post.tags %}
-    <a href="/tags/{{ tag }}.html">{{ tag }} </a>
-    {% endfor %}
-  </span>
-  </li>
-{% endfor %}
-</ul>
+	<!-- Remove this line if you use the .htaccess -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<meta name="viewport" content="width=device-width">
+
+	<meta name="description" content="contact to me">
+	<meta name="author" content="redVi">
+
+	<title>HOME // Contact to me</title>
+
+	<link rel="shortcut icon" type="image/png" href="favicon.png">
+
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/style.css">
+
+	<!--[if lt IE 9]>
+	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+<!-- Prompt IE 7 users to install Chrome Frame -->
+<!--[if lt IE 8]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+
+<div class="container">
+
+
+<div class="home-page main">
+	<section class="grid-wrap" >
+			<hr>
+
+		<div class="grid col-one-half mq2-col-full">
+			<h1>Howdy...</h1>
+			<p>I am administrator of the site, linux user and just yet one wight in this big world. I am not professional programmer, but I like web-development and all that is connected with this. My main interest is to understand how to design a websites, so as to maximize performance. Also I love a clear message, and tend to keep styling to a minimum allowing content, color, and typography to shine the way.</p>
+			<p>And now, if you kept your interest, you may follow links that represented here.</p>
+		</div>
+
+
+		 <div class="slider grid col-one-half mq2-col-full">
+		   <div class="flexslider">
+		     <div class="slides">
+		       <div class="slide">
+		           	<figure>
+		                 <img src="img/graffity.jpg" alt="Blog">
+		                 <figcaption>
+		                 	<div>
+		                 	<h5>Blog</h5>
+		                 	<p><a href="http://www.unix-lab.org/">Posts [in Russian]</a></p>
+		                 	</div>
+		                 </figcaption>
+		             	</figure>
+		           </div>
+
+		           <div class="slide">
+		               	<figure>
+		                     <img src="img/github.png" alt="GitHub">
+		                     <figcaption>
+		                     	<div>
+		                     	<h5>GitHub</h5>
+		                     	<p><a href="https://github.com/redVi">Open projects</a></p>
+		                     	</div>
+		                     </figcaption>
+		                 	</figure>
+		               </div>
+		       <div class="slide">
+		           	<figure>
+		                 <img src="img/twitter.jpg" alt="Twitter">
+		                 <figcaption>
+		                 	<div>
+		                 	<h5>Twitter</h5>
+		                 	<p><a href="https://twitter.com/_redVi">Recent events</a></p>
+		                 	</div>
+		                 </figcaption>
+		             	</figure>
+		           </div>
+		            </div>
+		   </div>
+		 </div>
+
+		 </section>
+	</div> <!--main-->
+
+<div class="divide-top">
+	<footer class="grid-wrap">
+		<ul class="grid col-one-third social">
+			<li><a href="https://twitter.com/_redVi">Twitter</a></li>
+			<li><a href="http://gplus.to/ishefer">Google+</a></li>
+			<li><a href="http://redvi9.deviantart.com/">Devianart</a></li>
+			<li><a href="https://github.com/redVi">GitHub</a></li>
+		</ul>
+
+		<div class="up grid col-one-third ">
+			<a href="#" title="Go back up">&uarr;</a>
+		</div>
+
+		<nav class="grid col-one-third ">
+			<ul>
+				<li><a href="index.html">Home</a></li>
+				<li><a href="http://www.unix-lab.org/">Blog</a></li>
+				<li><a href="malito:liberty195[et]gmail.com">Contact</a></li>
+			</ul>
+		</nav>
+	</footer>
+</div>
+
+</div>
+
+<!-- Javascript - jQuery -->
+<script src="http://code.jquery.com/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/jquery-1.7.2.min.js"><\/script>')</script>
+
+<!--[if (gte IE 6)&(lte IE 8)]>
+<script src="js/selectivizr.js"></script>
+<![endif]-->
+
+<script src="js/jquery.flexslider-min.js"></script>
+<script src="js/scripts.js"></script>
+</body>
+</html>

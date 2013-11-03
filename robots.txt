@@ -1,29 +1,10 @@
 User-agent: Yandex
-Allow: /posts/
-Allow: /index.html
-Disallow: /author/
-Disallow: /about/
-Disallow: /assets/
-Disallow: /feeds/
-Disallow: /tags/
+Disallow: /_posts/
 
 User-agent: Googlebot
-Allow: /posts/
-Allow: /index.html
-Disallow: /author/
-Disallow: /about/
-Disallow: /assets/
-Disallow: /feeds/
-Disallow: /tags/
+Disallow: /_posts/
 
 User-agent: *
-Allow: /posts/
-Allow: /index.html
-Disallow: /author/
-Disallow: /about/
-Disallow: /assets/
-Disallow: /feeds/
-Disallow: /tags/
+Disallow: /_posts/
 
-Sitemap: http://www.unix-lab.org/sitemap.xml
-Host: www.unix-lab.org
+Host: redvi.github.io
