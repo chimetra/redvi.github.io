@@ -260,7 +260,7 @@ urlpatterns = patterns('',
 <head>
 {% block meta %}
 <!-- подключаем наш css-файл, если он есть -->
-<link rel="stylesheet" type="text/css" href="{% block stylesheet %}{% static "css/base.css" %}{% endblock %}" />
+<link rel="stylesheet" type="text/css" href="{% static "css/base.css" %}" />
 {% endblock %}
 <title>{% block title %}My Django Site{% endblock %}</title>
 </head>
@@ -290,13 +290,14 @@ urlpatterns = patterns('',
 {% block content %}
     <div id="post">
         {% for post in posts %} <!-- итерация по всем постам -->
-            <ul>
-                <li><h3><a href="{% url 'news:one_new' post.id %}">{{ post.title }}</a></h3><br /></li><br />
-            </ul>
+            <dl>
+              <dd><h3><a href="{% url 'news:one_new' post.id %}">{{ post.title }}</a></h3></dd>
+            </dl>
         {{ post.timestamp }} <!-- дата публикации -->
         {{ post.author }} <!-- автор -->
-        {{ post.body|truncatewords:80|safe }}<br /> <!-- обрезаем посты, вывод по 80 слов -->
-        <a href="{% url 'news:one_new' post.id %}">Читать полностью&raquo;</a> <!-- ссылаемся на полный текст поста -->
+        {{ post.body|truncatewords:80|safe }} <!-- обрезаем посты, вывод по 80 слов -->
+        <!-- ссылаемся на полный текст поста -->
+        <a href="{% url 'news:one_new' post.id %}">Читать полностью&raquo;</a>
         {% endfor %}
     </div>
 {% endblock %}
@@ -334,8 +335,8 @@ def one_new(request, post_id):
 <!-- отображать название поста как title страницы-->
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
-<b>Дата: {{ timestamp }}</b><br />
-<b>Автор: {{ author }}</b><br />
+Дата: {{ timestamp }}
+Автор: {{ author }}
 <h1>{{ title }}</h1>
 <div>{{ body|safe|escape}}</div> <!-- экранировать HTML-->
 <!-- escape переводит HTML-теги, если вы использовали их
@@ -375,11 +376,11 @@ def home(request):
 {% block title %}Index Page{% endblock %}
 {% block content %}
     <div id="post">
-            <ul>
-            {% for post in posts %}
-                <li><a href="{% url 'news:one_new' post.id %}">{{ post.title }}</a></li>
-            {% endfor %}
-            </ul>
+        <ul>
+        {% for post in posts %}
+            <li><a href="{% url 'news:one_new' post.id %}">{{ post.title }}</a></li>
+        {% endfor %}
+        </ul>
     </div>
 {%endblock%}
 {% endraw %}
